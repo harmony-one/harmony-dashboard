@@ -1,0 +1,76 @@
+@space-xs: 0.25em;
+@space-sm: 0.5em;
+@space-md: 1em;
+@space-lg: 1.5em;
+@space-xl: 2em;
+@space-xxl: 2.5em;
+
+@anim-duration: .15s;
+@anim-function: ease-in-out;
+
+:root {
+  --bright-text-color: #fff;
+  --primary-button-background-color: #0a93eb;
+  --primary-button-hover-background-color: #0987d7;
+  --primary-text-color: #4d4b5a;
+  --secondary-text-color: #67656f;
+  --opaque-navbar-text-color: #666;
+}
+
+.clearfix:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.btn {
+  appearance: none;
+  border: none;
+  background-color: transparent;
+  padding: @space-sm @space-md;
+  display: inline-block;
+
+  &.btn-primary {
+    background-color: var(--primary-button-background-color);
+    color: var(--bright-text-color);
+    &:hover {
+      background-color: var(--primary-button-hover-background-color);
+    }
+  }
+
+  &.btn-wide {
+    padding: @space-md @space-xxl;
+  }
+}
+
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: @space-md;
+  padding-right: @space-md;
+}
+
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}

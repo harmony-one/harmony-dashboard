@@ -1,14 +1,14 @@
 <template>
-  <div class="home-page">
-    <header class="navbar-fixed-top">
-      <div class="container">
+  <div class="home-page page" v-on:scroll="onScroll">
+    <header class="navbar-fixed-top" :class="{ opaque: navbarOpaque }">
+      <div class="container clearfix">
         <a class="navbar-brand" href="/">Engrave.ly</a>
         <div class="navbar-nav">
-          <a href="">Whitepager</a>
-          <a href="">Roadmap</a>
-          <a href="">Team</a>
-          <a href="">Partners/Investors</a>
-          <a href="">Contact Us</a>
+          <a href="#" v-scroll-to="'#whitepaper'">Whitepaper</a>
+          <a href="#" v-scroll-to="'#roadmap'">Roadmap</a>
+          <a href="#" v-scroll-to="'#team'">Team</a>
+          <a href="#" v-scroll-to="'#partners'">Partners</a>
+          <a href="#" v-scroll-to="'#contact-us'">Contact Us</a>
         </div>
       </div>
     </header>
@@ -17,12 +17,35 @@
         <div class="container">
           <h1 class="animated fadeInUp">Join Engrave.ly</h1>
           <h2 class="animated fadeInUp">Engrave everything on blockchain, eternally</h2>
-          <a class="btn btn-primary">Demo</a>
+          <a class="animated fadeInUp btn btn-primary btn-wide">Demo</a>
         </div>
       </div>
     </div>
 
-    <section class="whitepaper">
+    <section class="whitepaper" id="whitepaper">
+      <div class="container">
+        <div class="features flex-horizontal">
+          <div class="item flex-grow">
+            <div class="icon"></div>
+            <div class="title">Eternal</div>
+            <div class="description">bla bla bla bla</div>
+          </div>
+          <div class="item flex-grow">
+            <div class="icon"></div>
+            <div class="title">Transparent</div>
+            <div class="description">bla bla bla bla</div>
+          </div>
+          <div class="item flex-grow">
+            <div class="icon"></div>
+            <div class="title">Accessible</div>
+            <div class="description">bla bla bla bla</div>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-wide">Whitepaper</button>
+      </div>
+    </section>
+
+    <section class="whitepaper" id="roadmap">
       <div class="container">
         <div class="features flex-horizontal">
           <div class="item flex-grow">
@@ -45,7 +68,7 @@
       </div>
     </section>
 
-    <section class="whitepaper">
+    <section class="whitepaper" id="team">
       <div class="container">
         <div class="features flex-horizontal">
           <div class="item flex-grow">
@@ -68,7 +91,30 @@
       </div>
     </section>
 
-    <section class="whitepaper">
+    <section class="whitepaper" id="partners">
+      <div class="container">
+        <div class="features flex-horizontal">
+          <div class="item flex-grow">
+            <div class="icon"></div>
+            <div class="title">Eternal</div>
+            <div class="description">bla bla bla bla</div>
+          </div>
+          <div class="item flex-grow">
+            <div class="icon"></div>
+            <div class="title">Transparent</div>
+            <div class="description">bla bla bla bla</div>
+          </div>
+          <div class="item flex-grow">
+            <div class="icon"></div>
+            <div class="title">Accessible</div>
+            <div class="description">bla bla bla bla</div>
+          </div>
+        </div>
+        <button class="btn btn-primary">Whitepaper</button>
+      </div>
+    </section>
+
+    <section class="whitepaper" id="contact-us">
       <div class="container">
         <div class="features flex-horizontal">
           <div class="item flex-grow">
@@ -98,53 +144,26 @@
 </template>
 
 <script>
-import "../../node_modules/animate.css/animate.css";
+import VueScrollTo from "vue-scrollto";
+import "animate.css/animate.css";
 export default {
   name: "HomePage",
   data() {
-    return {};
+    return {
+      navbarOpaque: false
+    };
+  },
+  methods: {
+    onScroll(e) {
+      this.navbarOpaque = e.target.scrollTop > 10;
+    }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-@space-xs: 0.25em;
-@space-sm: 0.5em;
-@space-md: 1em;
-@space-lg: 1.5em;
-@space-xl: 2em;
-@space-xxl: 2.5em;
-
-.container {
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-@media (min-width: 576px) {
-  .container {
-    max-width: 540px;
-  }
-}
-
-@media (min-width: 768px) {
-  .container {
-    max-width: 720px;
-  }
-}
-
-@media (min-width: 992px) {
-  .container {
-    max-width: 960px;
-  }
-}
-
-@media (min-width: 1200px) {
-  .container {
-    max-width: 1140px;
-  }
-}
+@import "../less/common.less";
 
 .navbar-fixed-top {
   position: fixed;
@@ -152,16 +171,23 @@ export default {
   right: 0;
   z-index: 1000;
   top: 0;
-
   color: var(--bright-text-color);
+  transition: background-color @anim-duration @anim-function,
+    color @anim-duration @anim-function;
+
+  &.opaque {
+    background-color: #fff;
+    color: var(--opaque-navbar-text-color);
+    border-bottom: 1px solid #0a93eb;
+  }
 
   a {
-    color: var(--bright-text-color);
+    color: inherit;
     text-decoration: none;
   }
 
   .navbar-brand {
-    padding: @space-sm @space-md;
+    padding: @space-lg @space-md;
     float: left;
   }
 
@@ -170,25 +196,10 @@ export default {
 
     a {
       display: inline-block;
-      padding: @space-sm @space-md;
+      padding: @space-lg @space-md;
       &:hover {
         text-decoration: underline;
       }
-    }
-  }
-}
-
-.btn {
-  appearance: none;
-  border: none;
-  background-color: transparent;
-  padding: @space-sm @space-md;
-
-  &.btn-primary {
-    background-color: var(--primary-button-background-color);
-    color: var(--bright-text-color);
-    &:hover {
-      background-color: var(--primary-button-hover-background-color);
     }
   }
 }
@@ -203,7 +214,7 @@ export default {
   color: var(--bright-text-color);
 
   > .container {
-    padding-top: 8em;
+    padding-top: 10em;
     h1,
     h2 {
       font-weight: normal;
@@ -214,6 +225,10 @@ export default {
     }
     h2 {
       font-size: 1.5em;
+    }
+
+    .btn {
+      margin-top: @space-md;
     }
   }
 }
@@ -250,7 +265,6 @@ section.whitepaper {
 
   .btn {
     margin-top: 2em;
-    padding: @space-md @space-xxl;
   }
 }
 
