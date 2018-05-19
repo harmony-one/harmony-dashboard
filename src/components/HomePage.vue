@@ -17,6 +17,7 @@
         <div class="container">
           <h1 class="animated fadeInUp">Join Engrave.ly</h1>
           <h2 class="animated fadeInUp">Engrave everything on blockchain, eternally</h2>
+          <a class="btn btn-primary">Demo</a>
         </div>
       </div>
     </div>
