@@ -202,7 +202,11 @@ export default {
   },
   methods: {
     onScroll(e) {
-      this.navbarOpaque = document.documentElement.scrollTop > 10;
+      let scrollTop = Math.max(
+        document.documentElement.scrollTop, // For chrome
+        document.body // For ios
+      );
+      this.navbarOpaque = scrollTop > 10;
     },
     toggleMenu() {
       this.menuOpen = !this.menuOpen;
