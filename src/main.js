@@ -4,9 +4,13 @@ import Vue from 'vue';
 import App from './App';
 import router from './router';
 import VueScrollTo from 'vue-scrollto';
+import FontAwesome from "@fortawesome/fontawesome";
+import FontAwesomeBrands from "@fortawesome/fontawesome-free-brands";
+import FaSpinner from '@fortawesome/fontawesome-free-solid/faSpinner';
+
+FontAwesome.library.add(FontAwesomeBrands, FaSpinner);
 
 Vue.use(VueScrollTo, {
-  container: ".page",
   offset: -68
 });
 

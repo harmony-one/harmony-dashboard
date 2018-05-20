@@ -1,7 +1,5 @@
 <template>
-  <div id="app">
-    <router-view/>
-  </div>
+  <router-view/>
 </template>
 
 <script>
@@ -23,10 +21,7 @@ body {
 }
 
 html,
-body,
-#app,
-.page {
+body {
   height: 100%;
-  overflow: auto;
 }
 </style>

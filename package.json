@@ -10,6 +10,10 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@fortawesome/fontawesome": "^1.1.8",
+    "@fortawesome/fontawesome-free-brands": "^5.0.13",
+    "@fortawesome/fontawesome-free-solid": "^5.0.13",
+    "@fortawesome/vue-fontawesome": "0.0.22",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vue-scrollto": "^2.11.0"

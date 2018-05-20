@@ -21,4 +21,4 @@ npm run build --report
 ## TODO
 - [x] scroll and update top nav.
 - [x] smooth scroll.
-- [ ] fold menu on narrow screen.
+- [x] fold menu on narrow screen.
