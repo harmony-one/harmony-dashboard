@@ -237,9 +237,10 @@ export default {
       font-weight: normal;
     }
     h1 {
-      font-size: 4em;
+      font-size: 3em;
       margin-bottom: @space-sm;
     }
+
     h2 {
       font-size: 1.5em;
       margin-bottom: @space-md;
