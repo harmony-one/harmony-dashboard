@@ -224,7 +224,7 @@ export default {
 .home-hero {
   width: 100%;
   height: 500px;
-  background-image: url("../assets/home-bg-new.webp");
+  background-image: url("../assets/home-bg-new.jpg");
   background-size: cover;
   background-position: bottom center;
 
