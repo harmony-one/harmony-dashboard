@@ -204,7 +204,7 @@ export default {
     onScroll(e) {
       let scrollTop = Math.max(
         document.documentElement.scrollTop, // For chrome
-        document.body // For ios
+        document.body.scrollTop // For ios
       );
       this.navbarOpaque = scrollTop > 10;
     },
