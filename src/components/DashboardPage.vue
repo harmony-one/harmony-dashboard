@@ -46,7 +46,7 @@
                 col-lg-4">
             <div class="dashboard-card">
               <div class="card-title">Latency</div>
-              <div class="card-value">{{ latency }}</div>
+              <div class="card-value">{{ latency }}s</div>
             </div>
           </div>
           <div class="col-xs-12
