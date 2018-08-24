@@ -3,7 +3,7 @@
     <header class="navbar-fixed-top" :class="{ opaque: navbarOpaque }">
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href="/">Engrave.ly</a>
+          <a class="navbar-brand" href="/">Harmony</a>
           <button class="btn navbar-toggle" @click="toggleMenu">
             <div class="icon-container">
               <div class="icon-burger" :class="{ active: !menuOpen }">
@@ -32,9 +32,9 @@
     <div class="home-hero-container">
       <div class="home-hero">
         <div class="container">
-          <h1 class="animated fadeInUp">Join Engrave.ly</h1>
+          <h1 class="animated fadeInUp">Join Harmony</h1>
           <h2 class="animated fadeInUp">Engrave everything on blockchain, eternally</h2>
-          <a class="animated fadeInUp btn btn-primary btn-wide" href="http://engrave.ly/">Demo</a>
+          <a class="animated fadeInUp btn btn-primary btn-wide" href="http://harmony/">Demo</a>
         </div>
       </div>
     </div>
@@ -179,7 +179,7 @@
         <a href="">Privacy Policy</a>
       </div>
       <div class="copyright container">
-        Copyright © 2018 engrave.ly | All rights reserved
+        Copyright © 2018 harmony | All rights reserved
       </div>
     </footer>
   </div>
