@@ -236,6 +236,8 @@ export default {
 
   > .container {
     padding-top: 10em;
+    padding-left: @space-xl;
+    padding-right: @space-xl;
     h1,
     h2 {
       font-weight: normal;
