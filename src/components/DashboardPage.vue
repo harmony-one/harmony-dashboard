@@ -9,12 +9,16 @@
     </header>
 
     <div class="dashboard-body">
-<div class="container">
+      <div class="container">
         <div class="dashboard-card">
-<div class="card-title">Transaction Per Second</div>
-<div class="card-value">{{ tps }}</div>
+          <div class="card-title">Transaction Per Second</div>
+          <div class="card-value">{{ tps }}</div>
+        </div>
+        <div class="dashboard-card">
+          <div class="card-title">Nodes Online</div>
+          <div class="card-value">{{ nodeCount }}</div>
+        </div>
       </div>
-</div>
     </div>
 
     <footer>
@@ -56,18 +60,19 @@ export default {
   name: "HomePage",
   data() {
     return {
-      tps: 0
+      tps: 0,
+      nodeCount: 0
     };
   },
-  methods: {
-  },
+  methods: {},
   components: {
     FontAwesomeIcon
   },
   mounted() {
-setInterval(() => {
-  this.tps = (Math.random() * 1000).toPrecision(5)
-}, 500)
+    setInterval(() => {
+      this.tps = (Math.random() * 1000).toPrecision(5);
+      this.nodeCount = Math.floor(Math.random() * 1000) + 100;
+    }, 500);
   }
 };
 </script>
@@ -77,9 +82,9 @@ setInterval(() => {
 
 .dashboard-page {
   background-color: #dfdfdf;
-.navbar-fixed-top {
-background-color: #262627;
-}
+  .navbar-fixed-top {
+    background-color: #262627;
+  }
 }
 
 .dashboard-body {
@@ -99,12 +104,13 @@ background-color: #262627;
     background-color: #fff;
     padding: @space-md;
     display: inline-block;
+    width: 12em;
     .card-title {
-
+      color: var(--secondary-text-color);
     }
-    .card-value{
-font-size: 3em;
-text-align: right;
+    .card-value {
+      font-size: 3em;
+      text-align: right;
     }
   }
 }
