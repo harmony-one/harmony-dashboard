@@ -11,27 +11,27 @@
     <div class="dashboard-body">
       <div class="container">
         <div class="row">
-          <div class="col-xs-12
-                col-sm-8
-                col-md-6
+          <div class="col-xs-6
+                col-sm-6
+                col-md-4
                 col-lg-4">
             <div class="dashboard-card">
               <div class="card-title"># of Blocks</div>
               <div class="card-value">{{ blockCount }}</div>
             </div>
           </div>
-          <div class="col-xs-12
-                col-sm-8
-                col-md-6
+          <div class="col-xs-6
+                col-sm-6
+                col-md-4
                 col-lg-4">
             <div class="dashboard-card">
               <div class="card-title"># of Transactions</div>
               <div class="card-value">{{ txCount }}</div>
             </div>
           </div>
-          <div class="col-xs-12
-                col-sm-8
-                col-md-6
+          <div class="col-xs-6
+                col-sm-6
+                col-md-4
                 col-lg-4">
             <div class="dashboard-card">
               <div class="card-title"># of Nodes Online</div>
@@ -40,18 +40,18 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-xs-12
-                col-sm-8
-                col-md-6
+          <div class="col-xs-6
+                col-sm-6
+                col-md-4
                 col-lg-4">
             <div class="dashboard-card">
               <div class="card-title">Latency</div>
               <div class="card-value">{{ latency }}s</div>
             </div>
           </div>
-          <div class="col-xs-12
-                col-sm-8
-                col-md-6
+          <div class="col-xs-6
+                col-sm-6
+                col-md-4
                 col-lg-4">
             <div class="dashboard-card">
               <div class="card-title">Transaction Per Second</div>
