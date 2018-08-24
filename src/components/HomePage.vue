@@ -3,7 +3,7 @@
     <header class="navbar-fixed-top" :class="{ opaque: navbarOpaque }">
       <div class="container">
         <div class="navbar-header">
-          <router-link class="navbar-brand" to="/">Harmony</router-link>
+          <a class="navbar-brand" href="#" v-scroll-to="'#top'" id="top">Harmony</a>
           <button class="btn navbar-toggle" @click="toggleMenu">
             <div class="icon-container">
               <div class="icon-burger" :class="{ active: !menuOpen }">
@@ -200,6 +200,7 @@ export default {
   },
   mounted() {
     document.addEventListener("scroll", this.onScroll, true);
+    this.onScroll();
   },
   methods: {
     onScroll(e) {
