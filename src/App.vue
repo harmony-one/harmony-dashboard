@@ -3,6 +3,9 @@
 </template>
 
 <script>
+import "animate.css/animate.css";
+import "flexboxgrid/dist/flexboxgrid.min.css";
+
 export default {
   name: "App"
 };

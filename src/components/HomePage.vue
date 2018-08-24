@@ -190,7 +190,6 @@
 <script>
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import VueScrollTo from "vue-scrollto";
-import "animate.css/animate.css";
 export default {
   name: "HomePage",
   data() {
