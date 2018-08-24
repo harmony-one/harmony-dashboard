@@ -3,7 +3,7 @@
     <header class="navbar-fixed-top" :class="{ opaque: navbarOpaque }">
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href="/">Harmony</a>
+          <router-link class="navbar-brand" to="/">Harmony</router-link>
           <button class="btn navbar-toggle" @click="toggleMenu">
             <div class="icon-container">
               <div class="icon-burger" :class="{ active: !menuOpen }">
@@ -33,8 +33,10 @@
       <div class="home-hero">
         <div class="container">
           <h1 class="animated fadeInUp">Join Harmony</h1>
-          <h2 class="animated fadeInUp">Engrave everything on blockchain, eternally</h2>
-          <a class="animated fadeInUp btn btn-primary btn-wide" href="http://harmony/">Demo</a>
+          <h2 class="animated fadeInUp">Open consensus for 10B</h2>
+          <router-link to="/dashboard">
+            <a class="animated fadeInUp btn btn-primary btn-wide">Dashboard</a>
+          </router-link>
         </div>
       </div>
     </div>
@@ -221,7 +223,6 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
 @import "../less/common.less";
 
