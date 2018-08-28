@@ -7,6 +7,7 @@ import VueScrollTo from 'vue-scrollto';
 import FontAwesome from "@fortawesome/fontawesome";
 import FontAwesomeBrands from "@fortawesome/fontawesome-free-brands";
 import FaSpinner from '@fortawesome/fontawesome-free-solid/faSpinner';
+import service from './service';
 
 FontAwesome.library.add(FontAwesomeBrands, FaSpinner);
 
@@ -23,3 +24,5 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+
+service.wxMetrics()
