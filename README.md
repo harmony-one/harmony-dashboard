@@ -1,6 +1,6 @@
-# harmony-website
+# harmony-dashboard
 
-> Engrave everything on blockchain, eternally.
+The dashboard for harmony blockchain displaying interesting metrics.
 
 ## Build Setup
 
@@ -17,8 +17,3 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 ```
-
-## TODO
-- [x] scroll and update top nav.
-- [x] smooth scroll.
-- [x] fold menu on narrow screen.
