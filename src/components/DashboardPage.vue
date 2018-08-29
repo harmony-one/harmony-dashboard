@@ -17,7 +17,7 @@
                 col-lg-4">
             <div class="dashboard-card">
               <div class="card-title"># of Blocks</div>
-              <div class="card-value">{{ blockCount }}</div>
+              <div class="card-value">{{ metrics.blockCount }}</div>
             </div>
           </div>
           <div class="col-xs-6
@@ -26,7 +26,7 @@
                 col-lg-4">
             <div class="dashboard-card">
               <div class="card-title"># of Transactions</div>
-              <div class="card-value">{{ txCount }}</div>
+              <div class="card-value">{{ metrics.txCount }}</div>
             </div>
           </div>
           <div class="col-xs-6
@@ -35,7 +35,7 @@
                 col-lg-4">
             <div class="dashboard-card">
               <div class="card-title"># of Nodes Online</div>
-              <div class="card-value">{{ nodeCount }}</div>
+              <div class="card-value">{{ metrics.nodeCount }}</div>
             </div>
           </div>
         </div>
@@ -46,7 +46,7 @@
                 col-lg-4">
             <div class="dashboard-card">
               <div class="card-title">Latency</div>
-              <div class="card-value">{{ latency }}s</div>
+              <div class="card-value">{{ metrics.latency }}s</div>
             </div>
           </div>
           <div class="col-xs-6
@@ -55,7 +55,7 @@
                 col-lg-4">
             <div class="dashboard-card">
               <div class="card-title">Transaction Per Second</div>
-              <div class="card-value">{{ tps }}</div>
+              <div class="card-value">{{ metrics.tps }}</div>
             </div>
           </div>
         </div>
@@ -95,16 +95,19 @@
 <script>
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import VueScrollTo from "vue-scrollto";
+const ws = new WebSocket("ws://localhost:3000");
 
 export default {
   name: "HomePage",
   data() {
     return {
-      tps: 0,
-      nodeCount: 0,
-      blockCount: 0,
-      txCount: 0,
-      latency: 0
+      metrics: {
+        tps: 0,
+        nodeCount: 0,
+        blockCount: 0,
+        txCount: 0,
+        latency: 0
+      }
     };
   },
   methods: {},
@@ -112,13 +115,21 @@ export default {
     FontAwesomeIcon
   },
   mounted() {
-    setInterval(() => {
-      this.tps = (Math.random() * 1000).toPrecision(5);
-      this.nodeCount = Math.floor(Math.random() * 1000) + 100;
-      this.blockCount = Math.floor(Math.random() * 1000) + 100;
-      this.txCount = Math.floor(Math.random() * 1000) + 100;
-      this.latency = Math.floor(Math.random() * 1000) + 100;
-    }, 500);
+    ws.addEventListener("open", () => {
+      ws.send("front-end: Hi.");
+    });
+
+    ws.addEventListener("message", res => {
+      Object.assign(this.metrics, JSON.parse(res.data));
+    });
+
+    ws.addEventListener("error", error => {
+      console.log("error", error);
+    });
+
+    ws.addEventListener("close", error => {
+      console.log("close");
+    });
   }
 };
 </script>
