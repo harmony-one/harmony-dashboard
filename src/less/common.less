@@ -76,6 +76,15 @@ a {
     top: 0;
     color: var(--bright-text-color);
     transition: background-color @anim-duration @anim-easing, color @anim-duration @anim-easing;
+    a.navbar-brand {
+        height: 5em;
+        width: 8em;
+        box-sizing: border-box;
+        background-image: url(../assets/harmony-logo-white.svg);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 7em;
+      }
     &.opaque {
         background-color: #fff;
         color: var(--opaque-navbar-text-color);
@@ -87,6 +96,9 @@ a {
                     background-color: #346aa9;
                 }
             }
+        }
+        a.navbar-brand {
+            background-image: url(../assets/harmony-logo-color.svg);
         }
     }
     .navbar-header {

@@ -3,7 +3,7 @@
     <header class="navbar-fixed-top" :class="{ opaque: navbarOpaque }">
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#" v-scroll-to="'#top'" id="top">Harmony</a>
+          <a class="navbar-brand" href="#" v-scroll-to="'#top'" id="top"></a>
           <button class="btn navbar-toggle" @click="toggleMenu">
             <div class="icon-container">
               <div class="icon-burger" :class="{ active: !menuOpen }">

@@ -3,7 +3,8 @@
     <header class="navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <router-link class="navbar-brand" to="/">Harmony</router-link>
+          <router-link class="navbar-brand" to="/">
+          </router-link>
         </div>
       </div>
     </header>
