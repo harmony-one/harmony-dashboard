@@ -10,6 +10,7 @@
 
     <div class="dashboard-body">
       <div class="container">
+        <div class="timer">Updated {{ metricsLatency }}s ago...</div>
         <div class="row">
           <div class="col-xs-6
                 col-sm-6
@@ -45,6 +46,26 @@
             <div class="dashboard-card">
               <div class="card-title">Transaction Per Second</div>
               <div class="card-value">{{ metrics.tps }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12
+                col-sm-12
+                col-md-12
+                col-lg-6">
+            <div class="dashboard-card">
+              <div class="card-title">Latest Block Hash</div>
+              <div class="card-value hash">{{ metrics.latestBlockHash || '#' }}</div>
+            </div>
+          </div>
+          <div class="col-xs-12
+                col-sm-12
+                col-md-12
+                col-lg-6">
+            <div class="dashboard-card">
+              <div class="card-title">Latest Transaction Hash</div>
+              <div class="card-value hash">{{ metrics.latestTxHash || '#' }}</div>
             </div>
           </div>
         </div>
@@ -95,11 +116,23 @@ export default {
         nodeCount: 0,
         blockCount: 0,
         txCount: 0,
-        latency: 0
-      }
+        latency: 0,
+        latestBlockHash: "",
+        latestTxHash: ""
+      },
+      timer: null,
+      metricsLatency: 0
     };
   },
-  methods: {},
+  methods: {
+    resetTimer() {
+      clearInterval(this.timer);
+      this.metricsLatency = 0;
+      this.timer = setInterval(() => {
+        this.metricsLatency++;
+      }, 1000);
+    }
+  },
   components: {
     FontAwesomeIcon
   },
@@ -110,6 +143,7 @@ export default {
 
     ws.addEventListener("message", res => {
       Object.assign(this.metrics, JSON.parse(res.data));
+      this.resetTimer();
     });
 
     ws.addEventListener("error", error => {
@@ -158,6 +192,11 @@ export default {
     .card-value {
       font-size: 3em;
       text-align: center;
+      word-break: break-all;
+      &.hash {
+        font-size: 1.5em;
+        text-align: left;
+      }
     }
   }
 }
