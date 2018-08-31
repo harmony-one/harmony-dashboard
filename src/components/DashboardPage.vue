@@ -38,17 +38,6 @@
               <div class="card-value">{{ metrics.nodeCount }}</div>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-6
-                col-sm-6
-                col-md-4
-                col-lg-4">
-            <div class="dashboard-card">
-              <div class="card-title">Latency</div>
-              <div class="card-value">{{ metrics.latency }}s</div>
-            </div>
-          </div>
           <div class="col-xs-6
                 col-sm-6
                 col-md-4
