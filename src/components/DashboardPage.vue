@@ -15,38 +15,47 @@
         <div class="row">
           <div class="col-xs-6
                 col-sm-6
-                col-md-4
-                col-lg-4">
+                col-md-3
+                col-lg-3">
             <div class="dashboard-card">
               <div class="card-title"># of Blocks</div>
-              <div class="card-value">{{ metrics.blockCount }}</div>
+              <div class="card-value number">{{ metrics.blockCount }}</div>
             </div>
           </div>
           <div class="col-xs-6
                 col-sm-6
-                col-md-4
-                col-lg-4">
+                col-md-3
+                col-lg-3">
             <div class="dashboard-card">
               <div class="card-title"># of Transactions</div>
-              <div class="card-value">{{ metrics.txCount }}</div>
+              <div class="card-value number">{{ metrics.txCount }}</div>
             </div>
           </div>
           <div class="col-xs-6
                 col-sm-6
-                col-md-4
-                col-lg-4">
+                col-md-3
+                col-lg-3">
             <div class="dashboard-card">
               <div class="card-title"># of Nodes Online</div>
-              <div class="card-value">{{ metrics.nodeCount }}</div>
+              <div class="card-value number">{{ metrics.nodeCount }}</div>
             </div>
           </div>
           <div class="col-xs-6
                 col-sm-6
-                col-md-4
-                col-lg-4">
+                col-md-3
+                col-lg-3">
             <div class="dashboard-card">
               <div class="card-title">Transaction Per Second</div>
-              <div class="card-value">{{ metrics.tps }}</div>
+              <div class="card-value number">{{ metrics.tps }}</div>
+            </div>
+          </div>
+          <div class="col-xs-6
+                col-sm-6
+                col-md-3
+                col-lg-3">
+            <div class="dashboard-card">
+              <div class="card-title">Block Latency</div>
+              <div class="card-value number">{{ metrics.blockLatency }}s</div>
             </div>
           </div>
         </div>
@@ -56,8 +65,10 @@
                 col-md-12
                 col-lg-6">
             <div class="dashboard-card">
-              <div class="card-title">Latest Block Hash</div>
-              <div class="card-value hash">{{ metrics.latestBlockHash || '#' }}</div>
+              <div class="card-title">Latest Block Hashes</div>
+              <div class="card-value hashes">
+                <div class="hash" v-for="(hash, index) in metrics.latestBlockHashes" :key="index">{{ hash || '#' }}</div>
+              </div>
             </div>
           </div>
           <div class="col-xs-12
@@ -65,8 +76,10 @@
                 col-md-12
                 col-lg-6">
             <div class="dashboard-card">
-              <div class="card-title">Latest Transaction Hash</div>
-              <div class="card-value hash">{{ metrics.latestTxHash || '#' }}</div>
+              <div class="card-title">Latest Transaction Hashes</div>
+              <div class="card-value hashes">
+                <div class="hash" v-for="(hash, index) in metrics.latestTxHashes" :key="index">{{ hash || '#' }}</div>
+              </div>
             </div>
           </div>
         </div>
@@ -118,8 +131,9 @@ export default {
         blockCount: 0,
         txCount: 0,
         latency: 0,
-        latestBlockHash: "",
-        latestTxHash: ""
+        blockLatency: 0,
+        latestBlockHashes: [],
+        latestTxHashes: []
       },
       timer: null,
       metricsLatency: 0
@@ -191,12 +205,20 @@ export default {
       color: var(--secondary-text-color);
     }
     .card-value {
-      font-size: 3em;
-      text-align: center;
       word-break: break-all;
-      &.hash {
-        font-size: 1.5em;
+      &.number {
+        font-size: 3em;
+        text-align: center;
+      }
+      &.hashes {
         text-align: left;
+        padding-top: 0.5em;
+        .hash {
+          padding: 0.5em 0;
+        }
+        .hash + .hash {
+          border-top: 1px solid #dfdfdf;
+        }
       }
     }
   }
