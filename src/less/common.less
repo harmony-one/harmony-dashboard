@@ -212,3 +212,56 @@ a {
         }
     }
 }
+
+.metrics-summary {
+    color: var(--primary-text-color);
+    border-radius: @border-radius;
+    background-color: #fff;
+    padding: @space-md;
+    .summary-title {
+      font-size: 1.2em;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 0.5em;
+      word-break: break-all;
+    }
+  
+    .timer {
+      text-align: right;
+      color: var(--secondary-text-color);
+      font-size: 0.8em;
+    }
+    .dashboard-card {
+      border-radius: @border-radius;
+      background-color: #f7f7f7;
+      padding: @space-md;
+      display: block;
+      min-width: 12em;
+      margin: @space-sm 0;
+      .card-title {
+        color: var(--secondary-text-color);
+      }
+      .card-value {
+        word-break: break-all;
+        &.number {
+          font-size: 3em;
+          text-align: center;
+        }
+        &.hashes {
+          text-align: left;
+          padding-top: 0.5em;
+          .hash {
+            padding: 0.5em 0;
+            font-size: 0.9em;
+          }
+          .hash + .hash {
+            border-top: 1px solid #dfdfdf;
+          }
+        }
+      }
+    }
+  }
+  
+  .metrics-summary + .metrics-summary {
+    margin-top: 1em;
+  }

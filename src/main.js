@@ -16,7 +16,12 @@ Vue.use(VueScrollTo, {
 
 Vue.config.productionTip = false
 
+Vue.filter('decimal', (number) => {
+  return Math.round(number * 100) / 100;
+});
+
 Vue.component('shard-summary', require('./components/ShardSummary.vue').default);
+Vue.component('global-summary', require('./components/GlobalSummary.vue').default);
 
 /* eslint-disable no-new */
 new Vue({

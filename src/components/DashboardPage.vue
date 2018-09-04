@@ -78,6 +78,7 @@ footer {
 
     <div class="dashboard-body">
       <div class="container" v-if="Object.keys(globalData.shardSummaries).length">
+        <global-summary :summary="globalData.globalSummary"></global-summary>
         <shard-summary :summary="summary" v-for="(summary, key) in globalData.shardSummaries" :key="key"></shard-summary>
       </div>
       <div class="container flex-hv-center" v-else>
