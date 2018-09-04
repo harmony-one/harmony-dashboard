@@ -6,18 +6,27 @@
   .navbar-fixed-top {
     background-color: #262627;
   }
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
 }
 
 .dashboard-body {
+  flex: 1;
   width: 100%;
   background-size: cover;
   background-position: bottom center;
-
   color: var(--primary-text-color);
+  display: flex;
 
   > .container {
     padding-top: 6em;
     padding-bottom: 1em;
+
+    .placeholder-text {
+      color: var(--secondary-text-color);
+      font-size: 3em;
+    }
   }
 }
 
@@ -68,8 +77,13 @@ footer {
     </header>
 
     <div class="dashboard-body">
-      <div class="container">
-        <shard-summary :summary="summary" v-for="(summary, key) in shardSummaries" :key="key"></shard-summary>
+      <div class="container" v-if="Object.keys(globalData.shardSummaries).length">
+        <shard-summary :summary="summary" v-for="(summary, key) in globalData.shardSummaries" :key="key"></shard-summary>
+      </div>
+      <div class="container flex-hv-center" v-else>
+        <div class="placeholder-text">
+          No Data
+        </div>
       </div>
     </div>
 
@@ -106,19 +120,15 @@ footer {
 <script>
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import VueScrollTo from "vue-scrollto";
+import store from "../store";
 const ws = new WebSocket("ws://localhost:3000");
 
 export default {
   name: "HomePage",
   data() {
     return {
-      shardSummaries: {}
+      globalData: store.data
     };
-  },
-  methods: {
-    updateSummary(summary) {
-      this.$set(this.shardSummaries, summary.key, summary);
-    }
   },
   components: {
     FontAwesomeIcon
@@ -130,9 +140,7 @@ export default {
 
     ws.addEventListener("message", res => {
       let summaries = JSON.parse(res.data);
-      Object.values(summaries).forEach(summary => {
-        this.updateSummary(summary);
-      });
+      store.updateSummaries(summaries);
     });
 
     ws.addEventListener("error", error => {
