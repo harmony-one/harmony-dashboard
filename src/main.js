@@ -16,6 +16,8 @@ Vue.use(VueScrollTo, {
 
 Vue.config.productionTip = false
 
+Vue.component('shard-summary', require('./components/ShardSummary.vue').default);
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

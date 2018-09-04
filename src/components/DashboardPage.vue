@@ -1,3 +1,61 @@
+<style scoped lang="less">
+@import "../less/common.less";
+
+.dashboard-page {
+  background-color: #dfdfdf;
+  .navbar-fixed-top {
+    background-color: #262627;
+  }
+}
+
+.dashboard-body {
+  width: 100%;
+  background-size: cover;
+  background-position: bottom center;
+
+  color: var(--primary-text-color);
+
+  > .container {
+    padding-top: 6em;
+    padding-bottom: 1em;
+  }
+}
+
+footer {
+  padding-bottom: @space-lg;
+  background: linear-gradient(0deg, #262627 0, #525254 100%);
+  color: #a09ea7;
+  .container {
+    text-align: center;
+    padding: @space-md 0;
+  }
+  .community {
+    .svg-inline--fa {
+      font-size: 1.5em;
+      margin: 0.5em;
+      cursor: pointer;
+    }
+  }
+
+  a {
+    transition: color @anim-duration @anim-easing;
+
+    &:hover {
+      color: var(--bright-text-color);
+    }
+  }
+
+  .links {
+    font-size: 0.8em;
+  }
+
+  .copyright {
+    font-size: 0.6em;
+    color: #868390;
+  }
+}
+</style>
+
 <template>
   <div class="dashboard-page page">
     <header class="navbar-fixed-top">
@@ -11,78 +69,7 @@
 
     <div class="dashboard-body">
       <div class="container">
-        <div class="timer">Updated {{ metricsLatency }}s ago...</div>
-        <div class="row">
-          <div class="col-xs-6
-                col-sm-6
-                col-md-3
-                col-lg-3">
-            <div class="dashboard-card">
-              <div class="card-title"># of Blocks</div>
-              <div class="card-value number">{{ metrics.blockCount }}</div>
-            </div>
-          </div>
-          <div class="col-xs-6
-                col-sm-6
-                col-md-3
-                col-lg-3">
-            <div class="dashboard-card">
-              <div class="card-title"># of Transactions</div>
-              <div class="card-value number">{{ metrics.txCount }}</div>
-            </div>
-          </div>
-          <div class="col-xs-6
-                col-sm-6
-                col-md-3
-                col-lg-3">
-            <div class="dashboard-card">
-              <div class="card-title"># of Nodes Online</div>
-              <div class="card-value number">{{ metrics.nodeCount }}</div>
-            </div>
-          </div>
-          <div class="col-xs-6
-                col-sm-6
-                col-md-3
-                col-lg-3">
-            <div class="dashboard-card">
-              <div class="card-title">Transaction Per Second</div>
-              <div class="card-value number">{{ metrics.tps }}</div>
-            </div>
-          </div>
-          <div class="col-xs-6
-                col-sm-6
-                col-md-3
-                col-lg-3">
-            <div class="dashboard-card">
-              <div class="card-title">Block Latency</div>
-              <div class="card-value number">{{ metrics.blockLatency }}s</div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-12
-                col-sm-12
-                col-md-12
-                col-lg-6">
-            <div class="dashboard-card">
-              <div class="card-title">Latest Block Hashes</div>
-              <div class="card-value hashes">
-                <div class="hash" v-for="(hash, index) in metrics.latestBlockHashes" :key="index">{{ hash || '#' }}</div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xs-12
-                col-sm-12
-                col-md-12
-                col-lg-6">
-            <div class="dashboard-card">
-              <div class="card-title">Latest Transaction Hashes</div>
-              <div class="card-value hashes">
-                <div class="hash" v-for="(hash, index) in metrics.latestTxHashes" :key="index">{{ hash || '#' }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <shard-summary :summary="summary" v-for="(summary, key) in shardSummaries" :key="key"></shard-summary>
       </div>
     </div>
 
@@ -125,27 +112,12 @@ export default {
   name: "HomePage",
   data() {
     return {
-      metrics: {
-        tps: 0,
-        nodeCount: 0,
-        blockCount: 0,
-        txCount: 0,
-        latency: 0,
-        blockLatency: 0,
-        latestBlockHashes: [],
-        latestTxHashes: []
-      },
-      timer: null,
-      metricsLatency: 0
+      shardSummaries: {}
     };
   },
   methods: {
-    resetTimer() {
-      clearInterval(this.timer);
-      this.metricsLatency = 0;
-      this.timer = setInterval(() => {
-        this.metricsLatency++;
-      }, 1000);
+    updateSummary(summary) {
+      this.$set(this.shardSummaries, summary.key, summary);
     }
   },
   components: {
@@ -157,8 +129,10 @@ export default {
     });
 
     ws.addEventListener("message", res => {
-      Object.assign(this.metrics, JSON.parse(res.data));
-      this.resetTimer();
+      let summaries = JSON.parse(res.data);
+      Object.values(summaries).forEach(summary => {
+        this.updateSummary(summary);
+      });
     });
 
     ws.addEventListener("error", error => {
@@ -171,90 +145,3 @@ export default {
   }
 };
 </script>
-
-<style scoped lang="less">
-@import "../less/common.less";
-
-.dashboard-page {
-  background-color: #dfdfdf;
-  .navbar-fixed-top {
-    background-color: #262627;
-  }
-}
-
-.dashboard-body {
-  width: 100%;
-  height: 1000px;
-  background-size: cover;
-  background-position: bottom center;
-
-  color: var(--primary-text-color);
-
-  > .container {
-    padding-top: 6em;
-  }
-
-  .dashboard-card {
-    border-radius: @border-radius;
-    background-color: #fff;
-    padding: @space-md;
-    display: block;
-    min-width: 12em;
-    margin: @space-sm 0;
-    .card-title {
-      color: var(--secondary-text-color);
-    }
-    .card-value {
-      word-break: break-all;
-      &.number {
-        font-size: 3em;
-        text-align: center;
-      }
-      &.hashes {
-        text-align: left;
-        padding-top: 0.5em;
-        .hash {
-          padding: 0.5em 0;
-        }
-        .hash + .hash {
-          border-top: 1px solid #dfdfdf;
-        }
-      }
-    }
-  }
-}
-
-footer {
-  padding-bottom: @space-lg;
-  background: linear-gradient(0deg, #262627 0, #525254 100%);
-  color: #a09ea7;
-  .container {
-    text-align: center;
-    padding: @space-md 0;
-  }
-  .community {
-    .svg-inline--fa {
-      font-size: 1.5em;
-      margin: 0.5em;
-      cursor: pointer;
-    }
-  }
-
-  a {
-    transition: color @anim-duration @anim-easing;
-
-    &:hover {
-      color: var(--bright-text-color);
-    }
-  }
-
-  .links {
-    font-size: 0.8em;
-  }
-
-  .copyright {
-    font-size: 0.6em;
-    color: #868390;
-  }
-}
-</style>
