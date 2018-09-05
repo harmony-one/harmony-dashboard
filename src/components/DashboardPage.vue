@@ -122,7 +122,7 @@ footer {
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import VueScrollTo from "vue-scrollto";
 import store from "../store";
-const ws = new WebSocket("ws://localhost:3000");
+const ws = new WebSocket(`ws://${window.location.hostname}:3000`);
 
 export default {
   name: "HomePage",
