@@ -140,8 +140,12 @@ export default {
     });
 
     ws.addEventListener("message", res => {
-      let summaries = JSON.parse(res.data);
-      store.updateSummaries(summaries);
+      let data = JSON.parse(res.data);
+      if (data.cmd === "reset") {
+        store.reset();
+      } else {
+        store.updateSummaries(data.summaries);
+      }
     });
 
     ws.addEventListener("error", error => {

@@ -12,6 +12,15 @@
             col-md-3
             col-lg-3">
         <div class="dashboard-card">
+          <div class="card-title"># of Shards</div>
+          <div class="card-value number">{{ summary.shardCount }}</div>
+        </div>
+      </div>
+      <div class="col-xs-12
+            col-sm-6
+            col-md-3
+            col-lg-3">
+        <div class="dashboard-card">
           <div class="card-title"># of Blocks</div>
           <div class="card-value number">{{ summary.blockCount }}</div>
         </div>
