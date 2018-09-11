@@ -1,3 +1,113 @@
+<style scoped lang="less">
+@import "../less/common.less";
+
+.home-hero {
+  width: 100%;
+  height: 500px;
+  background-image: url("../assets/home-bg-new.jpg");
+  background-size: cover;
+  background-position: bottom center;
+
+  color: var(--bright-text-color);
+
+  > .container {
+    padding-top: 10em;
+    padding-left: @space-xl;
+    padding-right: @space-xl;
+    h1,
+    h2 {
+      font-weight: normal;
+    }
+    h1 {
+      font-size: 3em;
+      margin-bottom: @space-sm;
+    }
+
+    h2 {
+      font-size: 1.5em;
+      margin-bottom: @space-md;
+    }
+  }
+}
+
+footer {
+  padding-bottom: @space-lg;
+  background: linear-gradient(0deg, #262627 0, #525254 100%);
+  color: #a09ea7;
+  .container {
+    text-align: center;
+    padding: @space-md 0;
+  }
+  .community {
+    .svg-inline--fa {
+      font-size: 1.5em;
+      margin: 0.5em;
+      cursor: pointer;
+    }
+  }
+
+  a {
+    transition: color @anim-duration @anim-easing;
+
+    &:hover {
+      color: var(--bright-text-color);
+    }
+  }
+
+  .links {
+    font-size: 0.8em;
+  }
+
+  .copyright {
+    font-size: 0.6em;
+    color: #868390;
+  }
+}
+
+section.whitepaper {
+  color: var(--primary-text-color);
+  padding: 5em 0;
+  text-align: center;
+  .features {
+    .item {
+      .icon {
+        margin: 0 auto 1em;
+        width: 5em;
+        height: 5em;
+        background: url("../assets/logo.png");
+        background-size: contain;
+      }
+      .title {
+        font-size: 1.3em;
+      }
+
+      .description {
+        margin-top: @space-md;
+        font-size: 0.9em;
+        color: var(--secondary-text-color);
+      }
+    }
+  }
+
+  .btn {
+    margin-top: 2em;
+  }
+}
+
+section:nth-child(even) {
+  background-color: #f4f6f7;
+}
+
+.flex-horizontal {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-grow {
+  flex: 1;
+}
+</style>
+
 <template>
   <div class="home-page page">
     <header class="navbar-fixed-top" :class="{ opaque: navbarOpaque }">
@@ -222,113 +332,3 @@ export default {
   }
 };
 </script>
-
-<style scoped lang="less">
-@import "../less/common.less";
-
-.home-hero {
-  width: 100%;
-  height: 500px;
-  background-image: url("../assets/home-bg-new.jpg");
-  background-size: cover;
-  background-position: bottom center;
-
-  color: var(--bright-text-color);
-
-  > .container {
-    padding-top: 10em;
-    padding-left: @space-xl;
-    padding-right: @space-xl;
-    h1,
-    h2 {
-      font-weight: normal;
-    }
-    h1 {
-      font-size: 3em;
-      margin-bottom: @space-sm;
-    }
-
-    h2 {
-      font-size: 1.5em;
-      margin-bottom: @space-md;
-    }
-  }
-}
-
-footer {
-  padding-bottom: @space-lg;
-  background: linear-gradient(0deg, #262627 0, #525254 100%);
-  color: #a09ea7;
-  .container {
-    text-align: center;
-    padding: @space-md 0;
-  }
-  .community {
-    .svg-inline--fa {
-      font-size: 1.5em;
-      margin: 0.5em;
-      cursor: pointer;
-    }
-  }
-
-  a {
-    transition: color @anim-duration @anim-easing;
-
-    &:hover {
-      color: var(--bright-text-color);
-    }
-  }
-
-  .links {
-    font-size: 0.8em;
-  }
-
-  .copyright {
-    font-size: 0.6em;
-    color: #868390;
-  }
-}
-
-section.whitepaper {
-  color: var(--primary-text-color);
-  padding: 5em 0;
-  text-align: center;
-  .features {
-    .item {
-      .icon {
-        margin: 0 auto 1em;
-        width: 5em;
-        height: 5em;
-        background: url("../assets/logo.png");
-        background-size: contain;
-      }
-      .title {
-        font-size: 1.3em;
-      }
-
-      .description {
-        margin-top: @space-md;
-        font-size: 0.9em;
-        color: var(--secondary-text-color);
-      }
-    }
-  }
-
-  .btn {
-    margin-top: 2em;
-  }
-}
-
-section:nth-child(even) {
-  background-color: #f4f6f7;
-}
-
-.flex-horizontal {
-  display: flex;
-  flex-direction: row;
-}
-
-.flex-grow {
-  flex: 1;
-}
-</style>
