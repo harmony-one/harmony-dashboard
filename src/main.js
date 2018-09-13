@@ -7,6 +7,8 @@ import VueScrollTo from 'vue-scrollto';
 import FontAwesome from "@fortawesome/fontawesome";
 import FontAwesomeBrands from "@fortawesome/fontawesome-free-brands";
 import FaSpinner from '@fortawesome/fontawesome-free-solid/faSpinner';
+import Highcharts from "highcharts";
+import HighchartsVue from 'highcharts-vue';
 
 FontAwesome.library.add(FontAwesomeBrands, FaSpinner);
 
@@ -22,6 +24,17 @@ Vue.filter('decimal', (number) => {
 
 Vue.component('shard-summary', require('./components/ShardSummary.vue').default);
 Vue.component('global-summary', require('./components/GlobalSummary.vue').default);
+Vue.component('live-line-chart', require('./components/LiveLineChart.vue').default);
+
+Highcharts.setOptions({
+  global: {
+    useUTC: false
+  },
+  credits: {
+    enabled: false
+  }
+});
+Vue.use(HighchartsVue);
 
 /* eslint-disable no-new */
 new Vue({

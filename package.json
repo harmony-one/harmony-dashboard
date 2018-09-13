@@ -16,6 +16,8 @@
     "@fortawesome/fontawesome-free-solid": "^5.0.13",
     "@fortawesome/vue-fontawesome": "0.0.22",
     "flexboxgrid": "^6.3.1",
+    "highcharts": "^6.1.2",
+    "highcharts-vue": "^1.2.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vue-scrollto": "^2.11.0"

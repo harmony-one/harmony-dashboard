@@ -77,6 +77,9 @@ footer {
     </header>
 
     <div class="dashboard-body">
+      <div class="container">
+        <live-line-chart></live-line-chart>
+      </div>
       <div class="container" v-if="Object.keys(globalData.shardSummaries).length">
         <global-summary :summary="globalData.globalSummary"></global-summary>
         <shard-summary :summary="summary" v-for="(summary, key) in globalData.shardSummaries" :key="key"></shard-summary>
