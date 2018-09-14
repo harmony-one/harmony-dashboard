@@ -5,7 +5,7 @@
 <template>
   <div class="metrics-summary">
     <div class="summary-title">Global</div>
-    <div class="timer">Updated {{ metricsLatency }}s ago...</div>
+    <div class="timer">Updated {{ Math.round((now - this.summary.updateTime) / 1000) }}s ago...</div>
     <div class="row">
       <div class="col-xs-12
             col-sm-6
@@ -81,7 +81,7 @@ export default {
   data() {
     return {
       timer: null,
-      metricsLatency: 0
+      now: Date.now()
     };
   },
   watch: {
@@ -92,9 +92,9 @@ export default {
   methods: {
     resetTimer() {
       clearInterval(this.timer);
-      this.metricsLatency = 0;
+      this.now = Date.now();
       this.timer = setInterval(() => {
-        this.metricsLatency++;
+        this.now = Date.now();
       }, 1000);
     }
   },

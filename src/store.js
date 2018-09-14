@@ -8,6 +8,7 @@ class GlobalSummary {
     nodeCount = 0;
     avgBlockLatency = 0;
     shardCount = 0;
+    updateTime = 0;
     constructor(shardSummaries) {
         let keys = Object.keys(shardSummaries);
         if (!keys.length) return;
@@ -18,6 +19,7 @@ class GlobalSummary {
             this.blockCount += summary.blockCount;
             this.nodeCount += summary.nodeCount;
             this.avgBlockLatency += summary.blockLatency;
+            this.updateTime = Math.max(this.updateTime, summary.updateTime);
         });
         this.avgBlockLatency /= keys.length;
         this.shardCount = keys.length;
