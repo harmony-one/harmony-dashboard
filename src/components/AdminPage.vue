@@ -1,7 +1,7 @@
 <style scoped lang="less">
 @import "../less/common.less";
 
-.dashboard-page {
+.admin-page {
   background-color: #dfdfdf;
   .navbar-fixed-top {
     background-color: #262627;
@@ -11,7 +11,7 @@
   min-height: 100%;
 }
 
-.dashboard-body {
+.admin-body {
   flex: 1;
   width: 100%;
   background-size: cover;
@@ -23,9 +23,29 @@
     padding-top: 6em;
     padding-bottom: 1em;
 
-    .placeholder-text {
-      color: var(--secondary-text-color);
-      font-size: 3em;
+    .admin-card {
+      width: 15em;
+    }
+    header {
+      font-size: 1.5em;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    label {
+      display: block;
+      margin: 0.5em 0;
+
+      input[type="password"] {
+        display: block;
+        margin: @space-xs 0;
+        width: 100%;
+      }
+    }
+
+    .btn {
+      margin-top: @space-md;
+      float: right;
     }
   }
 }
@@ -66,7 +86,7 @@ footer {
 </style>
 
 <template>
-  <div class="dashboard-page page">
+  <div class="admin-page page">
     <header class="navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -76,14 +96,15 @@ footer {
       </div>
     </header>
 
-    <div class="dashboard-body">
-      <div class="container" v-if="Object.keys(globalData.shardSummaries).length">
-        <global-summary :summary="globalData.globalSummary"></global-summary>
-        <shard-summary :summary="summary" v-for="(summary, key) in globalData.shardSummaries" :key="key"></shard-summary>
-      </div>
-      <div class="container flex-hv-center" v-else>
-        <div class="placeholder-text">
-          No Data
+    <div class="admin-body">
+      <div class="container flex-hv-center">
+        <div class="card admin-card">
+          <header>Reset Dashboard</header>
+          <label>
+            Secret:
+            <input type="password" v-model="secret">
+          </label>
+          <button class="btn btn-primary" @click="reset">Reset</button>
         </div>
       </div>
     </div>
@@ -120,41 +141,30 @@ footer {
 
 <script>
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
-import store from "../store";
 import service from "../service";
-const ws = new WebSocket(`ws://${service.BACK_END_URL}`);
 
 export default {
-  name: "DashboardPage",
+  name: "AdminPage",
   data() {
     return {
-      globalData: store.data
+      secret: ""
     };
   },
   components: {
     FontAwesomeIcon
   },
-  mounted() {
-    ws.addEventListener("open", () => {
-      ws.send("front-end: Hi.");
-    });
-
-    ws.addEventListener("message", res => {
-      let data = JSON.parse(res.data);
-      if (data.cmd === "reset") {
-        store.reset();
-      } else {
-        store.update(data);
-      }
-    });
-
-    ws.addEventListener("error", error => {
-      console.log("error", error);
-    });
-
-    ws.addEventListener("close", error => {
-      console.log("close");
-    });
+  mounted() {},
+  methods: {
+    reset() {
+      service.reset(this.secret).then(
+        () => {
+          alert("Reset Successful!");
+        },
+        () => {
+          alert("Reset Failed!");
+        }
+      );
+    }
   }
 };
 </script>

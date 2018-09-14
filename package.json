@@ -15,6 +15,7 @@
     "@fortawesome/fontawesome-free-brands": "^5.0.13",
     "@fortawesome/fontawesome-free-solid": "^5.0.13",
     "@fortawesome/vue-fontawesome": "0.0.22",
+    "axios": "^0.18.0",
     "flexboxgrid": "^6.3.1",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
