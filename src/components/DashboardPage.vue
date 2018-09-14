@@ -144,7 +144,7 @@ export default {
       if (data.cmd === "reset") {
         store.reset();
       } else {
-        store.updateSummaries(data.summaries);
+        store.update(data);
       }
     });
 

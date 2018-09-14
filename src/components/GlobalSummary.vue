@@ -57,7 +57,7 @@
             col-md-3
             col-lg-3">
         <div class="dashboard-card">
-          <div class="card-title">Avergage Block Latency</div>
+          <div class="card-title">Average Block Latency</div>
           <div class="card-value number">{{ summary.avgBlockLatency | decimal }}s</div>
         </div>
       </div>

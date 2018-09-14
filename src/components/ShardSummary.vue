@@ -48,6 +48,15 @@
             col-md-3
             col-lg-3">
         <div class="dashboard-card">
+          <div class="card-title">Max TPS</div>
+          <div class="card-value number">{{ summary.maxTps | decimal }}</div>
+        </div>
+      </div>
+      <div class="col-xs-12
+            col-sm-6
+            col-md-3
+            col-lg-3">
+        <div class="dashboard-card">
           <div class="card-title">Block Latency</div>
           <div class="card-value number">{{ summary.blockLatency | decimal }}s</div>
         </div>
