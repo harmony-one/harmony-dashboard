@@ -57,7 +57,7 @@
             col-md-3
             col-lg-3">
         <div class="dashboard-card">
-          <div class="card-title">Max Tps</div>
+          <div class="card-title">Max TPS</div>
           <div class="card-value number">{{ summary.maxTps | decimal }}</div>
         </div>
       </div>
