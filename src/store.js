@@ -2,6 +2,7 @@ import Vue from 'vue';
 
 class GlobalSummary {
     tps = 0;
+    maxTps = 0;
     txCount = 0;
     blockCount = 0;
     nodeCount = 0;
@@ -9,6 +10,7 @@ class GlobalSummary {
     shardCount = 0;
     constructor(shardSummaries) {
         let keys = Object.keys(shardSummaries);
+        if (!keys.length) return;
         keys.forEach((key) => {
             let summary = shardSummaries[key];
             this.tps += summary.tps;
@@ -18,7 +20,7 @@ class GlobalSummary {
             this.avgBlockLatency += summary.blockLatency;
         });
         this.avgBlockLatency /= keys.length;
-        this.shardCount = keys.length
+        this.shardCount = keys.length;
     }
 }
 
@@ -37,7 +39,14 @@ let store = {
         });
 
         let globalSummary = new GlobalSummary(this.data.shardSummaries);
-        this.data.globalSummary = Object.assign({}, globalSummary);
+        if (data.globalSummary) {// The first update contains maxTps.
+            globalSummary.maxTps = data.globalSummary.maxTps;
+        }
+        globalSummary.maxTps = Math.max(globalSummary.maxTps, globalSummary.tps);
+        if (this.data.globalSummary.maxTps) {
+            globalSummary.maxTps = Math.max(globalSummary.maxTps, this.data.globalSummary.maxTps);
+        }
+        this.data.globalSummary = Object.assign({}, globalSummary)
     }
 };
 
