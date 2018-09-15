@@ -5,7 +5,7 @@
 <template>
   <div class="metrics-summary">
     <div class="summary-title">Shard {{ summary.key }}</div>
-    <div class="timer">Updated {{ metricsLatency }}s ago...</div>
+    <div class="timer">Updated {{ Math.round((now - this.summary.updateTime) / 1000) }}s ago...</div>
     <div class="row">
       <div class="col-xs-12
             col-sm-6
@@ -41,6 +41,15 @@
         <div class="dashboard-card">
           <div class="card-title">Transaction Per Second</div>
           <div class="card-value number">{{ summary.tps | decimal }}</div>
+        </div>
+      </div>
+      <div class="col-xs-12
+            col-sm-6
+            col-md-3
+            col-lg-3">
+        <div class="dashboard-card">
+          <div class="card-title">Max TPS</div>
+          <div class="card-value number">{{ summary.maxTps | decimal }}</div>
         </div>
       </div>
       <div class="col-xs-12
@@ -87,7 +96,7 @@ export default {
   data() {
     return {
       timer: null,
-      metricsLatency: 0
+      now: Date.now()
     };
   },
   watch: {
@@ -98,9 +107,9 @@ export default {
   methods: {
     resetTimer() {
       clearInterval(this.timer);
-      this.metricsLatency = 0;
+      this.now = Date.now();
       this.timer = setInterval(() => {
-        this.metricsLatency++;
+        this.now = Date.now();
       }, 1000);
     }
   },

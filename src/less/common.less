@@ -7,6 +7,16 @@
 @anim-duration: .15s;
 @anim-easing: ease-in-out;
 @border-radius: @space-xs;
+@input-border-color: #bdc7d8;
+@input-focus-border-color: #80bdff;
+@input-focus-box-shadow-color: rgba(0, 123, 255, .25);
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
 :root {
     --bright-text-color: #fff;
     --primary-button-background-color: #0a93eb;
@@ -41,6 +51,7 @@ a {
     padding: @space-sm @space-md;
     display: inline-block;
     outline: 0;
+    font-size: 1em;
     cursor: pointer;
     &.btn-primary {
         background-color: var(--primary-button-background-color);
@@ -90,7 +101,7 @@ a {
         background-repeat: no-repeat;
         background-position: center;
         background-size: 7em;
-      }
+    }
     &.opaque {
         background-color: #fff;
         color: var(--opaque-navbar-text-color);
@@ -213,55 +224,74 @@ a {
     }
 }
 
-.metrics-summary {
-    color: var(--primary-text-color);
+.card {
     border-radius: @border-radius;
     background-color: #fff;
     padding: @space-md;
+}
+
+.metrics-summary {
+    .card();
+    color: var(--primary-text-color);
     .summary-title {
-      font-size: 1.2em;
-      font-weight: bold;
-      text-align: center;
-      margin-bottom: 0.5em;
-      word-break: break-all;
+        font-size: 1.2em;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 0.5em;
+        word-break: break-all;
     }
-  
     .timer {
-      text-align: right;
-      color: var(--secondary-text-color);
-      font-size: 0.8em;
+        text-align: right;
+        color: var(--secondary-text-color);
+        font-size: 0.8em;
     }
     .dashboard-card {
-      border-radius: @border-radius;
-      background-color: #f7f7f7;
-      padding: @space-md;
-      display: block;
-      min-width: 12em;
-      margin: @space-sm 0;
-      .card-title {
-        color: var(--secondary-text-color);
-      }
-      .card-value {
-        word-break: break-all;
-        &.number {
-          font-size: 3em;
-          text-align: center;
+        border-radius: @border-radius;
+        background-color: #f7f7f7;
+        padding: @space-md;
+        display: block;
+        min-width: 12em;
+        margin: @space-sm 0;
+        .card-title {
+            color: var(--secondary-text-color);
         }
-        &.hashes {
-          text-align: left;
-          padding-top: 0.5em;
-          .hash {
-            padding: 0.5em 0;
-            font-size: 0.9em;
-          }
-          .hash + .hash {
-            border-top: 1px solid #dfdfdf;
-          }
+        .card-value {
+            word-break: break-all;
+            &.number {
+                font-size: 3em;
+                text-align: center;
+            }
+            &.hashes {
+                text-align: left;
+                padding-top: 0.5em;
+                .hash {
+                    padding: 0.5em 0;
+                    font-size: 0.9em;
+                }
+                .hash+.hash {
+                    border-top: 1px solid #dfdfdf;
+                }
+            }
         }
-      }
     }
-  }
-  
-  .metrics-summary + .metrics-summary {
+}
+
+.metrics-summary+.metrics-summary {
     margin-top: 1em;
-  }
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea,
+select {
+    padding: @space-sm;
+    border: 1px solid @input-border-color;
+    border-radius: @border-radius;
+    &:focus {
+        outline: none;
+        border-color: @input-focus-border-color;
+        box-shadow: 0 0 0 @space-xs @input-focus-box-shadow-color;
+    }
+}
