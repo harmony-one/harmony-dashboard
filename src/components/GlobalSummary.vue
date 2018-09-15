@@ -70,6 +70,12 @@
           <div class="card-value number">{{ summary.avgBlockLatency | decimal }}s</div>
         </div>
       </div>
+      <div class="col-xs-12
+            col-sm-12
+            col-md-12
+            col-lg-12">
+        <live-line-chart :value="summary.tps | decimal" title="Transaction Per Second"></live-line-chart>
+      </div>
     </div>
   </div>
 </template>

@@ -3,29 +3,18 @@
 </style>
 
 <template>
-  <div class="container">
-    <div id="container" style="height: 400px; min-width: 310px"></div>
-  </div>
+  <div id="container"></div>
 </template>
 
 <script>
 import Highcharts from "highcharts";
 import stockInit from "highcharts/modules/stock";
+import { formatDecimal } from "../util";
 stockInit(Highcharts);
 
 let options = {
   chart: {
-    events: {
-      load: function() {
-        // set up the updating of the chart each second
-        var series = this.series[0];
-        setInterval(function() {
-          var x = new Date().getTime(), // current time
-            y = Math.round(Math.random() * 100);
-          series.addPoint([x, y], true, true);
-        }, 1000);
-      }
-    }
+    type: "spline"
   },
 
   rangeSelector: {
@@ -50,20 +39,28 @@ let options = {
   },
 
   title: {
-    text: "Live random data"
+    text: "Live Line Chart"
+  },
+
+  plotOptions: {
+    series: {
+      marker: {
+        enabled: true
+      }
+    }
   },
 
   series: [
     {
-      name: "Random data",
+      name: "",
       data: (function() {
-        // generate an array of random data
+        // init with some null data
         var data = [],
           time = new Date().getTime(),
           i;
 
-        for (i = -999; i <= 0; i += 1) {
-          data.push([time + i * 1000, Math.round(Math.random() * 100)]);
+        for (i = -300; i <= 0; i += 1) {
+          data.push([time + i * 1000, null]);
         }
         return data;
       })()
@@ -72,8 +69,23 @@ let options = {
 };
 export default {
   name: "LiveLineChart",
+  props: ["value", "title"],
+  data() {
+    return {
+      series: null
+    };
+  },
+  watch: {
+    value(val) {
+      var x = new Date().getTime();
+      this.series.addPoint([x, formatDecimal(val)], true, true);
+    }
+  },
   mounted() {
-    Highcharts.stockChart("container", options);
+    options.title.text = this.title;
+    let chart = Highcharts.stockChart("container", options);
+    this.series = chart.series[0];
+    this.series.name = this.title;
   }
 };
 </script>
