@@ -90,26 +90,27 @@ footer {
 
     <footer>
       <div class="community container">
-        <a href="#">
-          <font-awesome-icon :icon="['fab', 'github']" />
+        <a href="https://medium.com/harmony-one" target="_blank">
+          <font-awesome-icon :icon="['fab', 'medium']" />
         </a>
 
-        <a href="#">
+        <a href="https://twitter.com/harmonyprotocol" target="_blank">
           <font-awesome-icon :icon="['fab', 'twitter']" />
         </a>
 
-        <a href="#">
+        <a href="https://www.instagram.com/harmony.protocol/" target="_blank">
+          <font-awesome-icon :icon="['fab', 'instagram']" />
+        </a>
+
+        <a href="https://t.me/harmony_one" target="_blank">
           <font-awesome-icon :icon="['fab', 'telegram']" />
         </a>
 
-        <a href="#">
-          <font-awesome-icon :icon="['fab', 'facebook']" />
-        </a>
       </div>
       <div class="links container">
-        <a href="">Terms of Use</a>
+        <a href="#" target="_blank">Terms of Use</a>
         |
-        <a href="">Privacy Policy</a>
+        <a href="#" target="_blank">Privacy Policy</a>
       </div>
       <div class="copyright container">
         Copyright © 2018 harmony | All rights reserved
