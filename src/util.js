@@ -1,3 +1,7 @@
 export function formatDecimal(number) {
-    return +number.toFixed(2);
+    return formatNumber(number.toFixed(2));
+}
+
+export function formatNumber(number) {
+    return (+number).toLocaleString()
 }

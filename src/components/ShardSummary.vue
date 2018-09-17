@@ -5,7 +5,7 @@
 <template>
   <div class="metrics-summary">
     <div class="summary-title">Shard {{ summary.key }}</div>
-    <div class="timer">Updated {{ Math.round((now - this.summary.updateTime) / 1000) }}s ago...</div>
+    <div class="timer">Updated {{ Math.round((now - this.summary.updateTime) / 1000) | number }}s ago...</div>
     <div class="row">
       <div class="col-xs-12
             col-sm-6
@@ -13,7 +13,7 @@
             col-lg-3">
         <div class="dashboard-card">
           <div class="card-title"># of Blocks</div>
-          <div class="card-value number">{{ summary.blockCount }}</div>
+          <div class="card-value number">{{ summary.blockCount | number }}</div>
         </div>
       </div>
       <div class="col-xs-12
@@ -22,7 +22,7 @@
             col-lg-3">
         <div class="dashboard-card">
           <div class="card-title"># of Transactions</div>
-          <div class="card-value number">{{ summary.txCount }}</div>
+          <div class="card-value number">{{ summary.txCount | number }}</div>
         </div>
       </div>
       <div class="col-xs-12
@@ -31,7 +31,7 @@
             col-lg-3">
         <div class="dashboard-card">
           <div class="card-title"># of Nodes Online</div>
-          <div class="card-value number">{{ summary.nodeCount }}</div>
+          <div class="card-value number">{{ summary.nodeCount | number }}</div>
         </div>
       </div>
       <div class="col-xs-12
