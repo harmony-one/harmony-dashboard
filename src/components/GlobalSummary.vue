@@ -74,7 +74,7 @@
             col-sm-12
             col-md-12
             col-lg-12">
-        <live-line-chart :value="summary.tps | decimal" title="Transaction Per Second"></live-line-chart>
+        <live-line-chart :value="summary.tps" title="Transaction Per Second" :data="summary.tpsHistory"></live-line-chart>
       </div>
     </div>
   </div>

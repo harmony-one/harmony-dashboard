@@ -9,6 +9,7 @@ class GlobalSummary {
     avgBlockLatency = 0;
     shardCount = 0;
     updateTime = 0;
+    tpsHistory = [];
     constructor(shardSummaries) {
         let keys = Object.keys(shardSummaries);
         if (!keys.length) return;
@@ -41,8 +42,9 @@ let store = {
         });
 
         let globalSummary = new GlobalSummary(this.data.shardSummaries);
-        if (data.globalSummary) {// The first update contains maxTps.
+        if (data.globalSummary) {// The first update contains globalSummary for catching up.
             globalSummary.maxTps = data.globalSummary.maxTps;
+            globalSummary.tpsHistory = data.globalSummary.tpsHistory;
         }
         globalSummary.maxTps = Math.max(globalSummary.maxTps, globalSummary.tps);
         if (this.data.globalSummary.maxTps) {
