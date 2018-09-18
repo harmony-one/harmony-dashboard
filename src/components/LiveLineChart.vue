@@ -55,7 +55,11 @@ let options = {
       name: "",
       data: []
     }
-  ]
+  ],
+
+  tooltip: {
+    valueDecimals: 2
+  }
 };
 export default {
   name: "LiveLineChart",

@@ -30,6 +30,9 @@ Highcharts.setOptions({
   global: {
     useUTC: false
   },
+  lang: {
+    thousandsSep: ","
+  },
   credits: {
     enabled: false
   }
