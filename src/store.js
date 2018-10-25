@@ -34,7 +34,7 @@ let store = {
     },
     reset() {
         this.data.shardSummaries = {};
-        this.globalSummary = {};
+        this.data.globalSummary = {};
     },
     update(data) {
         Object.values(data.shardSummaries).forEach(summary => {
