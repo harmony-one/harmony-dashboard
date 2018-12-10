@@ -88,7 +88,7 @@ footer {
         <div class="placeholder-text">No Data</div>
       </div>
     </div>
-    <site-footer></site-footer>
+    <site-footer/>
   </div>
 </template>
 
