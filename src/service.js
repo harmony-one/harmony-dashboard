@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { blocks, block } from './fake-data';
+import { blocks, block, transaction } from './fake-data';
 import store from './store';
 
 const BACK_END_URL = `${window.location.hostname}:3000`;
@@ -22,8 +22,11 @@ export default {
     },
     getBlock(id) {
         return Promise.resolve(block).then(block => {
-            store.setBlocks(block);
+            store.setBlock(block);
             return block;
         });
+    },
+    getTransaction(id) {
+        return Promise.resolve(transaction);
     }
 };
