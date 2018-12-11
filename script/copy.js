@@ -10,6 +10,9 @@ copy($$('.fader.ng-scope').map(x => {
 }))
 
 // https://blockexplorer.com/block/0000000000000000001c48da2a21c9d098efcab0f4904ff4773c0896c63c62f8
+// https://www.blockchain.com/btc/block/0000000000000000001c48da2a21c9d098efcab0f4904ff4773c0896c63c62f8
+// https://etherscan.io/block/6865061
+// https://etherscan.io/txs?block=6865061
 copy((function() {
     var block = {};
     block.height = $('h1').textContent.replace('Block #', '');

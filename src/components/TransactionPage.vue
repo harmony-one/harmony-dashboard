@@ -20,7 +20,11 @@
   display: flex;
   padding-top: 6em;
 
-  .transaction-table {
+  .tx-hash {
+    margin: @space-md 0;
+  }
+
+  .tx-table {
     border-collapse: collapse;
     width: 100%;
     text-align: left;
@@ -48,13 +52,13 @@
     <div class="transaction-body">
       <div class="container" v-if="transaction">
         <h1>Transaction</h1>
-        <div>
+        <div class="tx-hash">
           <b>Transaction Hash</b>
           {{ transaction.hash }}
         </div>
 
         <h2>Summary</h2>
-        <table class="transaction-table">
+        <table class="tx-table">
           <tr>
             <td class="td-title">Size</td>
             <td>{{ transaction.bytes }} (bytes)</td>
@@ -72,10 +76,6 @@
             <td>
               <router-link :to="'/block/' + transaction.block">{{ transaction.block }}</router-link>
             </td>
-          </tr>
-          <tr>
-            <td class="td-title">Coinbase</td>
-            <td>{{ transaction.coinbase }}</td>
           </tr>
         </table>
       </div>

@@ -5,3 +5,8 @@ export function formatDecimal(number) {
 export function formatNumber(number) {
     return (+number).toLocaleString()
 }
+
+export function shortenHash(hash) {
+    if (hash.length <= 10) return hash;
+    return hash.substr(0, 5) + "..." + hash.substr(hash.length - 5);
+}

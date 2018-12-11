@@ -9,7 +9,7 @@ import FontAwesomeBrands from "@fortawesome/fontawesome-free-brands";
 import FaSpinner from '@fortawesome/fontawesome-free-solid/faSpinner';
 import Highcharts from "highcharts";
 import HighchartsVue from 'highcharts-vue';
-import { formatDecimal, formatNumber } from './util';
+import { formatDecimal, formatNumber, shortenHash } from './util';
 
 FontAwesome.library.add(FontAwesomeBrands, FaSpinner);
 
@@ -21,6 +21,7 @@ Vue.config.productionTip = false
 
 Vue.filter('decimal', formatDecimal);
 Vue.filter('number', formatNumber);
+Vue.filter('shorten', shortenHash);
 
 Vue.component('shard-summary', require('./components/ShardSummary.vue').default);
 Vue.component('global-summary', require('./components/GlobalSummary.vue').default);

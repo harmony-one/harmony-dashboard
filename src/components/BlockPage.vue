@@ -20,16 +20,34 @@
   display: flex;
   padding-top: 6em;
 
-  .block-table {
+  .block-hash {
+    margin: @space-md 0;
+  }
+
+  h2 {
+    margin: @space-sm 0;
+  }
+
+  table {
     border-collapse: collapse;
     width: 100%;
     text-align: left;
     margin-bottom: 3em;
-    td.td-title {
-      font-weight: bold;
-    }
+    th,
     td {
       padding: @space-sm;
+      border-top: solid 1px var(--color-border);
+    }
+  }
+  a {
+    color: var(--color-link);
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  .block-table {
+    td.td-title {
+      font-weight: bold;
     }
   }
 }
@@ -48,7 +66,7 @@
     <div class="block-body">
       <div class="container" v-if="block">
         <h1>Block #{{ block.height }}</h1>
-        <div>
+        <div class="block-hash">
           <b>Block Hash</b>
           {{ block.hash }}
         </div>
@@ -90,6 +108,26 @@
             <td>
               <router-link :to="'/block/' + block.nextBlock.id">{{ block.nextBlock.height }}</router-link>
             </td>
+          </tr>
+        </table>
+
+        <h2>Transactions</h2>
+        <table class="transactions-table">
+          <tr>
+            <th>TxHas</th>
+            <th>Age</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Value</th>
+          </tr>
+          <tr v-for="tx in block.txs" :key="tx.id">
+            <td>
+              <router-link :to="'/tx/' + tx.id">{{ tx.id | shorten }}</router-link>
+            </td>
+            <td>{{ tx.timestamp }}</td>
+            <td>{{ tx.from | shorten }}</td>
+            <td>{{ tx.to | shorten }}</td>
+            <td>{{ tx.value }}</td>
           </tr>
         </table>
       </div>

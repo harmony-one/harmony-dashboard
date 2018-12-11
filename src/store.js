@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import { blocks } from './fake-data';
 
 class GlobalSummary {
     tps = 0;

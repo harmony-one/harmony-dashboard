@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { blocks, block, transaction } from './fake-data';
 import store from './store';
 
 const BACK_END_URL = `${window.location.hostname}:3000`;
@@ -9,24 +8,34 @@ function sendPost(url, params, config) {
     return axios.post(backendApiUrl + url, params, config);
 }
 
+function sendGet(url, params) {
+    return axios.get(backendApiUrl + url, params);
+}
+
 export default {
     BACK_END_URL,
     reset(secret) {
         return sendPost('/reset', { secret });
     },
     getBlocks() {
-        return Promise.resolve(blocks).then(blocks => {
+        return sendGet('/blocks').then(res => {
+            let blocks = res.data.blocks;
             store.setBlocks(blocks);
             return blocks;
         });
     },
     getBlock(id) {
-        return Promise.resolve(block).then(block => {
+        return sendGet('/block', { params: { id } }).then(res => {
+            let block = res.data.block;
             store.setBlock(block);
             return block;
         });
     },
     getTransaction(id) {
-        return Promise.resolve(transaction);
+        return sendGet('/tx', { params: { id } }).then(res => {
+            let tx = res.data.tx;
+            // store.setBlock(tx);
+            return tx;
+        });
     }
 };
