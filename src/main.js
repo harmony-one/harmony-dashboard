@@ -7,11 +7,12 @@ import VueScrollTo from 'vue-scrollto';
 import FontAwesome from "@fortawesome/fontawesome";
 import FontAwesomeBrands from "@fortawesome/fontawesome-free-brands";
 import FaSpinner from '@fortawesome/fontawesome-free-solid/faSpinner';
+import FaSearch from '@fortawesome/fontawesome-free-solid/faSearch';
 import Highcharts from "highcharts";
 import HighchartsVue from 'highcharts-vue';
 import { formatDecimal, formatNumber, shortenHash } from './util';
 
-FontAwesome.library.add(FontAwesomeBrands, FaSpinner);
+FontAwesome.library.add(FontAwesomeBrands, FaSpinner, FaSearch);
 
 Vue.use(VueScrollTo, {
   offset: -68

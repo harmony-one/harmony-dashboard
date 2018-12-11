@@ -9,6 +9,32 @@
   display: flex;
   flex-direction: column;
   min-height: 100%;
+  .search {
+    width: 15em;
+    border-radius: 2em;
+    background-color: #fff;
+    flex: none;
+    height: 2em;
+    padding: 0 @space-sm 0 @space-lg;
+    overflow: hidden;
+    position: relative;
+    .search-icon {
+      position: absolute;
+      top: 50%;
+      left: @space-sm;
+      transform: translateY(-50%);
+      color: var(--color-gray-icon);
+    }
+    input[type="text"] {
+      border: 0;
+      width: 100%;
+      height: 100%;
+      &:focus {
+        outline: none;
+        box-shadow: none;
+      }
+    }
+  }
 }
 
 .blocks-body {
@@ -49,6 +75,10 @@
       <div class="container">
         <div class="navbar-header">
           <router-link class="navbar-brand" to="/"></router-link>
+          <div class="search">
+            <font-awesome-icon class="search-icon" icon="search"/>
+            <input type="text" placeholder="Block Hash / Tx Hash / Address ...">
+          </div>
         </div>
       </div>
     </header>
