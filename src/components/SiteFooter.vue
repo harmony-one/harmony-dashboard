@@ -17,6 +17,7 @@ footer {
   }
 
   a {
+    color: inherit;
     transition: color @anim-duration @anim-easing;
 
     &:hover {

@@ -1,7 +1,7 @@
 <style scoped lang="less">
 @import "../less/common.less";
 
-.transaction-page {
+.address-page {
   background-color: #dfdfdf;
   .navbar-fixed-top {
     background-color: #262627;
@@ -11,7 +11,7 @@
   min-height: 100%;
 }
 
-.transaction-body {
+.address-body {
   flex: 1;
   width: 100%;
   background-size: cover;
@@ -40,7 +40,7 @@
 </style>
 
 <template>
-  <div class="transaction-page page">
+  <div class="address-page page">
     <header class="navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -49,45 +49,47 @@
       </div>
     </header>
 
-    <div class="transaction-body">
-      <div class="container" v-if="transaction">
-        <h1>Transaction</h1>
+    <div class="address-body">
+      <div class="container" v-if="address">
+        <h1>Address</h1>
         <div class="tx-hash">
-          <b>Transaction Hash</b>
-          {{ transaction.hash }}
+          <b>address Hash</b>
+          {{ address.hash }}
         </div>
 
         <h2>Summary</h2>
         <table class="tx-table">
           <tr>
-            <td class="td-title">Size</td>
-            <td>{{ transaction.bytes }} (bytes)</td>
+            <td class="td-title">Balance</td>
+            <td>{{ address.balance }}</td>
           </tr>
           <tr>
-            <td class="td-title">Received Time</td>
-            <td>{{ transaction.receivedTime }}</td>
+            <td class="td-title">Transactions</td>
+            <td>{{ address.txCount }}</td>
           </tr>
+        </table>
+
+        <h2>Transactions</h2>
+        <table class="transactions-table">
           <tr>
-            <td class="td-title">Mined Time</td>
-            <td>{{ transaction.minedTime }}</td>
+            <th>TxHash</th>
+            <th>Age</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Value</th>
           </tr>
-          <tr>
-            <td class="td-title">Included In Block</td>
+          <tr v-for="tx in address.txs" :key="tx.id">
             <td>
-              <router-link :to="'/block/' + transaction.block">{{ transaction.block }}</router-link>
+              <router-link :to="'/tx/' + tx.id">{{ tx.id | shorten }}</router-link>
             </td>
-          </tr>
-          <tr>
-            <td class="td-title">From</td>
+            <td>{{ tx.timestamp }}</td>
             <td>
-              <router-link :to="'/address/' + transaction.from">{{ transaction.from }}</router-link>
+              <router-link :to="'/address/' + tx.from">{{ tx.from | shorten }}</router-link>
             </td>
-          </tr>
-          <tr>
-            <td class="td-title">To</td>
             <td>
-              <router-link :to="'/address/' + transaction.to">{{ transaction.to }}</router-link>
+              <router-link :to="'/address/' + tx.to">{{ tx.to | shorten }}</router-link>
             </td>
+            <td>{{ tx.value }}</td>
           </tr>
         </table>
       </div>
@@ -103,10 +105,10 @@ import service from "../service";
 import SiteFooter from "./SiteFooter";
 
 export default {
-  name: "TransactionPage",
+  name: "AddressPage",
   data() {
     return {
-      transaction: null
+      address: null
     };
   },
   components: {
@@ -115,8 +117,8 @@ export default {
   },
   mounted() {
     service
-      .getTransaction(this.$route.params.transactionId)
-      .then(transaction => (this.transaction = transaction));
+      .getAddress(this.$route.params.address)
+      .then(address => (this.address = address));
   }
 };
 </script>

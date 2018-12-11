@@ -10,7 +10,6 @@
 @input-border-color: #bdc7d8;
 @input-focus-border-color: #80bdff;
 @input-focus-box-shadow-color: rgba(0, 123, 255, .25);
-
 * {
     box-sizing: border-box;
 }
@@ -41,11 +40,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-a {
-    color: inherit;
-    text-decoration: none;
 }
 
 .btn {
@@ -297,5 +291,25 @@ select {
         outline: none;
         border-color: @input-focus-border-color;
         box-shadow: 0 0 0 @space-xs @input-focus-box-shadow-color;
+    }
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 3em;
+    th,
+    td {
+        padding: @space-sm;
+        border-top: solid 1px var(--color-border);
+    }
+}
+
+a {
+    color: var(--color-link);
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
     }
 }

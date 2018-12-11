@@ -28,23 +28,6 @@
     margin: @space-sm 0;
   }
 
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    text-align: left;
-    margin-bottom: 3em;
-    th,
-    td {
-      padding: @space-sm;
-      border-top: solid 1px var(--color-border);
-    }
-  }
-  a {
-    color: var(--color-link);
-    &:hover {
-      text-decoration: underline;
-    }
-  }
   .block-table {
     td.td-title {
       font-weight: bold;
@@ -114,7 +97,7 @@
         <h2>Transactions</h2>
         <table class="transactions-table">
           <tr>
-            <th>TxHas</th>
+            <th>TxHash</th>
             <th>Age</th>
             <th>From</th>
             <th>To</th>
@@ -125,8 +108,12 @@
               <router-link :to="'/tx/' + tx.id">{{ tx.id | shorten }}</router-link>
             </td>
             <td>{{ tx.timestamp }}</td>
-            <td>{{ tx.from | shorten }}</td>
-            <td>{{ tx.to | shorten }}</td>
+            <td>
+              <router-link :to="'/address/' + tx.from">{{ tx.from | shorten }}</router-link>
+            </td>
+            <td>
+              <router-link :to="'/address/' + tx.to">{{ tx.to | shorten }}</router-link>
+            </td>
             <td>{{ tx.value }}</td>
           </tr>
         </table>

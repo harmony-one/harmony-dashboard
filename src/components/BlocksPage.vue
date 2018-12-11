@@ -20,6 +20,10 @@
   display: flex;
   padding-top: 6em;
 
+  h1 {
+    margin-bottom: @space-sm;
+  }
+
   .blocks-table {
     border-collapse: collapse;
     width: 100%;
@@ -30,7 +34,7 @@
       padding: @space-sm;
     }
     th {
-      border-bottom: solid 2px var(--color-border);
+      border-bottom: solid 1px var(--color-border);
     }
     tr:nth-child(odd) td {
       background-color: #ccc;
@@ -51,6 +55,7 @@
 
     <div class="blocks-body">
       <div class="container">
+        <h1>Latest Blocks</h1>
         <table class="blocks-table">
           <tr>
             <th>Height</th>

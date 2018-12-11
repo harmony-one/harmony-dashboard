@@ -6,6 +6,7 @@ import ExplorerPage from '@/components/ExplorerPage'
 import BlocksPage from '@/components/BlocksPage'
 import BlockPage from '@/components/BlockPage'
 import TransactionPage from '@/components/TransactionPage'
+import AddressPage from '@/components/AddressPage'
 
 Vue.use(Router)
 
@@ -45,6 +46,11 @@ export default new Router({
       path: '/tx/:transactionId',
       name: 'TransactionPage',
       component: TransactionPage
+    },
+    {
+      path: '/address/:address',
+      name: 'AddressPage',
+      component: AddressPage
     }
   ]
 })

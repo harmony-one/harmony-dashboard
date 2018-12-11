@@ -34,8 +34,13 @@ export default {
     getTransaction(id) {
         return sendGet('/tx', { params: { id } }).then(res => {
             let tx = res.data.tx;
-            // store.setBlock(tx);
             return tx;
+        });
+    },
+    getAddress(address) {
+        return sendGet('/address', { params: { address } }).then(res => {
+            let address = res.data.address;
+            return address;
         });
     }
 };
