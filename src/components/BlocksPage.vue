@@ -62,9 +62,6 @@
     th {
       border-bottom: solid 1px var(--color-border);
     }
-    tr:nth-child(odd) td {
-      background-color: #ccc;
-    }
   }
 }
 </style>
