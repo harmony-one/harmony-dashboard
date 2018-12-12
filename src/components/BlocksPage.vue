@@ -74,7 +74,11 @@
           <router-link class="navbar-brand" to="/"></router-link>
           <div class="search">
             <font-awesome-icon class="search-icon" icon="search"/>
-            <input type="text" placeholder="Block Hash / Tx Hash / Address ...">
+            <input
+              type="text"
+              placeholder="Block Hash / Tx Hash / Address ..."
+              @keyup.enter="search"
+            >
           </div>
         </div>
       </div>
@@ -124,6 +128,21 @@ export default {
   },
   mounted() {
     service.getBlocks();
+  },
+  methods: {
+    search(e) {
+      let input = e.target.value.trim();
+      if (input.length === 64) {
+        this.$router.push(`/block/${input}`);
+      } else if (input.length === 60) {
+        this.$router.push(`/tx/${input}`);
+      } else if (input.length === 42) {
+        this.$router.push(`/address/${input}`);
+      } else {
+        alert("invalid input");
+        return;
+      }
+    }
   }
 };
 </script>
