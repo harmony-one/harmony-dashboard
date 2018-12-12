@@ -3,38 +3,6 @@
 
 .blocks-page {
   background-color: #dfdfdf;
-  .navbar-fixed-top {
-    background-color: #262627;
-  }
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
-  .search {
-    width: 15em;
-    border-radius: 2em;
-    background-color: #fff;
-    flex: none;
-    height: 2em;
-    padding: 0 @space-sm 0 @space-lg;
-    overflow: hidden;
-    position: relative;
-    .search-icon {
-      position: absolute;
-      top: 50%;
-      left: @space-sm;
-      transform: translateY(-50%);
-      color: var(--color-gray-icon);
-    }
-    input[type="text"] {
-      border: 0;
-      width: 100%;
-      height: 100%;
-      &:focus {
-        outline: none;
-        box-shadow: none;
-      }
-    }
-  }
 }
 
 .blocks-body {
@@ -68,22 +36,6 @@
 
 <template>
   <div class="blocks-page page">
-    <header class="navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <router-link class="navbar-brand" to="/"></router-link>
-          <div class="search">
-            <font-awesome-icon class="search-icon" icon="search"/>
-            <input
-              type="text"
-              placeholder="Block Hash / Tx Hash / Address ..."
-              @keyup.enter="search"
-            >
-          </div>
-        </div>
-      </div>
-    </header>
-
     <div class="blocks-body">
       <div class="container">
         <h1>Latest Blocks</h1>
@@ -105,7 +57,6 @@
         </table>
       </div>
     </div>
-    <site-footer></site-footer>
   </div>
 </template>
 
@@ -113,7 +64,6 @@
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import store from "../store";
 import service from "../service";
-import SiteFooter from "./SiteFooter";
 
 export default {
   name: "BlocksPage",
@@ -123,26 +73,10 @@ export default {
     };
   },
   components: {
-    FontAwesomeIcon,
-    SiteFooter
+    FontAwesomeIcon
   },
   mounted() {
     service.getBlocks();
-  },
-  methods: {
-    search(e) {
-      let input = e.target.value.trim();
-      if (input.length === 64) {
-        this.$router.push(`/block/${input}`);
-      } else if (input.length === 60) {
-        this.$router.push(`/tx/${input}`);
-      } else if (input.length === 42) {
-        this.$router.push(`/address/${input}`);
-      } else {
-        alert("invalid input");
-        return;
-      }
-    }
   }
 };
 </script>

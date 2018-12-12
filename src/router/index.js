@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import DashboardPage from '@/components/DashboardPage'
 import AdminPage from '@/components/AdminPage'
-import ExplorerPage from '@/components/ExplorerPage'
 import BlocksPage from '@/components/BlocksPage'
 import BlockPage from '@/components/BlockPage'
 import TransactionPage from '@/components/TransactionPage'
@@ -26,11 +25,6 @@ export default new Router({
       path: '/admin',
       name: 'AdminPage',
       component: AdminPage
-    },
-    {
-      path: '/explorer',
-      name: 'ExplorerPage',
-      component: ExplorerPage
     },
     {
       path: '/blocks',

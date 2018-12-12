@@ -41,14 +41,6 @@
 
 <template>
   <div class="transaction-page page">
-    <header class="navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <router-link class="navbar-brand" to="/"></router-link>
-        </div>
-      </div>
-    </header>
-
     <div class="transaction-body">
       <div class="container" v-if="transaction">
         <h1>Transaction</h1>
@@ -92,7 +84,6 @@
         </table>
       </div>
     </div>
-    <site-footer></site-footer>
   </div>
 </template>
 
@@ -100,7 +91,6 @@
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import store from "../store";
 import service from "../service";
-import SiteFooter from "./SiteFooter";
 
 export default {
   name: "TransactionPage",
@@ -110,8 +100,7 @@ export default {
     };
   },
   components: {
-    FontAwesomeIcon,
-    SiteFooter
+    FontAwesomeIcon
   },
   mounted() {
     service

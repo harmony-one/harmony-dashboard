@@ -8,7 +8,6 @@
   }
   display: flex;
   flex-direction: column;
-  min-height: 100%;
 }
 
 .dashboard-body {
@@ -33,14 +32,6 @@
 
 <template>
   <div class="dashboard-page page">
-    <header class="navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <router-link class="navbar-brand" to="/"></router-link>
-        </div>
-      </div>
-    </header>
-
     <div class="dashboard-body">
       <div class="container" v-if="Object.keys(globalData.shardSummaries).length">
         <global-summary :summary="globalData.globalSummary"></global-summary>
@@ -54,8 +45,6 @@
         <div class="placeholder-text">No Data</div>
       </div>
     </div>
-
-    <site-footer/>
   </div>
 </template>
 
