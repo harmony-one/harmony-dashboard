@@ -121,12 +121,12 @@
       align-items: center;
     }
     a.navbar-nav {
-      color: inherit;
       text-decoration: none;
-      transition: background-color @anim-duration @anim-easing;
       padding: @space-md @space-md;
+      transition: color @anim-duration @anim-easing;
+      color: #a09ea7;
       &:hover {
-        background-color: var(--color-navbar-hover-background);
+        color: inherit;
       }
     }
     .search {
@@ -194,6 +194,7 @@
             <input
               type="text"
               placeholder="Block Hash / Tx Hash / Address ..."
+              v-model="input"
               @keyup.enter="search"
             >
           </div>
@@ -207,13 +208,17 @@
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 export default {
   name: "SiteHeader",
+  data() {
+    return {
+      input: ""
+    };
+  },
   components: {
     FontAwesomeIcon
   },
   methods: {
     search(e) {
-      console.log(e.target.value.trim());
-      let input = e.target.value.trim();
+      let input = this.input.trim();
       if (input.length === 64) {
         this.$router.push(`/block/${input}`);
       } else if (input.length === 60) {
@@ -224,6 +229,7 @@ export default {
         alert("invalid input");
         return;
       }
+      this.input = "";
     }
   }
 };
