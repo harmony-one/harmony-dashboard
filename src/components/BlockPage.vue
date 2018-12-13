@@ -14,7 +14,7 @@
 
 <template>
   <div class="block-page explorer-page page">
-    <div class="block-body">
+    <div class="block-body explorer-body">
       <div class="container" v-if="block">
         <h1>Block #{{ block.height }}</h1>
         <div class="hash">
@@ -86,6 +86,9 @@
           </tr>
         </table>
       </div>
+      <div class="container" v-else>
+        <loading-message/>
+      </div>
     </div>
   </div>
 </template>
@@ -94,6 +97,7 @@
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import store from "../store";
 import service from "../service";
+import LoadingMessage from "./LoadingMessage";
 
 export default {
   name: "BlockPage",
@@ -103,7 +107,8 @@ export default {
     };
   },
   components: {
-    FontAwesomeIcon
+    FontAwesomeIcon,
+    LoadingMessage
   },
   mounted() {
     service

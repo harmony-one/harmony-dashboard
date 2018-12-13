@@ -14,7 +14,7 @@
 
 <template>
   <div class="address-page explorer-page page">
-    <div class="address-body">
+    <div class="address-body explorer-body">
       <div class="container" v-if="address">
         <h1>Address</h1>
         <div class="hash">
@@ -58,6 +58,9 @@
           </tr>
         </table>
       </div>
+      <div class="container" v-else>
+        <loading-message/>
+      </div>
     </div>
   </div>
 </template>
@@ -66,6 +69,7 @@
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import store from "../store";
 import service from "../service";
+import LoadingMessage from "./LoadingMessage";
 
 export default {
   name: "AddressPage",
@@ -75,7 +79,8 @@ export default {
     };
   },
   components: {
-    FontAwesomeIcon
+    FontAwesomeIcon,
+    LoadingMessage
   },
   mounted() {
     service

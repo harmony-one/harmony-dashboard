@@ -24,10 +24,48 @@ body,
 }
 
 .page {
-  flex: 1;
+  flex: 1 0 auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(359deg);
+  }
+}
+
+.loading-spinner {
+  position: relative;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    margin-top: -50%;
+    margin-left: -50%;
+    border-radius: 50%;
+    border: 0.05em solid #fff;
+    border-top-color: var(--color-link);
+    animation: spin 0.8s linear infinite;
+  }
 }
 
 .explorer-page {
+  display: flex;
+  flex-direction: column;
+  .explorer-body {
+    flex: 1;
+  }
   .hash {
     margin: @space-md 0;
   }
@@ -41,6 +79,9 @@ body,
     width: 100%;
     text-align: left;
     margin-bottom: 3em;
+    .td-title {
+      font-weight: bold;
+    }
     th,
     td {
       padding: @space-sm;

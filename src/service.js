@@ -8,8 +8,17 @@ function sendPost(url, params, config) {
     return axios.post(backendApiUrl + url, params, config);
 }
 
+// For test: asios.get('...').delay(1000)
+Promise.prototype.delay = function(time) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(this);
+        }, time);
+    });
+}
+
 function sendGet(url, params) {
-    return axios.get(backendApiUrl + url, params);
+    return axios.get(backendApiUrl + url, params).delay(2000);
 }
 
 export default {

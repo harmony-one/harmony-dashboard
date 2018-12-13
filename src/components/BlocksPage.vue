@@ -14,8 +14,8 @@
 
 <template>
   <div class="blocks-page explorer-page page">
-    <div class="blocks-body">
-      <div class="container">
+    <div class="blocks-body explorer-body">
+      <div class="container" v-if="globalData.blocks.length">
         <h1>Latest Blocks</h1>
         <table class="explorer-table">
           <tr>
@@ -34,6 +34,9 @@
           </tr>
         </table>
       </div>
+      <div class="container" v-else>
+        <loading-message/>
+      </div>
     </div>
   </div>
 </template>
@@ -42,6 +45,7 @@
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import store from "../store";
 import service from "../service";
+import LoadingMessage from "./LoadingMessage";
 
 export default {
   name: "BlocksPage",
@@ -51,7 +55,8 @@ export default {
     };
   },
   components: {
-    FontAwesomeIcon
+    FontAwesomeIcon,
+    LoadingMessage
   },
   mounted() {
     service.getBlocks();
