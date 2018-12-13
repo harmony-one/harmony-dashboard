@@ -9,6 +9,7 @@
 
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: #dfdfdf;
 }
 
 html,

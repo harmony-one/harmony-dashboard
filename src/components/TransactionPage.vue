@@ -1,16 +1,6 @@
 <style scoped lang="less">
 @import "../less/common.less";
 
-.transaction-page {
-  background-color: #dfdfdf;
-  .navbar-fixed-top {
-    background-color: #262627;
-  }
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
-}
-
 .transaction-body {
   flex: 1;
   width: 100%;

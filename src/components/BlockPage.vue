@@ -1,13 +1,6 @@
 <style scoped lang="less">
 @import "../less/common.less";
 
-.block-page {
-  background-color: #dfdfdf;
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
-}
-
 .block-body {
   flex: 1;
   width: 100%;

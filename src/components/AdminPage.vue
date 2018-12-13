@@ -2,10 +2,6 @@
 @import "../less/common.less";
 
 .admin-page {
-  background-color: #dfdfdf;
-  .navbar-fixed-top {
-    background-color: #262627;
-  }
   display: flex;
   flex-direction: column;
   min-height: 100%;

@@ -1,10 +1,6 @@
 <style scoped lang="less">
 @import "../less/common.less";
 
-.blocks-page {
-  background-color: #dfdfdf;
-}
-
 .blocks-body {
   flex: 1;
   width: 100%;
@@ -44,7 +40,7 @@
             <th>Height</th>
             <th>Timestamp</th>
             <th class="text-right">Transactions</th>
-            <th class="text-right">Size</th>
+            <th class="text-right">Size (bytes)</th>
           </tr>
           <tr class="container" v-for="block in globalData.blocks" :key="block.id">
             <td>
