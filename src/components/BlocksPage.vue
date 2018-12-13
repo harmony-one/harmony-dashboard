@@ -9,33 +9,15 @@
   color: var(--primary-text-color);
   display: flex;
   padding-top: 6em;
-
-  h1 {
-    margin-bottom: @space-sm;
-  }
-
-  .blocks-table {
-    border-collapse: collapse;
-    width: 100%;
-    text-align: left;
-    margin-bottom: 3em;
-    th,
-    td {
-      padding: @space-sm;
-    }
-    th {
-      border-bottom: solid 1px var(--color-border);
-    }
-  }
 }
 </style>
 
 <template>
-  <div class="blocks-page page">
+  <div class="blocks-page explorer-page page">
     <div class="blocks-body">
       <div class="container">
         <h1>Latest Blocks</h1>
-        <table class="blocks-table">
+        <table class="explorer-table">
           <tr>
             <th>Height</th>
             <th>Timestamp</th>

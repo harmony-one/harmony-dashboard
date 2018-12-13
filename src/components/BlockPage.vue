@@ -9,35 +9,21 @@
   color: var(--primary-text-color);
   display: flex;
   padding-top: 6em;
-
-  .block-hash {
-    margin: @space-md 0;
-  }
-
-  h2 {
-    margin: @space-sm 0;
-  }
-
-  .block-table {
-    td.td-title {
-      font-weight: bold;
-    }
-  }
 }
 </style>
 
 <template>
-  <div class="block-page page">
+  <div class="block-page explorer-page page">
     <div class="block-body">
       <div class="container" v-if="block">
         <h1>Block #{{ block.height }}</h1>
-        <div class="block-hash">
+        <div class="hash">
           <b>Block Hash</b>
           {{ block.hash }}
         </div>
 
         <h2>Summary</h2>
-        <table class="block-table">
+        <table class="explorer-table">
           <tr>
             <td class="td-title">Number of Transactions</td>
             <td>{{ block.txCount }}</td>
@@ -77,7 +63,7 @@
         </table>
 
         <h2>Transactions</h2>
-        <table class="transactions-table">
+        <table class="explorer-table">
           <tr>
             <th>TxHash</th>
             <th>Age</th>

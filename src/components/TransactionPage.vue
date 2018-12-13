@@ -9,38 +9,21 @@
   color: var(--primary-text-color);
   display: flex;
   padding-top: 6em;
-
-  .tx-hash {
-    margin: @space-md 0;
-  }
-
-  .tx-table {
-    border-collapse: collapse;
-    width: 100%;
-    text-align: left;
-    margin-bottom: 3em;
-    td.td-title {
-      font-weight: bold;
-    }
-    td {
-      padding: @space-sm;
-    }
-  }
 }
 </style>
 
 <template>
-  <div class="transaction-page page">
+  <div class="transaction-page explorer-page page">
     <div class="transaction-body">
       <div class="container" v-if="transaction">
         <h1>Transaction</h1>
-        <div class="tx-hash">
+        <div class="hash">
           <b>Transaction Hash</b>
           {{ transaction.hash }}
         </div>
 
         <h2>Summary</h2>
-        <table class="tx-table">
+        <table class="explorer-table">
           <tr>
             <td class="td-title">Size</td>
             <td>{{ transaction.bytes }} (bytes)</td>

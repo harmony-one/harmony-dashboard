@@ -26,6 +26,31 @@ body,
 .page {
   flex: 1;
 }
+
+.explorer-page {
+  .hash {
+    margin: @space-md 0;
+  }
+  h1,
+  h2 {
+    margin: @space-sm 0;
+  }
+
+  .explorer-table {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 3em;
+    th,
+    td {
+      padding: @space-sm;
+      border-top: solid 1px var(--color-border);
+    }
+    th {
+      border-bottom: solid 1px var(--color-border);
+    }
+  }
+}
 </style>
 <template>
   <div class="app">

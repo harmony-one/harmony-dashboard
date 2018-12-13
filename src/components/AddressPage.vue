@@ -9,38 +9,21 @@
   color: var(--primary-text-color);
   display: flex;
   padding-top: 6em;
-
-  .tx-hash {
-    margin: @space-md 0;
-  }
-
-  .tx-table {
-    border-collapse: collapse;
-    width: 100%;
-    text-align: left;
-    margin-bottom: 3em;
-    td.td-title {
-      font-weight: bold;
-    }
-    td {
-      padding: @space-sm;
-    }
-  }
 }
 </style>
 
 <template>
-  <div class="address-page page">
+  <div class="address-page explorer-page page">
     <div class="address-body">
       <div class="container" v-if="address">
         <h1>Address</h1>
-        <div class="tx-hash">
+        <div class="hash">
           <b>address Hash</b>
           {{ address.hash }}
         </div>
 
         <h2>Summary</h2>
-        <table class="tx-table">
+        <table class="explorer-table">
           <tr>
             <td class="td-title">Balance</td>
             <td>{{ address.balance }}</td>
@@ -52,7 +35,7 @@
         </table>
 
         <h2>Transactions</h2>
-        <table class="transactions-table">
+        <table class="explorer-table">
           <tr>
             <th>TxHash</th>
             <th>Age</th>
