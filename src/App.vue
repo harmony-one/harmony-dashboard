@@ -66,19 +66,27 @@ body,
   .explorer-body {
     flex: 1;
   }
-  .hash {
-    margin: @space-md 0;
-  }
-  h1,
-  h2 {
-    margin: @space-sm 0;
-  }
 
+  .explorer-card {
+    .card();
+    padding: @space-md @space-lg;
+    h1 {
+      margin-bottom: @space-sm;
+      font-size: 1.5em;
+    }
+    h2 {
+      font-size: 1.3em;
+      margin: @space-sm 0;
+    }
+    margin-bottom: @space-md;
+    section + section {
+      margin-top: @space-lg;
+    }
+  }
   .explorer-table {
     border-collapse: collapse;
     width: 100%;
     text-align: left;
-    margin-bottom: 3em;
     .td-title {
       font-weight: bold;
     }

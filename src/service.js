@@ -18,7 +18,7 @@ Promise.prototype.delay = function(time) {
 }
 
 function sendGet(url, params) {
-    return axios.get(backendApiUrl + url, params).delay(2000);
+    return axios.get(backendApiUrl + url, params).delay(500);
 }
 
 export default {

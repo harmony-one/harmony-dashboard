@@ -16,23 +16,27 @@
   <div class="blocks-page explorer-page page">
     <div class="blocks-body explorer-body">
       <div class="container" v-if="globalData.blocks.length">
-        <h1>Latest Blocks</h1>
-        <table class="explorer-table">
-          <tr>
-            <th>Height</th>
-            <th>Timestamp</th>
-            <th class="text-right">Transactions</th>
-            <th class="text-right">Size (bytes)</th>
-          </tr>
-          <tr class="container" v-for="block in globalData.blocks" :key="block.id">
-            <td>
-              <router-link :to="'block/' + block.id">{{block.height}}</router-link>
-            </td>
-            <td>{{ block.timestamp }}</td>
-            <td class="text-right">{{ block.txCount }}</td>
-            <td class="text-right">{{ block.size }}</td>
-          </tr>
-        </table>
+        <div class="explorer-card">
+          <h1>Latest Blocks</h1>
+          <table class="explorer-table">
+            <tr>
+              <th>Shard</th>
+              <th>Height</th>
+              <th>Timestamp</th>
+              <th class="text-right">Transactions</th>
+              <th class="text-right">Size (bytes)</th>
+            </tr>
+            <tr class="container" v-for="block in globalData.blocks" :key="block.id">
+              <td>{{ block.shardID }}</td>
+              <td>
+                <router-link :to="'block/' + block.id">{{block.height}}</router-link>
+              </td>
+              <td>{{ block.timestamp }}</td>
+              <td class="text-right">{{ block.txCount }}</td>
+              <td class="text-right">{{ block.size }}</td>
+            </tr>
+          </table>
+        </div>
       </div>
       <div class="container" v-else>
         <loading-message/>

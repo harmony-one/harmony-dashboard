@@ -16,47 +16,51 @@
   <div class="address-page explorer-page page">
     <div class="address-body explorer-body">
       <div class="container" v-if="address">
-        <h1>Address</h1>
-        <div class="hash">
-          <b>address Hash</b>
-          {{ address.hash }}
+        <div class="explorer-card">
+          <h1>Address</h1>
+          <section>
+            <table class="explorer-table">
+              <tr>
+                <td class="td-title">Hash</td>
+                <td>{{ address.hash }}</td>
+              </tr>
+              <tr>
+                <td class="td-title">Balance</td>
+                <td>{{ address.balance }}</td>
+              </tr>
+              <tr>
+                <td class="td-title">Transactions</td>
+                <td>{{ address.txCount }}</td>
+              </tr>
+            </table>
+          </section>
+
+          <section>
+            <h2>Transactions</h2>
+            <table class="explorer-table">
+              <tr>
+                <th>TxHash</th>
+                <th>Age</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Value</th>
+              </tr>
+              <tr v-for="tx in address.txs" :key="tx.id">
+                <td>
+                  <router-link :to="'/tx/' + tx.id">{{ tx.id | shorten }}</router-link>
+                </td>
+                <td>{{ tx.timestamp }}</td>
+                <td>
+                  <router-link :to="'/address/' + tx.from">{{ tx.from | shorten }}</router-link>
+                </td>
+                <td>
+                  <router-link :to="'/address/' + tx.to">{{ tx.to | shorten }}</router-link>
+                </td>
+                <td>{{ tx.value }}</td>
+              </tr>
+            </table>
+          </section>
         </div>
-
-        <h2>Summary</h2>
-        <table class="explorer-table">
-          <tr>
-            <td class="td-title">Balance</td>
-            <td>{{ address.balance }}</td>
-          </tr>
-          <tr>
-            <td class="td-title">Transactions</td>
-            <td>{{ address.txCount }}</td>
-          </tr>
-        </table>
-
-        <h2>Transactions</h2>
-        <table class="explorer-table">
-          <tr>
-            <th>TxHash</th>
-            <th>Age</th>
-            <th>From</th>
-            <th>To</th>
-            <th>Value</th>
-          </tr>
-          <tr v-for="tx in address.txs" :key="tx.id">
-            <td>
-              <router-link :to="'/tx/' + tx.id">{{ tx.id | shorten }}</router-link>
-            </td>
-            <td>{{ tx.timestamp }}</td>
-            <td>
-              <router-link :to="'/address/' + tx.from">{{ tx.from | shorten }}</router-link>
-            </td>
-            <td>
-              <router-link :to="'/address/' + tx.to">{{ tx.to | shorten }}</router-link>
-            </td>
-            <td>{{ tx.value }}</td>
-          </tr>
-        </table>
       </div>
       <div class="container" v-else>
         <loading-message/>
