@@ -84,22 +84,22 @@
                 <th class="text-right">Transactions</th>
                 <th class="text-right">Size (bytes)</th>
               </tr>
-              <transition-group name="fade" tag="tbody">
-                <tr
-                  class="container"
-                  v-for="block in globalData.blocks.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize)"
-                  :key="block.hash"
-                >
-                  <td>{{ block.shardID }}</td>
-                  <td>
-                    <router-link :to="'block/' + block.hash">{{block.height}}</router-link>
-                  </td>
-                  <td>{{ block.timestamp | timestamp }}</td>
-                  <td>{{ getAge(block.timestamp) }}</td>
-                  <td class="text-right">{{ block.txCount }}</td>
-                  <td class="text-right">{{ block.bytes }}</td>
-                </tr>
-              </transition-group>
+              <!-- <transition-group name="fade" tag="tbody"> -->
+              <tr
+                class="container"
+                v-for="block in globalData.blocks.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize)"
+                :key="block.hash"
+              >
+                <td>{{ block.shardID }}</td>
+                <td>
+                  <router-link :to="'block/' + block.hash">{{block.height}}</router-link>
+                </td>
+                <td>{{ block.timestamp | timestamp }}</td>
+                <td>{{ getAge(block.timestamp) }}</td>
+                <td class="text-right">{{ block.txCount }}</td>
+                <td class="text-right">{{ block.bytes }}</td>
+              </tr>
+              <!-- </transition-group> -->
             </table>
           </div>
         </div>
