@@ -12,7 +12,7 @@ import faChevronLeft from '@fortawesome/fontawesome-free-solid/faChevronLeft';
 import faChevronRight from '@fortawesome/fontawesome-free-solid/faChevronRight';
 import Highcharts from "highcharts";
 import HighchartsVue from 'highcharts-vue';
-import { formatDecimal, formatNumber, shortenHash } from './util';
+import "./filter";
 
 FontAwesome.library.add(FontAwesomeBrands, faSpinner, faSearch, faChevronLeft, faChevronRight);
 
@@ -21,10 +21,6 @@ Vue.use(VueScrollTo, {
 });
 
 Vue.config.productionTip = false
-
-Vue.filter('decimal', formatDecimal);
-Vue.filter('number', formatNumber);
-Vue.filter('shorten', shortenHash);
 
 Vue.component('shard-summary', require('./components/ShardSummary.vue').default);
 Vue.component('global-summary', require('./components/GlobalSummary.vue').default);

@@ -16,6 +16,7 @@
 @color-brand: #007cdc;
 @btn-primary-text-color: #fff;
 @bg-color-disabled: #888;
+@color-disabled-btn-light-text: #aaa;
 * {
     box-sizing: border-box;
 }
@@ -47,6 +48,12 @@
 .flex-hv-center {
     display: flex;
     justify-content: center;
+    align-items: center;
+}
+
+.flex-horizontal {
+    display: flex;
+    flex-direction: row;
     align-items: center;
 }
 
@@ -183,12 +190,22 @@ a {
     &:disabled {
         pointer-events: none;
     }
+    &.btn-icon-only {
+        .flex-hv-center;
+        display: inline-flex;
+        width: 2em;
+        height: 2em;
+        padding: 0;
+    }
     &.btn-light {
         &:hover {
             background-color: rgba(0, 0, 0, .08);
         }
         &.btn-danger {
             color: @color-danger;
+        }
+        &:disabled {
+            color: @color-disabled-btn-light-text;
         }
     }
     &.btn-default {

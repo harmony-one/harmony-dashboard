@@ -77,7 +77,7 @@
                 <td>
                   <router-link :to="'/tx/' + tx.hash">{{ tx.hash | shorten }}</router-link>
                 </td>
-                <td>{{ tx.timestamp }}</td>
+                <td>{{ tx.timestamp | timestamp }}</td>
                 <td>
                   <router-link :to="'/address/' + tx.from">{{ tx.from | shorten }}</router-link>
                 </td>

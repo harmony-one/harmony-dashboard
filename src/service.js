@@ -3,6 +3,8 @@ import store from './store';
 import explorerStore from './explorer/store';
 
 const BACK_END_URL = `${window.location.hostname}:3000`;
+const DASHBOARD_BACKEND_URL = `${window.location.hostname}:3000`;
+const EXPLORER_BACKEND_URL = `${window.location.hostname}:4000`;
 const backendApiUrl = `http://${BACK_END_URL}`;
 
 function sendPost(url, params, config) {
@@ -24,6 +26,7 @@ function sendGet(url, params) {
 
 export default {
     BACK_END_URL,
+    EXPLORER_BACKEND_URL,
     reset(secret) {
         return sendPost('/reset', { secret });
     },
