@@ -187,8 +187,8 @@
       <div class="navbar-header">
         <router-link class="navbar-brand" to="/"></router-link>
         <div class="navbar-actions">
-          <router-link class="navbar-nav" to="/dashboard">Dashboard</router-link>
-          <router-link class="navbar-nav" to="/blocks">Explorer</router-link>
+          <router-link class="navbar-nav" to="/dashboard" v-if="showNav">Dashboard</router-link>
+          <router-link class="navbar-nav" to="/blocks" v-if="showNav">Explorer</router-link>
           <div class="search">
             <font-awesome-icon class="search-icon" icon="search"/>
             <input
@@ -210,7 +210,8 @@ export default {
   name: "SiteHeader",
   data() {
     return {
-      input: ""
+      input: "",
+      showNav: localStorage.getItem("nav")
     };
   },
   components: {
