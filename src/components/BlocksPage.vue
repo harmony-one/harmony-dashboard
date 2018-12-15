@@ -25,6 +25,14 @@
       margin-left: @space-md;
     }
   }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: all 1s;
+  }
+  .fade-enter, .fade-leave-to /* .list-leave-active below version 2.1.8 */ {
+    opacity: 0.2;
+  }
 }
 </style>
 
@@ -62,19 +70,21 @@
               <th class="text-right">Transactions</th>
               <th class="text-right">Size (bytes)</th>
             </tr>
-            <tr
-              class="container"
-              v-for="block in globalData.blocks.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize)"
-              :key="block.hash"
-            >
-              <td>{{ block.shardID }}</td>
-              <td>
-                <router-link :to="'block/' + block.hash">{{block.height}}</router-link>
-              </td>
-              <td>{{ block.timestamp | timestamp }}</td>
-              <td class="text-right">{{ block.txCount }}</td>
-              <td class="text-right">{{ block.size }}</td>
-            </tr>
+            <transition-group name="fade" tag="tbody">
+              <tr
+                class="container"
+                v-for="block in globalData.blocks.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize)"
+                :key="block.hash"
+              >
+                <td>{{ block.shardID }}</td>
+                <td>
+                  <router-link :to="'block/' + block.hash">{{block.height}}</router-link>
+                </td>
+                <td>{{ block.timestamp | timestamp }}</td>
+                <td class="text-right">{{ block.txCount }}</td>
+                <td class="text-right">{{ block.size }}</td>
+              </tr>
+            </transition-group>
           </table>
         </div>
       </div>
