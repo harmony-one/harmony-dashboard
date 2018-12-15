@@ -14,6 +14,7 @@
     align-items: flex-end;
     .timer {
       margin-right: @space-lg;
+      color: #666;
     }
   }
   .pagination-controls {
@@ -29,18 +30,18 @@
     }
   }
 
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: all 1s;
-  }
-  .fade-enter /* .list-leave-active below version 2.1.8 */ {
-    opacity: 0.2;
-    transform: translateY(-0.5em);
-  }
-  .fade-leave-to {
-    opacity: 0.2;
-    transform: translateY(0.5em);
-  }
+  // .fade-enter-active,
+  // .fade-leave-active {
+  //   transition: all 1s;
+  // }
+  // .fade-enter {
+  //   opacity: 0.2;
+  //   transform: translateY(-0.5em);
+  // }
+  // .fade-leave-to {
+  //   opacity: 0.2;
+  //   transform: translateY(0.5em);
+  // }
 }
 </style>
 
@@ -79,6 +80,7 @@
                 <th>Shard</th>
                 <th>Height</th>
                 <th>Timestamp</th>
+                <th>Age</th>
                 <th class="text-right">Transactions</th>
                 <th class="text-right">Size (bytes)</th>
               </tr>
@@ -93,8 +95,9 @@
                     <router-link :to="'block/' + block.hash">{{block.height}}</router-link>
                   </td>
                   <td>{{ block.timestamp | timestamp }}</td>
+                  <td>{{ getAge(block.timestamp) }}</td>
                   <td class="text-right">{{ block.txCount }}</td>
-                  <td class="text-right">{{ block.size }}</td>
+                  <td class="text-right">{{ block.bytes }}</td>
                 </tr>
               </transition-group>
             </table>
@@ -113,6 +116,7 @@ import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import store from "../explorer/store";
 import service from "../service";
 import LoadingMessage from "./LoadingMessage";
+import moment from "moment";
 const ws = new WebSocket(`ws://${service.EXPLORER_BACKEND_URL}`);
 
 export default {
@@ -178,6 +182,19 @@ export default {
       this.timer = setInterval(() => {
         this.now = Date.now();
       }, 1000);
+    },
+    getAge(timestamp) {
+      let d = moment.duration(this.now - timestamp);
+      let arr = [d.days(), d.hours(), d.minutes(), d.seconds()];
+      let units = ["day", "hour", "minute", "second"];
+      let s = arr
+        .map((time, i) => {
+          if (!time) return "";
+          return `${time} ${units[i]}${time > 1 ? "s" : ""}`;
+        })
+        .join(" ")
+        .trim();
+      return s ? s + " ago" : "just now";
     }
   }
 };

@@ -126,7 +126,8 @@ body,
       color: #ccc;
       background-color: #282828;
     }
-    tr + tr {
+    tr + tr,
+    tbody {
       border-top: solid 1px #2a2a2a;
     }
   }

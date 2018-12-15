@@ -44,10 +44,6 @@
                   <td>{{ block.merkleRoot }}</td>
                 </tr>
                 <tr>
-                  <td class="td-title">Bits</td>
-                  <td>{{ block.bits }}</td>
-                </tr>
-                <tr>
                   <td class="td-title">Size (bytes)</td>
                   <td>{{ block.bytes }}</td>
                 </tr>
