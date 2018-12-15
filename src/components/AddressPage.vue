@@ -71,7 +71,7 @@
 
 <script>
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
-import store from "../store";
+import store from "../explorer/store";
 import service from "../service";
 import LoadingMessage from "./LoadingMessage";
 

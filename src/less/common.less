@@ -10,6 +10,12 @@
 @input-border-color: #bdc7d8;
 @input-focus-border-color: #80bdff;
 @input-focus-box-shadow-color: rgba(0, 123, 255, .25);
+@color-error: #f05458;
+@color-danger: @color-error;
+@color-danger-hover: darken(@color-danger, 10%);
+@color-brand: #007cdc;
+@btn-primary-text-color: #fff;
+@bg-color-disabled: #888;
 * {
     box-sizing: border-box;
 }
@@ -162,5 +168,61 @@ a {
     text-decoration: none;
     &:hover {
         text-decoration: underline;
+    }
+}
+
+.btn {
+    appearance: none;
+    background-color: transparent;
+    border: solid 1px transparent;
+    outline: 0;
+    cursor: pointer;
+    transition: background-color @anim-duration @anim-easing;
+    padding: @space-sm @space-md;
+    &.disabled,
+    &:disabled {
+        pointer-events: none;
+    }
+    &.btn-light {
+        &:hover {
+            background-color: rgba(0, 0, 0, .08);
+        }
+        &.btn-danger {
+            color: @color-danger;
+        }
+    }
+    &.btn-default {
+        border: solid 1px var(--color-border);
+        background-color: #fff;
+        &:hover {
+            background-color: #ddd;
+        }
+    }
+    &.btn-primary {
+        background-color: @color-brand;
+        color: @btn-primary-text-color;
+        &:hover {
+            background-color: darken(@color-brand, 10%);
+        }
+        &.disabled,
+        &:disabled {
+            background-color: @bg-color-disabled;
+            cursor: default;
+        }
+        &.btn-danger {
+            border: 1px solid transparent;
+            background-color: @color-danger;
+            color: @btn-primary-text-color;
+            &:hover {
+                background-color: @color-danger-hover;
+            }
+        }
+    }
+    &.btn-link {
+        padding: @space-xs @space-sm;
+        color: @color-brand;
+        &:hover {
+            background-color: rgba(0, 0, 0, .08);
+        }
     }
 }

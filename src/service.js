@@ -1,5 +1,6 @@
 import axios from 'axios';
 import store from './store';
+import explorerStore from './explorer/store';
 
 const BACK_END_URL = `${window.location.hostname}:3000`;
 const backendApiUrl = `http://${BACK_END_URL}`;
@@ -29,14 +30,13 @@ export default {
     getBlocks() {
         return sendGet('/blocks').then(res => {
             let blocks = res.data.blocks;
-            store.setBlocks(blocks);
+            explorerStore.setBlocks(blocks);
             return blocks;
         });
     },
     getBlock(id) {
         return sendGet('/block', { params: { id } }).then(res => {
             let block = res.data.block;
-            store.setBlock(block);
             return block;
         });
     },

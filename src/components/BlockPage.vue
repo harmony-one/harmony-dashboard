@@ -73,9 +73,9 @@
                 <th>To</th>
                 <th>Value</th>
               </tr>
-              <tr v-for="tx in block.txs" :key="tx.id">
+              <tr v-for="tx in block.txs" :key="tx.hash">
                 <td>
-                  <router-link :to="'/tx/' + tx.id">{{ tx.id | shorten }}</router-link>
+                  <router-link :to="'/tx/' + tx.hash">{{ tx.hash | shorten }}</router-link>
                 </td>
                 <td>{{ tx.timestamp }}</td>
                 <td>
@@ -99,7 +99,7 @@
 
 <script>
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
-import store from "../store";
+import store from "../explorer/store";
 import service from "../service";
 import LoadingMessage from "./LoadingMessage";
 
@@ -115,9 +115,9 @@ export default {
     LoadingMessage
   },
   mounted() {
-    service
-      .getBlock(this.$route.params.blockId)
-      .then(block => (this.block = block));
+    service.getBlock(this.$route.params.blockId).then(block => {
+      this.block = block;
+    });
   }
 };
 </script>
