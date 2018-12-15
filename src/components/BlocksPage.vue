@@ -184,7 +184,7 @@ export default {
       }, 1000);
     },
     getAge(timestamp) {
-      let d = moment.duration(this.now - timestamp);
+      let d = moment.duration(Math.max(this.now - timestamp, 0));
       let arr = [d.days(), d.hours(), d.minutes(), d.seconds()];
       let units = ["day", "hour", "minute", "second"];
       let s = arr
