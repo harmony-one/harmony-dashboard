@@ -184,7 +184,9 @@ export default {
       }, 1000);
     },
     getAge(timestamp) {
-      let d = moment.duration(Math.max(this.now - timestamp, 0));
+      let d = moment.duration(
+        Math.max(this.globalData.lastUpdateTime - timestamp, 0)
+      );
       let arr = [d.days(), d.hours(), d.minutes(), d.seconds()];
       let units = ["day", "hour", "minute", "second"];
       let s = arr
@@ -194,7 +196,7 @@ export default {
         })
         .join(" ")
         .trim();
-      return s ? s + " ago" : "just now";
+      return `> ${s ? s : "1 seconds"} ago`;
     }
   }
 };
