@@ -54,5 +54,11 @@ export default {
             let address = res.data.address;
             return address;
         });
+    },
+    search(input) {
+        return sendGet('/search', { params: { input }}).then(res => {
+            let result = res.data.result;
+            return result;
+        });
     }
 };

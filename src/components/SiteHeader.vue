@@ -193,7 +193,7 @@
             <font-awesome-icon class="search-icon" icon="search"/>
             <input
               type="text"
-              placeholder="Block Hash / Tx Hash / Address ..."
+              placeholder="Block Hash / Tx Hash ..."
               v-model="input"
               @keyup.enter="search"
             >
@@ -206,6 +206,7 @@
 
 <script>
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
+import service from "../service";
 export default {
   name: "SiteHeader",
   data() {
@@ -220,17 +221,26 @@ export default {
   methods: {
     search(e) {
       let input = this.input.trim();
-      if (input.length === 64) {
-        this.$router.push(`/block/${input}`);
-      } else if (input.length === 60) {
-        this.$router.push(`/tx/${input}`);
-      } else if (input.length === 42) {
-        this.$router.push(`/address/${input}`);
-      } else {
+      this.input = "";
+      if (!input) {
+        //  || (input.length !== 32 && input.length !== 20)
         alert("invalid input");
         return;
       }
-      this.input = "";
+      service
+        .search(input)
+        .then(result => {
+          if (result.type === "block") {
+            this.$router.push(`/block/${input}`);
+          } else if (result.type === "tx") {
+            this.$router.push(`/tx/${input}`);
+          } else if (result.type === "address") {
+            this.$router.push(`/address/${input}`);
+          }
+        })
+        .catch(r => {
+          alert("Not Found!");
+        });
     }
   }
 };
