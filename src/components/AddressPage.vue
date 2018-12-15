@@ -55,10 +55,18 @@
                   </td>
                   <td>{{ tx.timestamp }}</td>
                   <td>
-                    <router-link :to="'/address/' + tx.from">{{ tx.from | shorten }}</router-link>
+                    <router-link
+                      tag="span"
+                      class="disabled"
+                      :to="'/address/' + tx.from"
+                    >{{ tx.from | shorten }}</router-link>
                   </td>
                   <td>
-                    <router-link :to="'/address/' + tx.to">{{ tx.to | shorten }}</router-link>
+                    <router-link
+                      tag="span"
+                      class="disabled"
+                      :to="'/address/' + tx.to"
+                    >{{ tx.to | shorten }}</router-link>
                   </td>
                   <td>{{ tx.value }}</td>
                 </tr>

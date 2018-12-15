@@ -151,6 +151,7 @@ export default {
         store.reset();
       } else if (data.cmd === "blocks") {
         store.update(data);
+        console.log(data.blocks);
       }
     });
 

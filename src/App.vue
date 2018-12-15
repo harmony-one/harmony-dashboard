@@ -87,6 +87,13 @@ body,
         text-decoration: none;
       }
     }
+    span.disabled {
+      &,
+      &:hover {
+        color: inherit;
+        pointer-events: none;
+      }
+    }
     h1 {
       font-size: 1.5em;
     }
