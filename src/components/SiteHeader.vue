@@ -131,12 +131,9 @@
     }
     .search {
       width: 15em;
-      border-radius: 2em;
-      background-color: #fff;
       margin-left: @space-md;
       flex: none;
       height: 2em;
-      padding: 0 @space-sm 0 @space-lg;
       overflow: hidden;
       position: relative;
       .search-icon {
@@ -147,13 +144,22 @@
         color: var(--color-gray-icon);
       }
       input[type="text"] {
+        border-radius: 2em;
+        padding: @space-sm @space-md;
+        padding-left: 3em;
         border: 0;
         width: 100%;
         height: 100%;
+        background-color: #333;
+        transition: background-color @anim-duration @anim-easing;
         &:focus {
           outline: none;
           box-shadow: none;
         }
+      }
+
+      input[type="text"]:focus {
+        background-color: #ddd;
       }
     }
   }

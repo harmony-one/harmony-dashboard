@@ -3,9 +3,11 @@ import Vue from 'vue';
 let store = {
     data: {
         blockMap: {}, // shardID to block
-        blocks: [] // all block merged in one array sorted by time stamp
+        blocks: [], // all block merged in one array sorted by time stamp
+        lastUpdateTime: null
     },
-    updateBlocks(blocks) {
+    update(data) {
+        let blocks = data.blocks;
         blocks.forEach((shardBlocks, i) => {
             if (!this.data.blockMap[i]) {
                 Vue.set(this.data.blockMap, i, []);
@@ -18,6 +20,7 @@ let store = {
             .sort((a, b) => b.timestamp - a.timestamp);
         // console.log(merged, merged.length);
         Vue.set(this.data, 'blocks', merged);
+        this.data.lastUpdateTime = data.lastUpdateTime;
     }
 };
 

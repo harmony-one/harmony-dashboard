@@ -9,12 +9,15 @@
   color: var(--primary-text-color);
   display: flex;
   padding-top: 6em;
-  .pull-left {
-    float: left;
-  }
-  .pagination-row {
+  header {
     .flex-horizontal;
-    margin: @space-sm 0;
+    align-items: flex-end;
+    .timer {
+      margin-right: @space-lg;
+    }
+  }
+  .pagination-controls {
+    .flex-horizontal;
     text-align: right;
     float: right;
     font-size: 0.8em;
@@ -30,8 +33,13 @@
   .fade-leave-active {
     transition: all 1s;
   }
-  .fade-enter, .fade-leave-to /* .list-leave-active below version 2.1.8 */ {
+  .fade-enter /* .list-leave-active below version 2.1.8 */ {
     opacity: 0.2;
+    transform: translateY(-0.5em);
+  }
+  .fade-leave-to {
+    opacity: 0.2;
+    transform: translateY(0.5em);
   }
 }
 </style>
@@ -42,8 +50,11 @@
       <div class="container" v-if="globalData.blocks.length">
         <div class="explorer-card">
           <header>
-            <h1 class="pull-left">Latest Blocks</h1>
-            <div class="pagination-row">
+            <h1 class="flex-grow">Latest Blocks</h1>
+            <div class="pagination-controls">
+              <div
+                class="timer"
+              >Updated {{ Math.round(Math.max((now - globalData.lastUpdateTime) / 1000, 0)) | number }}s ago...</div>
               <span class="total-block-num">{{ globalData.blocks.length }} blocks</span>
               <button
                 class="btn btn-light btn-icon-only"
@@ -62,30 +73,32 @@
               <span class="pagination-nums">{{ pageIndex + 1 }} / {{ length }}</span>
             </div>
           </header>
-          <table class="explorer-table">
-            <tr>
-              <th>Shard</th>
-              <th>Height</th>
-              <th>Timestamp</th>
-              <th class="text-right">Transactions</th>
-              <th class="text-right">Size (bytes)</th>
-            </tr>
-            <transition-group name="fade" tag="tbody">
-              <tr
-                class="container"
-                v-for="block in globalData.blocks.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize)"
-                :key="block.hash"
-              >
-                <td>{{ block.shardID }}</td>
-                <td>
-                  <router-link :to="'block/' + block.hash">{{block.height}}</router-link>
-                </td>
-                <td>{{ block.timestamp | timestamp }}</td>
-                <td class="text-right">{{ block.txCount }}</td>
-                <td class="text-right">{{ block.size }}</td>
+          <div class="explorer-card-body">
+            <table class="explorer-table">
+              <tr>
+                <th>Shard</th>
+                <th>Height</th>
+                <th>Timestamp</th>
+                <th class="text-right">Transactions</th>
+                <th class="text-right">Size (bytes)</th>
               </tr>
-            </transition-group>
-          </table>
+              <transition-group name="fade" tag="tbody">
+                <tr
+                  class="container"
+                  v-for="block in globalData.blocks.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize)"
+                  :key="block.hash"
+                >
+                  <td>{{ block.shardID }}</td>
+                  <td>
+                    <router-link :to="'block/' + block.hash">{{block.height}}</router-link>
+                  </td>
+                  <td>{{ block.timestamp | timestamp }}</td>
+                  <td class="text-right">{{ block.txCount }}</td>
+                  <td class="text-right">{{ block.size }}</td>
+                </tr>
+              </transition-group>
+            </table>
+          </div>
         </div>
       </div>
       <div class="container" v-else>
@@ -108,14 +121,22 @@ export default {
     return {
       globalData: store.data,
       pageIndex: 0,
-      pageSize: 50
+      pageSize: 50,
+      timer: null,
+      now: Date.now()
     };
   },
   components: {
     FontAwesomeIcon,
     LoadingMessage
   },
+  watch: {
+    globalData() {
+      this.resetTimer();
+    }
+  },
   mounted() {
+    this.resetTimer();
     ws.addEventListener("open", () => {
       ws.send("front-end: Hi.");
     });
@@ -125,7 +146,7 @@ export default {
       if (data.cmd === "reset") {
         store.reset();
       } else if (data.cmd === "blocks") {
-        store.updateBlocks(data.blocks);
+        store.update(data);
       }
     });
 
@@ -150,6 +171,13 @@ export default {
     next() {
       if (this.pageIndex === this.length - 1) return;
       this.pageIndex++;
+    },
+    resetTimer() {
+      clearInterval(this.timer);
+      this.now = Date.now();
+      this.timer = setInterval(() => {
+        this.now = Date.now();
+      }, 1000);
     }
   }
 };
