@@ -27,21 +27,21 @@
                 <td>{{ transaction.id }}</td>
               </tr>
               <tr>
-                <td class="td-title">Size</td>
-                <td>{{ transaction.bytes }} (bytes)</td>
+                <td class="td-title">Size (bytes)</td>
+                <td>{{ transaction.bytes }}</td>
               </tr>
-              <tr>
+              <!-- <tr>
                 <td class="td-title">Received Time</td>
                 <td>{{ transaction.receivedTime }}</td>
-              </tr>
+              </tr>-->
               <tr>
-                <td class="td-title">Mined Time</td>
-                <td>{{ transaction.minedTime }}</td>
+                <td class="td-title">Timestamp</td>
+                <td>{{ transaction.timestamp | timestamp }}</td>
               </tr>
               <tr>
                 <td class="td-title">Included In Block</td>
                 <td>
-                  <router-link :to="'/block/' + transaction.block">{{ transaction.block }}</router-link>
+                  <router-link :to="'/block/' + transaction.blockID">{{ transaction.blockID }}</router-link>
                 </td>
               </tr>
               <tr>

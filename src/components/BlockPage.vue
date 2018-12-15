@@ -37,7 +37,7 @@
                 </tr>
                 <tr>
                   <td class="td-title">Timestamp</td>
-                  <td>{{ block.timestamp }}</td>
+                  <td>{{ block.timestamp | timestamp }}</td>
                 </tr>
                 <tr>
                   <td class="td-title">Merkle Root</td>
@@ -67,7 +67,7 @@
               <table class="explorer-table">
                 <tr>
                   <th>TxHash</th>
-                  <th>Age</th>
+                  <th>Timestamp</th>
                   <th>From</th>
                   <th>To</th>
                   <th>Value</th>
