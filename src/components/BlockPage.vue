@@ -48,13 +48,13 @@
                 <td class="td-title">Size (bytes)</td>
                 <td>{{ block.bytes }}</td>
               </tr>
-              <tr>
+              <tr v-if="block.prevBlock">
                 <td class="td-title">Previous Block</td>
                 <td>
                   <router-link :to="'/block/' + block.prevBlock.id">{{ block.prevBlock.height }}</router-link>
                 </td>
               </tr>
-              <tr>
+              <tr v-if="block.nextBlock">
                 <td class="td-title">Next Block</td>
                 <td>
                   <router-link :to="'/block/' + block.nextBlock.id">{{ block.nextBlock.height }}</router-link>
