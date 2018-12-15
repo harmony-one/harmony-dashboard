@@ -88,11 +88,11 @@
               <tr
                 class="container"
                 v-for="block in globalData.blocks.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize)"
-                :key="block.hash"
+                :key="block.id"
               >
                 <td>{{ block.shardID }}</td>
                 <td>
-                  <router-link :to="'block/' + block.hash">{{block.height}}</router-link>
+                  <router-link :to="'block/' + block.id">{{block.height}}</router-link>
                 </td>
                 <td>{{ block.timestamp | timestamp }}</td>
                 <td>{{ getAge(block.timestamp) }}</td>

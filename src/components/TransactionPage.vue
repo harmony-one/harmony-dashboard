@@ -24,7 +24,7 @@
             <table class="explorer-table">
               <tr>
                 <td class="td-title">ID</td>
-                <td>{{ transaction.hash }}</td>
+                <td>{{ transaction.id }}</td>
               </tr>
               <tr>
                 <td class="td-title">Size</td>

@@ -25,7 +25,7 @@
               <table class="explorer-table">
                 <tr>
                   <td class="td-title">ID</td>
-                  <td>{{ block.hash }}</td>
+                  <td>{{ block.id }}</td>
                 </tr>
                 <tr>
                   <td class="td-title">Number of Transactions</td>
@@ -72,9 +72,9 @@
                   <th>To</th>
                   <th>Value</th>
                 </tr>
-                <tr v-for="tx in block.txs" :key="tx.hash">
+                <tr v-for="tx in block.txs" :key="tx.id">
                   <td>
-                    <router-link :to="'/tx/' + tx.hash">{{ tx.hash | shorten }}</router-link>
+                    <router-link :to="'/tx/' + tx.id">{{ tx.id | shorten }}</router-link>
                   </td>
                   <td>{{ tx.timestamp | timestamp }}</td>
                   <td>
