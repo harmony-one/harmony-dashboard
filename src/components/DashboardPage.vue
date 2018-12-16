@@ -46,10 +46,10 @@
 
 <script>
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
-import store from "../store";
-import service from "../service";
+import store from "../dashboard/store";
+import service from "../dashboard/service";
 import SiteFooter from "./SiteFooter";
-const ws = new WebSocket(`ws://${service.BACK_END_URL}`);
+const ws = new WebSocket(`ws://${service.BACKEND_URL}`);
 
 export default {
   name: "DashboardPage",

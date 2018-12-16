@@ -21,6 +21,11 @@ let store = {
         // console.log(merged, merged.length);
         Vue.set(this.data, 'blocks', merged);
         this.data.lastUpdateTime = data.lastUpdateTime;
+    },
+    reset() {
+        this.data.blockMap = {};
+        this.data.blocks = [];
+        this.data.lastUpdateTime = null;
     }
 };
 

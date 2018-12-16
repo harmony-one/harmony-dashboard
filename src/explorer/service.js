@@ -1,39 +1,26 @@
 import axios from 'axios';
 import store from './store';
-import explorerStore from './explorer/store';
 
-const BACK_END_URL = `${window.location.hostname}:3000`;
-const DASHBOARD_BACKEND_URL = `${window.location.hostname}:3000`;
-const EXPLORER_BACKEND_URL = `${window.location.hostname}:4000`;
-const backendApiUrl = `http://${BACK_END_URL}`;
+const BACKEND_URL = `${window.location.hostname}:4000`;
+const HTTP_BACKEND_URL = `http://${BACKEND_URL}`;
 
 function sendPost(url, params, config) {
-    return axios.post(backendApiUrl + url, params, config);
-}
-
-// For test: asios.get('...').delay(1000)
-Promise.prototype.delay = function(time) {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(this);
-        }, time);
-    });
+    return axios.post(HTTP_BACKEND_URL + url, params, config);
 }
 
 function sendGet(url, params) {
-    return axios.get(backendApiUrl + url, params).delay(500);
+    return axios.get(HTTP_BACKEND_URL + url, params).delay(500);
 }
 
 export default {
-    BACK_END_URL,
-    EXPLORER_BACKEND_URL,
+    BACKEND_URL,
     reset(secret) {
         return sendPost('/reset', { secret });
     },
     getBlocks() {
         return sendGet('/blocks').then(res => {
             let blocks = res.data.blocks;
-            explorerStore.setBlocks(blocks);
+            store.setBlocks(blocks);
             return blocks;
         });
     },

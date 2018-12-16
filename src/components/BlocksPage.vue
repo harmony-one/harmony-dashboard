@@ -114,10 +114,10 @@
 <script>
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import store from "../explorer/store";
-import service from "../service";
+import service from "../explorer/service";
 import LoadingMessage from "./LoadingMessage";
 import moment from "moment";
-const ws = new WebSocket(`ws://${service.EXPLORER_BACKEND_URL}`);
+const ws = new WebSocket(`ws://${service.BACKEND_URL}`);
 
 export default {
   name: "BlocksPage",

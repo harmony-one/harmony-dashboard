@@ -136,12 +136,12 @@
       height: 2em;
       overflow: hidden;
       position: relative;
+      color: #666;
       .search-icon {
         position: absolute;
         top: 50%;
         left: @space-sm;
         transform: translateY(-50%);
-        color: var(--color-gray-icon);
       }
       input[type="text"] {
         border-radius: 2em;
@@ -212,7 +212,7 @@
 
 <script>
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
-import service from "../service";
+import service from "../explorer/service";
 export default {
   name: "SiteHeader",
   data() {

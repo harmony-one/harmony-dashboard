@@ -76,7 +76,8 @@
 
 <script>
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
-import service from "../service";
+import DashboardService from "../dashboard/service";
+import ExplorerService from "../explorer/service";
 import SiteFooter from "./SiteFooter";
 
 export default {
@@ -93,7 +94,10 @@ export default {
   mounted() {},
   methods: {
     reset() {
-      service.reset(this.secret).then(
+      Promise.all([
+        DashboardService.reset(this.secret),
+        ExplorerService.reset(this.secret)
+      ]).then(
         () => {
           alert("Reset Successful!");
         },
