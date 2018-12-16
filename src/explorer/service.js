@@ -9,7 +9,7 @@ function sendPost(url, params, config) {
 }
 
 function sendGet(url, params) {
-    return axios.get(HTTP_BACKEND_URL + url, params).delay(500);
+    return axios.get(HTTP_BACKEND_URL + url, params); // .delay(500)
 }
 
 export default {
