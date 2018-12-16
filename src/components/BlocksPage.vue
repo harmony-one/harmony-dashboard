@@ -117,7 +117,6 @@ import store from "../explorer/store";
 import service from "../explorer/service";
 import LoadingMessage from "./LoadingMessage";
 import moment from "moment";
-const ws = new WebSocket(`ws://${service.BACKEND_URL}`);
 
 export default {
   name: "BlocksPage",
@@ -141,27 +140,6 @@ export default {
   },
   mounted() {
     this.resetTimer();
-    ws.addEventListener("open", () => {
-      ws.send("front-end: Hi.");
-    });
-
-    ws.addEventListener("message", res => {
-      let data = JSON.parse(res.data);
-      if (data.cmd === "reset") {
-        store.reset();
-      } else if (data.cmd === "blocks") {
-        store.update(data);
-        console.log(data.blocks);
-      }
-    });
-
-    ws.addEventListener("error", error => {
-      console.log("error", error);
-    });
-
-    ws.addEventListener("close", error => {
-      console.log("close");
-    });
   },
   computed: {
     length() {

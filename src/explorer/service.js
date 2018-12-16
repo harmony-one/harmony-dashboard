@@ -12,8 +12,33 @@ function sendGet(url, params) {
     return axios.get(HTTP_BACKEND_URL + url, params); // .delay(500)
 }
 
+(function listenWebsocket() {
+    const ws = new WebSocket(`ws://${BACKEND_URL}`);
+
+    ws.addEventListener("open", () => {
+        ws.send("front-end: Hi.");
+    });
+
+    ws.addEventListener("message", res => {
+        let data = JSON.parse(res.data);
+        if (data.cmd === "reset") {
+            store.reset();
+        } else if (data.cmd === "blocks") {
+            store.update(data);
+            // console.log(data.blocks);
+        }
+    });
+
+    ws.addEventListener("error", error => {
+        console.log("error", error);
+    });
+
+    ws.addEventListener("close", error => {
+        console.log("close");
+    });
+}());
+
 export default {
-    BACKEND_URL,
     reset(secret) {
         return sendPost('/reset', { secret });
     },
@@ -43,7 +68,7 @@ export default {
         });
     },
     search(input) {
-        return sendGet('/search', { params: { input }}).then(res => {
+        return sendGet('/search', { params: { input } }).then(res => {
             let result = res.data.result;
             return result;
         });

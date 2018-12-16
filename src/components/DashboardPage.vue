@@ -49,7 +49,6 @@ import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import store from "../dashboard/store";
 import service from "../dashboard/service";
 import SiteFooter from "./SiteFooter";
-const ws = new WebSocket(`ws://${service.BACKEND_URL}`);
 
 export default {
   name: "DashboardPage",
@@ -62,27 +61,6 @@ export default {
     FontAwesomeIcon,
     SiteFooter
   },
-  mounted() {
-    ws.addEventListener("open", () => {
-      ws.send("front-end: Hi.");
-    });
-
-    ws.addEventListener("message", res => {
-      let data = JSON.parse(res.data);
-      if (data.cmd === "reset") {
-        store.reset();
-      } else {
-        store.update(data);
-      }
-    });
-
-    ws.addEventListener("error", error => {
-      console.log("error", error);
-    });
-
-    ws.addEventListener("close", error => {
-      console.log("close");
-    });
-  }
+  mounted() {}
 };
 </script>
