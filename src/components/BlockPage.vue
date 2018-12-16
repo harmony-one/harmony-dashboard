@@ -48,6 +48,10 @@
                   <td>{{ block.bytes }}</td>
                 </tr>
                 <tr>
+                  <td class="td-title">Included In Shard</td>
+                  <td>{{ block.shardID }}</td>
+                </tr>
+                <tr>
                   <td class="td-title">Previous Block</td>
                   <td v-if="block.prevBlock && block.prevBlock.id">
                     <router-link :to="'/block/' + block.prevBlock.id">{{ block.prevBlock.height }}</router-link>

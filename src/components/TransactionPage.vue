@@ -39,6 +39,10 @@
                 <td>{{ transaction.timestamp | timestamp }}</td>
               </tr>
               <tr>
+                <td class="td-title">Included In Shard</td>
+                <td>{{ transaction.shardID }}</td>
+              </tr>
+              <tr>
                 <td class="td-title">Included In Block</td>
                 <td>
                   <router-link :to="'/block/' + transaction.blockID">{{ transaction.blockID }}</router-link>
