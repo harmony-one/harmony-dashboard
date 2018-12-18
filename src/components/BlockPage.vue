@@ -15,7 +15,7 @@
 <template>
   <div class="block-page explorer-page page">
     <div class="block-body explorer-body">
-      <div class="container" v-if="block">
+      <div class="container" v-if="!loading && block">
         <div class="explorer-card">
           <header>
             <h1>Block #{{ block.height }}</h1>
@@ -121,6 +121,7 @@ export default {
   name: "BlockPage",
   data() {
     return {
+      loading: true,
       block: null
     };
   },
@@ -128,10 +129,22 @@ export default {
     FontAwesomeIcon,
     LoadingMessage
   },
+  watch: {
+    $route(to, from) {
+      this.getBlock();
+    }
+  },
   mounted() {
-    service.getBlock(this.$route.params.blockId).then(block => {
-      this.block = block;
-    });
+    this.getBlock();
+  },
+  methods: {
+    getBlock() {
+      this.loading = true;
+      service
+        .getBlock(this.$route.params.blockId)
+        .then(block => (this.block = block))
+        .finally(() => (this.loading = false));
+    }
   }
 };
 </script>

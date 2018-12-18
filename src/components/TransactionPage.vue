@@ -15,7 +15,7 @@
 <template>
   <div class="transaction-page explorer-page page">
     <div class="transaction-body explorer-body">
-      <div class="container" v-if="transaction">
+      <div class="container" v-if="!loading && transaction">
         <div class="explorer-card">
           <header>
             <h1>Transaction</h1>
@@ -25,6 +25,10 @@
               <tr>
                 <td class="td-title">ID</td>
                 <td>{{ transaction.id }}</td>
+              </tr>
+              <tr>
+                <td class="td-title">Value</td>
+                <td>{{ transaction.value }}</td>
               </tr>
               <tr>
                 <td class="td-title">Size (bytes)</td>
@@ -89,6 +93,7 @@ export default {
   name: "TransactionPage",
   data() {
     return {
+      loading: true,
       transaction: null
     };
   },
@@ -96,10 +101,22 @@ export default {
     FontAwesomeIcon,
     LoadingMessage
   },
+  watch: {
+    $route(to, from) {
+      this.getTransaction();
+    }
+  },
   mounted() {
-    service
-      .getTransaction(this.$route.params.transactionId)
-      .then(transaction => (this.transaction = transaction));
+    this.getTransaction();
+  },
+  methods: {
+    getTransaction() {
+      this.loading = true;
+      service
+        .getTransaction(this.$route.params.transactionId)
+        .then(transaction => (this.transaction = transaction))
+        .finally(() => (this.loading = false));
+    }
   }
 };
 </script>

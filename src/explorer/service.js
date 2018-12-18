@@ -1,6 +1,15 @@
 import axios from 'axios';
 import store from './store';
 
+// For test: asios.get('...').delay(1000)
+Promise.prototype.delay = function(time) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(this);
+        }, time);
+    });
+}
+
 const BACKEND_URL = `${window.location.hostname}:4000`;
 const HTTP_BACKEND_URL = `http://${BACKEND_URL}`;
 

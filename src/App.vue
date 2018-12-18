@@ -122,8 +122,7 @@ body,
     }
     th,
     td {
-      padding: @space-sm 0;
-      // border-top: solid 1px var(--color-border);
+      padding: @space-sm @space-xs;
     }
     td {
       color: #888;
