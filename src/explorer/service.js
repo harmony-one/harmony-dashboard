@@ -70,8 +70,8 @@ export default {
             return tx;
         });
     },
-    getAddress(address) {
-        return sendGet('/address', { params: { address } }).then(res => {
+    getAddress(id) {
+        return sendGet('/address', { params: { id } }).then(res => {
             let address = res.data.address;
             return address;
         });
