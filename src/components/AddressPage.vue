@@ -15,7 +15,7 @@
 <template>
   <div class="address-page explorer-page page">
     <div class="address-body explorer-body">
-      <div class="container" v-if="address">
+      <div class="container" v-if="!loading && address">
         <div class="explorer-card">
           <header>
             <h1>Address</h1>
@@ -25,8 +25,8 @@
             <section>
               <table class="explorer-table">
                 <tr>
-                  <td class="td-title">Hash</td>
-                  <td>{{ address.hash }}</td>
+                  <td class="td-title">id</td>
+                  <td>{{ address.id }}</td>
                 </tr>
                 <tr>
                   <td class="td-title">Balance</td>
@@ -55,18 +55,10 @@
                   </td>
                   <td>{{ tx.timestamp }}</td>
                   <td>
-                    <router-link
-                      tag="span"
-                      class="disabled"
-                      :to="'/address/' + tx.from"
-                    >{{ tx.from | shorten }}</router-link>
+                    <router-link :to="'/address/' + tx.from">{{ tx.from | shorten }}</router-link>
                   </td>
                   <td>
-                    <router-link
-                      tag="span"
-                      class="disabled"
-                      :to="'/address/' + tx.to"
-                    >{{ tx.to | shorten }}</router-link>
+                    <router-link :to="'/address/' + tx.to">{{ tx.to | shorten }}</router-link>
                   </td>
                   <td>{{ tx.value }}</td>
                 </tr>
@@ -92,6 +84,7 @@ export default {
   name: "AddressPage",
   data() {
     return {
+      loading: true,
       address: null
     };
   },
@@ -99,10 +92,22 @@ export default {
     FontAwesomeIcon,
     LoadingMessage
   },
+  watch: {
+    $route(to, from) {
+      this.getAddress();
+    }
+  },
   mounted() {
-    service
-      .getAddress(this.$route.params.address)
-      .then(address => (this.address = address));
+    this.getAddress();
+  },
+  methods: {
+    getAddress() {
+      this.loading = true;
+      service
+        .getAddress(this.$route.params.address)
+        .then(address => (this.address = address))
+        .finally(() => (this.loading = false));
+    }
   }
 };
 </script>
