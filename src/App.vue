@@ -106,6 +106,9 @@ body,
       margin-top: @space-xxl;
     }
   }
+  .explorer-card + .explorer-card {
+    margin-top: @space-md;
+  }
   .explorer-card-body {
     padding: @space-md @space-lg;
   }
@@ -114,6 +117,9 @@ body,
     width: 100%;
     text-align: left;
 
+    .td-title {
+      width: 15em;
+    }
     .td-title,
     th {
       font-weight: bold;

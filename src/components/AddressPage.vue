@@ -38,22 +38,40 @@
                 </tr>
               </table>
             </section>
-
+          </div>
+        </div>
+        <div class="explorer-card" v-for="(shard, index) in address.shardData" :key="index">
+          <header>
+            <h1>Shard {{index}}</h1>
+          </header>
+          <div class="explorer-card-body">
+            <section>
+              <table class="explorer-table">
+                <tr>
+                  <td class="td-title">Balance</td>
+                  <td>{{ shard.balance }}</td>
+                </tr>
+                <tr>
+                  <td class="td-title">Transactions</td>
+                  <td>{{ shard.txs.length }}</td>
+                </tr>
+              </table>
+            </section>
             <section>
               <h2>Transactions</h2>
               <table class="explorer-table">
                 <tr>
                   <th>TxHash</th>
-                  <th>Age</th>
+                  <th>Timestamp</th>
                   <th>From</th>
                   <th>To</th>
                   <th>Value</th>
                 </tr>
-                <tr v-for="tx in address.txs" :key="tx.id">
+                <tr v-for="tx in shard.txs" :key="tx.id">
                   <td>
                     <router-link :to="'/tx/' + tx.id">{{ tx.id | shorten }}</router-link>
                   </td>
-                  <td>{{ tx.timestamp }}</td>
+                  <td>{{ tx.timestamp | timestamp }}</td>
                   <td>
                     <router-link :to="'/address/' + tx.from">{{ tx.from | shorten }}</router-link>
                   </td>

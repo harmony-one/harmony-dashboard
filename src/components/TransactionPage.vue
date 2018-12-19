@@ -55,21 +55,13 @@
               <tr>
                 <td class="td-title">From</td>
                 <td>
-                  <router-link
-                    tag="span"
-                    class="disabled"
-                    :to="'/address/' + transaction.from"
-                  >{{ transaction.from }}</router-link>
+                  <router-link :to="'/address/' + transaction.from">{{ transaction.from }}</router-link>
                 </td>
               </tr>
               <tr>
                 <td class="td-title">To</td>
                 <td>
-                  <router-link
-                    tag="span"
-                    class="disabled"
-                    :to="'/address/' + transaction.to"
-                  >{{ transaction.to }}</router-link>
+                  <router-link :to="'/address/' + transaction.to">{{ transaction.to }}</router-link>
                 </td>
               </tr>
             </table>
