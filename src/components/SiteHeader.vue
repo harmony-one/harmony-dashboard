@@ -18,6 +18,7 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: 7em;
+    margin-left: -@space-md;
   }
   &.opaque {
     background-color: #fff;
@@ -199,7 +200,7 @@
             <font-awesome-icon class="search-icon" icon="search"/>
             <input
               type="text"
-              placeholder="Block Hash / Tx Hash ..."
+              placeholder="Block Hash / Tx Hash / Account..."
               v-model="input"
               @keyup.enter="search"
             >
