@@ -56,7 +56,7 @@
               <div
                 class="timer"
               >Updated {{ Math.round(Math.max((now - globalData.lastUpdateTime) / 1000, 0)) | number }}s ago...</div>
-              <span class="total-block-num">{{ globalData.blocks.length }} blocks</span>
+              <span class="total-block-num">{{ globalData.blocks.length }} blocks (<span>{{ globalData.nodeCount }} nodes</span>)</span>
               <button
                 class="btn btn-light btn-icon-only"
                 @click="prev()"

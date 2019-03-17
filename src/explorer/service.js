@@ -35,6 +35,8 @@ function sendGet(url, params) {
         } else if (data.cmd === "blocks") {
             store.update(data);
             // console.log(data.blocks);
+        } else if (data.cmd === "nodes") {
+            store.updateNodeCount(data);
         }
     });
 

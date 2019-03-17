@@ -4,6 +4,7 @@ let store = {
     data: {
         blockMap: {}, // shardID to block
         blocks: [], // all block merged in one array sorted by time stamp
+        nodeCount: 0,
         lastUpdateTime: null
     },
     update(data) {
@@ -21,6 +22,9 @@ let store = {
         // console.log(merged, merged.length);
         Vue.set(this.data, 'blocks', merged);
         this.data.lastUpdateTime = data.lastUpdateTime;
+    },
+    updateNodeCount(data) {
+        this.data.nodeCount = data.nodes
     },
     reset() {
         this.data.blockMap = {};
