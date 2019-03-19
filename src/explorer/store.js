@@ -24,7 +24,7 @@ let store = {
         this.data.lastUpdateTime = data.lastUpdateTime;
     },
     updateNodeCount(data) {
-        this.data.nodeCount = data.nodes
+        this.data.nodeCount = data.nodeCount
     },
     reset() {
         this.data.blockMap = {};

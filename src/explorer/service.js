@@ -30,12 +30,16 @@ function sendGet(url, params) {
 
     ws.addEventListener("message", res => {
         let data = JSON.parse(res.data);
+        if (data.error) {
+            alert(data.error);
+            return;
+        }
         if (data.cmd === "reset") {
             store.reset();
         } else if (data.cmd === "blocks") {
             store.update(data);
             // console.log(data.blocks);
-        } else if (data.cmd === "nodes") {
+        } else if (data.cmd === "nodeCount") {
             store.updateNodeCount(data);
         }
     });
