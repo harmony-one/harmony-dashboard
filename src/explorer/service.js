@@ -2,7 +2,7 @@ import axios from 'axios';
 import store from './store';
 
 // For test: asios.get('...').delay(1000)
-Promise.prototype.delay = function(time) {
+Promise.prototype.delay = function (time) {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve(this);
@@ -38,8 +38,10 @@ function sendGet(url, params) {
             store.reset();
         } else if (data.cmd === "blocks") {
             store.update(data);
-            // console.log(data.blocks);
         } else if (data.cmd === "nodeCount") {
+            store.updateNodeCount(data);
+        } else if (data.cmd === "init") {
+            store.update(data);
             store.updateNodeCount(data);
         }
     });
