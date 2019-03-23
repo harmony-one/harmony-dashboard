@@ -66,7 +66,7 @@
               </tr>
               <tr>
                 <td class="td-title">Data</td>
-                <td>{{ transaction.data | '-' }}</td>
+                <td>{{ transaction.data || '-' }}</td>
               </tr>
             </table>
           </div>
