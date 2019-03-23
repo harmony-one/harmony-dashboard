@@ -64,9 +64,9 @@
                   <router-link :to="'/address/' + transaction.to">{{ transaction.to }}</router-link>
                 </td>
               </tr>
-              <tr v-if="transaction.data">
+              <tr>
                 <td class="td-title">Data</td>
-                <td>{{ transaction.data }}</td>
+                <td>{{ transaction.data | '-' }}</td>
               </tr>
             </table>
           </div>
