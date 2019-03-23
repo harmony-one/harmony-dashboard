@@ -64,6 +64,10 @@
                   <router-link :to="'/address/' + transaction.to">{{ transaction.to }}</router-link>
                 </td>
               </tr>
+              <tr v-if="transaction.data">
+                <td class="td-title">Data</td>
+                <td>{{ transaction.data }}</td>
+              </tr>
             </table>
           </div>
         </div>
