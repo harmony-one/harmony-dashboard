@@ -246,7 +246,11 @@ export default {
           }
         })
         .catch(r => {
-          alert("Not Found!");
+          if (r.response && r.response.status === 401) {
+            alert(r.response.data.error);
+          } else {
+            alert("Not Found!");
+          }
         });
     }
   }
