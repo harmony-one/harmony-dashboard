@@ -12,9 +12,19 @@ Promise.prototype.delay = function (time) {
 
 const BACKEND_URL = `${window.location.hostname}:4000`;
 const HTTP_BACKEND_URL = `https://${BACKEND_URL}`;
+const SECRET = localStorage.getItem('secret');
 
 function sendPost(url, params, config) {
     return axios.post(HTTP_BACKEND_URL + url, params, config);
+}
+
+function authGet(url, _params) {
+    let params = Object.assign(
+        {
+            headers:
+                { Authorization: 'Bearer ' + SECRET }
+        }, _params);
+    return sendGet(url, params);
 }
 
 function sendGet(url, params) {
@@ -22,7 +32,7 @@ function sendGet(url, params) {
 }
 
 (function listenWebsocket() {
-    const ws = new WebSocket(`wss://${BACKEND_URL}`);
+    const ws = new WebSocket(`wss://${BACKEND_URL}`, [SECRET]);
 
     ws.addEventListener("open", () => {
         ws.send("front-end: Hi.");
@@ -31,7 +41,7 @@ function sendGet(url, params) {
     ws.addEventListener("message", res => {
         let data = JSON.parse(res.data);
         if (data.error) {
-            alert(data.error);
+            alert(`Websocket Error: ${data.error}`);
             return;
         }
         if (data.cmd === "reset") {
@@ -60,32 +70,32 @@ export default {
         return sendPost('/reset', { secret });
     },
     getBlocks() {
-        return sendGet('/blocks').then(res => {
+        return authGet('/blocks').then(res => {
             let blocks = res.data.blocks;
             store.setBlocks(blocks);
             return blocks;
         });
     },
     getBlock(id) {
-        return sendGet('/block', { params: { id } }).then(res => {
+        return authGet('/block', { params: { id } }).then(res => {
             let block = res.data.block;
             return block;
         });
     },
     getTransaction(id) {
-        return sendGet('/tx', { params: { id } }).then(res => {
+        return authGet('/tx', { params: { id } }).then(res => {
             let tx = res.data.tx;
             return tx;
         });
     },
     getAddress(id) {
-        return sendGet('/address', { params: { id } }).then(res => {
+        return authGet('/address', { params: { id } }).then(res => {
             let address = res.data.address;
             return address;
         });
     },
     search(input) {
-        return sendGet('/search', { params: { input } }).then(res => {
+        return authGet('/search', { params: { input } }).then(res => {
             let result = res.data.result;
             return result;
         });
