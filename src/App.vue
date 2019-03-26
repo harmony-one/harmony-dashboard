@@ -133,6 +133,7 @@ body,
     td {
       color: #888;
       transition: all @anim-duration @anim-easing;
+      word-break: break-all;
     }
     tr:hover td {
       color: #ccc;

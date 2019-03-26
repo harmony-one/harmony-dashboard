@@ -65,8 +65,12 @@
                 </td>
               </tr>
               <tr>
-                <td class="td-title">Data</td>
+                <td class="td-title">Data (Hex)</td>
                 <td>{{ transaction.data || '-' }}</td>
+              </tr>
+              <tr>
+                <td class="td-title">Data (UTF-8)</td>
+                <td>{{ hexToUTF8(transaction.data) || '-' }}</td>
               </tr>
             </table>
           </div>
@@ -112,6 +116,13 @@ export default {
         .getTransaction(this.$route.params.transactionId)
         .then(transaction => (this.transaction = transaction))
         .finally(() => (this.loading = false));
+    },
+    hexToUTF8(h) {
+      var s = "";
+      for (var i = 0; i < h.length; i += 2) {
+        s += String.fromCharCode(parseInt(h.substr(i, 2), 16));
+      }
+      return decodeURIComponent(escape(s));
     }
   }
 };
