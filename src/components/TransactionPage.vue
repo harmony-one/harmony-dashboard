@@ -118,11 +118,15 @@ export default {
         .finally(() => (this.loading = false));
     },
     hexToUTF8(h) {
-      var s = "";
-      for (var i = 0; i < h.length; i += 2) {
-        s += String.fromCharCode(parseInt(h.substr(i, 2), 16));
+      try {
+        var s = "";
+        for (var i = 0; i < h.length; i += 2) {
+          s += String.fromCharCode(parseInt(h.substr(i, 2), 16));
+        }
+        return decodeURIComponent(escape(s));
+      } catch (e) {
+        return "[Unknown Binary Content]";
       }
-      return decodeURIComponent(escape(s));
     }
   }
 };
