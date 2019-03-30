@@ -5,6 +5,7 @@ let store = {
         blockMap: {}, // shardID to block
         blocks: [], // all block merged in one array sorted by time stamp
         nodeCount: 0,
+        nodes: {},
         lastUpdateTime: null
     },
     update(data) {
@@ -24,7 +25,10 @@ let store = {
         this.data.lastUpdateTime = data.lastUpdateTime;
     },
     updateNodeCount(data) {
-        this.data.nodeCount = data.nodeCount
+        this.data.nodeCount = data.nodeCount;
+    },
+    updateNodes(data) {
+        this.data.nodes = data.nodes;
     },
     reset() {
         this.data.blockMap = {};

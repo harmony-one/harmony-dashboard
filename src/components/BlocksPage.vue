@@ -56,7 +56,10 @@
               <div
                 class="timer"
               >Updated {{ Math.round(Math.max((now - globalData.lastUpdateTime) / 1000, 0)) | number }}s ago...</div>
-              <span class="total-block-num">{{ globalData.blocks.length }} blocks (<span>{{ globalData.nodeCount }} nodes</span>)</span>
+              <span class="total-block-num">
+                {{ globalData.blocks.length }} blocks (
+                <span>{{ globalData.nodeCount }} nodes</span>)
+              </span>
               <button
                 class="btn btn-light btn-icon-only"
                 @click="prev()"
@@ -90,7 +93,9 @@
                 v-for="block in globalData.blocks.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize)"
                 :key="block.id"
               >
-                <td>{{ block.shardID }}</td>
+                <td>
+                  <router-link :to="'shard/' + block.shardID">{{ block.shardID }}</router-link>
+                </td>
                 <td>
                   <router-link :to="'block/' + block.id">{{block.height}}</router-link>
                 </td>

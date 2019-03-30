@@ -10,7 +10,7 @@ Promise.prototype.delay = function (time) {
     });
 }
 
-const BACKEND_URL = `${window.location.hostname}:4000`;
+const BACKEND_URL = `${window.location.hostname}:4444`;
 const HTTP_BACKEND_URL = `https://${BACKEND_URL}`;
 const SECRET = localStorage.getItem('secret');
 
@@ -92,6 +92,12 @@ export default {
         return authGet('/address', { params: { id } }).then(res => {
             let address = res.data.address;
             return address;
+        });
+    },
+    getShard(id) {
+        return authGet('/shard', { params: { id }}).then(res => {
+            let shard = res.data.shard;
+            return shard;
         });
     },
     search(input) {
