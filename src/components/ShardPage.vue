@@ -27,7 +27,7 @@
                 <th>Node ID</th>
               </tr>
               <tr class="container" v-for="(node, i) in shard.nodes" :key="node.id">
-                <td>{{ i }}</td>
+                <td class="no-break">{{ i }}</td>
                 <td>{{ node.id }}</td>
               </tr>
             </table>

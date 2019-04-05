@@ -133,7 +133,11 @@ body,
     td {
       color: #888;
       transition: all @anim-duration @anim-easing;
-      word-break: break-all;
+      word-break: break-word;
+
+      &.no-break {
+        word-break: normal;
+      }
     }
     tr:hover td {
       color: #ccc;
