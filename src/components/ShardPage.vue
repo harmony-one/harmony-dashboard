@@ -23,9 +23,11 @@
           <div class="explorer-card-body">
             <table class="explorer-table">
               <tr>
+                <th>#</th>
                 <th>Node ID</th>
               </tr>
-              <tr class="container" v-for="node in shard.nodes" :key="node.id">
+              <tr class="container" v-for="(node, i) in shard.nodes" :key="node.id">
+                <td>{{ i }}</td>
                 <td>{{ node.id }}</td>
               </tr>
             </table>
