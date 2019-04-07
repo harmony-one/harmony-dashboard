@@ -8,7 +8,7 @@
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js",
-    "serve": "sudo npx http-server -p 443 dist --ssl --cert /etc/letsencrypt/live/explorer.harmony.one/fullchain.pem --key /etc/letsencrypt/live/explorer.harmony.one/privkey.pem"
+    "serve": "http-server -p 2000"
   },
   "dependencies": {
     "@fortawesome/fontawesome": "^1.1.8",
