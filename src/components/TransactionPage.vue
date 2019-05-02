@@ -28,7 +28,7 @@
               </tr>
               <tr>
                 <td class="td-title">Value</td>
-                <td>{{ transaction.value }}</td>
+                <td>{{ Number(transaction.value)/1000000000000000000 }}</td>
               </tr>
               <tr>
                 <td class="td-title">Size (bytes)</td>
