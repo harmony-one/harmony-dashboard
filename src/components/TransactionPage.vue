@@ -120,19 +120,7 @@ export default {
       const re = /.*?((4c|52|55|44)+)0*$/;
       const match = data.match(re);
       if (match && match[1] && match[1].length % 2 == 0) {
-        let moves = match[1];
-        let res = "";
-        for (i = 0; i < moves.length; i += 2) {
-          if (moves[i] == "4" && moves[i + 1] == "c") res = res + "L";
-          else if (moves[i] == "5" && moves[i + 1] == "2") res = res + "R";
-          else if (moves[i] == "5" && moves[i + 1] == "5") res = res + "U";
-          else if (moves[i] == "4" && moves[i + 1] == "4") res = res + "D";
-          else {
-            this.sequence = null;
-            return;
-          }
-        }
-        this.sequence = res;
+        this.sequence = this.hexToAscii(match[1]);
       }
     },
     getTransaction() {
@@ -147,14 +135,18 @@ export default {
     },
     hexToUTF8(h) {
       try {
-        var s = "";
-        for (var i = 0; i < h.length; i += 2) {
-          s += String.fromCharCode(parseInt(h.substr(i, 2), 16));
-        }
+        let s = hexToAscii(h);
         return decodeURIComponent(escape(s));
       } catch (e) {
         return "[Unknown Binary Content]";
       }
+    },
+    hexToAscii(h) {
+      var s = "";
+      for (var i = 0; i < h.length; i += 2) {
+        s += String.fromCharCode(parseInt(h.substr(i, 2), 16));
+      }
+      return s;
     }
   }
 };
