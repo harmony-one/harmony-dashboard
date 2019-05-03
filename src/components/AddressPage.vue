@@ -49,7 +49,7 @@
               <table class="explorer-table">
                 <tr>
                   <td class="td-title">Balance</td>
-                  <td>{{ shard.balance }}</td>
+                  <td>{{ Number(shard.balance)/1000000000000000000 }}</td>
                 </tr>
                 <tr>
                   <td class="td-title">Transactions</td>
