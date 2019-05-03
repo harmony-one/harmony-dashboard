@@ -59,7 +59,11 @@ body,
     animation: spin 0.8s linear infinite;
   }
 }
-
+@media (max-width: 768px) {
+  .td-title {
+    width: auto !important;
+  }
+}
 .explorer-page {
   display: flex;
   flex-direction: column;

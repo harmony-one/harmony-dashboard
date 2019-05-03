@@ -176,6 +176,9 @@
 }
 
 @media (max-width: 768px) {
+  .search {
+    width: 10em !important;
+  }
   .navbar-collapse.collapse.show {
     flex-basis: 100%;
     .navbar-nav {
