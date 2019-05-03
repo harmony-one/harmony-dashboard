@@ -117,8 +117,23 @@ export default {
   methods: {
     getSequence() {
       const data = this.transaction.data;
-      const re = /0+([4c52]+)0+$/;
+      const re = /.*?((4c|52|55|44)+)0*$/;
       const match = data.match(re);
+      if (match && match[1] && match[1].length % 2 == 0) {
+        let moves = match[1];
+        let res = "";
+        for (i = 0; i < moves.length; i += 2) {
+          if (moves[i] == "4" && moves[i + 1] == "c") res = res + "L";
+          else if (moves[i] == "5" && moves[i + 1] == "2") res = res + "R";
+          else if (moves[i] == "5" && moves[i + 1] == "5") res = res + "U";
+          else if (moves[i] == "4" && moves[i + 1] == "4") res = res + "D";
+          else {
+            this.sequence = null;
+            return;
+          }
+        }
+        this.sequence = res;
+      }
     },
     getTransaction() {
       this.loading = true;
