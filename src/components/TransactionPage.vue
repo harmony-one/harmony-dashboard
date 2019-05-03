@@ -68,6 +68,10 @@
                 <td class="td-title">Data (Hex)</td>
                 <td>{{ transaction.data || '-' }}</td>
               </tr>
+              <tr v-if="sequence">
+                <td class="td-title">Sequence</td>
+                <td>{{ sequence }}</td>
+              </tr>
               <tr>
                 <td class="td-title">Data (UTF-8)</td>
                 <td>{{ hexToUTF8(transaction.data) || '-' }}</td>
@@ -94,7 +98,8 @@ export default {
   data() {
     return {
       loading: true,
-      transaction: null
+      transaction: null,
+      sequence: null
     };
   },
   components: {
@@ -110,11 +115,19 @@ export default {
     this.getTransaction();
   },
   methods: {
+    getSequence() {
+      const data = this.transaction.data;
+      const re = /0+([4c52]+)0+$/;
+      const match = data.match(re);
+    },
     getTransaction() {
       this.loading = true;
       service
         .getTransaction(this.$route.params.transactionId)
-        .then(transaction => (this.transaction = transaction))
+        .then(transaction => {
+          this.transaction = transaction;
+          this.getSequence();
+        })
         .finally(() => (this.loading = false));
     },
     hexToUTF8(h) {
