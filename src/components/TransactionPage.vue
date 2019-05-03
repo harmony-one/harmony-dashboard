@@ -68,6 +68,10 @@
                 <td class="td-title">Data (Hex)</td>
                 <td>{{ transaction.data || '-' }}</td>
               </tr>
+              <tr v-if="sequence">
+                <td class="td-title">Sequence</td>
+                <td>{{ sequence }}</td>
+              </tr>
               <tr>
                 <td class="td-title">Data (UTF-8)</td>
                 <td>{{ hexToUTF8(transaction.data) || '-' }}</td>
@@ -94,7 +98,8 @@ export default {
   data() {
     return {
       loading: true,
-      transaction: null
+      transaction: null,
+      sequence: null
     };
   },
   components: {
@@ -110,23 +115,38 @@ export default {
     this.getTransaction();
   },
   methods: {
+    getSequence() {
+      const data = this.transaction.data;
+      const re = /.*?((4c|52|55|44)+)0*$/;
+      const match = data.match(re);
+      if (match && match[1] && match[1].length % 2 == 0) {
+        this.sequence = this.hexToAscii(match[1]);
+      }
+    },
     getTransaction() {
       this.loading = true;
       service
         .getTransaction(this.$route.params.transactionId)
-        .then(transaction => (this.transaction = transaction))
+        .then(transaction => {
+          this.transaction = transaction;
+          this.getSequence();
+        })
         .finally(() => (this.loading = false));
     },
     hexToUTF8(h) {
       try {
-        var s = "";
-        for (var i = 0; i < h.length; i += 2) {
-          s += String.fromCharCode(parseInt(h.substr(i, 2), 16));
-        }
+        let s = hexToAscii(h);
         return decodeURIComponent(escape(s));
       } catch (e) {
         return "[Unknown Binary Content]";
       }
+    },
+    hexToAscii(h) {
+      var s = "";
+      for (var i = 0; i < h.length; i += 2) {
+        s += String.fromCharCode(parseInt(h.substr(i, 2), 16));
+      }
+      return s;
     }
   }
 };
