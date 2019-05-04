@@ -117,7 +117,7 @@ export default {
   methods: {
     getSequence() {
       const data = this.transaction.data;
-      const re = /.*?((4c|52|55|44)+)0*$/;
+      const re = /.+?7c7c((30|31|32|33|34|35|36|37|38|39|4c|52|55|44)+)7c7c0*$/;
       const match = data.match(re);
       if (match && match[1] && match[1].length % 2 == 0) {
         this.sequence = this.hexToAscii(match[1]);
