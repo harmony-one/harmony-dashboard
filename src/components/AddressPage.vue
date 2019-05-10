@@ -30,7 +30,7 @@
                 </tr>
                 <tr>
                   <td class="td-title">Balance</td>
-                  <td>{{ address.balance }}</td>
+                  <td>{{ Number(address.balance)/1000000000000000000 }}</td>
                 </tr>
                 <tr>
                   <td class="td-title">Transactions</td>
@@ -49,7 +49,7 @@
               <table class="explorer-table">
                 <tr>
                   <td class="td-title">Balance</td>
-                  <td>{{ shard.balance }}</td>
+                  <td>{{ Number(shard.balance)/1000000000000000000 }}</td>
                 </tr>
                 <tr>
                   <td class="td-title">Transactions</td>
@@ -78,7 +78,7 @@
                   <td>
                     <router-link :to="'/address/' + tx.to">{{ tx.to | shorten }}</router-link>
                   </td>
-                  <td>{{ tx.value }}</td>
+                  <td>{{ Number(tx.value)/1000000000000000000 }}</td>
                 </tr>
               </table>
             </section>

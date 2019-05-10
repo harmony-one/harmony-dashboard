@@ -89,7 +89,7 @@
                   <td>
                     <router-link :to="'/address/' + tx.to">{{ tx.to | shorten }}</router-link>
                   </td>
-                  <td>{{ tx.value }}</td>
+                  <td>{{ Number(tx.value)/1000000000000000000 }}</td>
                 </tr>
               </table>
             </section>
