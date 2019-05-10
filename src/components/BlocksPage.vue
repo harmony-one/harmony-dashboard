@@ -57,8 +57,8 @@
                 class="timer"
               >Updated {{ Math.round(Math.max((now - globalData.lastUpdateTime) / 1000, 0)) | number }}s ago...</div>
               <span class="total-block-num">
-                {{ globalData.blocks.length }} blocks (
-                <span>{{ globalData.nodeCount }} nodes</span>)
+                {{ globalData.blocks.length }} blocks
+                ({{ globalData.nodeCount }} nodes)
               </span>
               <button
                 class="btn btn-light btn-icon-only"
