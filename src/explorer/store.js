@@ -14,8 +14,7 @@ let store = {
             if (!this.data.blockMap[i]) {
                 Vue.set(this.data.blockMap, i, []);
             }
-            let target = this.data.blockMap[i];
-            target.splice(target.length, 0, ...shardBlocks);
+            this.data.blockMap[i] = this.data.blockMap[i].concat(shardBlocks)
         });
         let merged = Object.keys(this.data.blockMap)
             .reduce((prev, cur) => prev.concat(this.data.blockMap[cur]), [])
