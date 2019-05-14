@@ -29,7 +29,7 @@ export default new Router({
       component: AdminPage
     },
     {
-      path: '/blocks',
+      path: '/blocks/:pageIndex?',
       name: 'BlocksPage',
       component: BlocksPage
     },

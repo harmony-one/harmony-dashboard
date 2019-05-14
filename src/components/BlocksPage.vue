@@ -35,34 +35,55 @@
 <template>
   <div class="blocks-page explorer-page page">
     <div class="blocks-body explorer-body">
-      <div class="container" v-if="blocks.length">
+      <div class="container">
         <div class="explorer-card">
           <header>
-            <h1 class="flex-grow">Latest Blocks</h1>
+            <h1 class="flex-grow">Blocks</h1>
             <div class="pagination-controls">
-              <div
-                class="timer"
-              >Updated {{ Math.round(Math.max((now - globalData.lastUpdateTime) / 1000, 0)) | number }}s ago...</div>
-              <span class="total-block-num">{{ blocks.length }} blocks</span>
-              <button
-                class="btn btn-light btn-icon-only"
-                @click="prev()"
-                :disabled="pageIndex === 0"
-              >
-                <font-awesome-icon icon="chevron-left"/>
-              </button>
-              <button
-                class="btn btn-light btn-icon-only"
-                @click="next()"
-                :disabled="pageIndex === length - 1"
-              >
-                <font-awesome-icon icon="chevron-right"/>
-              </button>
-              <span class="pagination-nums">{{ pageIndex + 1 }} / {{ length }}</span>
+              <span class="total-block-num">{{ globalData.blockCount }} blocks</span>
+              <span class="page-controllers">
+                <span class="page-navigator">
+                  <button
+                    class="btn btn-light btn-icon-only"
+                    @click="first()"
+                    :disabled="pageIndex === 0"
+                  >
+                    <font-awesome-icon icon="angle-double-left"/>
+                  </button>
+                  <button
+                    class="btn btn-light btn-icon-only"
+                    @click="prev()"
+                    :disabled="pageIndex === 0"
+                  >
+                    <font-awesome-icon icon="chevron-left"/>
+                  </button>
+                  <span class="pagination-nums">{{ pageIndex + 1 }} / {{ pageCount }}</span>
+                  <button
+                    class="btn btn-light btn-icon-only"
+                    @click="next()"
+                    :disabled="pageIndex === pageCount - 1"
+                  >
+                    <font-awesome-icon icon="chevron-right"/>
+                  </button>
+                  <button
+                    class="btn btn-light btn-icon-only"
+                    @click="last()"
+                    :disabled="pageIndex === pageCount - 1"
+                  >
+                    <font-awesome-icon icon="angle-double-right"/>
+                  </button>
+                </span>
+                <!-- <span class="page-size-controller">
+                  <select v-model="pageSize">
+                    <option v-for="val in [10, 25, 50, 100]" :key="val">{{ val }}</option>
+                  </select>
+                  items / page
+                </span>-->
+              </span>
             </div>
           </header>
           <div class="explorer-card-body">
-            <table class="explorer-table">
+            <table class="explorer-table" v-if="blocks.length">
               <tr>
                 <th>Shard</th>
                 <th>Height</th>
@@ -71,11 +92,7 @@
                 <th class="text-right">Transactions</th>
                 <th class="text-right">Size (bytes)</th>
               </tr>
-              <tr
-                class="container"
-                v-for="block in globalData.blocks.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize)"
-                :key="block.id"
-              >
+              <tr class="container" v-for="block in blocks" :key="block.id">
                 <td>
                   <router-link :to="'shard/' + block.shardID">{{ block.shardID }}</router-link>
                 </td>
@@ -88,11 +105,11 @@
                 <td class="text-right">{{ block.bytes }}</td>
               </tr>
             </table>
+            <div v-else>
+              <loading-message/>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="container" v-else>
-        <loading-message/>
       </div>
     </div>
   </div>
@@ -109,60 +126,61 @@ export default {
   name: "BlocksPage",
   data() {
     return {
+      globalData: store.data,
       blocks: [],
       pageIndex: 0,
-      pageSize: 50,
-      timer: null,
-      now: Date.now()
+      pageSize: 50
     };
   },
   components: {
     FontAwesomeIcon,
     LoadingMessage
   },
+  mounted() {
+    if (this.$route.params.pageIndex) {
+      this.pageIndex = +this.$route.params.pageIndex - 1;
+    }
+    this.getBlocks();
+  },
   watch: {
-    globalData() {
-      this.resetTimer();
+    $route(to, from) {
+      this.pageIndex = (+to.params.pageIndex || 1) - 1;
+      this.getBlocks();
     }
   },
-  mounted() {
-    this.resetTimer();
-  },
   computed: {
-    length() {
-      return Math.ceil(this.globalData.blocks.length / this.pageSize);
+    pageCount() {
+      return Math.ceil(this.globalData.blockCount / this.pageSize);
     }
   },
   methods: {
+    goToPage(index) {
+      if (index < 0) index = 0;
+      if (index >= this.pageCount) index = this.pageCount - 1;
+      this.$router.replace({
+        name: "BlocksPage",
+        params: { pageIndex: index + 1 }
+      });
+    },
+    first() {
+      this.goToPage(0);
+    },
+    last() {
+      this.goToPage(this.pageCount - 1);
+    },
     prev() {
       if (this.pageIndex === 0) return;
-      this.pageIndex--;
+      this.goToPage(this.pageIndex - 1);
     },
     next() {
-      if (this.pageIndex === this.length - 1) return;
-      this.pageIndex++;
+      if (this.pageIndex === this.pageCount - 1) return;
+      this.goToPage(this.pageIndex + 1);
     },
-    resetTimer() {
-      clearInterval(this.timer);
-      this.now = Date.now();
-      this.timer = setInterval(() => {
-        this.now = Date.now();
-      }, 1000);
-    },
-    getAge(timestamp) {
-      let d = moment.duration(
-        Math.max(this.globalData.lastUpdateTime - timestamp, 0)
-      );
-      let arr = [d.days(), d.hours(), d.minutes(), d.seconds()];
-      let units = ["day", "hour", "minute", "second"];
-      let s = arr
-        .map((time, i) => {
-          if (!time) return "";
-          return `${time} ${units[i]}${time > 1 ? "s" : ""}`;
-        })
-        .join(" ")
-        .trim();
-      return `> ${s ? s : "1 seconds"} ago`;
+    getBlocks() {
+      this.blocks = [];
+      service.getBlocks(this.pageIndex, this.pageSize).then(blocks => {
+        this.blocks = blocks;
+      });
     }
   }
 };

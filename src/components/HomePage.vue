@@ -110,7 +110,11 @@
                 </div>
               </div>
               <footer>
-                <button class="btn btn-light btn-block btn-mini">View all blocks</button>
+                <router-link
+                  tag="button"
+                  class="btn btn-light btn-block btn-mini"
+                  to="blocks"
+                >View all blocks</router-link>
               </footer>
             </div>
           </div>

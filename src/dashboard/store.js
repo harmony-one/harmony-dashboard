@@ -55,10 +55,6 @@ let store = {
         }
         this.data.globalSummary = Object.assign({}, globalSummary)
     },
-    setBlocks(blocks) {
-        Vue.set(this.data, 'blocks', blocks);
-        // this.data.blocks = blocks;
-    },
     setBlock(block) {
         if (!block) return;
         Vue.set(this.data.blockMap, block.id, block);

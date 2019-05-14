@@ -46,7 +46,8 @@ function sendGet(url, params) {
         }
         if (data.cmd === "reset") {
             store.reset();
-        } else if (data.cmd === "blocks") {
+        } else if (data.cmd === "update") {
+            console.log(data)
             store.update(data);
         } else if (data.cmd === "nodeCount") {
             store.updateNodeCount(data);
@@ -69,10 +70,9 @@ export default {
     reset(secret) {
         return sendPost('/reset', { secret });
     },
-    getBlocks() {
-        return authGet('/blocks').then(res => {
+    getBlocks(pageIndex, pageSize) {
+        return authGet('/blocks', { params: { pageIndex, pageSize }}).then(res => {
             let blocks = res.data.blocks;
-            store.setBlocks(blocks);
             return blocks;
         });
     },

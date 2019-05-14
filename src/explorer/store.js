@@ -7,6 +7,7 @@ let store = {
         blockMap: {}, // shardID to block
         latestBlocks: [], // all latest block merged in one array sorted by timestamp
         latestTxs: [], // all latest tx merged in one array sorted by timestamp
+        blockCount: 0,
         nodeCount: 0,
         nodes: {},
         lastUpdateTime: null
@@ -17,6 +18,8 @@ let store = {
             .reduce((memo, i) => memo.concat(blocks[i]), [])
             .sort((a, b) => b.timestamp - a.timestamp);
         this.data.latestBlocks = mergedBlocks.concat(this.data.latestBlocks).slice(0, MaxLatestBlockCount);
+
+        this.data.blockCount = data.blockCount;
 
         let txs = data.txs;
         let mergedTxs = Object.keys(txs)
