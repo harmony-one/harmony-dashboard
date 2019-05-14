@@ -33,10 +33,11 @@
     --color-link: #0987d7;
     --color-gray-icon: #777;
     --color-navbar-hover-background: #555;
+    --color-card-background: #222;
 }
 
 .text-right {
-    text-align: right;
+    text-align: right !important;
 }
 
 .clearfix:after {
@@ -241,5 +242,12 @@ a {
         &:hover {
             background-color: rgba(0, 0, 0, .08);
         }
+    }
+    &.btn-block {
+        display: block;
+        width: 100%;
+    }
+    &.btn-mini {
+        font-size: .8em;
     }
 }

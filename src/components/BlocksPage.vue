@@ -29,26 +29,13 @@
       margin-left: @space-md;
     }
   }
-
-  // .fade-enter-active,
-  // .fade-leave-active {
-  //   transition: all 1s;
-  // }
-  // .fade-enter {
-  //   opacity: 0.2;
-  //   transform: translateY(-0.5em);
-  // }
-  // .fade-leave-to {
-  //   opacity: 0.2;
-  //   transform: translateY(0.5em);
-  // }
 }
 </style>
 
 <template>
   <div class="blocks-page explorer-page page">
     <div class="blocks-body explorer-body">
-      <div class="container" v-if="globalData.blocks.length">
+      <div class="container" v-if="blocks.length">
         <div class="explorer-card">
           <header>
             <h1 class="flex-grow">Latest Blocks</h1>
@@ -56,10 +43,7 @@
               <div
                 class="timer"
               >Updated {{ Math.round(Math.max((now - globalData.lastUpdateTime) / 1000, 0)) | number }}s ago...</div>
-              <span class="total-block-num">
-                {{ globalData.blocks.length }} blocks
-                ({{ globalData.nodeCount }} nodes)
-              </span>
+              <span class="total-block-num">{{ blocks.length }} blocks</span>
               <button
                 class="btn btn-light btn-icon-only"
                 @click="prev()"
@@ -87,7 +71,6 @@
                 <th class="text-right">Transactions</th>
                 <th class="text-right">Size (bytes)</th>
               </tr>
-              <!-- <transition-group name="fade" tag="tbody"> -->
               <tr
                 class="container"
                 v-for="block in globalData.blocks.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize)"
@@ -100,11 +83,10 @@
                   <router-link :to="'block/' + block.id">{{block.height}}</router-link>
                 </td>
                 <td>{{ block.timestamp | timestamp }}</td>
-                <td>{{ getAge(block.timestamp) }}</td>
+                <td>{{ block.timestamp | age }}</td>
                 <td class="text-right">{{ block.txCount }}</td>
                 <td class="text-right">{{ block.bytes }}</td>
               </tr>
-              <!-- </transition-group> -->
             </table>
           </div>
         </div>
@@ -127,7 +109,7 @@ export default {
   name: "BlocksPage",
   data() {
     return {
-      globalData: store.data,
+      blocks: [],
       pageIndex: 0,
       pageSize: 50,
       timer: null,

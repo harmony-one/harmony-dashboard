@@ -18,7 +18,17 @@ export function formatTimestamp(timestamp) {
     return moment(timestamp).format('MM/DD/YYYY hh:mm:ss');
 }
 
+export function formatAge(timestamp) {
+    return moment(timestamp).fromNow();
+}
+
+export function formatAmount(amount) {
+    return amount / 10**18;
+}
+
 Vue.filter('decimal', formatDecimal);
 Vue.filter('number', formatNumber);
 Vue.filter('shorten', shortenHash);
 Vue.filter('timestamp', formatTimestamp);
+Vue.filter('age', formatAge);
+Vue.filter('amount', formatAmount);

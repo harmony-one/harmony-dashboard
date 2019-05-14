@@ -74,14 +74,20 @@ body,
 
   .explorer-card {
     .card();
-    background-color: #222;
+    background-color: var(--color-card-background);
     color: #ddd;
     // padding: @space-md @space-lg;
     padding: 0;
-    header {
-      border-bottom: solid 1px #2a2a2a;
+    header,
+    footer {
       padding: @space-md @space-lg;
       display: block;
+    }
+    header {
+      border-bottom: solid 1px #2a2a2a;
+    }
+    footer {
+      border-top: solid 1px #2a2a2a;
     }
     a {
       color: #3b85b6;
