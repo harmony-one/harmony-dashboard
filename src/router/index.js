@@ -6,6 +6,7 @@ import BlocksPage from '@/components/BlocksPage'
 import HomePage from '@/components/HomePage'
 import BlockPage from '@/components/BlockPage'
 import TransactionPage from '@/components/TransactionPage'
+import TransactionsPage from '@/components/TransactionsPage'
 import AddressPage from '@/components/AddressPage'
 import ShardPage from '@/components/ShardPage'
 
@@ -32,6 +33,11 @@ export default new Router({
       path: '/blocks/:pageIndex?',
       name: 'BlocksPage',
       component: BlocksPage
+    },
+    {
+      path: '/txs/:pageIndex?',
+      name: 'TransactionsPage',
+      component: TransactionsPage
     },
     {
       path: '/block/:blockId',

@@ -93,6 +93,7 @@
                 <div class="explorer-table-responsive latest-block-table">
                   <div class="tr">
                     <div class="th">Shard</div>
+                    <div class="th">Hash</div>
                     <div class="th">Height</div>
                     <div class="th">Age</div>
                     <div class="th text-right">Transactions</div>
@@ -100,6 +101,9 @@
                   <div class="tr" v-for="block in globalData.latestBlocks" :key="block.id">
                     <div class="td">
                       <router-link :to="'shard/' + block.shardID">{{ block.shardID }}</router-link>
+                    </div>
+                    <div class="td">
+                      <router-link :to="'block/' + block.id">{{block.id | shorten}}</router-link>
                     </div>
                     <div class="td">
                       <router-link :to="'block/' + block.id">{{block.height}}</router-link>
@@ -154,7 +158,11 @@
                 </div>
               </div>
               <footer>
-                <button class="btn btn-light btn-block btn-mini">View all transactions</button>
+                <router-link
+                  tag="button"
+                  class="btn btn-light btn-block btn-mini"
+                  to="txs"
+                >View all transactions</router-link>
               </footer>
             </div>
           </div>

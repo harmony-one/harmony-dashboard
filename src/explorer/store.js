@@ -8,6 +8,7 @@ let store = {
         latestBlocks: [], // all latest block merged in one array sorted by timestamp
         latestTxs: [], // all latest tx merged in one array sorted by timestamp
         blockCount: 0,
+        txCount: 0,
         nodeCount: 0,
         nodes: {},
         lastUpdateTime: null
@@ -20,6 +21,7 @@ let store = {
         this.data.latestBlocks = mergedBlocks.concat(this.data.latestBlocks).slice(0, MaxLatestBlockCount);
 
         this.data.blockCount = data.blockCount;
+        this.data.txCount = data.txCount;
 
         let txs = data.txs;
         let mergedTxs = Object.keys(txs)
