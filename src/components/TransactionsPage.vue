@@ -1,7 +1,7 @@
 <style scoped lang="less">
 @import "../less/common.less";
 
-.blocks-body {
+.txs-body {
   flex: 1;
   width: 100%;
   background-size: cover;
@@ -22,7 +22,7 @@
     text-align: right;
     float: right;
     font-size: 0.8em;
-    .total-block-num {
+    .total-tx-num {
       margin-right: @space-md;
     }
     .pagination-nums {
@@ -33,14 +33,14 @@
 </style>
 
 <template>
-  <div class="blocks-page explorer-page page">
-    <div class="blocks-body explorer-body">
+  <div class="txs-page explorer-page page">
+    <div class="txs-body explorer-body">
       <div class="container">
         <div class="explorer-card">
           <header>
-            <h1 class="flex-grow">Blocks</h1>
+            <h1 class="flex-grow">Transactions</h1>
             <div class="pagination-controls">
-              <span class="total-block-num">{{ globalData.blockCount }} blocks</span>
+              <span class="total-tx-num">{{ globalData.txCount }} txs</span>
               <span class="page-controllers">
                 <span class="page-navigator">
                   <button
@@ -73,36 +73,30 @@
                     <font-awesome-icon icon="angle-double-right"/>
                   </button>
                 </span>
-                <!-- <span class="page-size-controller">
-                  <select v-model="pageSize">
-                    <option v-for="val in [10, 25, 50, 100]" :key="val">{{ val }}</option>
-                  </select>
-                  items / page
-                </span>-->
               </span>
             </div>
           </header>
           <div class="explorer-card-body">
-            <table class="explorer-table" v-if="blocks.length">
+            <table class="explorer-table" v-if="txs.length">
               <tr>
                 <th>Shard</th>
-                <th>Height</th>
-                <th>Timestamp</th>
+                <th>From</th>
+                <th>To</th>
                 <th>Age</th>
-                <th class="text-right">Transactions</th>
+                <th class="text-right">Value</th>
                 <th class="text-right">Size (bytes)</th>
               </tr>
-              <tr class="container" v-for="block in blocks" :key="block.id">
+              <tr class="container" v-for="tx in txs" :key="tx.id">
                 <td>
-                  <router-link :to="'shard/' + block.shardID">{{ block.shardID }}</router-link>
+                  <router-link :to="'shard/' + tx.shardID">{{ tx.shardID }}</router-link>
                 </td>
                 <td>
-                  <router-link :to="'block/' + block.id">{{block.height}}</router-link>
+                  <router-link :to="'tx/' + tx.id">{{tx.height}}</router-link>
                 </td>
-                <td>{{ block.timestamp | timestamp }}</td>
-                <td>{{ block.timestamp | age }}</td>
-                <td class="text-right">{{ block.txCount }}</td>
-                <td class="text-right">{{ block.bytes }}</td>
+                <td>{{ tx.timestamp | timestamp }}</td>
+                <td>{{ tx.timestamp | age }}</td>
+                <td class="text-right">{{ tx.txCount }}</td>
+                <td class="text-right">{{ tx.bytes }}</td>
               </tr>
             </table>
             <div v-else>
@@ -123,11 +117,11 @@ import LoadingMessage from "./LoadingMessage";
 import moment from "moment";
 
 export default {
-  name: "BlocksPage",
+  name: "TransactionsPage",
   data() {
     return {
       globalData: store.data,
-      blocks: [],
+      txs: [],
       pageIndex: 0,
       pageSize: 50
     };
@@ -150,7 +144,7 @@ export default {
   },
   computed: {
     pageCount() {
-      return Math.ceil(this.globalData.blockCount / this.pageSize);
+      return Math.ceil(this.globalData.txCount / this.pageSize);
     }
   },
   methods: {
@@ -158,7 +152,7 @@ export default {
       if (index < 0) index = 0;
       if (index >= this.pageCount) index = this.pageCount - 1;
       this.$router.replace({
-        name: "BlocksPage",
+        name: "TransactionsPage",
         params: { pageIndex: index + 1 }
       });
     },
@@ -177,9 +171,9 @@ export default {
       this.goToPage(this.pageIndex + 1);
     },
     getBlocks() {
-      this.blocks = [];
-      service.getBlocks(this.pageIndex, this.pageSize).then(blocks => {
-        this.blocks = blocks;
+      this.txs = [];
+      service.getBlocks(this.pageIndex, this.pageSize).then(txs => {
+        this.txs = txs;
       });
     }
   }

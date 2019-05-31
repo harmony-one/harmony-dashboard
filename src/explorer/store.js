@@ -1,26 +1,35 @@
 import Vue from 'vue';
 
+const MaxLatestBlockCount = 10;
+const MaxLatestTxCount = 10;
 let store = {
     data: {
-        blockMap: {}, // shardID to block
-        blocks: [], // all block merged in one array sorted by time stamp
+        latestBlocks: [], // all latest block merged in one array sorted by timestamp
+        latestTxs: [], // all latest tx merged in one array sorted by timestamp
+        blockCount: 0,
+        txCount: 0,
         nodeCount: 0,
         nodes: {},
+        shardCount: 0,
         lastUpdateTime: null
     },
     update(data) {
         let blocks = data.blocks;
-        blocks.forEach((shardBlocks, i) => {
-            if (!this.data.blockMap[i]) {
-                Vue.set(this.data.blockMap, i, []);
-            }
-            this.data.blockMap[i] = this.data.blockMap[i].concat(shardBlocks)
-        });
-        let merged = Object.keys(this.data.blockMap)
-            .reduce((prev, cur) => prev.concat(this.data.blockMap[cur]), [])
+        let mergedBlocks = Object.keys(blocks)
+            .reduce((memo, i) => memo.concat(blocks[i]), [])
             .sort((a, b) => b.timestamp - a.timestamp);
-        // console.log(merged, merged.length);
-        Vue.set(this.data, 'blocks', merged);
+        this.data.latestBlocks = mergedBlocks.concat(this.data.latestBlocks).slice(0, MaxLatestBlockCount);
+
+        this.data.blockCount = data.blockCount;
+        this.data.txCount = data.txCount;
+        this.data.shardCount = data.shardCount;
+
+        let txs = data.txs;
+        let mergedTxs = Object.keys(txs)
+            .reduce((memo, i) => memo.concat(txs[i]), [])
+            .sort((a, b) => b.timestamp - a.timestamp);
+        this.data.latestTxs = mergedTxs.concat(this.data.latestTxs).slice(0, MaxLatestTxCount);
+
         this.data.lastUpdateTime = data.lastUpdateTime;
     },
     updateNodeCount(data) {

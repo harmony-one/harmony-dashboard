@@ -4,17 +4,10 @@ import Vue from 'vue';
 import App from './App';
 import router from './router';
 import VueScrollTo from 'vue-scrollto';
-import FontAwesome from "@fortawesome/fontawesome";
-import FontAwesomeBrands from "@fortawesome/fontawesome-free-brands";
-import faSpinner from '@fortawesome/fontawesome-free-solid/faSpinner';
-import faSearch from '@fortawesome/fontawesome-free-solid/faSearch';
-import faChevronLeft from '@fortawesome/fontawesome-free-solid/faChevronLeft';
-import faChevronRight from '@fortawesome/fontawesome-free-solid/faChevronRight';
 import Highcharts from "highcharts";
 import HighchartsVue from 'highcharts-vue';
 import "./filter";
-
-FontAwesome.library.add(FontAwesomeBrands, faSpinner, faSearch, faChevronLeft, faChevronRight);
+import "./icon";
 
 Vue.use(VueScrollTo, {
   offset: -68
