@@ -121,6 +121,10 @@ body,
   }
   .explorer-card-body {
     padding: @space-md @space-lg;
+    .explorer-body-num {
+      font-size: 1.5em;
+      text-align: center;
+    }
   }
   .explorer-table {
     border-collapse: collapse;

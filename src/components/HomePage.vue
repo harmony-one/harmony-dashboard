@@ -78,6 +78,48 @@
     <div class="home-body explorer-body">
       <div class="container" v-if="globalData.latestBlocks.length">
         <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+            <div class="explorer-card">
+              <header>
+                <h1>Block Count</h1>
+              </header>
+              <div class="explorer-card-body">
+                <div class="explorer-body-num">{{ globalData.blockCount }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+            <div class="explorer-card">
+              <header>
+                <h1>Tx Count</h1>
+              </header>
+              <div class="explorer-card-body">
+                <div class="explorer-body-num">{{ globalData.txCount }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+            <div class="explorer-card">
+              <header>
+                <h1>Node Count</h1>
+              </header>
+              <div class="explorer-card-body">
+                <div class="explorer-body-num">{{ globalData.nodeCount }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+            <div class="explorer-card">
+              <header>
+                <h1>Shard Count</h1>
+              </header>
+              <div class="explorer-card-body">
+                <div class="explorer-body-num">{{ globalData.shardCount }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             <div class="explorer-card latest-block-card">
               <header>

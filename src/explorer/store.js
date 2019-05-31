@@ -4,13 +4,13 @@ const MaxLatestBlockCount = 10;
 const MaxLatestTxCount = 10;
 let store = {
     data: {
-        blockMap: {}, // shardID to block
         latestBlocks: [], // all latest block merged in one array sorted by timestamp
         latestTxs: [], // all latest tx merged in one array sorted by timestamp
         blockCount: 0,
         txCount: 0,
         nodeCount: 0,
         nodes: {},
+        shardCount: 0,
         lastUpdateTime: null
     },
     update(data) {
@@ -22,6 +22,7 @@ let store = {
 
         this.data.blockCount = data.blockCount;
         this.data.txCount = data.txCount;
+        this.data.shardCount = data.shardCount;
 
         let txs = data.txs;
         let mergedTxs = Object.keys(txs)
