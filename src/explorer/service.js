@@ -47,7 +47,6 @@ function sendGet(url, params) {
         if (data.cmd === "reset") {
             store.reset();
         } else if (data.cmd === "update") {
-            console.log(data)
             store.update(data);
         } else if (data.cmd === "nodeCount") {
             store.updateNodeCount(data);
