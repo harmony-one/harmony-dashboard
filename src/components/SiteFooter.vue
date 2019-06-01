@@ -47,7 +47,7 @@ footer {
         <font-awesome-icon :icon="['fab', 'twitter']"/>
       </a>
 
-      <a href="https://www.instagram.com/harmonyoneprotocol/" target="_blank">
+      <a href="http://harmony.one/instagram" target="_blank">
         <font-awesome-icon :icon="['fab', 'instagram']"/>
       </a>
 
