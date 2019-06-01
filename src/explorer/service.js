@@ -82,6 +82,12 @@ export default {
             return block;
         });
     },
+    getTransactions(pageIndex, pageSize) {
+        return authGet('/txs', { params: { pageIndex, pageSize }}).then(res => {
+            let txs = res.data.txs;
+            return txs;
+        });
+    },
     getTransaction(id) {
         return authGet('/tx', { params: { id } }).then(res => {
             let tx = res.data.tx;

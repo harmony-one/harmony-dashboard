@@ -80,6 +80,7 @@
             <table class="explorer-table" v-if="txs.length">
               <tr>
                 <th>Shard</th>
+                <th>Hash</th>
                 <th>From</th>
                 <th>To</th>
                 <th>Age</th>
@@ -91,11 +92,16 @@
                   <router-link :to="'shard/' + tx.shardID">{{ tx.shardID }}</router-link>
                 </td>
                 <td>
-                  <router-link :to="'tx/' + tx.id">{{tx.height}}</router-link>
+                  <router-link :to="'tx/' + tx.id">{{tx.id | shorten}}</router-link>
                 </td>
-                <td>{{ tx.timestamp | timestamp }}</td>
+                <td>
+                  <router-link :to="'address/' + tx.from">{{tx.from | shorten}}</router-link>
+                </td>
+                <td>
+                  <router-link :to="'address/' + tx.to">{{tx.to | shorten}}</router-link>
+                </td>
                 <td>{{ tx.timestamp | age }}</td>
-                <td class="text-right">{{ tx.txCount }}</td>
+                <td class="text-right">{{ tx.value }}</td>
                 <td class="text-right">{{ tx.bytes }}</td>
               </tr>
             </table>
@@ -134,12 +140,12 @@ export default {
     if (this.$route.params.pageIndex) {
       this.pageIndex = +this.$route.params.pageIndex - 1;
     }
-    this.getBlocks();
+    this.getTransactions();
   },
   watch: {
     $route(to, from) {
       this.pageIndex = (+to.params.pageIndex || 1) - 1;
-      this.getBlocks();
+      this.getTransactions();
     }
   },
   computed: {
@@ -170,9 +176,9 @@ export default {
       if (this.pageIndex === this.pageCount - 1) return;
       this.goToPage(this.pageIndex + 1);
     },
-    getBlocks() {
+    getTransactions() {
       this.txs = [];
-      service.getBlocks(this.pageIndex, this.pageSize).then(txs => {
+      service.getTransactions(this.pageIndex, this.pageSize).then(txs => {
         this.txs = txs;
       });
     }

@@ -86,6 +86,7 @@
             <table class="explorer-table" v-if="blocks.length">
               <tr>
                 <th>Shard</th>
+                <th>Hash</th>
                 <th>Height</th>
                 <th>Timestamp</th>
                 <th>Age</th>
@@ -95,6 +96,9 @@
               <tr class="container" v-for="block in blocks" :key="block.id">
                 <td>
                   <router-link :to="'shard/' + block.shardID">{{ block.shardID }}</router-link>
+                </td>
+                <td>
+                  <router-link :to="'block/' + block.id">{{block.id | shorten}}</router-link>
                 </td>
                 <td>
                   <router-link :to="'block/' + block.id">{{block.height}}</router-link>
