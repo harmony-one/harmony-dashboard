@@ -39,9 +39,17 @@ let store = {
         this.data.nodes = data.nodes;
     },
     reset() {
+        // TODO(ricl): avoid dup logic between reset and initial values
         this.data.blockMap = {};
         this.data.blocks = [];
         this.data.lastUpdateTime = null;
+        this.data.latestBlocks = [];
+        this.data.latestTxs = [];
+        this.data.blockCount = 0;
+        this.data.txCount = 0;
+        this.data.nodeCount = 0;
+        this.data.nodes = {};
+        this.data.shardCount = 0;
     }
 };
 
