@@ -4,7 +4,7 @@
 .explorer-table-responsive {
   display: table;
   width: 100%;
-  height: 20em;
+  height: 25em;
   border-collapse: collapse;
   .th,
   .td {
