@@ -129,7 +129,7 @@
                   </div>
                 </div>
                 <div class="data-num-column">
-                  <div class="data-num">{{ globalData.blockCount }}</div>
+                  <div class="data-num">{{ globalData.blockCount | number }}</div>
                   <h1>Block Count</h1>
                 </div>
               </div>
@@ -142,7 +142,7 @@
                   </div>
                 </div>
                 <div class="data-num-column">
-                  <div class="data-num">{{ globalData.txCount }}</div>
+                  <div class="data-num">{{ globalData.txCount | number }}</div>
                   <h1>Tx Count</h1>
                 </div>
               </div>
@@ -155,7 +155,7 @@
                   </div>
                 </div>
                 <div class="data-num-column">
-                  <div class="data-num">{{ globalData.nodeCount }}</div>
+                  <div class="data-num">{{ globalData.nodeCount | number }}</div>
                   <h1>Node Count</h1>
                 </div>
               </div>
@@ -168,7 +168,7 @@
                   </div>
                 </div>
                 <div class="data-num-column">
-                  <div class="data-num">{{ globalData.shardCount }}</div>
+                  <div class="data-num">{{ globalData.shardCount | number }}</div>
                   <h1>Shard Count</h1>
                 </div>
               </div>
