@@ -6,7 +6,8 @@ import {
     faChevronRight,
     faAngleDoubleLeft,
     faAngleDoubleRight,
-    faSearch
+    faSearch,
+    faUserFriends
 } from '@fortawesome/free-solid-svg-icons';
 
-library.add(FontAwesomeBrands, faChevronLeft, faChevronRight, faAngleDoubleLeft, faAngleDoubleRight, faSearch)
+library.add(FontAwesomeBrands, faChevronLeft, faChevronRight, faAngleDoubleLeft, faAngleDoubleRight, faSearch, faUserFriends)

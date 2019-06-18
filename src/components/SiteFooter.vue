@@ -38,16 +38,16 @@ footer {
 <template>
   <footer>
     <div class="community container">
+      <a href="http://harmony.one/team" target="_blank">
+        <font-awesome-icon :icon="['fas', 'user-friends']"/>
+      </a>
+
       <a href="https://medium.com/harmony-one" target="_blank">
         <font-awesome-icon :icon="['fab', 'medium']"/>
       </a>
 
       <a href="https://twitter.com/harmonyprotocol" target="_blank">
         <font-awesome-icon :icon="['fab', 'twitter']"/>
-      </a>
-
-      <a href="http://harmony.one/instagram" target="_blank">
-        <font-awesome-icon :icon="['fab', 'instagram']"/>
       </a>
 
       <a href="https://t.me/harmony_one" target="_blank">
