@@ -176,7 +176,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="explorer-card latest-block-card">
               <header>
                 <h1 class="flex-grow">Latest Blocks</h1>
@@ -193,8 +193,9 @@
                     <div class="th">Shard</div>
                     <div class="th">Hash</div>
                     <div class="th">Height</div>
-                    <div class="th">Age</div>
-                    <div class="th text-right">Transactions</div>
+                    <div class="th text-right">Timestamp</div>
+                    <div class="th text-right">Age</div>
+                    <!-- <div class="th text-right">Transactions</div> -->
                   </div>
                   <div class="tr" v-for="block in globalData.latestBlocks" :key="block.id">
                     <div class="td">
@@ -206,8 +207,9 @@
                     <div class="td">
                       <router-link :to="'block/' + block.id">{{block.height}}</router-link>
                     </div>
-                    <div class="td">{{ block.timestamp | age }}</div>
-                    <div class="td text-right">{{ block.txCount }}</div>
+                    <div class="td text-right">{{ block.timestamp | timestamp }}</div>
+                    <div class="td text-right">{{ block.timestamp | age }}</div>
+                    <!-- <div class="td text-right">{{ block.txCount }}</div> -->
                   </div>
                 </div>
               </div>
@@ -220,7 +222,7 @@
               </footer>
             </div>
           </div>
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <!-- <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             <div class="explorer-card latest-block-card">
               <header>
                 <h1 class="flex-grow">Latest Transactions</h1>
@@ -263,7 +265,7 @@
                 >View all transactions</router-link>
               </footer>
             </div>
-          </div>
+          </div>-->
         </div>
       </div>
       <div class="container" v-else>
