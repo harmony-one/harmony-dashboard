@@ -43,6 +43,7 @@
   }
   .tagline {
     font-weight: 200;
+    margin-bottom: -0.2em;
   }
   .search {
     width: 15em;
