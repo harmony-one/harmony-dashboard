@@ -17,10 +17,10 @@
                   <td class="td-title">ID</td>
                   <td>{{ block.id }}</td>
                 </tr>
-                <tr>
+                <!-- <tr>
                   <td class="td-title">Number of Transactions</td>
                   <td>{{ block.txCount }}</td>
-                </tr>
+                </tr>-->
                 <tr>
                   <td class="td-title">Height</td>
                   <td>{{ block.height }}</td>
@@ -58,7 +58,7 @@
               </table>
             </section>
 
-            <section>
+            <!-- <section>
               <h2>Transactions</h2>
               <table class="explorer-table">
                 <tr>
@@ -82,7 +82,7 @@
                   <td>{{ Number(tx.value)/1000000000000000000 }}</td>
                 </tr>
               </table>
-            </section>
+            </section>-->
           </div>
         </div>
       </div>

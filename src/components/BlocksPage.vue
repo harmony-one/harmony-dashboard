@@ -83,12 +83,14 @@
                 <th>Height</th>
                 <th>Timestamp</th>
                 <th>Age</th>
-                <th class="text-right">Transactions</th>
+                <!-- <th class="text-right">Transactions</th> -->
                 <th class="text-right">Size (bytes)</th>
               </tr>
               <tr class="container" v-for="block in blocks" :key="block.id">
                 <td>
-                  <router-link :to="'shard/' + block.shardID">{{ block.shardID }}</router-link>
+                  <!-- <router-link :to="'shard/' + block.shardID"> -->
+                  {{ block.shardID }}
+                  <!-- </router-link> -->
                 </td>
                 <td>
                   <router-link :to="'block/' + block.id">{{block.id | shorten}}</router-link>
@@ -98,7 +100,7 @@
                 </td>
                 <td>{{ block.timestamp | timestamp }}</td>
                 <td>{{ block.timestamp | age }}</td>
-                <td class="text-right">{{ block.txCount }}</td>
+                <!-- <td class="text-right">{{ block.txCount }}</td> -->
                 <td class="text-right">{{ block.bytes }}</td>
               </tr>
             </table>

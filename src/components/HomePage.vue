@@ -199,7 +199,8 @@
                   </div>
                   <div class="tr" v-for="block in globalData.latestBlocks" :key="block.id">
                     <div class="td">
-                      <router-link :to="'shard/' + block.shardID">{{ block.shardID }}</router-link>
+                      <!-- <router-link :to="'shard/' + block.shardID">{{ block.shardID }}</router-link> -->
+                      {{ block.shardID }}
                     </div>
                     <div class="td">
                       <router-link :to="'block/' + block.id">{{block.id | shorten}}</router-link>
