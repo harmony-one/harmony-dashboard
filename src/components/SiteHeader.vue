@@ -84,6 +84,10 @@
   .search {
     width: 10em !important;
   }
+
+  .tagline {
+    display: none;
+  }
 }
 </style>
 <template>
