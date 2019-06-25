@@ -93,10 +93,10 @@
                   <!-- </router-link> -->
                 </td>
                 <td>
-                  <router-link :to="'block/' + block.id">{{block.id | shorten}}</router-link>
+                  <router-link :to="'/block/' + block.id">{{block.id | shorten}}</router-link>
                 </td>
                 <td>
-                  <router-link :to="'block/' + block.id">{{block.height}}</router-link>
+                  <router-link :to="'/block/' + block.id">{{block.height}}</router-link>
                 </td>
                 <td>{{ block.timestamp | timestamp }}</td>
                 <td>{{ block.timestamp | age }}</td>
