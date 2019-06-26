@@ -2,13 +2,6 @@
 @import "../less/common.less";
 
 .txs-body {
-  flex: 1;
-  width: 100%;
-  background-size: cover;
-  background-position: bottom center;
-  color: var(--primary-text-color);
-  display: flex;
-  padding-top: 6em;
   header {
     .flex-horizontal;
     align-items: flex-end;

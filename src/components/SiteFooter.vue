@@ -2,8 +2,7 @@
 @import "../less/common.less";
 footer {
   padding-bottom: @space-lg;
-  // background: linear-gradient(0deg, #262627 0, #525254 100%);
-  background-color: #262627;
+  background-color: #fff;
   color: #a09ea7;
   .container {
     text-align: center;

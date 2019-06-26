@@ -67,33 +67,37 @@ body,
 .explorer-page {
   display: flex;
   flex-direction: column;
-  background-color: #191919;
+  background-color: #f7f7ff;
   .explorer-body {
     flex: 1;
+    padding-top: 8em;
+    width: 100%;
+    color: var(--primary-text-color);
+    display: flex;
   }
 
   .explorer-card {
     .card();
     background-color: var(--color-card-background);
-    color: #ddd;
-    // padding: @space-md @space-lg;
+    color: var(--color-table-text);
     padding: 0;
+    box-shadow: 0 0 0.4em rgba(0, 0, 0, 0.1);
     header,
     footer {
       padding: @space-md @space-lg;
       display: block;
     }
     header {
-      border-bottom: solid 1px #2a2a2a;
+      border-bottom: solid 1px var(--color-table-border);
     }
     footer {
-      border-top: solid 1px #2a2a2a;
+      border-top: solid 1px var(--color-table-border);
     }
     a {
-      color: #3b85b6;
+      color: var(--color-table-link);
       transition: color @anim-duration @anim-easing;
       &:hover {
-        color: #4dacea;
+        color: var(--color-table-link-hover);
         text-decoration: none;
       }
     }
@@ -105,7 +109,9 @@ body,
       }
     }
     h1 {
-      font-size: 1.5em;
+      font-size: 1.3em;
+      color: #1b295e;
+      font-weight: 500;
     }
     h2 {
       font-size: 1.1em;
@@ -121,10 +127,6 @@ body,
   }
   .explorer-card-body {
     padding: @space-md @space-lg;
-    .explorer-body-num {
-      font-size: 1.5em;
-      text-align: center;
-    }
   }
   .explorer-table {
     border-collapse: collapse;
@@ -154,19 +156,19 @@ body,
       }
     }
     tr:hover td {
-      color: #ccc;
-      background-color: #282828;
+      color: var(--color-table-text-hover);
+      background-color: var(--color-table-background-hover);
     }
     tr + tr,
     tbody {
-      border-top: solid 1px #2a2a2a;
+      border-top: solid 1px var(--color-table-border);
     }
   }
 
   .btn.btn-light {
-    color: #ccc;
+    color: var(--color-button-light-text);
     &:disabled {
-      color: #2a2a2a !important;
+      opacity: 0.5;
     }
   }
 }

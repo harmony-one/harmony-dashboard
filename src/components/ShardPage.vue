@@ -1,15 +1,5 @@
 <style scoped lang="less">
 @import "../less/common.less";
-
-.shard-body {
-  flex: 1;
-  width: 100%;
-  background-size: cover;
-  background-position: bottom center;
-  color: var(--primary-text-color);
-  display: flex;
-  padding-top: 6em;
-}
 </style>
 
 <template>

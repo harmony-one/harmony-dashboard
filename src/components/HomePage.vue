@@ -22,16 +22,16 @@
   }
 
   .td {
-    color: #888;
+    color: var(--color-table-text);
     transition: all @anim-duration @anim-easing;
     word-break: break-word;
   }
   .tr:hover .td {
-    color: #ccc;
-    background-color: #282828;
+    color: var(--color-table-text-hover);
+    background-color: var(--color-table-background-hover);
   }
   .tr + .tr {
-    border-top: solid 1px #2a2a2a;
+    border-top: solid 1px var(--color-table-border);
   }
 }
 
@@ -42,7 +42,6 @@
   background-position: bottom center;
   color: var(--primary-text-color);
   display: flex;
-  padding-top: 6em;
   header {
     .flex-horizontal;
     align-items: flex-end;
@@ -71,50 +70,107 @@
     }
   }
 }
+
+.icon-column {
+  padding: 0 @space-md;
+  height: 100%;
+  .flex-hv-center();
+}
+.data-num-column {
+  padding: @space-md;
+  .data-num {
+    font-size: 2em;
+    color: #1b295e;
+  }
+  h1 {
+    font-size: 1em;
+    font-weight: normal;
+  }
+}
+.data-icon-circle {
+  width: 2em;
+  height: 2em;
+  .hmy-bg();
+  border-radius: 100%;
+
+  .data-icon {
+    width: 100%;
+    height: 100%;
+    background-size: 60% 60%;
+    background-repeat: no-repeat;
+    background-position: center;
+    &.icon-block-count {
+      background-image: url(../assets/block-count.svg);
+    }
+    &.icon-tx-count {
+      background-image: url(../assets/tx-count.svg);
+    }
+    &.icon-node-count {
+      background-image: url(../assets/node-count.svg);
+    }
+    &.icon-shard-count {
+      background-image: url(../assets/shard-count.svg);
+    }
+  }
+}
 </style>
 
 <template>
   <div class="home-page explorer-page page">
     <div class="home-body explorer-body">
       <div class="container" v-if="globalData.latestBlocks.length">
-        <div class="row">
-          <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-            <div class="explorer-card">
-              <header>
-                <h1>Block Count</h1>
-              </header>
-              <div class="explorer-card-body">
-                <div class="explorer-body-num">{{ globalData.blockCount }}</div>
+        <div class="explorer-card">
+          <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+              <div class="flex-horizontal">
+                <div class="icon-column">
+                  <div class="data-icon-circle">
+                    <div class="data-icon icon-block-count"></div>
+                  </div>
+                </div>
+                <div class="data-num-column">
+                  <div class="data-num">{{ globalData.blockCount }}</div>
+                  <h1>Block Count</h1>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-            <div class="explorer-card">
-              <header>
-                <h1>Tx Count</h1>
-              </header>
-              <div class="explorer-card-body">
-                <div class="explorer-body-num">{{ globalData.txCount }}</div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+              <div class="flex-horizontal">
+                <div class="icon-column">
+                  <div class="data-icon-circle">
+                    <div class="data-icon icon-tx-count"></div>
+                  </div>
+                </div>
+                <div class="data-num-column">
+                  <div class="data-num">{{ globalData.txCount }}</div>
+                  <h1>Tx Count</h1>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-            <div class="explorer-card">
-              <header>
-                <h1>Node Count</h1>
-              </header>
-              <div class="explorer-card-body">
-                <div class="explorer-body-num">{{ globalData.nodeCount }}</div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+              <div class="flex-horizontal">
+                <div class="icon-column">
+                  <div class="data-icon-circle">
+                    <div class="data-icon icon-node-count"></div>
+                  </div>
+                </div>
+                <div class="data-num-column">
+                  <div class="data-num">{{ globalData.nodeCount }}</div>
+                  <h1>Node Count</h1>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-            <div class="explorer-card">
-              <header>
-                <h1>Shard Count</h1>
-              </header>
-              <div class="explorer-card-body">
-                <div class="explorer-body-num">{{ globalData.shardCount }}</div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+              <div class="flex-horizontal">
+                <div class="icon-column">
+                  <div class="data-icon-circle">
+                    <div class="data-icon icon-shard-count"></div>
+                  </div>
+                </div>
+                <div class="data-num-column">
+                  <div class="data-num">{{ globalData.shardCount }}</div>
+                  <h1>Shard Count</h1>
+                </div>
               </div>
             </div>
           </div>
