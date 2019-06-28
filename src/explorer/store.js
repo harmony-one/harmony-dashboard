@@ -19,7 +19,7 @@ let store = {
         let blocks = data.blocks;
         let mergedBlocks = Object.keys(blocks)
             .reduce((memo, i) => memo.concat(blocks[i]), [])
-            .sort((a, b) => b.timestamp - a.timestamp);
+            .sort((a, b) => b.height - a.height);
         this.data.latestBlocks = mergedBlocks.concat(this.data.latestBlocks).slice(0, MaxLatestBlockCount);
 
         this.data.blockCount = data.blockCount;
