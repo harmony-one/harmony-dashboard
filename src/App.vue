@@ -78,6 +78,7 @@ body,
 
   .explorer-card {
     .card();
+    overflow: hidden;
     background-color: var(--color-card-background);
     color: var(--color-table-text);
     padding: 0;
