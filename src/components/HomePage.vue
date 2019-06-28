@@ -142,8 +142,8 @@
                   </div>
                 </div>
                 <div class="data-num-column">
-                  <div class="data-num">{{ globalData.regionCount | number }}</div>
-                  <h1>AWS Regions</h1>
+                  <div class="data-num">{{ globalData.avgBlockLatency | blockLatency }}</div>
+                  <h1>Block Latency</h1>
                 </div>
               </div>
             </div>

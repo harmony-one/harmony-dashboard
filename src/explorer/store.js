@@ -11,7 +11,8 @@ let store = {
         nodeCount: 0,
         nodes: {},
         shardCount: 0,
-        regionCount: 0,
+        blockLatencies: [], // shardID to blockLatencies
+        avgBlockLatency: 0,
         lastUpdateTime: null
     },
     update(data) {
@@ -30,7 +31,10 @@ let store = {
             .reduce((memo, i) => memo.concat(txs[i]), [])
             .sort((a, b) => b.timestamp - a.timestamp);
         this.data.latestTxs = mergedTxs.concat(this.data.latestTxs).slice(0, MaxLatestTxCount);
-        this.data.regionCount = data.regionCount;
+        
+        this.data.blockLatencies = data.blockLatencies;
+        let latencies = Object.values(data.blockLatencies).filter(x => isFinite(x));
+        this.data.avgBlockLatency = latencies.reduce((memo, x) => memo + x) / latencies.length;
 
         this.data.lastUpdateTime = data.lastUpdateTime;
     },
@@ -51,8 +55,8 @@ let store = {
         this.data.txCount = 0;
         this.data.nodeCount = 0;
         this.data.nodes = {};
-        this.data.regionCount = 0;
         this.data.shardCount = 0;
+        this.data.blockLatencies = [];
     }
 };
 

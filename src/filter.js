@@ -26,9 +26,14 @@ export function formatAmount(amount) {
     return amount / 10**18;
 }
 
+export function formatBlockLatency(time) {
+    return formatDecimal(time / 10**3) + 's';
+}
+
 Vue.filter('decimal', formatDecimal);
 Vue.filter('number', formatNumber);
 Vue.filter('shorten', shortenHash);
 Vue.filter('timestamp', formatTimestamp);
 Vue.filter('age', formatAge);
 Vue.filter('amount', formatAmount);
+Vue.filter('blockLatency', formatBlockLatency);
