@@ -55,6 +55,10 @@
                   </td>
                   <td v-else>-</td>
                 </tr>
+                <tr v-if="block.extraData">
+                  <td class="td-title">Extra Data</td>
+                  <td>{{ block.extraData }}</td>
+                </tr>
               </table>
             </section>
 
