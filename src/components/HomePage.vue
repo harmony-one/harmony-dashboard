@@ -199,14 +199,14 @@
                   </div>
                   <div class="tr" v-for="block in globalData.latestBlocks" :key="block.id">
                     <div class="td">
-                      <!-- <router-link :to="'shard/' + block.shardID">{{ block.shardID }}</router-link> -->
+                      <!-- <router-link :to="'/shard/' + block.shardID">{{ block.shardID }}</router-link> -->
                       {{ block.shardID }}
                     </div>
                     <div class="td">
-                      <router-link :to="'block/' + block.id">{{block.id | shorten}}</router-link>
+                      <router-link :to="'/block/' + block.id">{{block.id | shorten}}</router-link>
                     </div>
                     <div class="td">
-                      <router-link :to="'block/' + block.id">{{block.height}}</router-link>
+                      <router-link :to="'/block/' + block.id">{{block.height}}</router-link>
                     </div>
                     <div class="td text-right">{{ block.timestamp | timestamp }}</div>
                     <div class="td text-right">{{ block.timestamp | age }}</div>
@@ -245,13 +245,13 @@
                   </div>
                   <div class="tr" v-for="tx in globalData.latestTxs" :key="tx.id">
                     <div class="td">
-                      <router-link :to="'shard/' + tx.shardID">{{ tx.shardID }}</router-link>
+                      <router-link :to="'/shard/' + tx.shardID">{{ tx.shardID }}</router-link>
                     </div>
                     <div class="td">
-                      <router-link :to="'address/' + tx.from">{{tx.from | shorten }}</router-link>
+                      <router-link :to="'/address/' + tx.from">{{tx.from | shorten }}</router-link>
                     </div>
                     <div class="td">
-                      <router-link :to="'address/' + tx.to">{{tx.to | shorten }}</router-link>
+                      <router-link :to="'/address/' + tx.to">{{tx.to | shorten }}</router-link>
                     </div>
                     <div class="td">{{ tx.timestamp | age }}</div>
                     <div class="td text-right">{{ tx.value | amount }}</div>

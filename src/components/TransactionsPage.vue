@@ -82,16 +82,16 @@
               </tr>
               <tr class="container" v-for="tx in txs" :key="tx.id">
                 <td>
-                  <router-link :to="'shard/' + tx.shardID">{{ tx.shardID }}</router-link>
+                  <router-link :to="'/shard/' + tx.shardID">{{ tx.shardID }}</router-link>
                 </td>
                 <td>
-                  <router-link :to="'tx/' + tx.id">{{tx.id | shorten}}</router-link>
+                  <router-link :to="'/tx/' + tx.id">{{tx.id | shorten}}</router-link>
                 </td>
                 <td>
-                  <router-link :to="'address/' + tx.from">{{tx.from | shorten}}</router-link>
+                  <router-link :to="'/address/' + tx.from">{{tx.from | shorten}}</router-link>
                 </td>
                 <td>
-                  <router-link :to="'address/' + tx.to">{{tx.to | shorten}}</router-link>
+                  <router-link :to="'/address/' + tx.to">{{tx.to | shorten}}</router-link>
                 </td>
                 <td>{{ tx.timestamp | age }}</td>
                 <td class="text-right">{{ tx.value }}</td>

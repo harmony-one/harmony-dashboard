@@ -88,7 +88,7 @@
               </tr>
               <tr class="container" v-for="block in blocks" :key="block.id">
                 <td>
-                  <!-- <router-link :to="'shard/' + block.shardID"> -->
+                  <!-- <router-link :to="'/shard/' + block.shardID"> -->
                   {{ block.shardID }}
                   <!-- </router-link> -->
                 </td>
