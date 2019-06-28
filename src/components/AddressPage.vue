@@ -47,7 +47,7 @@
                 </tr>
               </table>
             </section>
-            <section>
+            <!-- <section>
               <h2>Transactions</h2>
               <table class="explorer-table">
                 <tr>
@@ -71,7 +71,7 @@
                   <td>{{ Number(tx.value)/1000000000000000000 }}</td>
                 </tr>
               </table>
-            </section>
+            </section>-->
           </div>
         </div>
       </div>
