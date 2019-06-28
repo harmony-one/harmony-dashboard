@@ -34,7 +34,7 @@ let store = {
         
         this.data.blockLatencies = data.blockLatencies;
         let latencies = Object.values(data.blockLatencies).filter(x => isFinite(x));
-        this.data.avgBlockLatency = latencies.reduce((memo, x) => memo + x) / latencies.length;
+        this.data.avgBlockLatency = latencies.reduce((memo, x) => memo + x, 0) / latencies.length;
 
         this.data.lastUpdateTime = data.lastUpdateTime;
     },
