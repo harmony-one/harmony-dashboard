@@ -1,6 +1,13 @@
 import moment from "moment";
 import Vue from 'vue';
 
+/**
+ * Ref:
+ * * https://momentjs.com/docs/#/customization/relative-time-threshold/
+ * * https://momentjs.com/docs/#/displaying/fromnow/
+ */
+moment.relativeTimeThreshold('ss', 0);
+
 export function formatDecimal(number) {
     return formatNumber((+number).toFixed(2));
 }
@@ -23,11 +30,11 @@ export function formatAge(timestamp) {
 }
 
 export function formatAmount(amount) {
-    return amount / 10**18;
+    return amount / 10 ** 18;
 }
 
 export function formatBlockLatency(time) {
-    return formatDecimal(time / 10**3) + 's';
+    return formatDecimal(time / 10 ** 3) + 's';
 }
 
 Vue.filter('decimal', formatDecimal);
