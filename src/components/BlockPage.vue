@@ -29,10 +29,10 @@
                   <td class="td-title">Timestamp</td>
                   <td>{{ block.timestamp | timestamp }}</td>
                 </tr>
-                <tr>
+                <!-- <tr>
                   <td class="td-title">Merkle Root</td>
                   <td>{{ block.merkleRoot }}</td>
-                </tr>
+                </tr>-->
                 <tr>
                   <td class="td-title">Size (bytes)</td>
                   <td>{{ block.bytes }}</td>
@@ -91,7 +91,7 @@
         </div>
       </div>
       <div class="container" v-else>
-        <loading-message/>
+        <loading-message />
       </div>
     </div>
   </div>
