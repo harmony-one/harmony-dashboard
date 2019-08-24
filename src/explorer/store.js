@@ -33,7 +33,7 @@ let store = {
         this.data.latestTxs = mergedTxs.concat(this.data.latestTxs).slice(0, MaxLatestTxCount);
         
         this.data.blockLatencies = data.blockLatencies;
-        let latencies = Object.values(data.blockLatencies).filter(x => isFinite(x));
+        let latencies = Object.values(data.blockLatencies).filter(x => Number.isFinite(x));
         this.data.avgBlockLatency = latencies.reduce((memo, x) => memo + x, 0) / latencies.length;
 
         this.data.lastUpdateTime = data.lastUpdateTime;
