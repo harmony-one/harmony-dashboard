@@ -12,7 +12,7 @@ let store = {
         nodes: {},
         shardCount: 0,
         blockLatencies: [], // shardID to blockLatencies
-        avgBlockLatency: 0,
+        avgBlockLatency: null,
         lastUpdateTime: null
     },
     update(data) {
@@ -34,7 +34,9 @@ let store = {
         
         this.data.blockLatencies = data.blockLatencies;
         let latencies = Object.values(data.blockLatencies).filter(x => Number.isFinite(x));
-        this.data.avgBlockLatency = latencies.reduce((memo, x) => memo + x, 0) / latencies.length;
+        if (latencies.length) {
+            this.data.avgBlockLatency = latencies.reduce((memo, x) => memo + x, 0) / latencies.length;
+        }
 
         this.data.lastUpdateTime = data.lastUpdateTime;
     },
