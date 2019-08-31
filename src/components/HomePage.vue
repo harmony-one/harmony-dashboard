@@ -210,7 +210,7 @@
                     </div>
                     <div class="td text-right">{{ block.timestamp | timestamp }}</div>
                     <div class="td text-right">{{ block.timestamp | age }}</div>
-                    <!-- <div class="td text-right">{{ block.txCount }}</div> -->
+                    <div class="td text-right">{{ block.txCount }}</div>
                   </div>
                 </div>
               </div>
@@ -223,7 +223,7 @@
               </footer>
             </div>
           </div>
-          <!-- <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="explorer-card latest-block-card">
               <header>
                 <h1 class="flex-grow">Latest Transactions</h1>
@@ -238,6 +238,7 @@
                 <div class="explorer-table-responsive latest-tx-table">
                   <div class="tr">
                     <div class="th">Shard</div>
+                    <div class="th">Hash</div>
                     <div class="th">From</div>
                     <div class="th">To</div>
                     <div class="th">Age</div>
@@ -248,10 +249,13 @@
                       <router-link :to="'/shard/' + tx.shardID">{{ tx.shardID }}</router-link>
                     </div>
                     <div class="td">
-                      <router-link :to="'/address/' + tx.from">{{tx.from | shorten }}</router-link>
+                      <router-link :to="'/tx/' + tx.id">{{ tx.id | shorten }}</router-link>
                     </div>
                     <div class="td">
-                      <router-link :to="'/address/' + tx.to">{{tx.to | shorten }}</router-link>
+                      <router-link :to="'/address/' + tx.from.bech32">{{tx.from.bech32 | shorten }}</router-link>
+                    </div>
+                    <div class="td">
+                      <router-link :to="'/address/' + tx.to.bech32">{{tx.to.bech32 | shorten }}</router-link>
                     </div>
                     <div class="td">{{ tx.timestamp | age }}</div>
                     <div class="td text-right">{{ tx.value | amount }}</div>
@@ -266,11 +270,11 @@
                 >View all transactions</router-link>
               </footer>
             </div>
-          </div>-->
+          </div>
         </div>
       </div>
       <div class="container" v-else>
-        <loading-message/>
+        <loading-message />
       </div>
     </div>
   </div>

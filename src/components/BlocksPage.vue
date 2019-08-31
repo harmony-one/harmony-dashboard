@@ -41,14 +41,14 @@
                     @click="first()"
                     :disabled="pageIndex === 0"
                   >
-                    <font-awesome-icon icon="angle-double-left"/>
+                    <font-awesome-icon icon="angle-double-left" />
                   </button>
                   <button
                     class="btn btn-light btn-icon-only"
                     @click="prev()"
                     :disabled="pageIndex === 0"
                   >
-                    <font-awesome-icon icon="chevron-left"/>
+                    <font-awesome-icon icon="chevron-left" />
                   </button>
                   <span class="pagination-nums">{{ pageIndex + 1 }} / {{ pageCount }}</span>
                   <button
@@ -56,14 +56,14 @@
                     @click="next()"
                     :disabled="pageIndex === pageCount - 1"
                   >
-                    <font-awesome-icon icon="chevron-right"/>
+                    <font-awesome-icon icon="chevron-right" />
                   </button>
                   <button
                     class="btn btn-light btn-icon-only"
                     @click="last()"
                     :disabled="pageIndex === pageCount - 1"
                   >
-                    <font-awesome-icon icon="angle-double-right"/>
+                    <font-awesome-icon icon="angle-double-right" />
                   </button>
                 </span>
                 <!-- <span class="page-size-controller">
@@ -100,12 +100,12 @@
                 </td>
                 <td>{{ block.timestamp | timestamp }}</td>
                 <td>{{ block.timestamp | age }}</td>
-                <!-- <td class="text-right">{{ block.txCount }}</td> -->
+                <td class="text-right">{{ block.txCount }}</td>
                 <td class="text-right">{{ block.bytes }}</td>
               </tr>
             </table>
             <div v-else>
-              <loading-message/>
+              <loading-message />
             </div>
           </div>
         </div>

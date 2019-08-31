@@ -17,10 +17,10 @@
                   <td class="td-title">ID</td>
                   <td>{{ block.id }}</td>
                 </tr>
-                <!-- <tr>
+                <tr>
                   <td class="td-title">Number of Transactions</td>
                   <td>{{ block.txCount }}</td>
-                </tr>-->
+                </tr>
                 <tr>
                   <td class="td-title">Height</td>
                   <td>{{ block.height }}</td>
