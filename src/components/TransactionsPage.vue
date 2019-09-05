@@ -41,14 +41,14 @@
                     @click="first()"
                     :disabled="pageIndex === 0"
                   >
-                    <font-awesome-icon icon="angle-double-left"/>
+                    <font-awesome-icon icon="angle-double-left" />
                   </button>
                   <button
                     class="btn btn-light btn-icon-only"
                     @click="prev()"
                     :disabled="pageIndex === 0"
                   >
-                    <font-awesome-icon icon="chevron-left"/>
+                    <font-awesome-icon icon="chevron-left" />
                   </button>
                   <span class="pagination-nums">{{ pageIndex + 1 }} / {{ pageCount }}</span>
                   <button
@@ -56,14 +56,14 @@
                     @click="next()"
                     :disabled="pageIndex === pageCount - 1"
                   >
-                    <font-awesome-icon icon="chevron-right"/>
+                    <font-awesome-icon icon="chevron-right" />
                   </button>
                   <button
                     class="btn btn-light btn-icon-only"
                     @click="last()"
                     :disabled="pageIndex === pageCount - 1"
                   >
-                    <font-awesome-icon icon="angle-double-right"/>
+                    <font-awesome-icon icon="angle-double-right" />
                   </button>
                 </span>
               </span>
@@ -88,10 +88,16 @@
                   <router-link :to="'/tx/' + tx.id">{{tx.id | shorten}}</router-link>
                 </td>
                 <td>
-                  <router-link :to="'/address/' + tx.from">{{tx.from | shorten}}</router-link>
+                  <router-link
+                    v-if="tx.from.bech32"
+                    :to="'/address/' + tx.from.bech32"
+                  >{{tx.from.bech32 | shorten}}</router-link>
                 </td>
                 <td>
-                  <router-link :to="'/address/' + tx.to">{{tx.to | shorten}}</router-link>
+                  <router-link
+                    v-if="tx.to.bech32"
+                    :to="'/address/' + tx.to.bech32"
+                  >{{tx.to.bech32 | shorten}}</router-link>
                 </td>
                 <td>{{ tx.timestamp | age }}</td>
                 <td class="text-right">{{ tx.value }}</td>
@@ -99,7 +105,7 @@
               </tr>
             </table>
             <div v-else>
-              <loading-message/>
+              <loading-message />
             </div>
           </div>
         </div>
