@@ -183,7 +183,7 @@
                 <div class="secondary-info">
                   <div
                     class="timer"
-                  >Settled {{ globalData.latestBlocks.length }} new block(s) {{ Math.round(Math.max((now - globalData.lastUpdateTime) / 1000, 0)) | number }}s ago...</div>
+                  >Updated {{ Math.round(Math.max((now - globalData.lastUpdateTime) / 1000, 0)) | number }}s ago...</div>
                   <span class="total-block-num"></span>
                 </div>
               </header>
@@ -195,7 +195,7 @@
                     <div class="th">Height</div>
                     <div class="th text-right">Timestamp</div>
                     <div class="th text-right">Age</div>
-                    <!-- <div class="th text-right">Transactions</div> -->
+                    <div class="th text-right">Transactions</div>
                   </div>
                   <div class="tr" v-for="block in globalData.latestBlocks" :key="block.id">
                     <div class="td">
@@ -246,7 +246,9 @@
                   </div>
                   <div class="tr" v-for="tx in globalData.latestTxs" :key="tx.id">
                     <div class="td">
-                      <router-link :to="'/shard/' + tx.shardID">{{ tx.shardID }}</router-link>
+                      <!-- <router-link :to="'/shard/' + tx.shardID"> -->
+                      {{ tx.shardID }}
+                      <!-- </router-link> -->
                     </div>
                     <div class="td">
                       <router-link :to="'/tx/' + tx.id">{{ tx.id | shorten }}</router-link>
