@@ -195,7 +195,7 @@
                     <div class="th">Height</div>
                     <div class="th text-right">Timestamp</div>
                     <div class="th text-right">Age</div>
-                    <div class="th text-right">Transactions</div>
+                    <div class="th text-right" v-if="showTx">Transactions</div>
                   </div>
                   <div class="tr" v-for="block in globalData.latestBlocks" :key="block.id">
                     <div class="td">
@@ -210,20 +210,20 @@
                     </div>
                     <div class="td text-right">{{ block.timestamp | timestamp }}</div>
                     <div class="td text-right">{{ block.timestamp | age }}</div>
-                    <div class="td text-right">{{ block.txCount }}</div>
+                    <div class="td text-right" v-if="showTx">{{ block.txCount }}</div>
                   </div>
                 </div>
               </div>
-              <footer>
+              <!-- <footer>
                 <router-link
                   tag="button"
                   class="btn btn-light btn-block btn-mini"
                   to="blocks"
                 >View all blocks</router-link>
-              </footer>
+              </footer>-->
             </div>
           </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" v-if="showTx">
             <div class="explorer-card latest-block-card">
               <header>
                 <h1 class="flex-grow">Latest Transactions</h1>
@@ -297,7 +297,8 @@ export default {
       pageIndex: 0,
       pageSize: 50,
       timer: null,
-      now: Date.now()
+      now: Date.now(),
+      showTx: false
     };
   },
   components: {
