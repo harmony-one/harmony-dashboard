@@ -46,7 +46,7 @@
                 <td class="td-title">From</td>
                 <td>
                   <router-link
-                    :to="'/address/' + transaction.from.checksum"
+                    :to="'/address/' + transaction.from.bech32"
                     v-if="transaction.from"
                   >{{ transaction.from.bech32 }}</router-link>
                 </td>
@@ -55,7 +55,7 @@
                 <td class="td-title">To</td>
                 <td>
                   <router-link
-                    :to="'/address/' + transaction.to.checksum"
+                    :to="'/address/' + transaction.to.bech32"
                     v-if="transaction.to"
                   >{{ transaction.to.bech32 }}</router-link>
                 </td>
