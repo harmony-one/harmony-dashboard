@@ -43,6 +43,7 @@
     --color-table-link-hover: --color-table-link;
     --color-button-light-text: --color-table-text;
     --color-site-header-text: #fff;
+    --color-text-error: @color-error;
 }
 
 .night-mode {
@@ -66,10 +67,15 @@
     --color-table-link-hover: #4dacea;
     --color-button-light-text: #ccc;
     --color-site-header-text: --bright-text-color;
+    --color-text-error: @color-error;
 }
 
 .text-right {
     text-align: right !important;
+}
+
+.text-error {
+    color: var(--color-text-error);
 }
 
 .clearfix:after {

@@ -36,7 +36,8 @@
           </header>
           <div class="explorer-card-body">
             <section>
-              <table class="explorer-table">
+              <div v-if="shard.err" class="text-error">{{ shard.err }}</div>
+              <table class="explorer-table" v-else>
                 <tr>
                   <td class="td-title">Balance</td>
                   <td>{{ Number(shard.balance)/1000000000000000000 }}</td>
@@ -76,7 +77,7 @@
         </div>
       </div>
       <div class="container" v-else>
-        <loading-message/>
+        <loading-message />
       </div>
     </div>
   </div>
@@ -113,8 +114,12 @@ export default {
       this.loading = true;
       service
         .getAddress(this.$route.params.address)
-        .then(address => (this.address = address))
-        .finally(() => (this.loading = false));
+        .then(address => {
+          this.address = address;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     }
   }
 };
