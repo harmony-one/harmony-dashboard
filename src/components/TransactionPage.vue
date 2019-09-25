@@ -14,16 +14,16 @@
             <table class="explorer-table">
               <tr>
                 <td class="td-title">ID</td>
-                <td>{{ transaction.id }}</td>
+                <td>{{ transaction.hash }}</td>
               </tr>
               <tr>
                 <td class="td-title">Value</td>
                 <td>{{ Number(transaction.value)/1000000000000000000 }}</td>
               </tr>
-              <tr>
+              <!-- <tr>
                 <td class="td-title">Size (bytes)</td>
                 <td>{{ transaction.bytes }}</td>
-              </tr>
+              </tr>-->
               <!-- <tr>
                 <td class="td-title">Received Time</td>
                 <td>{{ transaction.receivedTime }}</td>
@@ -39,26 +39,38 @@
               <tr>
                 <td class="td-title">Included In Block</td>
                 <td>
-                  <router-link :to="'/block/' + transaction.blockID">{{ transaction.blockID }}</router-link>
+                  <router-link :to="'/block/' + transaction.blockHash">{{ transaction.blockHash }}</router-link>
                 </td>
+              </tr>
+              <tr>
+                <td class="td-title">From Shard</td>
+                <td>{{ transaction.shardID }}</td>
               </tr>
               <tr>
                 <td class="td-title">From</td>
                 <td>
                   <router-link
-                    :to="'/address/' + transaction.from.bech32"
+                    :to="'/address/' + transaction.from"
                     v-if="transaction.from"
-                  >{{ transaction.from.bech32 }}</router-link>
+                  >{{ transaction.from }}</router-link>
                 </td>
+              </tr>
+              <tr>
+                <td class="td-title">To Shard</td>
+                <td>{{ transaction.toShardID }}</td>
               </tr>
               <tr>
                 <td class="td-title">To</td>
                 <td>
                   <router-link
-                    :to="'/address/' + transaction.to.bech32"
+                    :to="'/address/' + transaction.to"
                     v-if="transaction.to"
-                  >{{ transaction.to.bech32 }}</router-link>
+                  >{{ transaction.to }}</router-link>
                 </td>
+              </tr>
+              <tr>
+                <td class="td-title">Gas</td>
+                <td>{{ transaction.gas }}</td>
               </tr>
               <tr>
                 <td class="td-title">Data (Hex)</td>
