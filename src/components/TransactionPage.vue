@@ -68,6 +68,12 @@
                   >{{ transaction.to }}</router-link>
                 </td>
               </tr>
+              <tr v-if="receipt">
+                <td class="td-title">Confirmed in Block</td>
+                <td>
+                  <router-link :to="'/block/' + receipt.blockHash">{{ receipt.blockHash }}</router-link>
+                </td>
+              </tr>
               <tr>
                 <td class="td-title">Gas</td>
                 <td>{{ transaction.gas }}</td>
@@ -107,6 +113,7 @@ export default {
     return {
       loading: true,
       transaction: null,
+      receipt: null,
       sequence: null
     };
   },
@@ -121,6 +128,18 @@ export default {
   },
   mounted() {
     this.getTransaction();
+  },
+  computed: {
+    isCrossShard() {
+      console.log(
+        this.transaction &&
+          this.transaction.shardID === this.transaction.toShardID
+      );
+      return (
+        this.transaction &&
+        this.transaction.shardID === this.transaction.toShardID
+      );
+    }
   },
   methods: {
     getSequence() {
@@ -137,6 +156,14 @@ export default {
         .getTransaction(this.$route.params.transactionId)
         .then(transaction => {
           this.transaction = transaction;
+          if (this.transaction.shardID !== this.transaction.toShardID) {
+            service
+              .getCxReceipt(this.$route.params.transactionId)
+              .then(receipt => {
+                this.receipt = receipt;
+                console.log("receipt", receipt);
+              });
+          }
           this.getSequence();
         })
         .finally(() => (this.loading = false));
