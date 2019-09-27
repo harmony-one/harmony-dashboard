@@ -48,7 +48,7 @@
                 </tr>
               </table>
             </section>
-            <!-- <section>
+            <section>
               <h2>Transactions</h2>
               <table class="explorer-table">
                 <tr>
@@ -72,7 +72,7 @@
                   <td>{{ Number(tx.value)/1000000000000000000 }}</td>
                 </tr>
               </table>
-            </section>-->
+            </section>
           </div>
         </div>
       </div>
@@ -113,7 +113,7 @@ export default {
     getAddress() {
       this.loading = true;
       service
-        .getAddress(this.$route.params.address)
+        .getTxHistory(this.$route.params.address)
         .then(address => {
           this.address = address;
         })

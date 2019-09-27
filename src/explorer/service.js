@@ -100,6 +100,14 @@ export default {
       return address;
     });
   },
+  getTxHistory(id) {
+    return authGet('/tx_history', {
+      params: { id, tx_view: 'ALL', page: 0, offset: 25 }
+    }).then(res => {
+      let address = res.data.address;
+      return address;
+    });
+  },
   getShard(id) {
     return authGet("/shard", { params: { id } }).then(res => {
       let shard = res.data.shard;
