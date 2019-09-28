@@ -264,13 +264,13 @@
                   </div>
                 </div>
               </div>
-              <footer>
+              <!-- <footer>
                 <router-link
                   tag="button"
                   class="btn btn-light btn-block btn-mini"
                   to="txs"
                 >View all transactions</router-link>
-              </footer>
+              </footer>-->
             </div>
           </div>
         </div>

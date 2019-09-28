@@ -82,7 +82,9 @@
               </tr>
               <tr class="container" v-for="tx in txs" :key="tx.id">
                 <td>
-                  <router-link :to="'/shard/' + tx.shardID">{{ tx.shardID }}</router-link>
+                  <!-- <router-link :to="'/shard/' + tx.shardID"> -->
+                  {{ tx.shardID }}
+                  <!-- </router-link> -->
                 </td>
                 <td>
                   <router-link :to="'/tx/' + tx.id">{{tx.id | shorten}}</router-link>
