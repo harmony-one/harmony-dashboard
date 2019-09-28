@@ -18,7 +18,7 @@
               </tr>
               <tr>
                 <td class="td-title">Value</td>
-                <td>{{ Number(transaction.value)/1000000000000000000 }}</td>
+                <td>{{ Number(transaction.value) | amount }}</td>
               </tr>
               <!-- <tr>
                 <td class="td-title">Size (bytes)</td>
@@ -33,21 +33,17 @@
                 <td>{{ transaction.timestamp | timestamp }}</td>
               </tr>
               <tr>
-                <td class="td-title">Included In Shard</td>
+                <td class="td-title">From Shard</td>
                 <td>{{ transaction.shardID }}</td>
               </tr>
               <tr>
-                <td class="td-title">Included In Block</td>
+                <td class="td-title">From Shard Block</td>
                 <td>
                   <router-link :to="'/block/' + transaction.blockHash">{{ transaction.blockHash }}</router-link>
                 </td>
               </tr>
               <tr>
-                <td class="td-title">From Shard</td>
-                <td>{{ transaction.shardID }}</td>
-              </tr>
-              <tr>
-                <td class="td-title">From</td>
+                <td class="td-title">From Address</td>
                 <td>
                   <router-link
                     :to="'/address/' + transaction.from"
@@ -59,8 +55,14 @@
                 <td class="td-title">To Shard</td>
                 <td>{{ transaction.toShardID }}</td>
               </tr>
+              <tr v-if="receipt">
+                <td class="td-title">To Shard Block</td>
+                <td>
+                  <router-link :to="'/block/' + receipt.blockHash">{{ receipt.blockHash }}</router-link>
+                </td>
+              </tr>
               <tr>
-                <td class="td-title">To</td>
+                <td class="td-title">To Address</td>
                 <td>
                   <router-link
                     :to="'/address/' + transaction.to"
@@ -68,15 +70,9 @@
                   >{{ transaction.to }}</router-link>
                 </td>
               </tr>
-              <tr v-if="receipt">
-                <td class="td-title">Confirmed in Block</td>
-                <td>
-                  <router-link :to="'/block/' + receipt.blockHash">{{ receipt.blockHash }}</router-link>
-                </td>
-              </tr>
               <tr>
                 <td class="td-title">Gas</td>
-                <td>{{ transaction.gas }}</td>
+                <td>{{ transaction.gas | amount }}</td>
               </tr>
               <tr>
                 <td class="td-title">Data (Hex)</td>
