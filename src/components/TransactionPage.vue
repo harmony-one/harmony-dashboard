@@ -18,7 +18,7 @@
               </tr>
               <tr>
                 <td class="td-title">Value</td>
-                <td>{{ Number(transaction.value) | amount }}</td>
+                <td>{{ transaction.value | amount }}</td>
               </tr>
               <!-- <tr>
                 <td class="td-title">Size (bytes)</td>

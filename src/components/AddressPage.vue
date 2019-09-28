@@ -20,7 +20,7 @@
                 </tr>
                 <tr>
                   <td class="td-title">Balance</td>
-                  <td>{{ Number(address.balance)/1000000000000000000 }}</td>
+                  <td>{{ address.balance | amount }}</td>
                 </tr>
                 <tr>
                   <td class="td-title">Transactions</td>
@@ -40,7 +40,7 @@
               <table class="explorer-table" v-else>
                 <tr>
                   <td class="td-title">Balance</td>
-                  <td>{{ Number(shard.balance)/1000000000000000000 }}</td>
+                  <td>{{ shard.balance | amount }}</td>
                 </tr>
                 <tr>
                   <td class="td-title">Transactions</td>
@@ -69,7 +69,7 @@
                   <td>
                     <router-link :to="'/address/' + tx.to">{{ tx.to | shorten }}</router-link>
                   </td>
-                  <td>{{ Number(tx.value)/1000000000000000000 }}</td>
+                  <td>{{ tx.value | amount }}</td>
                 </tr>
               </table>
             </section>
