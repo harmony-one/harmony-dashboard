@@ -100,7 +100,7 @@
                   >{{tx.to.bech32 | shorten}}</router-link>
                 </td>
                 <td>{{ tx.timestamp | age }}</td>
-                <td class="text-right">{{ tx.value }}</td>
+                <td class="text-right">{{ tx.value | amount }}</td>
                 <td class="text-right">{{ tx.bytes }}</td>
               </tr>
             </table>
