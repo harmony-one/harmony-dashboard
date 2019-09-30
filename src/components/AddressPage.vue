@@ -44,12 +44,12 @@
                 </tr>
                 <tr>
                   <td class="td-title">Transactions</td>
-                  <td>{{ shard.txs.length }}</td>
+                  <td>{{ shard.txCount | number }}</td>
                 </tr>
               </table>
             </section>
             <section>
-              <h2>Transactions</h2>
+              <h2>Latest Transactions</h2>
               <table class="explorer-table">
                 <tr>
                   <th>TxHash</th>
@@ -74,6 +74,13 @@
               </table>
             </section>
           </div>
+          <!-- <footer class="button-only-footer">
+            <router-link
+              tag="button"
+              class="btn btn-light btn-block btn-mini"
+              :to="{ name: 'AddressShardPage', params: { address: $route.params.address, shardId: 0 }}"
+            >View all</router-link>
+          </footer>-->
         </div>
       </div>
       <div class="container" v-else>
@@ -113,7 +120,7 @@ export default {
     getAddress() {
       this.loading = true;
       service
-        .getTxHistory(this.$route.params.address)
+        .getAddress(this.$route.params.address)
         .then(address => {
           this.address = address;
         })

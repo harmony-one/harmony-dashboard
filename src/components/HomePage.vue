@@ -62,12 +62,6 @@
       height: 20em;
       overflow: auto;
     }
-    footer {
-      padding: 0;
-      .btn {
-        padding: @space-md;
-      }
-    }
   }
 }
 
@@ -214,7 +208,7 @@
                   </div>
                 </div>
               </div>
-              <!-- <footer>
+              <!-- <footer class="button-only-footer">
                 <router-link
                   tag="button"
                   class="btn btn-light btn-block btn-mini"
@@ -264,7 +258,7 @@
                   </div>
                 </div>
               </div>
-              <!-- <footer>
+              <!-- <footer class="button-only-footer">
                 <router-link
                   tag="button"
                   class="btn btn-light btn-block btn-mini"
@@ -298,7 +292,7 @@ export default {
       pageSize: 50,
       timer: null,
       now: Date.now(),
-      showTx: false
+      showTx: true
     };
   },
   components: {

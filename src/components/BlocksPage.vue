@@ -1,28 +1,5 @@
 <style scoped lang="less">
 @import "../less/common.less";
-
-.blocks-body {
-  header {
-    .flex-horizontal;
-    align-items: flex-end;
-    .timer {
-      margin-right: @space-lg;
-      color: #666;
-    }
-  }
-  .pagination-controls {
-    .flex-horizontal;
-    text-align: right;
-    float: right;
-    font-size: 0.8em;
-    .total-block-num {
-      margin-right: @space-md;
-    }
-    .pagination-nums {
-      margin-left: @space-md;
-    }
-  }
-}
 </style>
 
 <template>

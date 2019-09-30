@@ -100,9 +100,9 @@ export default {
       return address;
     });
   },
-  getTxHistory(id) {
-    return authGet('/tx_history', {
-      params: { id, tx_view: 'ALL', page: 0, offset: 25 }
+  getTxHistory(address, shardID, pageIndex) {
+    return authGet('/txHistory', {
+      params: { id: address, shardID, txView: 'ALL', pageIndex, pageSize: 25 }
     }).then(res => {
       let address = res.data.address;
       return address;

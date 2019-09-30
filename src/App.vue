@@ -90,8 +90,31 @@ body,
     header {
       border-bottom: solid 1px var(--color-table-border);
     }
+    header {
+      .flex-horizontal;
+      align-items: flex-end;
+      .pagination-controls {
+        .flex-horizontal;
+        text-align: right;
+        float: right;
+        font-size: 0.8em;
+        .total-tx-num {
+          margin-right: @space-md;
+        }
+        .pagination-nums {
+          margin-left: @space-md;
+        }
+      }
+    }
+
     footer {
       border-top: solid 1px var(--color-table-border);
+      &.button-only-footer {
+        padding: 0;
+        .btn {
+          padding: @space-md;
+        }
+      }
     }
     a {
       color: var(--color-table-link);
@@ -175,9 +198,9 @@ body,
 </style>
 <template>
   <div class="app">
-    <site-header/>
-    <router-view/>
-    <site-footer/>
+    <site-header />
+    <router-view />
+    <site-footer />
   </div>
 </template>
 
