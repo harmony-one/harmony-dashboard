@@ -58,9 +58,9 @@
                   <th>To</th>
                   <th>Value</th>
                 </tr>
-                <tr v-for="tx in shard.txs" :key="tx.id">
+                <tr v-for="tx in shard.txs" :key="tx.hash">
                   <td>
-                    <router-link :to="'/tx/' + tx.id">{{ tx.id | shorten }}</router-link>
+                    <router-link :to="'/tx/' + tx.hash">{{ tx.hash | shorten }}</router-link>
                   </td>
                   <td>{{ tx.timestamp | timestamp }}</td>
                   <td>
@@ -74,13 +74,13 @@
               </table>
             </section>
           </div>
-          <!-- <footer class="button-only-footer">
+          <footer class="button-only-footer">
             <router-link
               tag="button"
               class="btn btn-light btn-block btn-mini"
               :to="{ name: 'AddressShardPage', params: { address: $route.params.address, shardId: 0 }}"
             >View all</router-link>
-          </footer>-->
+          </footer>
         </div>
       </div>
       <div class="container" v-else>

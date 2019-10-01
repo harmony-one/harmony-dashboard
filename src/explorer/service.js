@@ -101,11 +101,28 @@ export default {
     });
   },
   getTxHistory(address, shardID, pageIndex) {
-    return authGet('/txHistory', {
-      params: { id: address, shardID, txView: 'ALL', pageIndex, pageSize: 25 }
+    return authGet("/txHistory", {
+      params: { id: address, shardID, txView: "ALL", pageIndex, pageSize: 25 }
     }).then(res => {
       let address = res.data.address;
       return address;
+    });
+  },
+  getAddressShardSummary(address, shardID) {
+    return authGet("/address-shard", { params: { address, shardID } }).then(
+      res => {
+        let address = res.data.address;
+        return address;
+      }
+    );
+  },
+  getAddressShardTxHistory(address, shardID, pageIndex, pageSize) {
+    return authGet("/address-shard-txs", {
+      params: { address, shardID, pageIndex, pageSize }
+    }).then(res => {
+      console.log(res)
+      let txs = res.data.txs;
+      return txs;
     });
   },
   getShard(id) {

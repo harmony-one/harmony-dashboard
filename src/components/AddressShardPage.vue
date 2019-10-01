@@ -83,9 +83,9 @@
                 <th>To</th>
                 <th>Value</th>
               </tr>
-              <tr v-for="tx in address.txs" :key="tx.id">
+              <tr v-for="tx in txs" :key="tx.hash">
                 <td>
-                  <router-link :to="'/tx/' + tx.id">{{ tx.id | shorten }}</router-link>
+                  <router-link :to="'/tx/' + tx.hash">{{ tx.hash | shorten }}</router-link>
                 </td>
                 <td>{{ tx.timestamp | timestamp }}</td>
                 <td>
@@ -119,32 +119,70 @@ export default {
     return {
       loading: true,
       address: null,
-      txCount: 100,
+      shardId: 0,
       pageIndex: 0,
-      pageCount: 25
+      pageSize: 10,
+      txs: null
     };
   },
   components: {
     FontAwesomeIcon,
     LoadingMessage
   },
+  computed: {
+    txCount() {
+      if (!this.address) return 0;
+      return this.address.txCount;
+    },
+    pageCount() {
+      return Math.ceil(this.txCount / this.pageSize);
+    }
+  },
   watch: {
     $route(to, from) {
-      this.pageIndex = (+to.params.pageIndex || 1) - 1;
-      this.getAddress();
+      let address = this.$route.params.address;
+      if (!this.address || this.address.id !== address) {
+        this.getAddress();
+      }
+      let pageIndex = (+to.params.pageIndex || 1) - 1;
+      let shardId = +to.params.shardId;
+      this.pageIndex = pageIndex;
+      this.shardId = shardId;
+      service
+        .getAddressShardTxHistory(
+          address,
+          shardId,
+          this.pageIndex,
+          this.pageSize
+        )
+        .then(txs => {
+          this.txs = txs;
+        });
     }
   },
   mounted() {
-    this.getAddress();
+    this.getAddress().then(() => {
+      let pageIndex = (+this.$route.params.pageIndex || 1) - 1;
+      let shardId = +this.$route.params.shardId;
+      service
+        .getAddressShardTxHistory(
+          this.$route.params.address,
+          this.$route.params.shardId,
+          pageIndex,
+          this.pageSize
+        )
+        .then(txs => {
+          this.txs = txs;
+        });
+    });
   },
   methods: {
     getAddress() {
       this.loading = true;
-      service
-        .getTxHistory(
+      return service
+        .getAddressShardSummary(
           this.$route.params.address,
-          this.$route.params.shardId,
-          this.$route.params.pageIndex
+          this.$route.params.shardId
         )
         .then(address => {
           this.address = address;
