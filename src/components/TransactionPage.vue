@@ -76,7 +76,7 @@
               </tr>
               <tr>
                 <td class="td-title">Data (Hex)</td>
-                <td>{{ transaction.data || '-' }}</td>
+                <td>{{ transaction.input || '-' }}</td>
               </tr>
               <tr v-if="sequence">
                 <td class="td-title">Sequence</td>
@@ -84,7 +84,7 @@
               </tr>
               <tr>
                 <td class="td-title">Data (UTF-8)</td>
-                <td>{{ hexToUTF8(transaction.data) || '-' }}</td>
+                <td>{{ hexToUTF8(transaction.input) || '-' }}</td>
               </tr>
             </table>
           </div>
@@ -139,7 +139,7 @@ export default {
   },
   methods: {
     getSequence() {
-      const data = this.transaction.data;
+      const data = this.transaction.input;
       const re = /.+?7c7c((30|31|32|33|34|35|36|37|38|39|4c|52|55|44)+)7c7c0*$/;
       const match = data.match(re);
       if (match && match[1] && match[1].length % 2 == 0) {
