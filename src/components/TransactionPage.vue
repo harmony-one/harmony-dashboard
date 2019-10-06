@@ -32,8 +32,12 @@
                 <td class="td-title">Timestamp</td>
                 <td>{{ transaction.timestamp | timestamp }}</td>
               </tr>
-              <tr>
+              <tr v-if="transaction.shardID != transaction.toShardID">
                 <td class="td-title">From Shard</td>
+                <td>{{ transaction.shardID }}</td>
+              </tr>
+              <tr v-else>
+                <td class="td-title">Shard ID</td>
                 <td>{{ transaction.shardID }}</td>
               </tr>
               <tr>
@@ -51,7 +55,7 @@
                   >{{ transaction.from }}</router-link>
                 </td>
               </tr>
-              <tr>
+              <tr v-if="transaction.shardID != transaction.toShardID">
                 <td class="td-title">To Shard</td>
                 <td>{{ transaction.toShardID }}</td>
               </tr>
