@@ -72,7 +72,7 @@
               </tr>
               <tr>
                 <td class="td-title">Gas</td>
-                <td>{{ transaction.gas | amount }}</td>
+                <td>{{ normalizedGas() | amount }}</td>
               </tr>
               <tr>
                 <td class="td-title">Data (Hex)</td>
@@ -178,7 +178,11 @@ export default {
         s += String.fromCharCode(parseInt(h.substr(i, 2), 16));
       }
       return s;
+    },
+    normalizedGas() {
+      return this.transaction.gas ? 0 : Number(this.transaction.gas).toFixed(14);
     }
+
   }
 };
 </script>
