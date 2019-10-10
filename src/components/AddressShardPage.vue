@@ -119,7 +119,7 @@ export default {
     return {
       loading: true,
       address: null,
-      shardId: 0,
+      shardId: -1,
       pageIndex: 0,
       pageSize: 10,
       txs: null
@@ -140,12 +140,16 @@ export default {
   },
   watch: {
     $route(to, from) {
-      let address = this.$route.params.address;
-      if (!this.address || this.address.id !== address) {
+      let address = to.params.address;
+      let shardId = +to.params.shardId;
+      if (
+        !this.address ||
+        this.address.id !== address ||
+        this.shardId !== shardId
+      ) {
         this.getAddress();
       }
       let pageIndex = (+to.params.pageIndex || 1) - 1;
-      let shardId = +to.params.shardId;
       this.pageIndex = pageIndex;
       this.shardId = shardId;
       service
