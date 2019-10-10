@@ -19,11 +19,11 @@
                 </tr>
                 <tr>
                   <td class="td-title">Number of Transactions</td>
-                  <td>{{ block.txCount }}</td>
+                  <td>{{ block.txCount | number}}</td>
                 </tr>
                 <tr>
                   <td class="td-title">Height</td>
-                  <td>{{ block.height }}</td>
+                  <td>{{ block.height | number }}</td>
                 </tr>
                 <tr>
                   <td class="td-title">Timestamp</td>
@@ -39,19 +39,23 @@
                 </tr>
                 <tr>
                   <td class="td-title">Included In Shard</td>
-                  <td>{{ block.shardID }}</td>
+                  <td>{{ block.shardID | number}}</td>
                 </tr>
                 <tr>
                   <td class="td-title">Previous Block</td>
                   <td v-if="block.prevBlock && block.prevBlock.id">
-                    <router-link :to="'/block/' + block.prevBlock.id">{{ block.prevBlock.height }}</router-link>
+                    <router-link
+                      :to="'/block/' + block.prevBlock.id"
+                    >{{ block.prevBlock.height | number }}</router-link>
                   </td>
                   <td v-else>-</td>
                 </tr>
                 <tr>
                   <td class="td-title">Next Block</td>
                   <td v-if="block.nextBlock && block.nextBlock.id">
-                    <router-link :to="'/block/' + block.nextBlock.id">{{ block.nextBlock.height }}</router-link>
+                    <router-link
+                      :to="'/block/' + block.nextBlock.id"
+                    >{{ block.nextBlock.height | number }}</router-link>
                   </td>
                   <td v-else>-</td>
                 </tr>

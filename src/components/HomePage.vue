@@ -200,7 +200,7 @@
                       <router-link :to="'/block/' + block.id">{{block.id | shorten}}</router-link>
                     </div>
                     <div class="td">
-                      <router-link :to="'/block/' + block.id">{{block.height}}</router-link>
+                      <router-link :to="'/block/' + block.id">{{block.height | number }}</router-link>
                     </div>
                     <div class="td text-right">{{ block.timestamp | timestamp }}</div>
                     <div class="td text-right">{{ block.timestamp | age }}</div>
