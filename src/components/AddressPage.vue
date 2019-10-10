@@ -78,7 +78,7 @@
             <router-link
               tag="button"
               class="btn btn-light btn-block btn-mini"
-              :to="{ name: 'AddressShardPage', params: { address: $route.params.address, shardId: 0 }}"
+              :to="{ name: 'AddressShardPage', params: { address: $route.params.address, shardId: index }}"
             >View all</router-link>
           </footer>
         </div>
