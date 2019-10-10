@@ -19,7 +19,7 @@
                   <td>{{ address.id }}</td>
                 </tr>
                 <tr>
-                  <td class="td-title">shard</td>
+                  <td class="td-title">Shard</td>
                   <td>{{ $route.params.shardId }}</td>
                 </tr>
                 <tr>
