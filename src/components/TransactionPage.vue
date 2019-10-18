@@ -129,10 +129,6 @@ export default {
   },
   computed: {
     isCrossShard() {
-      console.log(
-        this.transaction &&
-          this.transaction.shardID === this.transaction.toShardID
-      );
       return (
         this.transaction &&
         this.transaction.shardID === this.transaction.toShardID

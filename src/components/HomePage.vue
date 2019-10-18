@@ -1,10 +1,14 @@
 <style scoped lang="less">
 @import "../less/common.less";
 
+.explorer-card-body {
+  min-height: 24em;
+  box-sizing: content-box;
+}
+
 .explorer-table-responsive {
   display: table;
   width: 100%;
-  height: 25em;
   border-collapse: collapse;
   .th,
   .td {

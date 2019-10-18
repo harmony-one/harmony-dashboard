@@ -17,21 +17,26 @@ let store = {
     },
     update(data) {
         let blocks = data.blocks;
-        let mergedBlocks = Object.keys(blocks)
-            .reduce((memo, i) => memo.concat(blocks[i]), [])
-            .sort((a, b) => b.timestamp - a.timestamp);
-        this.data.latestBlocks = mergedBlocks.concat(this.data.latestBlocks).slice(0, MaxLatestBlockCount);
-
+        // don't add blocks that are already in latestBlocks
+        let blockMap = {};
+        this.data.latestBlocks.forEach(b => blockMap[b.id] = b);
+        Object.keys(blocks).forEach(shardId => {
+            blocks[shardId].forEach(b =>  blockMap[b.id] = b);
+        });
+        this.data.latestBlocks = Object.values(blockMap).sort((a, b) => b.timestamp - a.timestamp).slice(0, MaxLatestBlockCount);
         this.data.blockCount = data.blockCount;
         this.data.txCount = data.txCount;
         this.data.shardCount = data.shardCount;
 
         let txs = data.txs;
-        let mergedTxs = Object.keys(txs)
-            .reduce((memo, i) => memo.concat(txs[i]), [])
-            .sort((a, b) => b.timestamp - a.timestamp);
-        this.data.latestTxs = mergedTxs.concat(this.data.latestTxs).slice(0, MaxLatestTxCount);
-        
+        // don't add txs that are already in latestTxs
+        let txMap = {};
+        this.data.latestTxs.forEach(t => txMap[t.id] = t);
+        Object.keys(txs).forEach(shardId => {
+            txs[shardId].forEach(tx => txMap[tx.id] = tx);
+        });
+        this.data.latestTxs = Object.values(txMap).sort((a, b) => b.timestamp - a.timestamp).slice(0, MaxLatestTxCount);
+
         this.data.blockLatencies = data.blockLatencies;
         let latencies = Object.values(data.blockLatencies).filter(x => Number.isFinite(x));
         if (latencies.length) {
