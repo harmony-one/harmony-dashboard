@@ -273,6 +273,13 @@ body,
     border-top: solid 1px var(--color-table-border);
   }
 }
+
+.timer {
+  color: #666;
+}
+.secondary-info {
+  font-size: 0.8em;
+}
 </style>
 <template>
   <div class="app">

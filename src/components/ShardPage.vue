@@ -54,6 +54,19 @@
                 </div>
               </div>
             </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+              <div class="flex-horizontal">
+                <div class="icon-column">
+                  <div class="data-icon-circle">
+                    <div class="data-icon icon-block-count"></div>
+                  </div>
+                </div>
+                <div class="data-num-column">
+                  <div class="data-num">{{ shard.txCount | number }}</div>
+                  <h1>Tx Count</h1>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -77,8 +90,7 @@
               </div>
               <div class="tr" v-for="block in shard.blocks" :key="block.id">
                 <div class="td">
-                  <!-- <router-link :to="'/shard/' + block.shardID">{{ block.shardID }}</router-link> -->
-                  {{ block.shardID }}
+                  <router-link :to="'/shard/' + block.shardID">{{ block.shardID }}</router-link>
                 </div>
                 <div class="td">
                   <router-link :to="'/block/' + block.id">{{block.id | shorten}}</router-link>
@@ -118,11 +130,9 @@
                 <div class="th">Age</div>
                 <div class="th text-right">Value</div>
               </div>
-              <div class="tr" v-for="tx in shard.latestTxs" :key="tx.id">
+              <div class="tr" v-for="tx in shard.txs" :key="tx.id">
                 <div class="td">
-                  <!-- <router-link :to="'/shard/' + tx.shardID"> -->
-                  {{ tx.shardID }}
-                  <!-- </router-link> -->
+                  <router-link :to="'/shard/' + tx.shardID">{{ tx.shardID }}</router-link>
                 </div>
                 <div class="td">
                   <router-link :to="'/tx/' + tx.id">{{ tx.id | shorten }}</router-link>

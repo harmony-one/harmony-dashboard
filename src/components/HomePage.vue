@@ -16,13 +16,8 @@
   header {
     .flex-horizontal;
     align-items: flex-end;
-    .timer {
-      color: #666;
-    }
   }
-  .secondary-info {
-    font-size: 0.8em;
-  }
+
   .latest-block-card {
     table {
       th {
@@ -119,8 +114,7 @@
                   </div>
                   <div class="tr" v-for="block in globalData.latestBlocks" :key="block.id">
                     <div class="td">
-                      <!-- <router-link :to="'/shard/' + block.shardID">{{ block.shardID }}</router-link> -->
-                      {{ block.shardID }}
+                      <router-link :to="'/shard/' + block.shardID">{{ block.shardID }}</router-link>
                     </div>
                     <div class="td">
                       <router-link :to="'/block/' + block.id">{{block.id | shorten}}</router-link>
@@ -164,9 +158,7 @@
                   </div>
                   <div class="tr" v-for="tx in globalData.latestTxs" :key="tx.id">
                     <div class="td">
-                      <!-- <router-link :to="'/shard/' + tx.shardID"> -->
-                      {{ tx.shardID }}
-                      <!-- </router-link> -->
+                      <router-link :to="'/shard/' + tx.shardID">{{ tx.shardID }}</router-link>
                     </div>
                     <div class="td">
                       <router-link :to="'/tx/' + tx.id">{{ tx.id | shorten }}</router-link>
