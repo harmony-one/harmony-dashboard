@@ -1,31 +1,154 @@
 <style scoped lang="less">
 @import "../less/common.less";
+
+.page-title {
+  font-size: 1.8em;
+  margin: @space-sm;
+  text-transform: uppercase;
+}
 </style>
 
 <template>
   <div class="shard-page explorer-page page">
     <div class="shard-body explorer-body">
-      <div class="container" v-if="!loading">
-        <div class="explorer-card">
+      <div class="container" v-if="shard">
+        <h1 class="page-title">Shard {{ $route.params.id }}</h1>
+        <div class="explorer-card status-card">
+          <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+              <div class="flex-horizontal">
+                <div class="icon-column">
+                  <div class="data-icon-circle">
+                    <div class="data-icon icon-block-count"></div>
+                  </div>
+                </div>
+                <div class="data-num-column">
+                  <div class="data-num">{{ shard.blockCount | number }}</div>
+                  <h1>Block Count</h1>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+              <div class="flex-horizontal">
+                <div class="icon-column">
+                  <div class="data-icon-circle">
+                    <div class="data-icon icon-tx-count"></div>
+                  </div>
+                </div>
+                <div class="data-num-column">
+                  <div class="data-num">{{ shard.avgBlockLatency | blockLatency }}</div>
+                  <h1>Block Latency</h1>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+              <div class="flex-horizontal">
+                <div class="icon-column">
+                  <div class="data-icon-circle">
+                    <div class="data-icon icon-node-count"></div>
+                  </div>
+                </div>
+                <div class="data-num-column">
+                  <div class="data-num">{{ shard.nodeCount | number }}</div>
+                  <h1>Node Count</h1>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="explorer-card latest-block-card">
           <header>
-            <h1 class="flex-grow">Shard {{ id }}</h1>
+            <h1 class="flex-grow">Latest Blocks</h1>
+            <div class="secondary-info">
+              <div class="timer">Updated {{ Math.round(Math.max((now - shard.lastUpdateTime) / 1000, 0)) | number }}s ago...</div>
+              <span class="total-block-num"></span>
+            </div>
           </header>
           <div class="explorer-card-body">
-            <table class="explorer-table">
-              <tr>
-                <th>#</th>
-                <th>Node ID</th>
-              </tr>
-              <tr class="container" v-for="(node, i) in shard.nodes" :key="node.id">
-                <td class="no-break">{{ i }}</td>
-                <td>{{ node.id }}</td>
-              </tr>
-            </table>
+            <div class="explorer-table-responsive latest-block-table">
+              <div class="tr">
+                <div class="th">Shard</div>
+                <div class="th">Hash</div>
+                <div class="th">Height</div>
+                <div class="th text-right">Timestamp</div>
+                <div class="th text-right">Age</div>
+                <div class="th text-right" v-if="showTx">Transactions</div>
+              </div>
+              <div class="tr" v-for="block in shard.blocks" :key="block.id">
+                <div class="td">
+                  <!-- <router-link :to="'/shard/' + block.shardID">{{ block.shardID }}</router-link> -->
+                  {{ block.shardID }}
+                </div>
+                <div class="td">
+                  <router-link :to="'/block/' + block.id">{{block.id | shorten}}</router-link>
+                </div>
+                <div class="td">
+                  <router-link :to="'/block/' + block.id">{{block.height | number }}</router-link>
+                </div>
+                <div class="td text-right">{{ block.timestamp | timestamp }}</div>
+                <div class="td text-right">{{ block.timestamp | age }}</div>
+                <div class="td text-right" v-if="showTx">{{ block.txCount }}</div>
+              </div>
+            </div>
           </div>
+          <!-- <footer class="button-only-footer">
+                <router-link
+                  tag="button"
+                  class="btn btn-light btn-block btn-mini"
+                  to="blocks"
+                >View all blocks</router-link>
+          </footer>-->
+        </div>
+        <div class="explorer-card latest-block-card">
+          <header>
+            <h1 class="flex-grow">Latest Transactions</h1>
+            <div class="secondary-info">
+              <div class="timer">Updated {{ Math.round(Math.max((now - shard.lastUpdateTime) / 1000, 0)) | number }}s ago...</div>
+              <span class="total-block-num"></span>
+            </div>
+          </header>
+          <div class="explorer-card-body">
+            <div class="explorer-table-responsive latest-tx-table">
+              <div class="tr">
+                <div class="th">Shard</div>
+                <div class="th">Hash</div>
+                <div class="th">From</div>
+                <div class="th">To</div>
+                <div class="th">Age</div>
+                <div class="th text-right">Value</div>
+              </div>
+              <div class="tr" v-for="tx in shard.latestTxs" :key="tx.id">
+                <div class="td">
+                  <!-- <router-link :to="'/shard/' + tx.shardID"> -->
+                  {{ tx.shardID }}
+                  <!-- </router-link> -->
+                </div>
+                <div class="td">
+                  <router-link :to="'/tx/' + tx.id">{{ tx.id | shorten }}</router-link>
+                </div>
+                <div class="td">
+                  <router-link :to="'/address/' + tx.from.bech32">{{tx.from.bech32 | shorten }}</router-link>
+                </div>
+                <div class="td">
+                  <router-link :to="'/address/' + tx.to.bech32">{{tx.to.bech32 | shorten }}</router-link>
+                </div>
+                <div class="td">{{ tx.timestamp | age }}</div>
+                <div class="td text-right">{{ tx.value | amount }}</div>
+              </div>
+            </div>
+          </div>
+          <!-- <footer class="button-only-footer">
+                <router-link
+                  tag="button"
+                  class="btn btn-light btn-block btn-mini"
+                  to="txs"
+                >View all transactions</router-link>
+          </footer>-->
         </div>
       </div>
       <div class="container" v-else>
-        <loading-message/>
+        <loading-message />
       </div>
     </div>
   </div>
@@ -42,11 +165,12 @@ export default {
   name: "ShardPage",
   data() {
     return {
+      globalData: store.data,
       loading: true,
       id: "",
-      shard: {
-        nodes: []
-      }
+      timer: null,
+      now: Date.now(),
+      showTx: true
     };
   },
   components: {
@@ -54,23 +178,25 @@ export default {
     LoadingMessage
   },
   watch: {
-    $route(to, from) {
-      this.getShard();
+    shard() {
+      this.resetTimer();
+    }
+  },
+  computed: {
+    shard() {
+      return this.globalData.shards[this.$route.params.id];
     }
   },
   mounted() {
-    this.getShard();
+    this.resetTimer();
   },
   methods: {
-    getShard() {
-      this.loading = true;
-      this.id = this.$route.params.id;
-      service
-        .getShard(this.id)
-        .then(shard => {
-          this.shard = shard;
-        })
-        .finally(() => (this.loading = false));
+    resetTimer() {
+      clearInterval(this.timer);
+      this.now = Date.now();
+      this.timer = setInterval(() => {
+        this.now = Date.now();
+      }, 1000);
     }
   }
 };

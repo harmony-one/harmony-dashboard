@@ -6,39 +6,6 @@
   box-sizing: content-box;
 }
 
-.explorer-table-responsive {
-  display: table;
-  width: 100%;
-  border-collapse: collapse;
-  .th,
-  .td {
-    padding: @space-sm @space-xs;
-    display: table-cell;
-    text-align: left;
-  }
-  .tr {
-    display: table-row;
-  }
-  .th {
-    font-weight: bold;
-    color: #777;
-    font-size: 0.8em;
-  }
-
-  .td {
-    color: var(--color-table-text);
-    transition: all @anim-duration @anim-easing;
-    word-break: break-word;
-  }
-  .tr:hover .td {
-    color: var(--color-table-text-hover);
-    background-color: var(--color-table-background-hover);
-  }
-  .tr + .tr {
-    border-top: solid 1px var(--color-table-border);
-  }
-}
-
 .home-body {
   flex: 1;
   width: 100%;
@@ -68,56 +35,13 @@
     }
   }
 }
-
-.icon-column {
-  padding: 0 @space-md;
-  height: 100%;
-  .flex-hv-center();
-}
-.data-num-column {
-  padding: @space-md;
-  .data-num {
-    font-size: 2em;
-    color: #1b295e;
-  }
-  h1 {
-    font-size: 1em;
-    font-weight: normal;
-  }
-}
-.data-icon-circle {
-  width: 2em;
-  height: 2em;
-  .hmy-bg();
-  border-radius: 100%;
-
-  .data-icon {
-    width: 100%;
-    height: 100%;
-    background-size: 60% 60%;
-    background-repeat: no-repeat;
-    background-position: center;
-    &.icon-block-count {
-      background-image: url(../assets/block-count.svg);
-    }
-    &.icon-tx-count {
-      background-image: url(../assets/tx-count.svg);
-    }
-    &.icon-node-count {
-      background-image: url(../assets/node-count.svg);
-    }
-    &.icon-shard-count {
-      background-image: url(../assets/shard-count.svg);
-    }
-  }
-}
 </style>
 
 <template>
   <div class="home-page explorer-page page">
     <div class="home-body explorer-body">
       <div class="container" v-if="globalData.latestBlocks.length">
-        <div class="explorer-card">
+        <div class="explorer-card status-card">
           <div class="row">
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
               <div class="flex-horizontal">
@@ -179,9 +103,7 @@
               <header>
                 <h1 class="flex-grow">Latest Blocks</h1>
                 <div class="secondary-info">
-                  <div
-                    class="timer"
-                  >Updated {{ Math.round(Math.max((now - globalData.lastUpdateTime) / 1000, 0)) | number }}s ago...</div>
+                  <div class="timer">Updated {{ Math.round(Math.max((now - globalData.lastUpdateTime) / 1000, 0)) | number }}s ago...</div>
                   <span class="total-block-num"></span>
                 </div>
               </header>
@@ -226,9 +148,7 @@
               <header>
                 <h1 class="flex-grow">Latest Transactions</h1>
                 <div class="secondary-info">
-                  <div
-                    class="timer"
-                  >Updated {{ Math.round(Math.max((now - globalData.lastUpdateTime) / 1000, 0)) | number }}s ago...</div>
+                  <div class="timer">Updated {{ Math.round(Math.max((now - globalData.lastUpdateTime) / 1000, 0)) | number }}s ago...</div>
                   <span class="total-block-num"></span>
                 </div>
               </header>
