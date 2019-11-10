@@ -49,11 +49,8 @@ function sendGet(url, params) {
       store.reset();
     } else if (data.cmd === "update") {
       store.update(data);
-    } else if (data.cmd === "nodeCount") {
-      store.updateNodeCount(data);
     } else if (data.cmd === "init") {
       store.update(data);
-      store.updateNodeCount(data);
     }
   });
 
@@ -123,12 +120,6 @@ export default {
       console.log(res)
       let txs = res.data.txs;
       return txs;
-    });
-  },
-  getShard(id) {
-    return authGet("/shard", { params: { id } }).then(res => {
-      let shard = res.data.shard;
-      return shard;
     });
   },
   search(input) {

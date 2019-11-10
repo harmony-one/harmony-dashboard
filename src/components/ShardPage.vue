@@ -4,7 +4,9 @@
 .page-title {
   font-size: 1.8em;
   margin: @space-sm;
+  color: #1b295e;
   text-transform: uppercase;
+  font-weight: 500;
 }
 </style>
 
@@ -36,7 +38,7 @@
                   </div>
                 </div>
                 <div class="data-num-column">
-                  <div class="data-num">{{ shard.avgBlockLatency | blockLatency }}</div>
+                  <div class="data-num">{{ shard.blockLatency | blockLatency }}</div>
                   <h1>Block Latency</h1>
                 </div>
               </div>

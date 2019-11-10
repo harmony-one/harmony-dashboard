@@ -1,59 +1,36 @@
 import Vue from "vue";
 
-const MaxLatestBlockCount = 10;
-const MaxLatestTxCount = 10;
+const Limit = 10;
+function postprocessBlocks(items) {
+  return items.sort((a, b) => b.height - a.height).slice(0, Limit);
+}
+
+function postprocessTxs(items) {
+  return items.sort((a, b) => b.timestamp - a.timestamp).slice(0, Limit);
+}
+
+function getTotalBlockLatency(latencies) {
+  latencies = latencies.filter(x => isFinite(x));
+  if (!latencies.length) return NaN;
+
+  return (
+    latencies.reduce((memo, latency) => memo + latency, 0) / latencies.length
+  );
+}
+
 let store = {
   data: {
     shards: {},
-    latestBlocks: [], // all latest block merged in one array sorted by timestamp
-    latestTxs: [], // all latest tx merged in one array sorted by timestamp
+    blocks: [],
+    txs: [],
     blockCount: 0,
     txCount: 0,
     nodeCount: 0,
-    nodes: {},
-    shardCount: 0,
-    blockLatencies: [], // shardID to blockLatencies
-    avgBlockLatency: null,
-    lastUpdateTime: null
+    lastUpdateTime: 0
   },
   update(data) {
-    let blocks = data.blocks;
-    // don't add blocks that are already in latestBlocks
-    let blockMap = {};
-    this.data.latestBlocks.forEach(b => (blockMap[b.id] = b));
-    Object.keys(blocks).forEach(shardId => {
-      blocks[shardId].forEach(b => (blockMap[b.id] = b));
-    });
-    this.data.latestBlocks = Object.values(blockMap)
-      .sort((a, b) => b.timestamp - a.timestamp)
-      .slice(0, MaxLatestBlockCount);
-    this.data.blockCount = data.blockCount;
-    this.data.txCount = data.txCount;
-    this.data.shardCount = data.shardCount;
-
-    let txs = data.txs;
-    // don't add txs that are already in latestTxs
-    let txMap = {};
-    this.data.latestTxs.forEach(t => (txMap[t.id] = t));
-    Object.keys(txs).forEach(shardId => {
-      txs[shardId].forEach(tx => (txMap[tx.id] = tx));
-    });
-    this.data.latestTxs = Object.values(txMap)
-      .sort((a, b) => b.timestamp - a.timestamp)
-      .slice(0, MaxLatestTxCount);
-
-    this.data.blockLatencies = data.blockLatencies;
-    let latencies = Object.values(data.blockLatencies).filter(x =>
-      Number.isFinite(x)
-    );
-    if (latencies.length) {
-      this.data.avgBlockLatency =
-        latencies.reduce((memo, x) => memo + x, 0) / latencies.length;
-    }
-
-    this.data.lastUpdateTime = data.lastUpdateTime;
-
     this.updateShards(data.shards);
+    this.updateGlobalData();
   },
   updateShards(shards) {
     Object.values(shards).forEach(this.updateShard.bind(this));
@@ -63,50 +40,66 @@ let store = {
     if (!shardData) {
       Vue.set(this.data.shards, shard.id, shard);
       shardData = this.data.shards[shard.id];
-      shardData.blocks = shardData.blocks.slice(0, MaxLatestBlockCount);
-      shardData.txs = shardData.txs.slice(0, MaxLatestTxCount);
+      shardData.blocks = shardData.blocks.slice(0, Limit);
+      shardData.txs = shardData.txs.slice(0, Limit);
       return;
     }
     // don't add blocks that are already in latestBlocks
     let blockMap = {};
     shardData.blocks.forEach(b => (blockMap[b.id] = b));
     shard.blocks.forEach(b => (blockMap[b.id] = b));
-    shardData.blocks = Object.values(blockMap)
-      .sort((a, b) => b.timestamp - a.timestamp)
-      .slice(0, MaxLatestBlockCount);
+    shardData.blocks = postprocessBlocks(Object.values(blockMap));
 
     // don't add txs that are already in latestTxs
     let txMap = {};
     shardData.txs.forEach(t => (txMap[t.id] = t));
     shard.txs.forEach(t => (txMap[t.id] = t));
-    shardData.txs = Object.values(txMap)
-      .sort((a, b) => b.timestamp - a.timestamp)
-      .slice(0, MaxLatestTxCount);
-      
+    shardData.txs = postprocessTxs(Object.values(txMap));
+
     shardData.blockCount = shard.blockCount;
     shardData.nodeCount = shard.nodeCount;
     shardData.lastUpdateTime = shard.lastUpdateTime;
-    // shardData.txCount = shard.txCount;
+    shardData.txCount = shard.txCount;
   },
-  updateNodeCount(data) {
-    this.data.nodeCount = data.nodeCount;
-  },
-  updateNodes(data) {
-    this.data.nodes = data.nodes;
+  updateGlobalData() {
+    this.data.blocks = postprocessBlocks(
+      Object.values(this.data.shards).reduce(
+        (memo, shard) => memo.concat(shard.blocks),
+        []
+      )
+    );
+    this.data.txs = postprocessTxs(
+      Object.values(this.data.shards).reduce(
+        (memo, shard) => memo.concat(shard.txs),
+        []
+      )
+    );
+    this.data.blockCount = Object.values(this.data.shards).reduce(
+      (memo, shard) => memo + shard.blockCount,
+      0
+    );
+    this.data.txCount = Object.values(this.data.shards).reduce(
+      (memo, shard) => memo + shard.txCount,
+      0
+    );
+    this.data.nodeCount = Object.values(this.data.shards).reduce(
+      (memo, shard) => memo + shard.nodeCount,
+      0
+    );
+    this.data.shardCount = Object.keys(this.data.shards).length;
+    this.data.blockLatency = getTotalBlockLatency(
+      Object.values(this.data.shards).map(s => s.blockLatency)
+    );
+    this.data.lastUpdateTime = Math.max(...Object.values(this.data.shards).map(s => s.lastUpdateTime).filter(x => isFinite(x)));
   },
   reset() {
-    // TODO(ricl): avoid dup logic between reset and initial values
-    this.data.blockMap = {};
     this.data.blocks = [];
-    this.data.lastUpdateTime = null;
-    this.data.latestBlocks = [];
-    this.data.latestTxs = [];
+    this.data.txs = [];
     this.data.blockCount = 0;
     this.data.txCount = 0;
     this.data.nodeCount = 0;
     this.data.nodes = {};
     this.data.shardCount = 0;
-    this.data.blockLatencies = [];
   }
 };
 

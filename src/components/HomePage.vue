@@ -35,7 +35,7 @@
 <template>
   <div class="home-page explorer-page page">
     <div class="home-body explorer-body">
-      <div class="container" v-if="globalData.latestBlocks.length">
+      <div class="container" v-if="globalData.blocks.length">
         <div class="explorer-card status-card">
           <div class="row">
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
@@ -59,7 +59,7 @@
                   </div>
                 </div>
                 <div class="data-num-column">
-                  <div class="data-num">{{ globalData.avgBlockLatency | blockLatency }}</div>
+                  <div class="data-num">{{ globalData.blockLatency | blockLatency }}</div>
                   <h1>Block Latency</h1>
                 </div>
               </div>
@@ -112,7 +112,7 @@
                     <div class="th text-right">Age</div>
                     <div class="th text-right" v-if="showTx">Transactions</div>
                   </div>
-                  <div class="tr" v-for="block in globalData.latestBlocks" :key="block.id">
+                  <div class="tr" v-for="block in globalData.blocks" :key="block.id">
                     <div class="td">
                       <router-link :to="'/shard/' + block.shardID">{{ block.shardID }}</router-link>
                     </div>
@@ -156,7 +156,7 @@
                     <div class="th">Age</div>
                     <div class="th text-right">Value</div>
                   </div>
-                  <div class="tr" v-for="tx in globalData.latestTxs" :key="tx.id">
+                  <div class="tr" v-for="tx in globalData.txs" :key="tx.id">
                     <div class="td">
                       <router-link :to="'/shard/' + tx.shardID">{{ tx.shardID }}</router-link>
                     </div>
