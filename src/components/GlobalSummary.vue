@@ -3,7 +3,7 @@
 </style>
 
 <template>
-  <div class="metrics-summary">
+  <div class="metrics-summary" style="{ background: red }">f
     <div class="summary-title">Global</div>
     <div class="timer">Updated {{ Math.round((now - this.summary.updateTime) / 1000) | number }}s ago...</div>
     <div class="row">

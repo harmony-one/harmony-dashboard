@@ -96,6 +96,13 @@
     align-items: center;
 }
 
+.justify-between {
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  display: flex;
+}
+
 .flex-grow {
     flex: 1;
 }
@@ -155,8 +162,13 @@
         font-size: 1.2em;
         font-weight: bold;
         text-align: center;
-        margin-bottom: 0.5em;
+        margin-bottom: -0.5em;
         word-break: break-all;
+    }
+
+    .stats-title {
+      margin-left: 9px;
+      display: inline-block;
     }
 
     .timer {
@@ -175,10 +187,15 @@
 
         .card-title {
             color: var(--secondary-text-color);
+            margin-bottom: 4px;
         }
 
         .card-value {
             word-break: break-all;
+
+            &.currency {
+              font-size: 20px;
+            }
 
             &.number {
                 font-size: 3em;

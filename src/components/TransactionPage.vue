@@ -8,10 +8,16 @@
       <div class="container" v-if="!loading && transaction">
         <div class="explorer-card">
           <header>
-            <h1>Transaction</h1>
+            <h1>{{ isStaking ? 'Staking Transaction' : 'Transaction' }}</h1>
           </header>
           <div class="explorer-card-body">
             <table class="explorer-table">
+              <tr v-if="isStaking">
+                <td class="td-title">Type</td>
+                <td>
+                  {{ transaction.type }}
+                </td>
+              </tr>
               <tr>
                 <td class="td-title">ID</td>
                 <td>{{ transaction.hash }}</td>
@@ -63,7 +69,7 @@
                   <router-link :to="'/block/' + receipt.blockHash">{{ receipt.blockHash }}</router-link>
                 </td>
               </tr>
-              <tr>
+              <tr v-if="!isStaking">
                 <td class="td-title">To Address</td>
                 <td>
                   <router-link
@@ -72,6 +78,26 @@
                   >{{ transaction.to }}</router-link>
                 </td>
               </tr>
+
+              <tr v-if="isStaking">
+                <td class="td-title">Validator Address</td>
+                <td>
+                  <router-link
+                    :to="'/address/' + transaction.validator"
+                    v-if="transaction.validator"
+                  >{{ transaction.validator }}</router-link>
+                </td>
+              </tr>
+              <tr v-if="isStaking">
+                <td class="td-title">Delegator Address</td>
+                <td>
+                  <router-link
+                    :to="'/address/' + transaction.delegator"
+                    v-if="transaction.delegator"
+                  >{{ transaction.delegator }}</router-link>
+                </td>
+              </tr>
+
               <tr>
                 <td class="td-title">Gas</td>
                 <td>{{ normalizedGas() | amount }}</td>
@@ -107,6 +133,11 @@ import LoadingMessage from "./LoadingMessage";
 
 export default {
   name: "TransactionPage",
+  props: {
+    isStaking: {
+      type: Boolean,
+    }
+  },
   data() {
     return {
       loading: true,
@@ -138,7 +169,7 @@ export default {
   methods: {
     getSequence() {
       const data = this.transaction.input;
-      const re = /.+?7c7c((30|31|32|33|34|35|36|37|38|39|4c|52|55|44)+)7c7c0*$/;
+      const re = /.+?7c7c((30|31|32|33|34|35|36|37|38|39|4c|52|55|44)+) 7c7c0*$/;
       const match = data.match(re);
       if (match && match[1] && match[1].length % 2 == 0) {
         this.sequence = this.hexToAscii(match[1]);
@@ -146,8 +177,10 @@ export default {
     },
     getTransaction() {
       this.loading = true;
-      service
-        .getTransaction(this.$route.params.transactionId)
+
+      const getTx = this.isStaking ? service.getStakingTransaction : service.getTransaction;
+
+      getTx(this.$route.params.transactionId)
         .then(transaction => {
           this.transaction = transaction;
           if (this.transaction.shardID !== this.transaction.toShardID) {

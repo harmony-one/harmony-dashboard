@@ -23,8 +23,10 @@ let store = {
     shards: {},
     blocks: [],
     txs: [],
+    stakingTxs: [],
     blockCount: 0,
     txCount: 0,
+    stakingTxCount: 0,
     nodeCount: 0,
     lastUpdateTime: 0
   },
@@ -42,6 +44,7 @@ let store = {
       shardData = this.data.shards[shard.id];
       shardData.blocks = shardData.blocks.slice(0, Limit);
       shardData.txs = shardData.txs.slice(0, Limit);
+      shardData.stakingTxs = shardData.stakingTxs.slice(0, Limit);
       return;
     }
     // don't add blocks that are already in latestBlocks
@@ -56,10 +59,17 @@ let store = {
     shard.txs.forEach(t => (txMap[t.id] = t));
     shardData.txs = postprocessTxs(Object.values(txMap));
 
+    // don't add txs that are already in latestTxs
+    let stakingTxMap = {};
+    shardData.stakingTxs.forEach(t => (stakingTxMap[t.id] = t));
+    shard.stakingTxs.forEach(t => (stakingTxMap[t.id] = t));
+    shardData.stakingTxs = postprocessTxs(Object.values(stakingTxMap));
+
     shardData.blockCount = shard.blockCount;
     shardData.nodeCount = shard.nodeCount;
     shardData.lastUpdateTime = shard.lastUpdateTime;
     shardData.txCount = shard.txCount;
+    shardData.stakingTxCount = shard.stakingTxCount;
   },
   updateGlobalData() {
     this.data.blocks = postprocessBlocks(
@@ -74,12 +84,22 @@ let store = {
         []
       )
     );
+    this.data.stakingTxs = postprocessTxs(
+      Object.values(this.data.shards).reduce(
+        (memo, shard) => memo.concat(shard.stakingTxs),
+        []
+      )
+    );
     this.data.blockCount = Object.values(this.data.shards).reduce(
       (memo, shard) => memo + shard.blockCount,
       0
     );
     this.data.txCount = Object.values(this.data.shards).reduce(
       (memo, shard) => memo + shard.txCount,
+      0
+    );
+    this.data.stakingTxCount = Object.values(this.data.shards).reduce(
+      (memo, shard) => memo + shard.stakingTxCount,
       0
     );
     this.data.nodeCount = Object.values(this.data.shards).reduce(
@@ -95,8 +115,10 @@ let store = {
   reset() {
     this.data.blocks = [];
     this.data.txs = [];
+    this.data.stakingTxs = [];
     this.data.blockCount = 0;
     this.data.txCount = 0;
+    this.data.stakingTxCount = 0;
     this.data.nodeCount = 0;
     this.data.nodes = {};
     this.data.shardCount = 0;
