@@ -11,7 +11,7 @@ Promise.prototype.delay = function(time) {
 };
 
 // const BACKEND_URL = `${'explorer.testnet.harmony.one'}:8888`;
-const BACKEND_URL = `${'explorer.testnet.harmony.one'}:8888`;
+const BACKEND_URL = `${window.location.hostname}:8888`;
 
 const HTTP_BACKEND_URL = `https://${BACKEND_URL}`;
 const SECRET = localStorage.getItem("secret");
