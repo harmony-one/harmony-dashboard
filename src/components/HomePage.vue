@@ -266,7 +266,6 @@ export default {
       timer: null,
       now: Date.now(),
       showTx: true,
-      showStakingTx: true,
       coinStats: null,
     };
   },
@@ -290,6 +289,9 @@ export default {
   computed: {
     length() {
       return Math.ceil(this.globalData.blocks.length / this.pageSize);
+    },
+    showStakingTx() {
+      return !!this.globalData.stakingTxs.length
     }
   },
   methods: {
