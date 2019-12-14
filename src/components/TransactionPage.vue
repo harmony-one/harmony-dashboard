@@ -24,7 +24,8 @@
               </tr>
               <tr>
                 <td class="td-title">Value</td>
-                <td>{{ transaction.value | amount }}</td>
+<!--                <td>{{ transaction.value | amount }}</td>-->
+                <td><vue-json-pretty :data="transaction.msg" /></td>
               </tr>
               <!-- <tr>
                 <td class="td-title">Size (bytes)</td>
@@ -45,7 +46,7 @@
                 <td>{{ transaction.shardID }}</td>
               </tr>
               <tr>
-                <td class="td-title">From Shard Block</td>
+                <td class="td-title">Block Hash</td>
                 <td>
                   <router-link :to="'/block/' + transaction.blockHash">{{ transaction.blockHash }}</router-link>
                 </td>
@@ -79,24 +80,24 @@
                 </td>
               </tr>
 
-              <tr v-if="isStaking">
-                <td class="td-title">Validator Address</td>
-                <td>
-                  <router-link
-                    :to="'/address/' + transaction.validator"
-                    v-if="transaction.validator"
-                  >{{ transaction.validator }}</router-link>
-                </td>
-              </tr>
-              <tr v-if="isStaking">
-                <td class="td-title">Delegator Address</td>
-                <td>
-                  <router-link
-                    :to="'/address/' + transaction.delegator"
-                    v-if="transaction.delegator"
-                  >{{ transaction.delegator }}</router-link>
-                </td>
-              </tr>
+<!--              <tr v-if="isStaking">-->
+<!--                <td class="td-title">Validator Address</td>-->
+<!--                <td>-->
+<!--                  <router-link-->
+<!--                    :to="'/address/' + transaction.validator"-->
+<!--                    v-if="transaction.validator"-->
+<!--                  >{{ transaction.validator }}</router-link>-->
+<!--                </td>-->
+<!--              </tr>-->
+<!--              <tr v-if="isStaking">-->
+<!--                <td class="td-title">Delegator Address</td>-->
+<!--                <td>-->
+<!--                  <router-link-->
+<!--                    :to="'/address/' + transaction.delegator"-->
+<!--                    v-if="transaction.delegator"-->
+<!--                  >{{ transaction.delegator }}</router-link>-->
+<!--                </td>-->
+<!--              </tr>-->
 
               <tr>
                 <td class="td-title">Gas</td>
@@ -130,6 +131,7 @@ import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import store from "../explorer/store";
 import service from "../explorer/service";
 import LoadingMessage from "./LoadingMessage";
+import VueJsonPretty from 'vue-json-pretty'
 
 export default {
   name: "TransactionPage",
@@ -148,7 +150,8 @@ export default {
   },
   components: {
     FontAwesomeIcon,
-    LoadingMessage
+    LoadingMessage,
+    VueJsonPretty
   },
   watch: {
     $route(to, from) {
