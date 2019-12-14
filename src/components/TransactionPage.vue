@@ -22,9 +22,13 @@
                 <td class="td-title">ID</td>
                 <td>{{ transaction.hash }}</td>
               </tr>
-              <tr>
+              <tr v-if="!isStaking">
                 <td class="td-title">Value</td>
-<!--                <td>{{ transaction.value | amount }}</td>-->
+                <td>{{ transaction.value | amount }}</td>
+              </tr>
+
+              <tr v-if="isStaking">
+                <td class="td-title">Value</td>
                 <td><vue-json-pretty :data="transaction.msg" /></td>
               </tr>
               <!-- <tr>
