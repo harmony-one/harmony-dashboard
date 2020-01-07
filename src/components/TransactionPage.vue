@@ -30,7 +30,7 @@
               </tr>-->
               <tr>
                 <td class="td-title">Timestamp</td>
-                <td>{{ transaction.timestamp | timestamp }}</td>
+                <td>{{ Number(transaction.timestamp) * 1000 | timestamp }}</td>
               </tr>
               <tr>
                 <td
@@ -74,7 +74,7 @@
               </tr>
               <tr>
                 <td class="td-title">Gas</td>
-                <td>{{ normalizedGas() | amount }}</td>
+                <td>{{ normalizedGas() }}</td>
               </tr>
               <tr>
                 <td class="td-title">Data (Hex)</td>
@@ -167,7 +167,8 @@ export default {
         let s = hexToAscii(h);
         return decodeURIComponent(escape(s));
       } catch (e) {
-        return "[Unknown Binary Content]";
+        return null;
+        // return "[Unknown Binary Content]";
       }
     },
     hexToAscii(h) {
@@ -178,9 +179,9 @@ export default {
       return s;
     },
     normalizedGas() {
-      return this.transaction.gas
+      return isNaN(this.transaction.gas)
         ? 0
-        : Number(this.transaction.gas).toFixed(14);
+        : Number(this.transaction.gas);
     }
   }
 };
