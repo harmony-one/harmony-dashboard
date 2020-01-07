@@ -14,3 +14,4 @@ yarn-error.log*
 *.sln
 .firebase
 firebase-debug.log
+.tern-port
