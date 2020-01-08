@@ -63,19 +63,18 @@
           <header>Reset Dashboard</header>
           <label>
             Secret:
-            <input type="password" v-model="secret">
+            <input type="password" v-model="secret" />
           </label>
           <button class="btn btn-primary" @click="reset">Reset</button>
         </div>
       </div>
     </div>
 
-    <site-footer/>
+    <site-footer />
   </div>
 </template>
 
 <script>
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import DashboardService from "../dashboard/service";
 import ExplorerService from "../explorer/service";
 import SiteFooter from "./SiteFooter";
@@ -88,7 +87,6 @@ export default {
     };
   },
   components: {
-    FontAwesomeIcon,
     SiteFooter
   },
   mounted() {},

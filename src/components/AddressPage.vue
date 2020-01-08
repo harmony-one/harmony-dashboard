@@ -30,9 +30,13 @@
             </section>
           </div>
         </div>
-        <div class="explorer-card" v-for="(shard, index) in address.shardData" :key="index">
+        <div
+          class="explorer-card"
+          v-for="(shard, index) in address.shardData"
+          :key="index"
+        >
           <header>
-            <h1>Shard {{index}}</h1>
+            <h1>Shard {{ index }}</h1>
           </header>
           <div class="explorer-card-body">
             <section>
@@ -60,14 +64,20 @@
                 </tr>
                 <tr v-for="tx in shard.txs" :key="tx.hash">
                   <td>
-                    <router-link :to="'/tx/' + tx.hash">{{ tx.hash | shorten }}</router-link>
+                    <router-link :to="'/tx/' + tx.hash">{{
+                      tx.hash | shorten
+                    }}</router-link>
                   </td>
                   <td>{{ tx.timestamp | timestamp }}</td>
                   <td>
-                    <router-link :to="'/address/' + tx.from">{{ tx.from | shorten }}</router-link>
+                    <router-link :to="'/address/' + tx.from">{{
+                      tx.from | shorten
+                    }}</router-link>
                   </td>
                   <td>
-                    <router-link :to="'/address/' + tx.to">{{ tx.to | shorten }}</router-link>
+                    <router-link :to="'/address/' + tx.to">{{
+                      tx.to | shorten
+                    }}</router-link>
                   </td>
                   <td>{{ tx.value | amount }}</td>
                 </tr>
@@ -78,8 +88,12 @@
             <router-link
               tag="button"
               class="btn btn-light btn-block btn-mini"
-              :to="{ name: 'AddressShardPage', params: { address: $route.params.address, shardId: index }}"
-            >View all</router-link>
+              :to="{
+                name: 'AddressShardPage',
+                params: { address: $route.params.address, shardId: index }
+              }"
+              >View all</router-link
+            >
           </footer>
         </div>
       </div>
@@ -91,8 +105,6 @@
 </template>
 
 <script>
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
-import store from "../explorer/store";
 import service from "../explorer/service";
 import LoadingMessage from "./LoadingMessage";
 
@@ -105,11 +117,10 @@ export default {
     };
   },
   components: {
-    FontAwesomeIcon,
     LoadingMessage
   },
   watch: {
-    $route(to, from) {
+    $route() {
       this.getAddress();
     }
   },

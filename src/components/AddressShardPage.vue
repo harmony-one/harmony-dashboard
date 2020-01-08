@@ -55,7 +55,9 @@
                   >
                     <font-awesome-icon icon="chevron-left" />
                   </button>
-                  <span class="pagination-nums">{{ pageIndex + 1 }} / {{ pageCount }}</span>
+                  <span class="pagination-nums"
+                    >{{ pageIndex + 1 }} / {{ pageCount }}</span
+                  >
                   <button
                     class="btn btn-light btn-icon-only"
                     @click="next()"
@@ -85,14 +87,20 @@
               </tr>
               <tr v-for="tx in txs" :key="tx.hash">
                 <td>
-                  <router-link :to="'/tx/' + tx.hash">{{ tx.hash | shorten }}</router-link>
+                  <router-link :to="'/tx/' + tx.hash">{{
+                    tx.hash | shorten
+                  }}</router-link>
                 </td>
                 <td>{{ tx.timestamp | timestamp }}</td>
                 <td>
-                  <router-link :to="'/address/' + tx.from">{{ tx.from | shorten }}</router-link>
+                  <router-link :to="'/address/' + tx.from">{{
+                    tx.from | shorten
+                  }}</router-link>
                 </td>
                 <td>
-                  <router-link :to="'/address/' + tx.to">{{ tx.to | shorten }}</router-link>
+                  <router-link :to="'/address/' + tx.to">{{
+                    tx.to | shorten
+                  }}</router-link>
                 </td>
                 <td>{{ tx.value | amount }}</td>
               </tr>
@@ -109,7 +117,6 @@
 
 <script>
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
-import store from "../explorer/store";
 import service from "../explorer/service";
 import LoadingMessage from "./LoadingMessage";
 
@@ -139,7 +146,7 @@ export default {
     }
   },
   watch: {
-    $route(to, from) {
+    $route(to) {
       let address = to.params.address;
       let shardId = +to.params.shardId;
       if (
@@ -167,7 +174,7 @@ export default {
   mounted() {
     this.getAddress().then(() => {
       let pageIndex = (+this.$route.params.pageIndex || 1) - 1;
-      let shardId = +this.$route.params.shardId;
+      // let shardId = +this.$route.params.shardId;
       service
         .getAddressShardTxHistory(
           this.$route.params.address,

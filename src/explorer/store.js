@@ -35,7 +35,9 @@ let store = {
     this.updateGlobalData();
   },
   updateShards(shards) {
-    Object.values(shards).forEach(this.updateShard.bind(this));
+    if (shards) {
+      Object.values(shards).forEach(this.updateShard.bind(this));
+    }
   },
   updateShard(shard) {
     let shardData = this.data.shards[shard.id];
@@ -110,7 +112,11 @@ let store = {
     this.data.blockLatency = getTotalBlockLatency(
       Object.values(this.data.shards).map(s => s.blockLatency)
     );
-    this.data.lastUpdateTime = Math.max(...Object.values(this.data.shards).map(s => s.lastUpdateTime).filter(x => isFinite(x)));
+    this.data.lastUpdateTime = Math.max(
+      ...Object.values(this.data.shards)
+        .map(s => s.lastUpdateTime)
+        .filter(x => isFinite(x))
+    );
   },
   reset() {
     this.data.blocks = [];
