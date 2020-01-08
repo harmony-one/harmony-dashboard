@@ -8,7 +8,7 @@
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "serve": "http-server -p 2000 dist"
+    "serve": "http-server -p 2000 dist --ssl --cert $CERT_FILE --key $KEY_FILE"
   },
   "dependencies": {
     "@fortawesome/fontawesome": "^1.1.8",
@@ -24,7 +24,9 @@
     "highcharts": "^8.0.0",
     "highcharts-vue": "^1.2.0",
     "moment": "^2.23.0",
+    "numeral": "^2.0.6",
     "vue": "^2.6.10",
+    "vue-json-pretty": "^1.6.3",
     "vue-router": "^3.1.3",
     "vue-scrollto": "^2.17.1"
   },

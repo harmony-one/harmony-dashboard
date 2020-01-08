@@ -34,9 +34,12 @@
 
 <template>
   <div class="home-page explorer-page page">
-    fsdfsfsd
     <div class="home-body explorer-body">
       <div class="container" v-if="globalData.blocks.length">
+        <div class="explorer-card status-card" v-if="!!coinStats">
+          <CoinStats :stats="coinStats" />
+        </div>
+
         <div class="explorer-card status-card">
           <div class="row">
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
@@ -167,6 +170,7 @@
               </footer>-->
             </div>
           </div>
+
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" v-if="showTx">
             <div class="explorer-card latest-block-card">
               <header>
@@ -228,6 +232,75 @@
               </footer>-->
             </div>
           </div>
+
+          <div
+            class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+            v-if="showStakingTx"
+          >
+            <div class="explorer-card latest-block-card">
+              <header>
+                <h1 class="flex-grow">Latest Staking Transactions</h1>
+                <div class="secondary-info">
+                  <div class="timer">
+                    Updated
+                    {{
+                      Math.round(
+                        Math.max((now - globalData.lastUpdateTime) / 1000, 0)
+                      ) | number
+                    }}s ago...
+                  </div>
+                  <span class="total-block-num"></span>
+                </div>
+              </header>
+              <div class="explorer-card-body">
+                <div class="explorer-table-responsive latest-tx-table">
+                  <div class="tr">
+                    <div class="th">Shard</div>
+                    <div class="th">Hash</div>
+                    <div class="th">Validator</div>
+                    <div class="th">Delegator</div>
+                    <div class="th">Age</div>
+                    <div class="th text-right">Value</div>
+                  </div>
+                  <div
+                    class="tr"
+                    v-for="tx in globalData.stakingTxs"
+                    :key="tx.id"
+                  >
+                    <div class="td">
+                      <router-link :to="'/shard/' + tx.shardID">{{
+                        tx.shardID
+                      }}</router-link>
+                    </div>
+                    <div class="td">
+                      <router-link :to="'/staking-tx/' + tx.id">{{
+                        tx.id | shorten
+                      }}</router-link>
+                    </div>
+                    <div class="td">
+                      <router-link :to="'/address/' + tx.validator.bech32">{{
+                        tx.validator.bech32 | shorten
+                      }}</router-link>
+                    </div>
+                    <div class="td">
+                      <router-link :to="'/address/' + tx.delegator.bech32">{{
+                        tx.delegator.bech32 | shorten
+                      }}</router-link>
+                    </div>
+                    <div class="td">{{ tx.timestamp | age }}</div>
+                    <div class="td text-right">{{ tx.value | amount }}</div>
+                  </div>
+                </div>
+              </div>
+              <!-- <footer class="button-only-footer">
+                <router-link
+                  tag="button"
+                  class="btn btn-light btn-block btn-mini"
+                  to="txs"
+                >View all transactions</router-link>
+              </footer>-->
+            </div>
+          </div>
         </div>
       </div>
       <div class="container" v-else>
@@ -239,7 +312,9 @@
 
 <script>
 import store from "../explorer/store";
+import service from "../explorer/service";
 import LoadingMessage from "./LoadingMessage";
+import CoinStats from "./CoinStats";
 
 export default {
   name: "HomePage",
@@ -250,11 +325,13 @@ export default {
       pageSize: 50,
       timer: null,
       now: Date.now(),
-      showTx: true
+      showTx: true,
+      coinStats: null
     };
   },
   components: {
-    LoadingMessage
+    LoadingMessage,
+    CoinStats
   },
   watch: {
     globalData() {
@@ -263,10 +340,17 @@ export default {
   },
   mounted() {
     this.resetTimer();
+
+    service.getCoinStats().then(stats => {
+      this.coinStats = stats;
+    });
   },
   computed: {
     length() {
       return Math.ceil(this.globalData.blocks.length / this.pageSize);
+    },
+    showStakingTx() {
+      return !!this.globalData.stakingTxs.length;
     }
   },
   methods: {

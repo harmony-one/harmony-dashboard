@@ -66,11 +66,7 @@ footer {
 </template>
 
 <script>
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 export default {
-  name: "SiteFooter",
-  components: {
-    FontAwesomeIcon
-  }
+  name: "SiteFooter"
 };
 </script>

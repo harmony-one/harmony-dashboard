@@ -101,7 +101,6 @@
 </template>
 
 <script>
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import store from "../explorer/store";
 import service from "../explorer/service";
 import LoadingMessage from "./LoadingMessage";
@@ -117,7 +116,6 @@ export default {
     };
   },
   components: {
-    FontAwesomeIcon,
     LoadingMessage
   },
   mounted() {

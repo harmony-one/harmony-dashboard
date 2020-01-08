@@ -8,17 +8,28 @@
       <div class="container" v-if="!loading && transaction">
         <div class="explorer-card">
           <header>
-            <h1>Transaction</h1>
+            <h1>{{ isStaking ? "Staking Transaction" : "Transaction" }}</h1>
           </header>
           <div class="explorer-card-body">
             <table class="explorer-table">
+              <tr v-if="isStaking">
+                <td class="td-title">Type</td>
+                <td>
+                  {{ transaction.type }}
+                </td>
+              </tr>
               <tr>
                 <td class="td-title">ID</td>
                 <td>{{ transaction.hash }}</td>
               </tr>
-              <tr>
+              <tr v-if="!isStaking">
                 <td class="td-title">Value</td>
                 <td>{{ transaction.value | amount }}</td>
+              </tr>
+
+              <tr v-if="isStaking">
+                <td class="td-title">Value</td>
+                <td><vue-json-pretty :data="transaction.msg" /></td>
               </tr>
               <!-- <tr>
                 <td class="td-title">Size (bytes)</td>
@@ -45,7 +56,7 @@
                 <td>{{ transaction.shardID }}</td>
               </tr>
               <tr>
-                <td class="td-title">From Shard Block</td>
+                <td class="td-title">Block Hash</td>
                 <td>
                   <router-link :to="'/block/' + transaction.blockHash">{{
                     transaction.blockHash
@@ -74,7 +85,7 @@
                   }}</router-link>
                 </td>
               </tr>
-              <tr>
+              <tr v-if="!isStaking">
                 <td class="td-title">To Address</td>
                 <td>
                   <router-link
@@ -84,6 +95,26 @@
                   >
                 </td>
               </tr>
+
+              <!--              <tr v-if="isStaking">-->
+              <!--                <td class="td-title">Validator Address</td>-->
+              <!--                <td>-->
+              <!--                  <router-link-->
+              <!--                    :to="'/address/' + transaction.validator"-->
+              <!--                    v-if="transaction.validator"-->
+              <!--                  >{{ transaction.validator }}</router-link>-->
+              <!--                </td>-->
+              <!--              </tr>-->
+              <!--              <tr v-if="isStaking">-->
+              <!--                <td class="td-title">Delegator Address</td>-->
+              <!--                <td>-->
+              <!--                  <router-link-->
+              <!--                    :to="'/address/' + transaction.delegator"-->
+              <!--                    v-if="transaction.delegator"-->
+              <!--                  >{{ transaction.delegator }}</router-link>-->
+              <!--                </td>-->
+              <!--              </tr>-->
+
               <tr>
                 <td class="td-title">Gas</td>
                 <td>{{ normalizedGas() }}</td>
@@ -114,9 +145,15 @@
 <script>
 import service from "../explorer/service";
 import LoadingMessage from "./LoadingMessage";
+import VueJsonPretty from "vue-json-pretty";
 
 export default {
   name: "TransactionPage",
+  props: {
+    isStaking: {
+      type: Boolean
+    }
+  },
   data() {
     return {
       loading: true,
@@ -126,7 +163,8 @@ export default {
     };
   },
   components: {
-    LoadingMessage
+    LoadingMessage,
+    VueJsonPretty
   },
   watch: {
     $route() {
@@ -147,7 +185,7 @@ export default {
   methods: {
     getSequence() {
       const data = this.transaction.input;
-      const re = /.+?7c7c((30|31|32|33|34|35|36|37|38|39|4c|52|55|44)+)7c7c0*$/;
+      const re = /.+?7c7c((30|31|32|33|34|35|36|37|38|39|4c|52|55|44)+) 7c7c0*$/;
       const match = data.match(re);
       if (match && match[1] && match[1].length % 2 == 0) {
         this.sequence = this.hexToAscii(match[1]);
@@ -155,8 +193,12 @@ export default {
     },
     getTransaction() {
       this.loading = true;
-      service
-        .getTransaction(this.$route.params.transactionId)
+
+      const getTx = this.isStaking
+        ? service.getStakingTransaction
+        : service.getTransaction;
+
+      getTx(this.$route.params.transactionId)
         .then(transaction => {
           this.transaction = transaction;
           if (this.transaction.shardID !== this.transaction.toShardID) {

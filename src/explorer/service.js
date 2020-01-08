@@ -10,7 +10,9 @@ Promise.prototype.delay = function(time) {
   });
 };
 
+// const BACKEND_URL = `${'explorer.testnet.harmony.one'}:8888`;
 const BACKEND_URL = `${window.location.hostname}:8888`;
+
 const HTTP_BACKEND_URL = `https://${BACKEND_URL}`;
 const SECRET = localStorage.getItem("secret");
 
@@ -41,6 +43,13 @@ function sendGet(url, params) {
 
   ws.addEventListener("message", res => {
     let data = JSON.parse(res.data);
+
+    data.shards = Object.values(data.shards).map(shard => ({
+      stakingTxCount: 0,
+      stakingTxs: [],
+      ...shard
+    }));
+
     if (data.error) {
       alert(`Websocket Error: ${data.error}`);
       return;
@@ -70,25 +79,43 @@ export default {
   getBlocks(pageIndex, pageSize) {
     return authGet("/blocks", { params: { pageIndex, pageSize } }).then(res => {
       let blocks = res.data.blocks;
+
       return blocks;
     });
   },
   getBlock(id) {
     return authGet("/block", { params: { id } }).then(res => {
       let block = res.data.block;
+
       return block;
     });
   },
   getTransactions(pageIndex, pageSize) {
     return authGet("/txs", { params: { pageIndex, pageSize } }).then(res => {
       let txs = res.data.txs;
+
       return txs;
     });
   },
   getTransaction(id) {
     return authGet("/tx", { params: { id } }).then(res => {
       let tx = res.data.tx;
+
       return tx;
+    });
+  },
+  getStakingTransaction(id) {
+    return authGet("/stakingTx", { params: { id } }).then(res => {
+      let tx = res.data.tx;
+
+      return tx;
+    });
+  },
+  getCoinStats() {
+    return authGet("/coinStats").then(res => {
+      const coinStats = res.data.coinStats;
+
+      return coinStats;
     });
   },
   getAddress(id) {
