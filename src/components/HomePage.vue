@@ -35,9 +35,7 @@
 <template>
   <div class="home-page explorer-page page">
     <div class="home-body explorer-body">
-
       <div class="container" v-if="globalData.blocks.length">
-
         <div class="explorer-card status-card" v-if="!!coinStats">
           <CoinStats :stats="coinStats" />
         </div>
@@ -235,12 +233,22 @@
             </div>
           </div>
 
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" v-if="showStakingTx">
+          <div
+            class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+            v-if="showStakingTx"
+          >
             <div class="explorer-card latest-block-card">
               <header>
                 <h1 class="flex-grow">Latest Staking Transactions</h1>
                 <div class="secondary-info">
-                  <div class="timer">Updated {{ Math.round(Math.max((now - globalData.lastUpdateTime) / 1000, 0)) | number }}s ago...</div>
+                  <div class="timer">
+                    Updated
+                    {{
+                      Math.round(
+                        Math.max((now - globalData.lastUpdateTime) / 1000, 0)
+                      ) | number
+                    }}s ago...
+                  </div>
                   <span class="total-block-num"></span>
                 </div>
               </header>
@@ -254,18 +262,30 @@
                     <div class="th">Age</div>
                     <div class="th text-right">Value</div>
                   </div>
-                  <div class="tr" v-for="tx in globalData.stakingTxs" :key="tx.id">
+                  <div
+                    class="tr"
+                    v-for="tx in globalData.stakingTxs"
+                    :key="tx.id"
+                  >
                     <div class="td">
-                      <router-link :to="'/shard/' + tx.shardID">{{ tx.shardID }}</router-link>
+                      <router-link :to="'/shard/' + tx.shardID">{{
+                        tx.shardID
+                      }}</router-link>
                     </div>
                     <div class="td">
-                      <router-link :to="'/staking-tx/' + tx.id">{{ tx.id | shorten }}</router-link>
+                      <router-link :to="'/staking-tx/' + tx.id">{{
+                        tx.id | shorten
+                      }}</router-link>
                     </div>
                     <div class="td">
-                      <router-link :to="'/address/' + tx.validator.bech32">{{tx.validator.bech32 | shorten }}</router-link>
+                      <router-link :to="'/address/' + tx.validator.bech32">{{
+                        tx.validator.bech32 | shorten
+                      }}</router-link>
                     </div>
                     <div class="td">
-                      <router-link :to="'/address/' + tx.delegator.bech32">{{tx.delegator.bech32 | shorten }}</router-link>
+                      <router-link :to="'/address/' + tx.delegator.bech32">{{
+                        tx.delegator.bech32 | shorten
+                      }}</router-link>
                     </div>
                     <div class="td">{{ tx.timestamp | age }}</div>
                     <div class="td text-right">{{ tx.value | amount }}</div>
@@ -281,7 +301,6 @@
               </footer>-->
             </div>
           </div>
-
         </div>
       </div>
       <div class="container" v-else>
@@ -307,7 +326,7 @@ export default {
       timer: null,
       now: Date.now(),
       showTx: true,
-      coinStats: null,
+      coinStats: null
     };
   },
   components: {
@@ -323,7 +342,7 @@ export default {
     this.resetTimer();
 
     service.getCoinStats().then(stats => {
-      this.coinStats = stats
+      this.coinStats = stats;
     });
   },
   computed: {
@@ -331,7 +350,7 @@ export default {
       return Math.ceil(this.globalData.blocks.length / this.pageSize);
     },
     showStakingTx() {
-      return !!this.globalData.stakingTxs.length
+      return !!this.globalData.stakingTxs.length;
     }
   },
   methods: {

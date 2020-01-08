@@ -8,7 +8,7 @@
       <div class="container" v-if="!loading && transaction">
         <div class="explorer-card">
           <header>
-            <h1>{{ isStaking ? 'Staking Transaction' : 'Transaction' }}</h1>
+            <h1>{{ isStaking ? "Staking Transaction" : "Transaction" }}</h1>
           </header>
           <div class="explorer-card-body">
             <table class="explorer-table">
@@ -96,24 +96,24 @@
                 </td>
               </tr>
 
-<!--              <tr v-if="isStaking">-->
-<!--                <td class="td-title">Validator Address</td>-->
-<!--                <td>-->
-<!--                  <router-link-->
-<!--                    :to="'/address/' + transaction.validator"-->
-<!--                    v-if="transaction.validator"-->
-<!--                  >{{ transaction.validator }}</router-link>-->
-<!--                </td>-->
-<!--              </tr>-->
-<!--              <tr v-if="isStaking">-->
-<!--                <td class="td-title">Delegator Address</td>-->
-<!--                <td>-->
-<!--                  <router-link-->
-<!--                    :to="'/address/' + transaction.delegator"-->
-<!--                    v-if="transaction.delegator"-->
-<!--                  >{{ transaction.delegator }}</router-link>-->
-<!--                </td>-->
-<!--              </tr>-->
+              <!--              <tr v-if="isStaking">-->
+              <!--                <td class="td-title">Validator Address</td>-->
+              <!--                <td>-->
+              <!--                  <router-link-->
+              <!--                    :to="'/address/' + transaction.validator"-->
+              <!--                    v-if="transaction.validator"-->
+              <!--                  >{{ transaction.validator }}</router-link>-->
+              <!--                </td>-->
+              <!--              </tr>-->
+              <!--              <tr v-if="isStaking">-->
+              <!--                <td class="td-title">Delegator Address</td>-->
+              <!--                <td>-->
+              <!--                  <router-link-->
+              <!--                    :to="'/address/' + transaction.delegator"-->
+              <!--                    v-if="transaction.delegator"-->
+              <!--                  >{{ transaction.delegator }}</router-link>-->
+              <!--                </td>-->
+              <!--              </tr>-->
 
               <tr>
                 <td class="td-title">Gas</td>
@@ -145,13 +145,13 @@
 <script>
 import service from "../explorer/service";
 import LoadingMessage from "./LoadingMessage";
-import VueJsonPretty from 'vue-json-pretty'
+import VueJsonPretty from "vue-json-pretty";
 
 export default {
   name: "TransactionPage",
   props: {
     isStaking: {
-      type: Boolean,
+      type: Boolean
     }
   },
   data() {
@@ -194,7 +194,9 @@ export default {
     getTransaction() {
       this.loading = true;
 
-      const getTx = this.isStaking ? service.getStakingTransaction : service.getTransaction;
+      const getTx = this.isStaking
+        ? service.getStakingTransaction
+        : service.getTransaction;
 
       getTx(this.$route.params.transactionId)
         .then(transaction => {

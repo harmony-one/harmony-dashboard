@@ -121,7 +121,6 @@
 </template>
 
 <script>
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import service from "../explorer/service";
 export default {
   name: "SiteHeader",
@@ -130,9 +129,6 @@ export default {
       input: "",
       showNav: localStorage.getItem("nav")
     };
-  },
-  components: {
-    FontAwesomeIcon
   },
   methods: {
     search() {
