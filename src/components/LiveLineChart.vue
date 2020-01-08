@@ -9,7 +9,6 @@
 <script>
 import Highcharts from "highcharts";
 import stockInit from "highcharts/modules/stock";
-import { formatDecimal } from "../filter";
 stockInit(Highcharts);
 
 export default {

@@ -34,6 +34,7 @@
 
 <template>
   <div class="home-page explorer-page page">
+    fsdfsfsd
     <div class="home-body explorer-body">
       <div class="container" v-if="globalData.blocks.length">
         <div class="explorer-card status-card">
@@ -193,11 +194,8 @@
 </template>
 
 <script>
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import store from "../explorer/store";
-import service from "../explorer/service";
 import LoadingMessage from "./LoadingMessage";
-import moment from "moment";
 
 export default {
   name: "HomePage",
@@ -212,7 +210,6 @@ export default {
     };
   },
   components: {
-    FontAwesomeIcon,
     LoadingMessage
   },
   watch: {

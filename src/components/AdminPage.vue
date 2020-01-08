@@ -75,7 +75,6 @@
 </template>
 
 <script>
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import DashboardService from "../dashboard/service";
 import ExplorerService from "../explorer/service";
 import SiteFooter from "./SiteFooter";
@@ -88,7 +87,6 @@ export default {
     };
   },
   components: {
-    FontAwesomeIcon,
     SiteFooter
   },
   mounted() {},

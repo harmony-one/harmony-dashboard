@@ -58,7 +58,7 @@ function sendGet(url, params) {
     console.log("error", error);
   });
 
-  ws.addEventListener("close", error => {
+  ws.addEventListener("close", () => {
     console.log("close");
   });
 })();

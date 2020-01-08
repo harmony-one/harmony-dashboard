@@ -33,7 +33,9 @@ let store = {
     this.updateGlobalData();
   },
   updateShards(shards) {
-    Object.values(shards).forEach(this.updateShard.bind(this));
+    if(shards) {
+      Object.values(shards).forEach(this.updateShard.bind(this));
+    }
   },
   updateShard(shard) {
     let shardData = this.data.shards[shard.id];

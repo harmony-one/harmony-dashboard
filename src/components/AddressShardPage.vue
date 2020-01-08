@@ -109,7 +109,6 @@
 
 <script>
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
-import store from "../explorer/store";
 import service from "../explorer/service";
 import LoadingMessage from "./LoadingMessage";
 
@@ -139,7 +138,7 @@ export default {
     }
   },
   watch: {
-    $route(to, from) {
+    $route(to) {
       let address = to.params.address;
       let shardId = +to.params.shardId;
       if (
@@ -167,7 +166,7 @@ export default {
   mounted() {
     this.getAddress().then(() => {
       let pageIndex = (+this.$route.params.pageIndex || 1) - 1;
-      let shardId = +this.$route.params.shardId;
+      // let shardId = +this.$route.params.shardId;
       service
         .getAddressShardTxHistory(
           this.$route.params.address,

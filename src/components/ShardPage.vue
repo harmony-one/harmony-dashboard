@@ -167,11 +167,8 @@
 </template>
 
 <script>
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import store from "../explorer/store";
-import service from "../explorer/service";
 import LoadingMessage from "./LoadingMessage";
-import moment from "moment";
 
 export default {
   name: "ShardPage",
@@ -186,7 +183,6 @@ export default {
     };
   },
   components: {
-    FontAwesomeIcon,
     LoadingMessage
   },
   watch: {

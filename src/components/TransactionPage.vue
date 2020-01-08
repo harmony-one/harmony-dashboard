@@ -100,8 +100,6 @@
 </template>
 
 <script>
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
-import store from "../explorer/store";
 import service from "../explorer/service";
 import LoadingMessage from "./LoadingMessage";
 
@@ -116,11 +114,10 @@ export default {
     };
   },
   components: {
-    FontAwesomeIcon,
     LoadingMessage
   },
   watch: {
-    $route(to, from) {
+    $route() {
       this.getTransaction();
     }
   },
@@ -164,7 +161,7 @@ export default {
     },
     hexToUTF8(h) {
       try {
-        let s = hexToAscii(h);
+        let s = this.hexToAscii(h);
         return decodeURIComponent(escape(s));
       } catch (e) {
         return null;

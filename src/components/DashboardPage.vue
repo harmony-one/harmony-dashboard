@@ -29,7 +29,10 @@
 <template>
   <div class="dashboard-page page">
     <div class="dashboard-body">
-      <div class="container" v-if="Object.keys(globalData.shardSummaries).length">
+      <div
+        class="container"
+        v-if="Object.keys(globalData.shardSummaries).length"
+      >
         <global-summary :summary="globalData.globalSummary"></global-summary>
         <shard-summary
           :summary="summary"
@@ -45,10 +48,7 @@
 </template>
 
 <script>
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import store from "../dashboard/store";
-import service from "../dashboard/service";
-import SiteFooter from "./SiteFooter";
 
 export default {
   name: "DashboardPage",
@@ -56,10 +56,6 @@ export default {
     return {
       globalData: store.data
     };
-  },
-  components: {
-    FontAwesomeIcon,
-    SiteFooter
   },
   mounted() {}
 };

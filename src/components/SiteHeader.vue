@@ -131,7 +131,7 @@ export default {
     FontAwesomeIcon
   },
   methods: {
-    search(e) {
+    search() {
       let input = this.input.trim();
       this.input = "";
       if (!input) {

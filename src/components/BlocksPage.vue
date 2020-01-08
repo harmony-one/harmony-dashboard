@@ -1,5 +1,5 @@
 <style scoped lang="less">
-@import '../less/common.less';
+@import "../less/common.less";
 </style>
 
 <template>
@@ -70,10 +70,10 @@
                   <!-- </router-link> -->
                 </td>
                 <td>
-                  <router-link :to="'/block/' + block.id">{{ block.id | shorten }}</router-link>
+                  <router-link :to="'/block/' + block.id">{{block.id | shorten}}</router-link>
                 </td>
                 <td>
-                  <router-link :to="'/block/' + block.id">{{ block.height }}</router-link>
+                  <router-link :to="'/block/' + block.id">{{block.height}}</router-link>
                 </td>
                 <td>{{ block.timestamp | timestamp }}</td>
                 <td>{{ block.timestamp | age }}</td>
@@ -81,7 +81,6 @@
                 <td class="text-right">{{ block.bytes }}</td>
               </tr>
             </table>
-
             <div v-else>
               <loading-message />
             </div>
@@ -93,25 +92,24 @@
 </template>
 
 <script>
-import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
-import store from '../explorer/store';
-import service from '../explorer/service';
-import LoadingMessage from './LoadingMessage';
-import moment from 'moment';
+import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
+import store from "../explorer/store";
+import service from "../explorer/service";
+import LoadingMessage from "./LoadingMessage";
 
 export default {
-  name: 'BlocksPage',
+  name: "BlocksPage",
   data() {
     return {
       globalData: store.data,
       blocks: [],
       pageIndex: 0,
-      pageSize: 50,
+      pageSize: 50
     };
   },
   components: {
     FontAwesomeIcon,
-    LoadingMessage,
+    LoadingMessage
   },
   mounted() {
     if (this.$route.params.pageIndex) {
@@ -120,23 +118,23 @@ export default {
     this.getBlocks();
   },
   watch: {
-    $route(to, from) {
+    $route(to) {
       this.pageIndex = (+to.params.pageIndex || 1) - 1;
       this.getBlocks();
-    },
+    }
   },
   computed: {
     pageCount() {
       return Math.ceil(this.globalData.blockCount / this.pageSize);
-    },
+    }
   },
   methods: {
     goToPage(index) {
       if (index < 0) index = 0;
       if (index >= this.pageCount) index = this.pageCount - 1;
       this.$router.replace({
-        name: 'BlocksPage',
-        params: { pageIndex: index + 1 },
+        name: "BlocksPage",
+        params: { pageIndex: index + 1 }
       });
     },
     first() {
@@ -158,7 +156,7 @@ export default {
       service.getBlocks(this.pageIndex, this.pageSize).then(blocks => {
         this.blocks = blocks;
       });
-    },
-  },
+    }
+  }
 };
 </script>
