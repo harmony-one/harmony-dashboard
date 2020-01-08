@@ -99,16 +99,20 @@
           <span class="tagline">Open Consensus for 10B</span>
         </div>
         <div class="navbar-actions">
-          <router-link class="navbar-nav" to="/dashboard" v-if="showNav">Dashboard</router-link>
-          <router-link class="navbar-nav" to="/blocks" v-if="showNav">Explorer</router-link>
+          <router-link class="navbar-nav" to="/dashboard" v-if="showNav"
+            >Dashboard</router-link
+          >
+          <router-link class="navbar-nav" to="/blocks" v-if="showNav"
+            >Explorer</router-link
+          >
           <div class="search">
-            <font-awesome-icon class="search-icon" icon="search"/>
+            <font-awesome-icon class="search-icon" icon="search" />
             <input
               type="text"
               placeholder="Block Hash / Tx Hash / Account..."
               v-model="input"
               @keyup.enter="search"
-            >
+            />
           </div>
         </div>
       </div>
@@ -131,7 +135,7 @@ export default {
     FontAwesomeIcon
   },
   methods: {
-    search(e) {
+    search() {
       let input = this.input.trim();
       this.input = "";
       if (!input) {

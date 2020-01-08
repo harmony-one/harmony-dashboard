@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Vue from "vue";
 
 class GlobalSummary {
   tps = 0;
@@ -33,7 +33,7 @@ let store = {
     globalSummary: {},
 
     blocks: [],
-    blockMap: {},
+    blockMap: {}
   },
   reset() {
     this.data.shardSummaries = {};
@@ -52,14 +52,17 @@ let store = {
     }
     globalSummary.maxTps = Math.max(globalSummary.maxTps, globalSummary.tps);
     if (this.data.globalSummary.maxTps) {
-      globalSummary.maxTps = Math.max(globalSummary.maxTps, this.data.globalSummary.maxTps);
+      globalSummary.maxTps = Math.max(
+        globalSummary.maxTps,
+        this.data.globalSummary.maxTps
+      );
     }
     this.data.globalSummary = Object.assign({}, globalSummary);
   },
   setBlock(block) {
     if (!block) return;
     Vue.set(this.data.blockMap, block.id, block);
-  },
+  }
 };
 
 export default store;

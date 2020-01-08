@@ -19,7 +19,7 @@
                 </tr>
                 <tr>
                   <td class="td-title">Number of Transactions</td>
-                  <td>{{ block.txCount | number}}</td>
+                  <td>{{ block.txCount | number }}</td>
                 </tr>
                 <tr>
                   <td class="td-title">Height</td>
@@ -39,23 +39,23 @@
                 </tr>
                 <tr>
                   <td class="td-title">Included In Shard</td>
-                  <td>{{ block.shardID | number}}</td>
+                  <td>{{ block.shardID | number }}</td>
                 </tr>
                 <tr>
                   <td class="td-title">Previous Block</td>
                   <td v-if="block.prevBlock && block.prevBlock.id">
-                    <router-link
-                      :to="'/block/' + block.prevBlock.id"
-                    >{{ block.prevBlock.height | number }}</router-link>
+                    <router-link :to="'/block/' + block.prevBlock.id">{{
+                      block.prevBlock.height | number
+                    }}</router-link>
                   </td>
                   <td v-else>-</td>
                 </tr>
                 <tr>
                   <td class="td-title">Next Block</td>
                   <td v-if="block.nextBlock && block.nextBlock.id">
-                    <router-link
-                      :to="'/block/' + block.nextBlock.id"
-                    >{{ block.nextBlock.height | number }}</router-link>
+                    <router-link :to="'/block/' + block.nextBlock.id">{{
+                      block.nextBlock.height | number
+                    }}</router-link>
                   </td>
                   <td v-else>-</td>
                 </tr>
@@ -102,8 +102,6 @@
 </template>
 
 <script>
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
-import store from "../explorer/store";
 import service from "../explorer/service";
 import LoadingMessage from "./LoadingMessage";
 
@@ -116,11 +114,10 @@ export default {
     };
   },
   components: {
-    FontAwesomeIcon,
     LoadingMessage
   },
   watch: {
-    $route(to, from) {
+    $route() {
       this.getBlock();
     }
   },

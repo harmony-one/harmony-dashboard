@@ -58,7 +58,7 @@ function sendGet(url, params) {
     console.log("error", error);
   });
 
-  ws.addEventListener("close", error => {
+  ws.addEventListener("close", () => {
     console.log("close");
   });
 })();
@@ -117,7 +117,7 @@ export default {
     return authGet("/address-shard-txs", {
       params: { address, shardID, pageIndex, pageSize }
     }).then(res => {
-      console.log(res)
+      console.log(res);
       let txs = res.data.txs;
       return txs;
     });

@@ -1,4 +1,3 @@
-
 <style lang="less">
 @import "./less/common.less";
 
@@ -302,4 +301,3 @@ export default {
   }
 };
 </script>
-
