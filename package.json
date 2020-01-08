@@ -8,7 +8,7 @@
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "serve": "http-server -p 2000 dist"
+    "serve": "http-server -p 2000 dist --ssl --cert $CERT_FILE --key $KEY_FILE"
   },
   "dependencies": {
     "@fortawesome/fontawesome": "^1.1.8",
