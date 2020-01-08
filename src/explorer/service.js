@@ -77,8 +77,6 @@ export default {
     return authGet("/blocks", { params: { pageIndex, pageSize } }).then(res => {
       let blocks = res.data.blocks;
 
-      console.log(333, blocks);
-
       return blocks;
     });
   },
