@@ -10,7 +10,9 @@
           <header>
             <h1 class="flex-grow">Blocks</h1>
             <div class="pagination-controls">
-              <span class="total-block-num">{{ globalData.blockCount }} blocks</span>
+              <span class="total-block-num"
+                >{{ globalData.blockCount }} blocks</span
+              >
               <span class="page-controllers">
                 <span class="page-navigator">
                   <button
@@ -27,7 +29,9 @@
                   >
                     <font-awesome-icon icon="chevron-left" />
                   </button>
-                  <span class="pagination-nums">{{ pageIndex + 1 }} / {{ pageCount }}</span>
+                  <span class="pagination-nums"
+                    >{{ pageIndex + 1 }} / {{ pageCount }}</span
+                  >
                   <button
                     class="btn btn-light btn-icon-only"
                     @click="next()"
@@ -70,10 +74,14 @@
                   <!-- </router-link> -->
                 </td>
                 <td>
-                  <router-link :to="'/block/' + block.id">{{block.id | shorten}}</router-link>
+                  <router-link :to="'/block/' + block.id">{{
+                    block.id | shorten
+                  }}</router-link>
                 </td>
                 <td>
-                  <router-link :to="'/block/' + block.id">{{block.height}}</router-link>
+                  <router-link :to="'/block/' + block.id">{{
+                    block.height
+                  }}</router-link>
                 </td>
                 <td>{{ block.timestamp | timestamp }}</td>
                 <td>{{ block.timestamp | age }}</td>
@@ -81,6 +89,7 @@
                 <td class="text-right">{{ block.bytes }}</td>
               </tr>
             </table>
+
             <div v-else>
               <loading-message />
             </div>

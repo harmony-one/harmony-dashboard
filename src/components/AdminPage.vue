@@ -63,14 +63,14 @@
           <header>Reset Dashboard</header>
           <label>
             Secret:
-            <input type="password" v-model="secret">
+            <input type="password" v-model="secret" />
           </label>
           <button class="btn btn-primary" @click="reset">Reset</button>
         </div>
       </div>
     </div>
 
-    <site-footer/>
+    <site-footer />
   </div>
 </template>
 

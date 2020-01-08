@@ -55,7 +55,9 @@
                   >
                     <font-awesome-icon icon="chevron-left" />
                   </button>
-                  <span class="pagination-nums">{{ pageIndex + 1 }} / {{ pageCount }}</span>
+                  <span class="pagination-nums"
+                    >{{ pageIndex + 1 }} / {{ pageCount }}</span
+                  >
                   <button
                     class="btn btn-light btn-icon-only"
                     @click="next()"
@@ -85,14 +87,20 @@
               </tr>
               <tr v-for="tx in txs" :key="tx.hash">
                 <td>
-                  <router-link :to="'/tx/' + tx.hash">{{ tx.hash | shorten }}</router-link>
+                  <router-link :to="'/tx/' + tx.hash">{{
+                    tx.hash | shorten
+                  }}</router-link>
                 </td>
                 <td>{{ tx.timestamp | timestamp }}</td>
                 <td>
-                  <router-link :to="'/address/' + tx.from">{{ tx.from | shorten }}</router-link>
+                  <router-link :to="'/address/' + tx.from">{{
+                    tx.from | shorten
+                  }}</router-link>
                 </td>
                 <td>
-                  <router-link :to="'/address/' + tx.to">{{ tx.to | shorten }}</router-link>
+                  <router-link :to="'/address/' + tx.to">{{
+                    tx.to | shorten
+                  }}</router-link>
                 </td>
                 <td>{{ tx.value | amount }}</td>
               </tr>

@@ -27,7 +27,9 @@
                   >
                     <font-awesome-icon icon="chevron-left" />
                   </button>
-                  <span class="pagination-nums">{{ pageIndex + 1 }} / {{ pageCount }}</span>
+                  <span class="pagination-nums"
+                    >{{ pageIndex + 1 }} / {{ pageCount }}</span
+                  >
                   <button
                     class="btn btn-light btn-icon-only"
                     @click="next()"
@@ -64,25 +66,30 @@
                   <!-- </router-link> -->
                 </td>
                 <td>
-                  <router-link :to="'/tx/' + tx.id">{{tx.id | shorten}}</router-link>
+                  <router-link :to="'/tx/' + tx.id">{{
+                    tx.id | shorten
+                  }}</router-link>
                 </td>
                 <td>
                   <router-link
                     v-if="tx.from.bech32"
                     :to="'/address/' + tx.from.bech32"
-                  >{{tx.from.bech32 | shorten}}</router-link>
+                    >{{ tx.from.bech32 | shorten }}</router-link
+                  >
                 </td>
                 <td>
                   <router-link
                     v-if="tx.to.bech32"
                     :to="'/address/' + tx.to.bech32"
-                  >{{tx.to.bech32 | shorten}}</router-link>
+                    >{{ tx.to.bech32 | shorten }}</router-link
+                  >
                 </td>
                 <td>{{ tx.timestamp | age }}</td>
                 <td class="text-right">{{ tx.value | amount }}</td>
                 <td class="text-right">{{ tx.bytes }}</td>
               </tr>
             </table>
+
             <div v-else>
               <loading-message />
             </div>

@@ -38,7 +38,9 @@
                   </div>
                 </div>
                 <div class="data-num-column">
-                  <div class="data-num">{{ shard.blockLatency | blockLatency }}</div>
+                  <div class="data-num">
+                    {{ shard.blockLatency | blockLatency }}
+                  </div>
                   <h1>Block Latency</h1>
                 </div>
               </div>
@@ -76,7 +78,13 @@
           <header>
             <h1 class="flex-grow">Latest Blocks</h1>
             <div class="secondary-info">
-              <div class="timer">Updated {{ Math.round(Math.max((now - shard.lastUpdateTime) / 1000, 0)) | number }}s ago...</div>
+              <div class="timer">
+                Updated
+                {{
+                  Math.round(Math.max((now - shard.lastUpdateTime) / 1000, 0))
+                    | number
+                }}s ago...
+              </div>
               <span class="total-block-num"></span>
             </div>
           </header>
@@ -92,17 +100,27 @@
               </div>
               <div class="tr" v-for="block in shard.blocks" :key="block.id">
                 <div class="td">
-                  <router-link :to="'/shard/' + block.shardID">{{ block.shardID }}</router-link>
+                  <router-link :to="'/shard/' + block.shardID">{{
+                    block.shardID
+                  }}</router-link>
                 </div>
                 <div class="td">
-                  <router-link :to="'/block/' + block.id">{{block.id | shorten}}</router-link>
+                  <router-link :to="'/block/' + block.id">{{
+                    block.id | shorten
+                  }}</router-link>
                 </div>
                 <div class="td">
-                  <router-link :to="'/block/' + block.id">{{block.height | number }}</router-link>
+                  <router-link :to="'/block/' + block.id">{{
+                    block.height | number
+                  }}</router-link>
                 </div>
-                <div class="td text-right">{{ block.timestamp | timestamp }}</div>
+                <div class="td text-right">
+                  {{ block.timestamp | timestamp }}
+                </div>
                 <div class="td text-right">{{ block.timestamp | age }}</div>
-                <div class="td text-right" v-if="showTx">{{ block.txCount }}</div>
+                <div class="td text-right" v-if="showTx">
+                  {{ block.txCount }}
+                </div>
               </div>
             </div>
           </div>
@@ -118,7 +136,13 @@
           <header>
             <h1 class="flex-grow">Latest Transactions</h1>
             <div class="secondary-info">
-              <div class="timer">Updated {{ Math.round(Math.max((now - shard.lastUpdateTime) / 1000, 0)) | number }}s ago...</div>
+              <div class="timer">
+                Updated
+                {{
+                  Math.round(Math.max((now - shard.lastUpdateTime) / 1000, 0))
+                    | number
+                }}s ago...
+              </div>
               <span class="total-block-num"></span>
             </div>
           </header>
@@ -134,16 +158,24 @@
               </div>
               <div class="tr" v-for="tx in shard.txs" :key="tx.id">
                 <div class="td">
-                  <router-link :to="'/shard/' + tx.shardID">{{ tx.shardID }}</router-link>
+                  <router-link :to="'/shard/' + tx.shardID">{{
+                    tx.shardID
+                  }}</router-link>
                 </div>
                 <div class="td">
-                  <router-link :to="'/tx/' + tx.id">{{ tx.id | shorten }}</router-link>
+                  <router-link :to="'/tx/' + tx.id">{{
+                    tx.id | shorten
+                  }}</router-link>
                 </div>
                 <div class="td">
-                  <router-link :to="'/address/' + tx.from.bech32">{{tx.from.bech32 | shorten }}</router-link>
+                  <router-link :to="'/address/' + tx.from.bech32">{{
+                    tx.from.bech32 | shorten
+                  }}</router-link>
                 </div>
                 <div class="td">
-                  <router-link :to="'/address/' + tx.to.bech32">{{tx.to.bech32 | shorten }}</router-link>
+                  <router-link :to="'/address/' + tx.to.bech32">{{
+                    tx.to.bech32 | shorten
+                  }}</router-link>
                 </div>
                 <div class="td">{{ tx.timestamp | age }}</div>
                 <div class="td text-right">{{ tx.value | amount }}</div>

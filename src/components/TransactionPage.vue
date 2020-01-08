@@ -30,18 +30,26 @@
               </tr>-->
               <tr>
                 <td class="td-title">Timestamp</td>
-                <td>{{ Number(transaction.timestamp) * 1000 | timestamp }}</td>
+                <td>
+                  {{ (Number(transaction.timestamp) * 1000) | timestamp }}
+                </td>
               </tr>
               <tr>
-                <td
-                  class="td-title"
-                >{{ transaction.shardID === transaction.toShardID ? "Shard ID" : "From Shard" }}</td>
+                <td class="td-title">
+                  {{
+                    transaction.shardID === transaction.toShardID
+                      ? "Shard ID"
+                      : "From Shard"
+                  }}
+                </td>
                 <td>{{ transaction.shardID }}</td>
               </tr>
               <tr>
                 <td class="td-title">From Shard Block</td>
                 <td>
-                  <router-link :to="'/block/' + transaction.blockHash">{{ transaction.blockHash }}</router-link>
+                  <router-link :to="'/block/' + transaction.blockHash">{{
+                    transaction.blockHash
+                  }}</router-link>
                 </td>
               </tr>
               <tr>
@@ -50,7 +58,8 @@
                   <router-link
                     :to="'/address/' + transaction.from"
                     v-if="transaction.from"
-                  >{{ transaction.from }}</router-link>
+                    >{{ transaction.from }}</router-link
+                  >
                 </td>
               </tr>
               <tr v-if="transaction.shardID !== transaction.toShardID">
@@ -60,7 +69,9 @@
               <tr v-if="receipt">
                 <td class="td-title">To Shard Block</td>
                 <td>
-                  <router-link :to="'/block/' + receipt.blockHash">{{ receipt.blockHash }}</router-link>
+                  <router-link :to="'/block/' + receipt.blockHash">{{
+                    receipt.blockHash
+                  }}</router-link>
                 </td>
               </tr>
               <tr>
@@ -69,7 +80,8 @@
                   <router-link
                     :to="'/address/' + transaction.to"
                     v-if="transaction.to"
-                  >{{ transaction.to }}</router-link>
+                    >{{ transaction.to }}</router-link
+                  >
                 </td>
               </tr>
               <tr>
@@ -78,7 +90,7 @@
               </tr>
               <tr>
                 <td class="td-title">Data (Hex)</td>
-                <td>{{ transaction.input || '-' }}</td>
+                <td>{{ transaction.input || "-" }}</td>
               </tr>
               <tr v-if="sequence">
                 <td class="td-title">Sequence</td>
@@ -86,7 +98,7 @@
               </tr>
               <tr>
                 <td class="td-title">Data (UTF-8)</td>
-                <td>{{ hexToUTF8(transaction.input) || '-' }}</td>
+                <td>{{ hexToUTF8(transaction.input) || "-" }}</td>
               </tr>
             </table>
           </div>
@@ -176,9 +188,7 @@ export default {
       return s;
     },
     normalizedGas() {
-      return isNaN(this.transaction.gas)
-        ? 0
-        : Number(this.transaction.gas);
+      return isNaN(this.transaction.gas) ? 0 : Number(this.transaction.gas);
     }
   }
 };

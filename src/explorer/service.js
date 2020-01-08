@@ -117,7 +117,7 @@ export default {
     return authGet("/address-shard-txs", {
       params: { address, shardID, pageIndex, pageSize }
     }).then(res => {
-      console.log(res)
+      console.log(res);
       let txs = res.data.txs;
       return txs;
     });
