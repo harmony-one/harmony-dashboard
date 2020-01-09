@@ -44,11 +44,13 @@ function sendGet(url, params) {
   ws.addEventListener("message", res => {
     let data = JSON.parse(res.data);
 
-    data.shards = Object.values(data.shards).map(shard => ({
-      stakingTxCount: 0,
-      stakingTxs: [],
-      ...shard
-    }));
+    if (data.shards) {
+      data.shards = Object.values(data.shards).map(shard => ({
+        stakingTxCount: 0,
+        stakingTxs: [],
+        ...shard
+      }));
+    }
 
     if (data.error) {
       alert(`Websocket Error: ${data.error}`);
