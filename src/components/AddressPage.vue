@@ -133,6 +133,20 @@ export default {
       service
         .getAddress(this.$route.params.address)
         .then(address => {
+          address.shardData.forEach((data, idx) =>
+            data.txs.forEach(tx => {
+              if (
+                tx.toShardID !== idx &&
+                address.shardData[tx.toShardID] &&
+                !address.shardData[tx.toShardID].txs.some(
+                  t => t.hash === tx.hash
+                )
+              ) {
+                address.shardData[tx.toShardID].txs.push(tx);
+              }
+            })
+          );
+
           this.address = address;
         })
         .finally(() => {
