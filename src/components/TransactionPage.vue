@@ -59,7 +59,7 @@
                 <td class="td-title">Sender shard block</td>
                 <td>
                   <router-link :to="'/block/' + transaction.blockHash">{{
-                    transaction.blockHash
+                    Number(transaction.blockNumber)
                   }}</router-link>
                 </td>
               </tr>
@@ -81,7 +81,7 @@
                 <td class="td-title">Receiving shard block</td>
                 <td>
                   <router-link :to="'/block/' + receipt.blockHash">{{
-                    receipt.blockHash
+                    Number(receipt.blockNumber)
                   }}</router-link>
                 </td>
               </tr>
