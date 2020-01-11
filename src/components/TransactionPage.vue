@@ -56,7 +56,7 @@
                 <td>{{ transaction.shardID }}</td>
               </tr>
               <tr>
-                <td class="td-title">Block Hash</td>
+                <td class="td-title">Sender shard block</td>
                 <td>
                   <router-link :to="'/block/' + transaction.blockHash">{{
                     transaction.blockHash
@@ -78,7 +78,7 @@
                 <td>{{ transaction.toShardID }}</td>
               </tr>
               <tr v-if="receipt">
-                <td class="td-title">To Shard Block</td>
+                <td class="td-title">Receiving shard block</td>
                 <td>
                   <router-link :to="'/block/' + receipt.blockHash">{{
                     receipt.blockHash
