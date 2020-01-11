@@ -9,13 +9,13 @@
         @click="clickBar()"
         :class="{ 'index-bar-border-radius': openBar === true }"
       >
-        <div class="left-index">{{ !openBar ? "Show more" : "Hide" }}</div>
         <div class="right-arrow">
           <div
             class="arrow"
             :class="{ 'rolling-in-the-deep': openBar === true }"
           ></div>
         </div>
+        <div class="left-index">{{ !openBar ? "Show more" : "Hide" }}</div>
       </div>
     </div>
   </div>
@@ -24,9 +24,6 @@
 <script>
 export default {
   name: "expand-panel",
-  props: {
-    title: String
-  },
   data() {
     return {
       openBar: false
@@ -58,11 +55,10 @@ export default {
       line-height: 32px;
       display: flex;
       flex-flow: row;
-      justify-content: space-between;
+      justify-content: flex-start;
       transition: border-radius 0.3s ease-in-out;
       .left-index {
         font-size: 14px;
-        margin-left: 3px;
         color: var(--color-table-link);
       }
       .right-arrow {
@@ -72,6 +68,7 @@ export default {
           transform: rotate(-180deg);
         }
         div.arrow {
+          margin-left: -3px;
           transition: transform 0.3s ease-out;
           display: inline-block;
           position: relative;
@@ -80,16 +77,18 @@ export default {
         }
         div.arrow::after {
           display: inline-block;
+          position: absolute;
           content: " ";
-          margin-left: 6px;
+          margin-left: 8px;
           height: 6px;
           width: 6px;
+          top: 10px;
           border-width: 0 2px 2px 0;
-          border-color: #4f4f4f;
+          border-color: var(--color-table-link);
           border-style: solid;
           transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
           transform-origin: center;
-          transition: transform 0.3s;
+          transition: transform 0.5s;
         }
       }
     }
@@ -100,7 +99,7 @@ export default {
       width: 100%;
       max-height: 0;
       overflow: hidden;
-      transition: all 0.3s ease-in-out;
+      transition: all 0.5s ease-in-out;
     }
   }
 }

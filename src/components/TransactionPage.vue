@@ -125,7 +125,7 @@
               </tr>
             </table>
 
-            <expand-panel title="Show More">
+            <expand-panel>
               <table class="explorer-table">
                 <tr></tr>
                 <tr>
