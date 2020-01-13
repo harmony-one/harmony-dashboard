@@ -59,7 +59,8 @@
                 <tr>
                   <th>TxHash</th>
                   <th>Timestamp</th>
-                  <th>ShardID</th>
+                  <th>From ShardID</th>
+                  <th>To ShardID</th>
                   <th>From</th>
                   <th>To</th>
                   <th>Value</th>
@@ -74,6 +75,7 @@
                   </td>
                   <td>{{ (Number(tx.timestamp) * 1000) | timestamp }}</td>
                   <td>{{ tx.shardID }}</td>
+                  <td>{{ tx.toShardID }}</td>
                   <td>
                     <router-link :to="'/address/' + tx.from">
                       {{
@@ -129,14 +131,14 @@ export default {
   methods: {
     getAddress() {
       this.loading = true;
-      this.txs = [];
+      let txs = [];
       service
         .getAddress(this.$route.params.address)
         .then(address => {
           address.shardData.forEach((data, idx) => {
             data.txs.forEach(tx => {
               tx.shardID = idx;
-              this.txs.push(tx);
+              txs.push(tx);
               if (
                 tx.toShardID !== idx &&
                 address.shardData[tx.toShardID] &&
@@ -147,13 +149,14 @@ export default {
                 address.shardData[tx.toShardID].txs.push(tx);
               }
             });
-
-            data.txs.sort((a, b) => b.timestamp - a.timestamp);
           });
 
           this.address = address;
         })
         .finally(() => {
+          this.txs = txs.sort((a, b) =>
+            Number(a.timestamp) < Number(b.timestamp) ? -1 : 1
+          );
           this.loading = false;
         });
     }
