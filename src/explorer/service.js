@@ -2,7 +2,7 @@ import axios from "axios";
 import store from "./store";
 
 // For test: asios.get('...').delay(1000)
-Promise.prototype.delay = function (time) {
+Promise.prototype.delay = function(time) {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve(this);
@@ -10,8 +10,8 @@ Promise.prototype.delay = function (time) {
   });
 };
 
-const BACKEND_URL = `${"explorer.testnet.harmony.one"}:8888`;
-// const BACKEND_URL = `${window.location.hostname}:8888`;
+// const BACKEND_URL = `${"explorer.testnet.harmony.one"}:8888`;
+const BACKEND_URL = `${window.location.hostname}:8888`;
 
 const HTTP_BACKEND_URL = `https://${BACKEND_URL}`;
 const SECRET = localStorage.getItem("secret");
