@@ -91,7 +91,7 @@
                     tx.hash | shorten
                   }}</router-link>
                 </td>
-                <td>{{ tx.timestamp | timestamp }}</td>
+                <td>{{ (Number(tx.timestamp) * 1000) | timestamp }}</td>
                 <td>
                   <router-link :to="'/address/' + tx.from">{{
                     tx.from | shorten

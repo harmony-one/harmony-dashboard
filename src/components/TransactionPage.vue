@@ -56,10 +56,10 @@
                 <td>{{ transaction.shardID }}</td>
               </tr>
               <tr>
-                <td class="td-title">Block Hash</td>
+                <td class="td-title">Sender shard block</td>
                 <td>
                   <router-link :to="'/block/' + transaction.blockHash">{{
-                    transaction.blockHash
+                    Number(transaction.blockNumber)
                   }}</router-link>
                 </td>
               </tr>
@@ -78,10 +78,10 @@
                 <td>{{ transaction.toShardID }}</td>
               </tr>
               <tr v-if="receipt">
-                <td class="td-title">To Shard Block</td>
+                <td class="td-title">Receiving shard block</td>
                 <td>
                   <router-link :to="'/block/' + receipt.blockHash">{{
-                    receipt.blockHash
+                    Number(receipt.blockNumber)
                   }}</router-link>
                 </td>
               </tr>
@@ -119,19 +119,25 @@
                 <td class="td-title">Gas</td>
                 <td>{{ normalizedGas() }}</td>
               </tr>
-              <tr>
-                <td class="td-title">Data (Hex)</td>
-                <td>{{ transaction.input || "-" }}</td>
-              </tr>
               <tr v-if="sequence">
                 <td class="td-title">Sequence</td>
                 <td>{{ sequence }}</td>
               </tr>
-              <tr>
-                <td class="td-title">Data (UTF-8)</td>
-                <td>{{ hexToUTF8(transaction.input) || "-" }}</td>
-              </tr>
             </table>
+
+            <expand-panel>
+              <table class="explorer-table">
+                <tr></tr>
+                <tr>
+                  <td class="td-title">Data (Hex)</td>
+                  <td>{{ transaction.input || "-" }}</td>
+                </tr>
+                <tr>
+                  <td class="td-title">Data (UTF-8)</td>
+                  <td>{{ hexToUTF8(transaction.input) || "-" }}</td>
+                </tr>
+              </table>
+            </expand-panel>
           </div>
         </div>
       </div>
@@ -146,6 +152,7 @@
 import service from "../explorer/service";
 import LoadingMessage from "./LoadingMessage";
 import VueJsonPretty from "vue-json-pretty";
+import ExpandPanel from "@/ui/ExpandPanel";
 
 export default {
   name: "TransactionPage",
@@ -164,7 +171,8 @@ export default {
   },
   components: {
     LoadingMessage,
-    VueJsonPretty
+    VueJsonPretty,
+    ExpandPanel
   },
   watch: {
     $route() {
