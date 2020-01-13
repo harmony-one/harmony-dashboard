@@ -30,11 +30,7 @@
             </section>
           </div>
         </div>
-        <div
-          class="explorer-card"
-          v-for="(shard, index) in address.shardData"
-          :key="index"
-        >
+        <div class="explorer-card" v-for="(shard, index) in address.shardData" :key="index">
           <header>
             <h1>Shard {{ index }}</h1>
           </header>
@@ -52,49 +48,53 @@
                 </tr>
               </table>
             </section>
+          </div>
+        </div>
+
+        <div class="explorer-card">
+          <div class="explorer-card-body">
             <section>
-              <h2>Latest Transactions</h2>
+              <h2>Transactions</h2>
               <table class="explorer-table">
                 <tr>
                   <th>TxHash</th>
                   <th>Timestamp</th>
+                  <th>From ShardID</th>
+                  <th>To ShardID</th>
                   <th>From</th>
                   <th>To</th>
                   <th>Value</th>
                 </tr>
-                <tr v-for="tx in shard.txs" :key="tx.hash">
+                <tr v-for="tx in txs" :key="tx.hash">
                   <td>
-                    <router-link :to="'/tx/' + tx.hash">{{
+                    <router-link :to="'/tx/' + tx.hash">
+                      {{
                       tx.hash | shorten
-                    }}</router-link>
+                      }}
+                    </router-link>
                   </td>
                   <td>{{ (Number(tx.timestamp) * 1000) | timestamp }}</td>
+                  <td>{{ tx.shardID }}</td>
+                  <td>{{ tx.toShardID }}</td>
                   <td>
-                    <router-link :to="'/address/' + tx.from">{{
+                    <router-link :to="'/address/' + tx.from">
+                      {{
                       tx.from | shorten
-                    }}</router-link>
+                      }}
+                    </router-link>
                   </td>
                   <td>
-                    <router-link :to="'/address/' + tx.to">{{
+                    <router-link :to="'/address/' + tx.to">
+                      {{
                       tx.to | shorten
-                    }}</router-link>
+                      }}
+                    </router-link>
                   </td>
                   <td>{{ tx.value | amount }}</td>
                 </tr>
               </table>
             </section>
           </div>
-          <footer class="button-only-footer">
-            <router-link
-              tag="button"
-              class="btn btn-light btn-block btn-mini"
-              :to="{
-                name: 'AddressShardPage',
-                params: { address: $route.params.address, shardId: index }
-              }"
-              >View all</router-link
-            >
-          </footer>
         </div>
       </div>
       <div class="container" v-else>
@@ -113,7 +113,8 @@ export default {
   data() {
     return {
       loading: true,
-      address: null
+      address: null,
+      txs: null
     };
   },
   components: {
@@ -130,11 +131,14 @@ export default {
   methods: {
     getAddress() {
       this.loading = true;
+      let txs = [];
       service
         .getAddress(this.$route.params.address)
         .then(address => {
           address.shardData.forEach((data, idx) => {
             data.txs.forEach(tx => {
+              tx.shardID = idx;
+              txs.push(tx);
               if (
                 tx.toShardID !== idx &&
                 address.shardData[tx.toShardID] &&
@@ -145,13 +149,14 @@ export default {
                 address.shardData[tx.toShardID].txs.push(tx);
               }
             });
-
-            data.txs.sort((a, b) => b.timestamp - a.timestamp);
           });
 
           this.address = address;
         })
         .finally(() => {
+          this.txs = txs.sort((a, b) =>
+            Number(a.timestamp) < Number(b.timestamp) ? -1 : 1
+          );
           this.loading = false;
         });
     }
