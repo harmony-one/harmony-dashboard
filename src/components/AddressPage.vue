@@ -67,28 +67,16 @@
                 </tr>
                 <tr v-for="tx in txs" :key="tx.hash">
                   <td>
-                    <router-link :to="'/tx/' + tx.hash">
-                      {{
-                      tx.hash | shorten
-                      }}
-                    </router-link>
+                    <router-link :to="'/tx/' + tx.hash">{{ tx.hash | shorten }}</router-link>
                   </td>
                   <td>{{ (Number(tx.timestamp) * 1000) | timestamp }}</td>
                   <td>{{ tx.shardID }}</td>
                   <td>{{ tx.toShardID }}</td>
                   <td>
-                    <router-link :to="'/address/' + tx.from">
-                      {{
-                      tx.from | shorten
-                      }}
-                    </router-link>
+                    <router-link :to="'/address/' + tx.from">{{ tx.from | shorten }}</router-link>
                   </td>
                   <td>
-                    <router-link :to="'/address/' + tx.to">
-                      {{
-                      tx.to | shorten
-                      }}
-                    </router-link>
+                    <router-link :to="'/address/' + tx.to">{{ tx.to | shorten }}</router-link>
                   </td>
                   <td>{{ tx.value | amount }}</td>
                 </tr>
@@ -138,7 +126,9 @@ export default {
           address.shardData.forEach((data, idx) => {
             data.txs.forEach(tx => {
               tx.shardID = idx;
-              txs.push(tx);
+              if (!txs.some(t => t.hash === tx.hash)) {
+                txs.push(tx);
+              }
               if (
                 tx.toShardID !== idx &&
                 address.shardData[tx.toShardID] &&
