@@ -30,7 +30,9 @@ export function formatAge(timestamp) {
 }
 
 export function formatAmount(amount) {
-  return Number(amount) / 10 ** 18;
+  const value = Number(amount) / 10 ** 18;
+
+  return value.toFixed(2);
 }
 
 export function formatBlockLatency(time) {
