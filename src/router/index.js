@@ -10,6 +10,7 @@ import TransactionsPage from "@/components/TransactionsPage";
 import AddressPage from "@/components/AddressPage";
 import ShardPage from "@/components/ShardPage";
 import AddressShardPage from "@/components/AddressShardPage";
+import TransactionsByBlockPage from "@/components/TransactionsByBlockPage";
 
 Vue.use(Router);
 
@@ -44,6 +45,11 @@ export default new Router({
       path: "/block/:blockId",
       name: "BlockPage",
       component: BlockPage
+    },
+    {
+      path: "/block/:blockId/txs",
+      name: "TransactionsByBlockPage",
+      component: TransactionsByBlockPage
     },
     {
       path: "/tx/:transactionId",

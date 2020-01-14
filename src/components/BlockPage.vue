@@ -19,7 +19,11 @@
                 </tr>
                 <tr>
                   <td class="td-title">Number of Transactions</td>
-                  <td>{{ block.txCount | number }}</td>
+                  <td>
+                    <router-link :to="'/block/' + block.id + '/txs'">{{
+                      block.txCount | number
+                    }}</router-link>
+                  </td>
                 </tr>
                 <tr>
                   <td class="td-title">Height</td>
