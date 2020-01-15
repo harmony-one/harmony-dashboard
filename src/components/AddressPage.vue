@@ -30,7 +30,11 @@
             </section>
           </div>
         </div>
-        <div class="explorer-card" v-for="(shard, index) in address.shardData" :key="index">
+        <div
+          class="explorer-card"
+          v-for="(shard, index) in address.shardData"
+          :key="index"
+        >
           <header>
             <h1>Shard {{ index }}</h1>
           </header>
@@ -52,9 +56,49 @@
         </div>
 
         <div class="explorer-card">
+          <header>
+            <h1 class="flex-grow">Transactions</h1>
+            <div class="pagination-controls">
+              <span class="total-tx-num">{{ txCount }} txs</span>
+              <span class="page-controllers">
+                <span class="page-navigator">
+                  <button
+                    class="btn btn-light btn-icon-only"
+                    @click="first()"
+                    :disabled="pageIndex === 0"
+                  >
+                    <font-awesome-icon icon="angle-double-left" />
+                  </button>
+                  <button
+                    class="btn btn-light btn-icon-only"
+                    @click="prev()"
+                    :disabled="pageIndex === 0"
+                  >
+                    <font-awesome-icon icon="chevron-left" />
+                  </button>
+                  <span class="pagination-nums"
+                    >{{ pageIndex + 1 }} / {{ pageCount }}</span
+                  >
+                  <button
+                    class="btn btn-light btn-icon-only"
+                    @click="next()"
+                    :disabled="pageIndex === pageCount - 1"
+                  >
+                    <font-awesome-icon icon="chevron-right" />
+                  </button>
+                  <button
+                    class="btn btn-light btn-icon-only"
+                    @click="last()"
+                    :disabled="pageIndex === pageCount - 1"
+                  >
+                    <font-awesome-icon icon="angle-double-right" />
+                  </button>
+                </span>
+              </span>
+            </div>
+          </header>
           <div class="explorer-card-body">
             <section>
-              <h2>Transactions</h2>
               <table class="explorer-table">
                 <tr>
                   <th>TxHash</th>
@@ -67,16 +111,22 @@
                 </tr>
                 <tr v-for="tx in txs" :key="tx.hash">
                   <td>
-                    <router-link :to="'/tx/' + tx.hash">{{ tx.hash | shorten }}</router-link>
+                    <router-link :to="'/tx/' + tx.hash">{{
+                      tx.hash | shorten
+                    }}</router-link>
                   </td>
                   <td>{{ (Number(tx.timestamp) * 1000) | timestamp }}</td>
                   <td>{{ tx.shardID }}</td>
                   <td>{{ tx.toShardID }}</td>
                   <td>
-                    <router-link :to="'/address/' + tx.from">{{ tx.from | shorten }}</router-link>
+                    <router-link :to="'/address/' + tx.from">{{
+                      tx.from | shorten
+                    }}</router-link>
                   </td>
                   <td>
-                    <router-link :to="'/address/' + tx.to">{{ tx.to | shorten }}</router-link>
+                    <router-link :to="'/address/' + tx.to">{{
+                      tx.to | shorten
+                    }}</router-link>
                   </td>
                   <td>{{ tx.value | amount }}</td>
                 </tr>
@@ -102,11 +152,26 @@ export default {
     return {
       loading: true,
       address: null,
-      txs: null
+      pageIndex: 0,
+      pageSize: 20,
+      allTxs: []
     };
   },
   components: {
     LoadingMessage
+  },
+  computed: {
+    txCount() {
+      return this.allTxs.length;
+    },
+    pageCount() {
+      return Math.ceil(this.txCount / this.pageSize);
+    },
+    txs() {
+      const begin = this.pageIndex * this.pageSize;
+
+      return this.allTxs.slice(begin, begin + this.pageSize);
+    }
   },
   watch: {
     $route() {
@@ -123,20 +188,10 @@ export default {
       service
         .getAddress(this.$route.params.address)
         .then(address => {
-          address.shardData.forEach((data, idx) => {
+          address.shardData.forEach(data => {
             data.txs.forEach(tx => {
-              tx.shardID = idx;
               if (!txs.some(t => t.hash === tx.hash)) {
                 txs.push(tx);
-              }
-              if (
-                tx.toShardID !== idx &&
-                address.shardData[tx.toShardID] &&
-                !address.shardData[tx.toShardID].txs.some(
-                  t => t.hash === tx.hash
-                )
-              ) {
-                address.shardData[tx.toShardID].txs.push(tx);
               }
             });
           });
@@ -144,11 +199,31 @@ export default {
           this.address = address;
         })
         .finally(() => {
-          this.txs = txs.sort((a, b) =>
-            Number(a.timestamp) < Number(b.timestamp) ? -1 : 1
+          this.allTxs = txs.sort((a, b) =>
+            Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
           );
           this.loading = false;
         });
+    },
+    goToPage(index) {
+      if (index < 0) index = 0;
+      if (index >= this.pageCount) index = this.pageCount - 1;
+
+      this.pageIndex = index;
+    },
+    first() {
+      this.goToPage(0);
+    },
+    last() {
+      this.goToPage(this.pageCount - 1);
+    },
+    prev() {
+      if (this.pageIndex === 0) return;
+      this.goToPage(this.pageIndex - 1);
+    },
+    next() {
+      if (this.pageIndex === this.pageCount - 1) return;
+      this.goToPage(this.pageIndex + 1);
     }
   }
 };
