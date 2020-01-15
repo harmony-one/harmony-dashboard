@@ -5,7 +5,6 @@
 <template>
   <div class="transaction-page explorer-page page">
     <div class="transaction-body explorer-body">
-      {{ status }}
       <div class="container" v-if="!loading && transaction">
         <div class="explorer-card">
           <header>
