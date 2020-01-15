@@ -153,7 +153,7 @@ export default {
       loading: true,
       address: null,
       pageIndex: 0,
-      pageSize: 10,
+      pageSize: 20,
       allTxs: []
     };
   },
