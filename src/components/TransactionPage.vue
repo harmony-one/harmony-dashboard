@@ -1,5 +1,5 @@
 <style scoped lang="less">
-@import "../less/common.less";
+@import '../less/common.less';
 </style>
 
 <template>
@@ -8,15 +8,13 @@
       <div class="container" v-if="!loading && transaction">
         <div class="explorer-card">
           <header>
-            <h1>{{ isStaking ? "Staking Transaction" : "Transaction" }}</h1>
+            <h1>{{ isStaking ? 'Staking Transaction' : 'Transaction' }}</h1>
           </header>
           <div class="explorer-card-body">
             <table class="explorer-table">
               <tr v-if="isStaking">
                 <td class="td-title">Type</td>
-                <td>
-                  {{ transaction.type }}
-                </td>
+                <td>{{ transaction.type }}</td>
               </tr>
               <tr>
                 <td class="td-title">ID</td>
@@ -29,7 +27,9 @@
 
               <tr v-if="isStaking">
                 <td class="td-title">Value</td>
-                <td><vue-json-pretty :data="transaction.msg" /></td>
+                <td>
+                  <vue-json-pretty :data="transaction.msg" />
+                </td>
               </tr>
               <!-- <tr>
                 <td class="td-title">Size (bytes)</td>
@@ -49,8 +49,8 @@
                 <td class="td-title">
                   {{
                     transaction.shardID === transaction.toShardID
-                      ? "Shard ID"
-                      : "From Shard"
+                      ? 'Shard ID'
+                      : 'From Shard'
                   }}
                 </td>
                 <td>{{ transaction.shardID }}</td>
@@ -116,8 +116,8 @@
               <!--              </tr>-->
 
               <tr>
-                <td class="td-title">Gas</td>
-                <td>{{ normalizedGas() }}</td>
+                <td class="td-title">Network Fee</td>
+                <td>{{ normalizedGas() }} ONE</td>
               </tr>
               <tr v-if="sequence">
                 <td class="td-title">Sequence</td>
@@ -130,11 +130,11 @@
                 <tr></tr>
                 <tr>
                   <td class="td-title">Data (Hex)</td>
-                  <td>{{ transaction.input || "-" }}</td>
+                  <td>{{ transaction.input || '-' }}</td>
                 </tr>
                 <tr>
                   <td class="td-title">Data (UTF-8)</td>
-                  <td>{{ hexToUTF8(transaction.input) || "-" }}</td>
+                  <td>{{ hexToUTF8(transaction.input) || '-' }}</td>
                 </tr>
               </table>
             </expand-panel>
@@ -149,13 +149,13 @@
 </template>
 
 <script>
-import service from "../explorer/service";
-import LoadingMessage from "./LoadingMessage";
-import VueJsonPretty from "vue-json-pretty";
-import ExpandPanel from "@/ui/ExpandPanel";
+import service from '../explorer/service';
+import LoadingMessage from './LoadingMessage';
+import VueJsonPretty from 'vue-json-pretty';
+import ExpandPanel from '@/ui/ExpandPanel';
 
 export default {
-  name: "TransactionPage",
+  name: 'TransactionPage',
   props: {
     isStaking: {
       type: Boolean
@@ -214,7 +214,7 @@ export default {
               .getCxReceipt(this.$route.params.transactionId)
               .then(receipt => {
                 this.receipt = receipt;
-                console.log("receipt", receipt);
+                console.log('receipt', receipt);
               });
           }
           this.getSequence();
@@ -231,14 +231,18 @@ export default {
       }
     },
     hexToAscii(h) {
-      var s = "";
+      var s = '';
       for (var i = 0; i < h.length; i += 2) {
         s += String.fromCharCode(parseInt(h.substr(i, 2), 16));
       }
       return s;
     },
     normalizedGas() {
-      return isNaN(this.transaction.gas) ? 0 : Number(this.transaction.gas);
+      return isNaN(this.transaction.gas)
+        ? 0
+        : (Number(this.transaction.gas) * Number(this.transaction.gasPrice)) /
+            10 ** 14 /
+            10000;
     }
   }
 };
