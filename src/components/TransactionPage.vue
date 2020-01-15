@@ -5,6 +5,7 @@
 <template>
   <div class="transaction-page explorer-page page">
     <div class="transaction-body explorer-body">
+      {{ status }}
       <div class="container" v-if="!loading && transaction">
         <div class="explorer-card">
           <header>
@@ -19,6 +20,10 @@
               <tr>
                 <td class="td-title">ID</td>
                 <td>{{ transaction.hash }}</td>
+              </tr>
+              <tr>
+                <td class="td-title">Status</td>
+                <td>{{ status }}</td>
               </tr>
               <tr v-if="!isStaking">
                 <td class="td-title">Value</td>
@@ -150,6 +155,7 @@
 
 <script>
 import service from '../explorer/service';
+import store from '../explorer/store';
 import LoadingMessage from './LoadingMessage';
 import VueJsonPretty from 'vue-json-pretty';
 import ExpandPanel from '@/ui/ExpandPanel';
@@ -166,7 +172,8 @@ export default {
       loading: true,
       transaction: null,
       receipt: null,
-      sequence: null
+      sequence: null,
+      globalData: store.data,
     };
   },
   components: {
@@ -188,6 +195,19 @@ export default {
         this.transaction &&
         this.transaction.shardID === this.transaction.toShardID
       );
+    },
+    status() {
+      const txId = this.$route.params.transactionId;
+
+      if (this.globalData.txPools.includes(txId)) {
+        return 'Pending';
+      }
+
+      if (this.globalData.txFailures.includes(txId)) {
+        return 'Failed';
+      }
+
+      return 'Success';
     }
   },
   methods: {

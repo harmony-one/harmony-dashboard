@@ -1,5 +1,5 @@
 <style lang="less">
-@import "./less/common.less";
+@import './less/common.less';
 
 * {
   padding: 0;
@@ -7,7 +7,7 @@
 }
 
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   background-color: #dfdfdf;
 }
 
@@ -43,7 +43,7 @@ body,
   display: inline-block;
 
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     top: 50%;
     left: 50%;
@@ -289,15 +289,23 @@ body,
 </template>
 
 <script>
-import "animate.css/animate.css";
-import "flexboxgrid/dist/flexboxgrid.min.css";
-import SiteFooter from "./components/SiteFooter";
-import SiteHeader from "./components/SiteHeader";
+import 'animate.css/animate.css';
+import 'flexboxgrid/dist/flexboxgrid.min.css';
+import SiteFooter from './components/SiteFooter';
+import SiteHeader from './components/SiteHeader';
+import service from './explorer/service';
+
 export default {
-  name: "App",
+  name: 'App',
   components: {
     SiteFooter,
     SiteHeader
+  },
+  mounted() {
+    setInterval(() => {
+      service.getTxPool();
+      service.getTxFailures();
+    }, 10000);
   }
 };
 </script>
