@@ -195,7 +195,8 @@
                     <div class="th">From</div>
                     <div class="th">To</div>
                     <div class="th">Age</div>
-                    <div class="th text-right">Value</div>
+                    <div class="th">Value</div>
+                    <div class="th text-right">Txn Fee</div>
                   </div>
                   <div class="tr" v-for="tx in globalData.txs" :key="tx.id">
                     <div class="td">
@@ -260,7 +261,8 @@
                     <div class="th">Validator</div>
                     <div class="th">Delegator</div>
                     <div class="th">Age</div>
-                    <div class="th text-right">Value</div>
+                    <div class="th">Value</div>
+                    <div class="th text-right">Txn Fee</div>
                   </div>
                   <div
                     class="tr"
@@ -288,7 +290,8 @@
                       }}</router-link>
                     </div>
                     <div class="td">{{ tx.timestamp | age }}</div>
-                    <div class="td text-right">{{ tx.value | amount }}</div>
+                    <div class="td">{{ tx.value | amount }}</div>
+                    <div class="td text-right">{{ tx.gas * tx.gasPrice | amount }}</div>
                   </div>
                 </div>
               </div>
