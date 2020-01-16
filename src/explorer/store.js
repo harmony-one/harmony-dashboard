@@ -6,7 +6,7 @@ function postprocessBlocks(items) {
 }
 
 function postprocessTxs(items) {
-  return items.sort((a, b) => b.timestamp - a.timestamp).slice(0, Limit);
+  return items.sort((a, b) => Number(a.timestamp) > Number(b.timestamp) ? -1 : 1).slice(0, Limit);
 }
 
 function getTotalBlockLatency(latencies) {
