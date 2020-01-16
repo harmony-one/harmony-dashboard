@@ -43,7 +43,8 @@
                   <div class="th">From</div>
                   <div class="th">To</div>
                   <div class="th">Age</div>
-                  <div class="th text-right">Value</div>
+                  <div class="th">Value</div>
+                  <div class="th text-right">Txn Fee</div>
                 </div>
                 <div class="tr" v-for="tx in txs" :key="tx.id">
                   <div class="td">
@@ -69,7 +70,8 @@
                   <div class="td">
                     {{ (Number(tx.timestamp) * 1000) | age }}
                   </div>
-                  <div class="td text-right">{{ tx.value | amount }}</div>
+                  <div class="td">{{ tx.value | amount }}</div>
+                  <div class="td text-right">{{ tx | fee }}</div>
                 </div>
               </div>
             </section>
@@ -117,7 +119,7 @@ export default {
           Promise.all(block.txs.map(tx => service.getTransaction(tx))).then(
             transactions => {
               this.txs = transactions;
-              this.txs.sort((a, b) => b.timestamp - a.timestamp);
+              this.txs.sort((a, b) => Number(a.timestamp) > Number(b.timestamp) ? -1 : 1);
             }
           );
         })
