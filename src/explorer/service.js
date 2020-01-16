@@ -146,7 +146,6 @@ export default {
     return authGet("/address-shard-txs", {
       params: { address, shardID, pageIndex, pageSize }
     }).then(res => {
-      console.log(res);
       let txs = res.data.txs;
       return txs;
     });
@@ -160,6 +159,20 @@ export default {
   getCxReceipt(id) {
     return authGet("/cx-receipt", { params: { id } }).then(res => {
       return res.data.receipt;
+    });
+  },
+  getTxPool() {
+    return authGet('/tx-pools').then(res => {
+      store.setTxPools(res.data.pools);
+
+      return res.data.pools;
+    });
+  },
+  getTxFailures() {
+    return authGet('/tx-failures').then(res => {
+      store.setTxFailures(res.data.failures);
+
+      return res.data.failures;
     });
   }
 };

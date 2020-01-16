@@ -1,4 +1,4 @@
-import Vue from "vue";
+import Vue from 'vue';
 
 const Limit = 10;
 function postprocessBlocks(items) {
@@ -28,8 +28,19 @@ let store = {
     txCount: 0,
     stakingTxCount: 0,
     nodeCount: 0,
-    lastUpdateTime: 0
+    lastUpdateTime: 0,
+    txPools: [],
+    txFailures: [],
   },
+
+  setTxPools(data) {
+    Vue.set(this.data, 'txPools',  data);
+  },
+
+  setTxFailures(data) {
+    Vue.set(this.data, 'txFailures',  data);
+  },
+
   update(data) {
     this.updateShards(data.shards);
     this.updateGlobalData();
