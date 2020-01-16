@@ -60,7 +60,7 @@ footer {
       <a href="#" target="_blank">Privacy Policy</a>
     </div>
     <div class="copyright container">
-      Copyright © 2019 Harmony | All Rights Reserved
+      Copyright © 2020 Harmony | All Rights Reserved
     </div>
   </footer>
 </template>
