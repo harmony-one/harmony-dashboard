@@ -5,7 +5,7 @@
 <template>
   <div class="transaction-page explorer-page page">
     <div class="transaction-body explorer-body">
-      <div class="container" v-if="!loading && transaction">
+      <div class="container" v-if="!firstLoading || (!loading && transaction)">
         <div class="explorer-card">
           <header>
             <h1>{{ isStaking ? 'Staking Transaction' : 'Transaction' }}</h1>
@@ -18,11 +18,11 @@
               </tr>
               <tr>
                 <td class="td-title">ID</td>
-                <td>{{ transaction.hash }}</td>
+                <td>{{ transaction.hash || $route.params.transactionId }}</td>
               </tr>
               <tr>
                 <td class="td-title">Status</td>
-                <td>{{ status }}</td>
+                <td>{{ transaction.status | txStatus }}</td>
               </tr>
               <tr v-if="!isStaking">
                 <td class="td-title">Value</td>
@@ -169,10 +169,11 @@ export default {
   data() {
     return {
       loading: true,
+      firstLoading: true,
       transaction: null,
       receipt: null,
       sequence: null,
-      globalData: store.data,
+      globalData: store.data
     };
   },
   components: {
@@ -182,6 +183,7 @@ export default {
   },
   watch: {
     $route() {
+      this.firstLoading = true;
       this.getTransaction();
     }
   },
@@ -194,19 +196,6 @@ export default {
         this.transaction &&
         this.transaction.shardID === this.transaction.toShardID
       );
-    },
-    status() {
-      const txId = this.$route.params.transactionId;
-
-      if (this.globalData.txPools.includes(txId)) {
-        return 'Pending';
-      }
-
-      if (this.globalData.txFailures.includes(txId)) {
-        return 'Failed';
-      }
-
-      return 'Success';
     }
   },
   methods: {
@@ -218,16 +207,36 @@ export default {
         this.sequence = this.hexToAscii(match[1]);
       }
     },
-    getTransaction() {
+    getTransaction(txId) {
+      const routeTxId = this.$route.params.transactionId;
+
+      if (txId && txId !== routeTxId) {
+        return;
+      }
+
       this.loading = true;
 
       const getTx = this.isStaking
         ? service.getStakingTransaction
         : service.getTransaction;
 
-      getTx(this.$route.params.transactionId)
+      getTx(routeTxId)
         .then(transaction => {
+          if (
+            transaction &&
+            transaction.id &&
+            transaction.id !== this.$route.params.transactionId
+          ) {
+            return;
+          }
+
           this.transaction = transaction;
+          this.firstLoading = false;
+
+          if (transaction.status === 'PENDING') {
+            setTimeout(() => this.getTransaction(routeTxId), 4000);
+          }
+
           if (this.transaction.shardID !== this.transaction.toShardID) {
             service
               .getCxReceipt(this.$route.params.transactionId)
