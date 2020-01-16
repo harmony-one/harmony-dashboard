@@ -24,7 +24,7 @@
                 </tr>
                 <tr>
                   <td class="td-title">Transactions</td>
-                  <td>{{ address.txCount | number }}</td>
+                  <td>{{ txCount | number }}</td>
                 </tr>
               </table>
             </section>
