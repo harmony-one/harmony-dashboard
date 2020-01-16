@@ -1,5 +1,5 @@
 <style scoped lang="less">
-@import "../less/common.less";
+@import '../less/common.less';
 </style>
 
 <template>
@@ -24,7 +24,7 @@
                 </tr>
                 <tr>
                   <td class="td-title">Transactions</td>
-                  <td>{{ address.txCount | number }}</td>
+                  <td>{{ txCount | number }}</td>
                 </tr>
               </table>
             </section>
@@ -52,23 +52,72 @@
                 </tr>
               </table>
             </section>
+          </div>
+        </div>
+
+        <div class="explorer-card">
+          <header>
+            <h1 class="flex-grow">Transactions</h1>
+            <div class="pagination-controls">
+              <span class="total-tx-num">{{ txCount }} txs</span>
+              <span class="page-controllers">
+                <span class="page-navigator">
+                  <button
+                    class="btn btn-light btn-icon-only"
+                    @click="first()"
+                    :disabled="pageIndex === 0"
+                  >
+                    <font-awesome-icon icon="angle-double-left" />
+                  </button>
+                  <button
+                    class="btn btn-light btn-icon-only"
+                    @click="prev()"
+                    :disabled="pageIndex === 0"
+                  >
+                    <font-awesome-icon icon="chevron-left" />
+                  </button>
+                  <span class="pagination-nums"
+                    >{{ pageIndex + 1 }} / {{ pageCount }}</span
+                  >
+                  <button
+                    class="btn btn-light btn-icon-only"
+                    @click="next()"
+                    :disabled="pageIndex === pageCount - 1"
+                  >
+                    <font-awesome-icon icon="chevron-right" />
+                  </button>
+                  <button
+                    class="btn btn-light btn-icon-only"
+                    @click="last()"
+                    :disabled="pageIndex === pageCount - 1"
+                  >
+                    <font-awesome-icon icon="angle-double-right" />
+                  </button>
+                </span>
+              </span>
+            </div>
+          </header>
+          <div class="explorer-card-body">
             <section>
-              <h2>Latest Transactions</h2>
               <table class="explorer-table">
                 <tr>
                   <th>TxHash</th>
                   <th>Timestamp</th>
+                  <th>From ShardID</th>
+                  <th>To ShardID</th>
                   <th>From</th>
                   <th>To</th>
                   <th>Value</th>
                 </tr>
-                <tr v-for="tx in shard.txs" :key="tx.hash">
+                <tr v-for="tx in txs" :key="tx.hash">
                   <td>
                     <router-link :to="'/tx/' + tx.hash">{{
                       tx.hash | shorten
                     }}</router-link>
                   </td>
-                  <td>{{ tx.timestamp | timestamp }}</td>
+                  <td>{{ (Number(tx.timestamp) * 1000) | timestamp }}</td>
+                  <td>{{ tx.shardID }}</td>
+                  <td>{{ tx.toShardID }}</td>
                   <td>
                     <router-link :to="'/address/' + tx.from">{{
                       tx.from | shorten
@@ -84,17 +133,6 @@
               </table>
             </section>
           </div>
-          <footer class="button-only-footer">
-            <router-link
-              tag="button"
-              class="btn btn-light btn-block btn-mini"
-              :to="{
-                name: 'AddressShardPage',
-                params: { address: $route.params.address, shardId: index }
-              }"
-              >View all</router-link
-            >
-          </footer>
         </div>
       </div>
       <div class="container" v-else>
@@ -105,19 +143,35 @@
 </template>
 
 <script>
-import service from "../explorer/service";
-import LoadingMessage from "./LoadingMessage";
+import service from '../explorer/service';
+import LoadingMessage from './LoadingMessage';
 
 export default {
-  name: "AddressPage",
+  name: 'AddressPage',
   data() {
     return {
       loading: true,
-      address: null
+      address: null,
+      pageIndex: 0,
+      pageSize: 20,
+      allTxs: []
     };
   },
   components: {
     LoadingMessage
+  },
+  computed: {
+    txCount() {
+      return this.allTxs.length;
+    },
+    pageCount() {
+      return Math.ceil(this.txCount / this.pageSize);
+    },
+    txs() {
+      const begin = this.pageIndex * this.pageSize;
+
+      return this.allTxs.slice(begin, begin + this.pageSize);
+    }
   },
   watch: {
     $route() {
@@ -130,28 +184,44 @@ export default {
   methods: {
     getAddress() {
       this.loading = true;
+      let txs = {};
       service
         .getAddress(this.$route.params.address)
         .then(address => {
-          address.shardData.forEach((data, idx) =>
+          address.shardData.forEach(data => {
             data.txs.forEach(tx => {
-              if (
-                tx.toShardID !== idx &&
-                address.shardData[tx.toShardID] &&
-                !address.shardData[tx.toShardID].txs.some(
-                  t => t.hash === tx.hash
-                )
-              ) {
-                address.shardData[tx.toShardID].txs.push(tx);
-              }
-            })
-          );
+              txs[tx.hash] = tx;
+            });
+          });
 
           this.address = address;
         })
         .finally(() => {
+          this.allTxs = Object.values(txs).sort((a, b) =>
+            Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
+          );
           this.loading = false;
         });
+    },
+    goToPage(index) {
+      if (index < 0) index = 0;
+      if (index >= this.pageCount) index = this.pageCount - 1;
+
+      this.pageIndex = index;
+    },
+    first() {
+      this.goToPage(0);
+    },
+    last() {
+      this.goToPage(this.pageCount - 1);
+    },
+    prev() {
+      if (this.pageIndex === 0) return;
+      this.goToPage(this.pageIndex - 1);
+    },
+    next() {
+      if (this.pageIndex === this.pageCount - 1) return;
+      this.goToPage(this.pageIndex + 1);
     }
   }
 };
