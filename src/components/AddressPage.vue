@@ -1,5 +1,5 @@
 <style scoped lang="less">
-@import "../less/common.less";
+@import '../less/common.less';
 </style>
 
 <template>
@@ -143,11 +143,11 @@
 </template>
 
 <script>
-import service from "../explorer/service";
-import LoadingMessage from "./LoadingMessage";
+import service from '../explorer/service';
+import LoadingMessage from './LoadingMessage';
 
 export default {
-  name: "AddressPage",
+  name: 'AddressPage',
   data() {
     return {
       loading: true,
@@ -184,22 +184,20 @@ export default {
   methods: {
     getAddress() {
       this.loading = true;
-      let txs = [];
+      let txs = {};
       service
         .getAddress(this.$route.params.address)
         .then(address => {
           address.shardData.forEach(data => {
             data.txs.forEach(tx => {
-              if (!txs.some(t => t.hash === tx.hash)) {
-                txs.push(tx);
-              }
+              txs[tx.hash] = tx;
             });
           });
 
           this.address = address;
         })
         .finally(() => {
-          this.allTxs = txs.sort((a, b) =>
+          this.allTxs = Object.values(txs).sort((a, b) =>
             Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
           );
           this.loading = false;
