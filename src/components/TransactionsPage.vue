@@ -57,6 +57,7 @@
                 <th>To</th>
                 <th>Age</th>
                 <th class="text-right">Value</th>
+                <th class="text-right">Txn Fee</th>
                 <th class="text-right">Size (bytes)</th>
               </tr>
               <tr class="container" v-for="tx in txs" :key="tx.id">
@@ -85,7 +86,8 @@
                   >
                 </td>
                 <td>{{ tx.timestamp | age }}</td>
-                <td class="text-right">{{ tx.value | amount }}</td>
+                <td class="text-right no-break">{{ tx.value | amount }}</td>
+                <td class="text-right no-break">{{ tx | fee }}</td>
                 <td class="text-right">{{ tx.bytes }}</td>
               </tr>
             </table>

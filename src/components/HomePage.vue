@@ -1,5 +1,5 @@
 <style scoped lang="less">
-@import "../less/common.less";
+@import '../less/common.less';
 
 .explorer-card-body {
   min-height: 24em;
@@ -195,7 +195,8 @@
                     <div class="th">From</div>
                     <div class="th">To</div>
                     <div class="th">Age</div>
-                    <div class="th text-right">Value</div>
+                    <div class="th">Value</div>
+                    <div class="th text-right">Txn Fee</div>
                   </div>
                   <div class="tr" v-for="tx in globalData.txs" :key="tx.id">
                     <div class="td">
@@ -219,7 +220,8 @@
                       }}</router-link>
                     </div>
                     <div class="td">{{ tx.timestamp | age }}</div>
-                    <div class="td text-right">{{ tx.value | amount }}</div>
+                    <div class="td no-break">{{ tx.value | amount }}</div>
+                    <div class="td text-right no-break">{{ tx | fee }}</div>
                   </div>
                 </div>
               </div>
@@ -260,7 +262,8 @@
                     <div class="th">Validator</div>
                     <div class="th">Delegator</div>
                     <div class="th">Age</div>
-                    <div class="th text-right">Value</div>
+                    <div class="th">Value</div>
+                    <div class="th text-right">Txn Fee</div>
                   </div>
                   <div
                     class="tr"
@@ -288,7 +291,8 @@
                       }}</router-link>
                     </div>
                     <div class="td">{{ tx.timestamp | age }}</div>
-                    <div class="td text-right">{{ tx.value | amount }}</div>
+                    <div class="td no-break">{{ tx.value | amount }}</div>
+                    <div class="td text-right no-break">{{ tx | fee }}</div>
                   </div>
                 </div>
               </div>
@@ -311,13 +315,12 @@
 </template>
 
 <script>
-import store from "../explorer/store";
-import service from "../explorer/service";
-import LoadingMessage from "./LoadingMessage";
-import CoinStats from "./CoinStats";
+import store from '../explorer/store';
+import LoadingMessage from './LoadingMessage';
+import CoinStats from './CoinStats';
 
 export default {
-  name: "HomePage",
+  name: 'HomePage',
   data() {
     return {
       globalData: store.data,
@@ -341,9 +344,9 @@ export default {
   mounted() {
     this.resetTimer();
 
-    service.getCoinStats().then(stats => {
-      this.coinStats = stats;
-    });
+    // service.getCoinStats().then(stats => {
+    //   this.coinStats = stats;
+    // });
   },
   computed: {
     length() {

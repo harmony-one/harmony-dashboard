@@ -24,6 +24,7 @@
     "highcharts": "^8.0.0",
     "highcharts-vue": "^1.2.0",
     "moment": "^2.23.0",
+    "moment-timezone": "^0.5.27",
     "numeral": "^2.0.6",
     "vue": "^2.6.10",
     "vue-json-pretty": "^1.6.3",

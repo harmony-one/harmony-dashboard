@@ -84,6 +84,7 @@
                 <th>From</th>
                 <th>To</th>
                 <th>Value</th>
+                <th>Txn Fee</th>
               </tr>
               <tr v-for="tx in txs" :key="tx.hash">
                 <td>
@@ -103,6 +104,7 @@
                   }}</router-link>
                 </td>
                 <td>{{ tx.value | amount }}</td>
+                <td>{{ tx | fee }}</td>
               </tr>
             </table>
           </div>

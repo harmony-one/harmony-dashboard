@@ -1,12 +1,12 @@
-import moment from "moment";
-import Vue from "vue";
+import moment from 'moment-timezone';
+import Vue from 'vue';
 
 /**
  * Ref:
  * * https://momentjs.com/docs/#/customization/relative-time-threshold/
  * * https://momentjs.com/docs/#/displaying/fromnow/
  */
-moment.relativeTimeThreshold("ss", 0);
+moment.relativeTimeThreshold('ss', 0);
 
 export function formatDecimal(number) {
   return formatNumber((+number).toFixed(2));
@@ -18,11 +18,15 @@ export function formatNumber(number) {
 
 export function shortenHash(hash) {
   if (!hash || hash.length <= 10) return hash;
-  return hash.substr(0, 5) + "..." + hash.substr(hash.length - 5);
+  return hash.substr(0, 5) + '...' + hash.substr(hash.length - 5);
 }
 
 export function formatTimestamp(timestamp) {
-  return moment(timestamp).format("MM/DD/YYYY hh:mm:ss");
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  return moment(timestamp)
+    .tz(timezone)
+    .format('MM/DD/YYYY HH:mm:ss z');
 }
 
 export function formatAge(timestamp) {
@@ -37,16 +41,39 @@ export function formatAmount(amount) {
 
 export function formatBlockLatency(time) {
   if (!time) {
-    return "-";
+    return '-';
   }
 
-  return formatDecimal(time / 10 ** 3) + "s";
+  return formatDecimal(time / 10 ** 3) + 's';
 }
 
-Vue.filter("decimal", formatDecimal);
-Vue.filter("number", formatNumber);
-Vue.filter("shorten", shortenHash);
-Vue.filter("timestamp", formatTimestamp);
-Vue.filter("age", formatAge);
-Vue.filter("amount", formatAmount);
-Vue.filter("blockLatency", formatBlockLatency);
+export function calculateFee(transaction) {
+  return isNaN(transaction.gas) || isNaN(transaction.gasPrice)
+    ? 0
+    : (Number(transaction.gas) * Number(transaction.gasPrice)) /
+        10 ** 14 /
+        10000;
+}
+
+export function formatTxStatus(status) {
+  switch (status) {
+    case 'SUCCESS':
+      return 'Success';
+    case 'PENDING':
+      return 'Pending';
+    case 'FAILURE':
+      return 'Failure';
+    default:
+      return 'Unknown';
+  }
+}
+
+Vue.filter('decimal', formatDecimal);
+Vue.filter('number', formatNumber);
+Vue.filter('shorten', shortenHash);
+Vue.filter('timestamp', formatTimestamp);
+Vue.filter('age', formatAge);
+Vue.filter('amount', formatAmount);
+Vue.filter('txStatus', formatTxStatus);
+Vue.filter('fee', calculateFee);
+Vue.filter('blockLatency', formatBlockLatency);

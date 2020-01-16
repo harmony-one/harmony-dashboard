@@ -1,5 +1,5 @@
 <style scoped lang="less">
-@import "../less/common.less";
+@import '../less/common.less';
 </style>
 
 <template>
@@ -29,52 +29,9 @@
               </table>
             </section>
           </div>
-
-          <header>
-            <h1 class="flex-grow">Transactions</h1>
-          </header>
-
-          <div class="explorer-card-body">
-            <section>
-              <div class="explorer-table-responsive latest-tx-table">
-                <div class="tr">
-                  <div class="th">Shard</div>
-                  <div class="th">Hash</div>
-                  <div class="th">From</div>
-                  <div class="th">To</div>
-                  <div class="th">Age</div>
-                  <div class="th text-right">Value</div>
-                </div>
-                <div class="tr" v-for="tx in txs" :key="tx.id">
-                  <div class="td">
-                    <router-link :to="'/shard/' + tx.shardID">{{
-                      tx.shardID
-                    }}</router-link>
-                  </div>
-                  <div class="td">
-                    <router-link :to="'/tx/' + tx.hash">{{
-                      tx.hash | shorten
-                    }}</router-link>
-                  </div>
-                  <div class="td">
-                    <router-link :to="'/address/' + tx.from">{{
-                      tx.from | shorten
-                    }}</router-link>
-                  </div>
-                  <div class="td">
-                    <router-link :to="'/address/' + tx.to">{{
-                      tx.to | shorten
-                    }}</router-link>
-                  </div>
-                  <div class="td">
-                    {{ (Number(tx.timestamp) * 1000) | age }}
-                  </div>
-                  <div class="td text-right">{{ tx.value | amount }}</div>
-                </div>
-              </div>
-            </section>
-          </div>
         </div>
+
+        <transactions-table :allTxs="block.txs" />
       </div>
       <div class="container" v-else>
         <loading-message />
@@ -84,19 +41,22 @@
 </template>
 
 <script>
-import service from "../explorer/service";
-import LoadingMessage from "./LoadingMessage";
+import service from '../explorer/service';
+import LoadingMessage from './LoadingMessage';
+import TransactionsTable from './TransactionsTable';
+
+const isObject = value => typeof value === 'object';
 
 export default {
-  name: "TransactionsByBlockPage",
+  name: 'TransactionsByBlockPage',
   data() {
     return {
       loading: true,
-      block: null,
-      txs: []
+      block: null
     };
   },
   components: {
+    TransactionsTable,
     LoadingMessage
   },
   watch: {
@@ -110,16 +70,23 @@ export default {
   methods: {
     getBlock() {
       this.loading = true;
+
       service
         .getBlock(this.$route.params.blockId)
         .then(block => {
           this.block = block;
-          Promise.all(block.txs.map(tx => service.getTransaction(tx))).then(
-            transactions => {
-              this.txs = transactions;
-              this.txs.sort((a, b) => b.timestamp - a.timestamp);
-            }
-          );
+
+          this.block.txs = this.block.txs
+            .map(tx => ({
+              ...tx,
+              from: isObject(tx.from) ? tx.from.bech32 : tx.from,
+              to: isObject(tx.to) ? tx.to.bech32 : tx.to,
+              hash: tx.id,
+              timestamp: tx.timestamp / 1000
+            }))
+            .sort((a, b) =>
+              Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
+            );
         })
         .finally(() => (this.loading = false));
     }
