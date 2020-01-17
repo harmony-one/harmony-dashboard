@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from 'moment-timezone';
 import Vue from 'vue';
 
 /**
@@ -22,7 +22,9 @@ export function shortenHash(hash) {
 }
 
 export function formatTimestamp(timestamp) {
-  return moment(timestamp).format('MM/DD/YYYY HH:mm:ss');
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  return moment(timestamp).tz(timezone).format('MM/DD/YYYY HH:mm:ss z');
 }
 
 export function formatAge(timestamp) {
