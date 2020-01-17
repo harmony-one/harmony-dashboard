@@ -1,5 +1,5 @@
 <style scoped lang="less">
-@import "../less/common.less";
+@import '../less/common.less';
 </style>
 
 <template>
@@ -36,7 +36,10 @@
 
           <div class="explorer-card-body">
             <section>
-              <div class="explorer-table-responsive latest-tx-table">
+              <div class="container" v-if="txsLoading">
+                <loading-message />
+              </div>
+              <div class="explorer-table-responsive latest-tx-table" v-else>
                 <div class="tr">
                   <div class="th">Shard</div>
                   <div class="th">Hash</div>
@@ -86,14 +89,15 @@
 </template>
 
 <script>
-import service from "../explorer/service";
-import LoadingMessage from "./LoadingMessage";
+import service from '../explorer/service';
+import LoadingMessage from './LoadingMessage';
 
 export default {
-  name: "TransactionsByBlockPage",
+  name: 'TransactionsByBlockPage',
   data() {
     return {
       loading: true,
+      txsLoading: true,
       block: null,
       txs: []
     };
@@ -116,12 +120,17 @@ export default {
         .getBlock(this.$route.params.blockId)
         .then(block => {
           this.block = block;
-          Promise.all(block.txs.map(tx => service.getTransaction(tx))).then(
-            transactions => {
+
+          this.txsLoading = true;
+
+          Promise.all(block.txs.map(tx => service.getTransaction(tx)))
+            .then(transactions => {
               this.txs = transactions;
-              this.txs.sort((a, b) => Number(a.timestamp) > Number(b.timestamp) ? -1 : 1);
-            }
-          );
+              this.txs.sort((a, b) =>
+                Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
+              );
+            })
+            .finally(() => (this.txsLoading = false));
         })
         .finally(() => (this.loading = false));
     }
