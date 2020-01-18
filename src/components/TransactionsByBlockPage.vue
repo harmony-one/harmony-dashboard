@@ -29,9 +29,9 @@
               </table>
             </section>
           </div>
-
-          <transactions-table :allTxs="block.txs" />
         </div>
+
+        <transactions-table :allTxs="block.txs" />
       </div>
       <div class="container" v-else>
         <loading-message />
