@@ -79,8 +79,8 @@
                 tx.to | shorten
               }}</router-link>
             </td>
-            <td>{{ tx.value | amount }}</td>
-            <td>{{ tx | fee }}</td>
+            <td class="no-break">{{ tx.value | amount }}</td>
+            <td class="no-break">{{ tx | fee }}</td>
           </tr>
         </table>
       </section>

@@ -220,8 +220,8 @@
                       }}</router-link>
                     </div>
                     <div class="td">{{ tx.timestamp | age }}</div>
-                    <div class="td">{{ tx.value | amount }}</div>
-                    <div class="td text-right">{{ tx | fee }}</div>
+                    <div class="td no-break">{{ tx.value | amount }}</div>
+                    <div class="td text-right no-break">{{ tx | fee }}</div>
                   </div>
                 </div>
               </div>
@@ -291,8 +291,8 @@
                       }}</router-link>
                     </div>
                     <div class="td">{{ tx.timestamp | age }}</div>
-                    <div class="td">{{ tx.value | amount }}</div>
-                    <div class="td text-right">{{ tx | fee }}</div>
+                    <div class="td no-break">{{ tx.value | amount }}</div>
+                    <div class="td text-right no-break">{{ tx | fee }}</div>
                   </div>
                 </div>
               </div>
