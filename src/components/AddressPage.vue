@@ -55,7 +55,7 @@
           </div>
         </div>
 
-        <transactions-table :allTxs="allTxs" />
+        <transactions-table :allTxs="allTxs" with-shards="true" />
       </div>
       <div class="container" v-else>
         <loading-message />

@@ -86,8 +86,8 @@
                   >
                 </td>
                 <td>{{ tx.timestamp | age }}</td>
-                <td class="text-right">{{ tx.value | amount }}</td>
-                <td class="text-right">{{ tx | fee }}</td>
+                <td class="text-right no-break">{{ tx.value | amount }}</td>
+                <td class="text-right no-break">{{ tx | fee }}</td>
                 <td class="text-right">{{ tx.bytes }}</td>
               </tr>
             </table>

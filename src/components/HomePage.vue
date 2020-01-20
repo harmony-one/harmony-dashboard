@@ -220,8 +220,8 @@
                       }}</router-link>
                     </div>
                     <div class="td">{{ tx.timestamp | age }}</div>
-                    <div class="td">{{ tx.value | amount }}</div>
-                    <div class="td text-right">{{ tx | fee }}</div>
+                    <div class="td no-break">{{ tx.value | amount }}</div>
+                    <div class="td text-right no-break">{{ tx | fee }}</div>
                   </div>
                 </div>
               </div>
@@ -291,8 +291,8 @@
                       }}</router-link>
                     </div>
                     <div class="td">{{ tx.timestamp | age }}</div>
-                    <div class="td">{{ tx.value | amount }}</div>
-                    <div class="td text-right">{{ tx | fee }}</div>
+                    <div class="td no-break">{{ tx.value | amount }}</div>
+                    <div class="td text-right no-break">{{ tx | fee }}</div>
                   </div>
                 </div>
               </div>
@@ -316,7 +316,6 @@
 
 <script>
 import store from '../explorer/store';
-import service from '../explorer/service';
 import LoadingMessage from './LoadingMessage';
 import CoinStats from './CoinStats';
 
@@ -345,9 +344,9 @@ export default {
   mounted() {
     this.resetTimer();
 
-    service.getCoinStats().then(stats => {
-      this.coinStats = stats;
-    });
+    // service.getCoinStats().then(stats => {
+    //   this.coinStats = stats;
+    // });
   },
   computed: {
     length() {
