@@ -49,24 +49,26 @@
       <section>
         <table class="explorer-table">
           <tr>
+            <th v-if="!withShards">Shard</th>
             <th>TxHash</th>
             <th>Timestamp</th>
-            <th>From ShardID</th>
-            <th>To ShardID</th>
+            <th v-if="withShards">From ShardID</th>
+            <th v-if="withShards">To ShardID</th>
             <th>From</th>
             <th>To</th>
             <th>Value</th>
             <th>Txn Fee</th>
           </tr>
           <tr v-for="tx in txs" :key="tx.hash">
+            <td v-if="!withShards">{{ tx.shardID }}</td>
             <td>
               <router-link :to="'/tx/' + tx.hash">{{
                 tx.hash | shorten
               }}</router-link>
             </td>
             <td>{{ (Number(tx.timestamp) * 1000) | timestamp }}</td>
-            <td>{{ tx.shardID }}</td>
-            <td>{{ tx.toShardID }}</td>
+            <td v-if="withShards">{{ tx.shardID }}</td>
+            <td v-if="withShards">{{ tx.toShardID }}</td>
             <td>
               <router-link :to="'/address/' + tx.from">{{
                 tx.from | shorten
@@ -89,7 +91,7 @@
 <script>
 export default {
   name: 'TransactionsTable',
-  props: ['allTxs'],
+  props: ['allTxs', 'withShards'],
   data() {
     return {
       loading: true,
