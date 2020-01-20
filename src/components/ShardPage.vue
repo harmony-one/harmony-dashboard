@@ -154,7 +154,8 @@
                 <div class="th">From</div>
                 <div class="th">To</div>
                 <div class="th">Age</div>
-                <div class="th text-right">Value</div>
+                <div class="th">Value</div>
+                <div class="th text-right">Txn Fee</div>
               </div>
               <div class="tr" v-for="tx in shard.txs" :key="tx.id">
                 <div class="td">
@@ -178,7 +179,8 @@
                   }}</router-link>
                 </div>
                 <div class="td">{{ tx.timestamp | age }}</div>
-                <div class="td text-right">{{ tx.value | amount }}</div>
+                <div class="td">{{ tx.value | amount }}</div>
+                <div class="td text-right">{{ tx | fee }}</div>
               </div>
             </div>
           </div>

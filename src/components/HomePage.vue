@@ -316,7 +316,6 @@
 
 <script>
 import store from '../explorer/store';
-import service from '../explorer/service';
 import LoadingMessage from './LoadingMessage';
 import CoinStats from './CoinStats';
 
@@ -345,9 +344,9 @@ export default {
   mounted() {
     this.resetTimer();
 
-    service.getCoinStats().then(stats => {
-      this.coinStats = stats;
-    });
+    // service.getCoinStats().then(stats => {
+    //   this.coinStats = stats;
+    // });
   },
   computed: {
     length() {
