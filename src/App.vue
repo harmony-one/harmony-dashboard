@@ -293,7 +293,6 @@ import 'animate.css/animate.css';
 import 'flexboxgrid/dist/flexboxgrid.min.css';
 import SiteFooter from './components/SiteFooter';
 import SiteHeader from './components/SiteHeader';
-import service from './explorer/service';
 
 export default {
   name: 'App',
@@ -301,11 +300,5 @@ export default {
     SiteFooter,
     SiteHeader
   },
-  mounted() {
-    setInterval(() => {
-      service.getTxPool();
-      service.getTxFailures();
-    }, 10000);
-  }
 };
 </script>

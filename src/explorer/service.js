@@ -161,18 +161,9 @@ export default {
       return res.data.receipt;
     });
   },
-  getTxPool() {
-    return authGet('/tx-pools').then(res => {
-      store.setTxPools(res.data.pools);
-
-      return res.data.pools;
-    });
-  },
-  getTxFailures() {
-    return authGet('/tx-failures').then(res => {
-      store.setTxFailures(res.data.failures);
-
-      return res.data.failures;
+  getTxStatus(id) {
+    return authGet('/tx-status', { params: { id } }).then(res => {
+      return res.data.status;
     });
   }
 };
