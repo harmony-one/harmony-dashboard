@@ -173,6 +173,8 @@ export default {
       receipt: null,
       sequence: null,
       globalData: store.data,
+      status: '',
+      intervalId: null
     };
   },
   components: {
@@ -187,6 +189,14 @@ export default {
   },
   mounted() {
     this.getTransaction();
+
+    this.intervalId = setInterval(
+      () => service.getTxStatus(this.$route.params.transactionId),
+      2000
+    );
+  },
+  beforeDestroy() {
+    clearInterval(this.intervalId);
   },
   computed: {
     isCrossShard() {
@@ -194,19 +204,6 @@ export default {
         this.transaction &&
         this.transaction.shardID === this.transaction.toShardID
       );
-    },
-    status() {
-      const txId = this.$route.params.transactionId;
-
-      if (this.globalData.txPools.includes(txId)) {
-        return 'Pending';
-      }
-
-      if (this.globalData.txFailures.includes(txId)) {
-        return 'Failed';
-      }
-
-      return 'Success';
     }
   },
   methods: {
@@ -228,6 +225,9 @@ export default {
       getTx(this.$route.params.transactionId)
         .then(transaction => {
           this.transaction = transaction;
+
+          this.status = transaction.status;
+
           if (this.transaction.shardID !== this.transaction.toShardID) {
             service
               .getCxReceipt(this.$route.params.transactionId)
