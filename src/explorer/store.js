@@ -2,11 +2,15 @@ import Vue from 'vue';
 
 const Limit = 10;
 function postprocessBlocks(items) {
-  return items.sort((a, b) => b.height - a.height).slice(0, Limit);
+  return items
+    .sort((a, b) => (Number(a.timestamp) > Number(b.timestamp) ? -1 : 1))
+    .slice(0, Limit);
 }
 
 function postprocessTxs(items) {
-  return items.sort((a, b) => Number(a.timestamp) > Number(b.timestamp) ? -1 : 1).slice(0, Limit);
+  return items
+    .sort((a, b) => (Number(a.timestamp) > Number(b.timestamp) ? -1 : 1))
+    .slice(0, Limit);
 }
 
 function getTotalBlockLatency(latencies) {
