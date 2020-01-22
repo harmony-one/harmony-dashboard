@@ -32,17 +32,7 @@ let store = {
     txCount: 0,
     stakingTxCount: 0,
     nodeCount: 0,
-    lastUpdateTime: 0,
-    txPools: [],
-    txFailures: []
-  },
-
-  setTxPools(data) {
-    Vue.set(this.data, 'txPools', data);
-  },
-
-  setTxFailures(data) {
-    Vue.set(this.data, 'txFailures', data);
+    lastUpdateTime: 0
   },
 
   update(data) {
