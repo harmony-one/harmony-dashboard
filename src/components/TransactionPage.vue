@@ -190,9 +190,6 @@ export default {
   mounted() {
     this.getTransaction();
   },
-  beforeDestroy() {
-    clearInterval(this.intervalId);
-  },
   computed: {
     isCrossShard() {
       return (
