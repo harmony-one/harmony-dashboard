@@ -263,7 +263,7 @@ export default {
           10 ** 14 /
           10000;
 
-      return Math.round(fee * 1000000000) / 1000000000;
+      return Math.round(fee * 10 ** 9) / 10 ** 9;
     }
   }
 };

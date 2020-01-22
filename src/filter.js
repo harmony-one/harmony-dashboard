@@ -24,7 +24,9 @@ export function shortenHash(hash) {
 export function formatTimestamp(timestamp) {
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-  return moment(timestamp).tz(timezone).format('MM/DD/YYYY HH:mm:ss z');
+  return moment(timestamp)
+    .tz(timezone)
+    .format('MM/DD/YYYY HH:mm:ss z');
 }
 
 export function formatAge(timestamp) {
@@ -46,13 +48,14 @@ export function formatBlockLatency(time) {
 }
 
 export function calculateFee(transaction) {
-  const fee = isNaN(transaction.gas) || isNaN(transaction.gasPrice)
-    ? 0
-    : (Number(transaction.gas) * Number(transaction.gasPrice)) /
+  const fee =
+    isNaN(transaction.gas) || isNaN(transaction.gasPrice)
+      ? 0
+      : (Number(transaction.gas) * Number(transaction.gasPrice)) /
         10 ** 14 /
         10000;
 
-  return Math.round(fee * 10000) / 10000;
+  return Math.round(fee * 10 ** 4) / 10 ** 4;
 }
 
 Vue.filter('decimal', formatDecimal);
