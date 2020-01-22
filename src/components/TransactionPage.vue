@@ -172,7 +172,7 @@ export default {
       transaction: null,
       receipt: null,
       sequence: null,
-      globalData: store.data,
+      globalData: store.data
     };
   },
   components: {
@@ -257,11 +257,13 @@ export default {
       return s;
     },
     normalizedGas() {
-      return isNaN(this.transaction.gas)
+      const fee = isNaN(this.transaction.gas)
         ? 0
         : (Number(this.transaction.gas) * Number(this.transaction.gasPrice)) /
-            10 ** 14 /
-            10000;
+          10 ** 14 /
+          10000;
+
+      return Math.round(fee * 1000000000) / 1000000000;
     }
   }
 };
