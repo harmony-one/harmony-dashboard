@@ -22,7 +22,7 @@
               </tr>
               <tr>
                 <td class="td-title">Status</td>
-                <td>{{ status }}</td>
+                <td>{{ status | txStatus }}</td>
               </tr>
               <tr v-if="!isStaking">
                 <td class="td-title">Value</td>
@@ -191,7 +191,10 @@ export default {
     this.getTransaction();
 
     this.intervalId = setInterval(
-      () => service.getTxStatus(this.$route.params.transactionId),
+      () =>
+        service
+          .getTxStatus(this.$route.params.transactionId)
+          .then(status => (this.status = status)),
       2000
     );
   },

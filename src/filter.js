@@ -24,7 +24,9 @@ export function shortenHash(hash) {
 export function formatTimestamp(timestamp) {
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-  return moment(timestamp).tz(timezone).format('MM/DD/YYYY HH:mm:ss z');
+  return moment(timestamp)
+    .tz(timezone)
+    .format('MM/DD/YYYY HH:mm:ss z');
 }
 
 export function formatAge(timestamp) {
@@ -53,11 +55,25 @@ export function calculateFee(transaction) {
         10000;
 }
 
+export function formatTxStatus(status) {
+  switch (status) {
+    case 'SUCCESS':
+      return 'Success';
+    case 'PENDING':
+      return 'Pending';
+    case 'FAILURE':
+      return 'Failure';
+    default:
+      return 'Unknown';
+  }
+}
+
 Vue.filter('decimal', formatDecimal);
 Vue.filter('number', formatNumber);
 Vue.filter('shorten', shortenHash);
 Vue.filter('timestamp', formatTimestamp);
 Vue.filter('age', formatAge);
 Vue.filter('amount', formatAmount);
+Vue.filter('txStatus', formatTxStatus);
 Vue.filter('fee', calculateFee);
 Vue.filter('blockLatency', formatBlockLatency);
