@@ -46,11 +46,13 @@ export function formatBlockLatency(time) {
 }
 
 export function calculateFee(transaction) {
-  return isNaN(transaction.gas) || isNaN(transaction.gasPrice)
+  const fee = isNaN(transaction.gas) || isNaN(transaction.gasPrice)
     ? 0
     : (Number(transaction.gas) * Number(transaction.gasPrice)) /
         10 ** 14 /
         10000;
+
+  return Math.round(fee * 10000) / 10000;
 }
 
 Vue.filter('decimal', formatDecimal);
