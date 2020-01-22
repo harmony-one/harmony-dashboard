@@ -185,18 +185,12 @@ export default {
   watch: {
     $route() {
       this.getTransaction();
+      this.startPollingStatus();
     }
   },
   mounted() {
     this.getTransaction();
-
-    this.intervalId = setInterval(
-      () =>
-        service
-          .getTxStatus(this.$route.params.transactionId)
-          .then(status => (this.status = status)),
-      2000
-    );
+    this.startPollingStatus();
   },
   beforeDestroy() {
     clearInterval(this.intervalId);
@@ -265,6 +259,21 @@ export default {
         : (Number(this.transaction.gas) * Number(this.transaction.gasPrice)) /
             10 ** 14 /
             10000;
+    },
+    startPollingStatus() {
+      clearInterval(this.intervalId);
+
+      this.intervalId = setInterval(
+        () =>
+          service.getTxStatus(this.$route.params.transactionId).then(status => {
+            this.status = status;
+
+            if (status === 'FAILURE') {
+              clearInterval(this.intervalId);
+            }
+          }),
+        2000
+      );
     }
   }
 };
