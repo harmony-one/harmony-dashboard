@@ -5,7 +5,7 @@
 <template>
   <div class="transaction-page explorer-page page">
     <div class="transaction-body explorer-body">
-      <div class="container" v-if="!loading && transaction">
+      <div class="container" v-if="!firstLoading || (!loading && transaction)">
         <div class="explorer-card">
           <header>
             <h1>{{ isStaking ? 'Staking Transaction' : 'Transaction' }}</h1>
@@ -18,11 +18,11 @@
               </tr>
               <tr>
                 <td class="td-title">ID</td>
-                <td>{{ transaction.hash }}</td>
+                <td>{{ transaction.hash || $route.params.transactionId }}</td>
               </tr>
               <tr>
                 <td class="td-title">Status</td>
-                <td>{{ status | txStatus }}</td>
+                <td>{{ transaction.status | txStatus }}</td>
               </tr>
               <tr v-if="!isStaking">
                 <td class="td-title">Value</td>
@@ -169,12 +169,11 @@ export default {
   data() {
     return {
       loading: true,
+      firstLoading: true,
       transaction: null,
       receipt: null,
       sequence: null,
-      globalData: store.data,
-      status: '',
-      intervalId: null
+      globalData: store.data
     };
   },
   components: {
@@ -184,13 +183,12 @@ export default {
   },
   watch: {
     $route() {
+      this.firstLoading = true;
       this.getTransaction();
-      this.startPollingStatus();
     }
   },
   mounted() {
     this.getTransaction();
-    this.startPollingStatus();
   },
   beforeDestroy() {
     clearInterval(this.intervalId);
@@ -212,18 +210,35 @@ export default {
         this.sequence = this.hexToAscii(match[1]);
       }
     },
-    getTransaction() {
+    getTransaction(txId) {
+      const routeTxId = this.$route.params.transactionId;
+
+      if (txId && txId !== routeTxId) {
+        return;
+      }
+
       this.loading = true;
 
       const getTx = this.isStaking
         ? service.getStakingTransaction
         : service.getTransaction;
 
-      getTx(this.$route.params.transactionId)
+      getTx(routeTxId)
         .then(transaction => {
-          this.transaction = transaction;
+          if (
+            transaction &&
+            transaction.id &&
+            transaction.id !== this.$route.params.transactionId
+          ) {
+            return;
+          }
 
-          this.status = transaction.status;
+          this.transaction = transaction;
+          this.firstLoading = false;
+
+          if (transaction.status === 'PENDING') {
+            setTimeout(() => this.getTransaction(routeTxId), 4000);
+          }
 
           if (this.transaction.shardID !== this.transaction.toShardID) {
             service
@@ -259,21 +274,6 @@ export default {
         : (Number(this.transaction.gas) * Number(this.transaction.gasPrice)) /
             10 ** 14 /
             10000;
-    },
-    startPollingStatus() {
-      clearInterval(this.intervalId);
-
-      this.intervalId = setInterval(
-        () =>
-          service.getTxStatus(this.$route.params.transactionId).then(status => {
-            this.status = status;
-
-            if (status === 'FAILURE') {
-              clearInterval(this.intervalId);
-            }
-          }),
-        2000
-      );
     }
   }
 };

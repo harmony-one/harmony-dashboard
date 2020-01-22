@@ -160,10 +160,5 @@ export default {
     return authGet("/cx-receipt", { params: { id } }).then(res => {
       return res.data.receipt;
     });
-  },
-  getTxStatus(id) {
-    return authGet('/tx-status', { params: { id } }).then(res => {
-      return res.data.status;
-    });
   }
 };
