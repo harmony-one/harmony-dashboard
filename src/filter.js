@@ -24,9 +24,6 @@ export function shortenHash(hash) {
 export function formatTimestamp(timestamp) {
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-  return moment(timestamp).tz(timezone).format('MM/DD/YYYY HH:mm:ss z');
-  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
   return moment(timestamp)
     .tz(timezone)
     .format('MM/DD/YYYY HH:mm:ss z');
