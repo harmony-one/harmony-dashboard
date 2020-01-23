@@ -55,7 +55,7 @@ export function calculateFee(transaction) {
         10 ** 14 /
         10000;
 
-  return Math.round(fee * 10 ** 4) / 10 ** 4;
+  return Math.round(fee * 10 ** 9) / 10 ** 9;
 }
 
 Vue.filter('decimal', formatDecimal);
