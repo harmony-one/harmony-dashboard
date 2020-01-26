@@ -55,7 +55,8 @@ export function calculateFee(transaction) {
         10 ** 14 /
         10000;
 
-  return Math.round(fee * 10 ** 9) / 10 ** 9;
+  return Intl.NumberFormat('en-US', { maximumFractionDigits: 18 }).format(fee);
+  //return Math.round(fee * 10 ** 9) / 10 ** 9;
 }
 
 export function formatTxStatus(status) {
