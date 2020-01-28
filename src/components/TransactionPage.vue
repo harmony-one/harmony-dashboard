@@ -24,6 +24,10 @@
                 <td class="td-title">Status</td>
                 <td>{{ transaction.status | txStatus }}</td>
               </tr>
+              <tr v-if="isFailedTransaction">
+                <td class="td-title">Reason</td>
+                <td>{{ transaction.message }}</td>
+              </tr>
               <tr v-if="!isStaking">
                 <td class="td-title">Value</td>
                 <td>{{ transaction.value | amount }}</td>
@@ -196,6 +200,9 @@ export default {
         this.transaction &&
         this.transaction.shardID === this.transaction.toShardID
       );
+    },
+    isFailedTransaction() {
+      return this.transaction.status === 'FAILURE';
     }
   },
   methods: {
@@ -273,7 +280,9 @@ export default {
           10000;
 
       // return Math.round(fee * 10 ** 9) / 10 ** 9;
-      return Intl.NumberFormat('en-US', { maximumFractionDigits: 18 }).format(fee);
+      return Intl.NumberFormat('en-US', { maximumFractionDigits: 18 }).format(
+        fee
+      );
     }
   }
 };
