@@ -1,5 +1,5 @@
 <style scoped lang="less">
-@import "../less/common.less";
+@import '../less/common.less';
 .navbar-fixed-top {
   position: fixed;
   left: 0;
@@ -61,7 +61,7 @@
       left: @space-sm;
       transform: translateY(-50%);
     }
-    input[type="text"] {
+    input[type='text'] {
       border-radius: 2em;
       padding: @space-sm @space-md;
       padding-left: 3em;
@@ -89,6 +89,25 @@
     display: none;
   }
 }
+
+.notificationsContainer {
+  position: absolute;
+  margin: 7px 0px 0px 30px;
+
+  > div {
+    position: relative;
+  }
+
+  .searchError {
+    background: rgba(208, 33, 45, 0.85);
+    margin-bottom: 5px;
+    border-radius: 5px;
+    font-size: 14px;
+
+    padding: 10px 15px;
+    max-width: 250px;
+  }
+}
 </style>
 <template>
   <header class="navbar-fixed-top hmy-bg">
@@ -105,14 +124,29 @@
           <router-link class="navbar-nav" to="/blocks" v-if="showNav"
             >Explorer</router-link
           >
-          <div class="search">
-            <font-awesome-icon class="search-icon" icon="search" />
-            <input
-              type="text"
-              placeholder="Block Hash / Tx Hash / Account..."
-              v-model="input"
-              @keyup.enter="search"
-            />
+          <div>
+            <div class="search">
+              <font-awesome-icon class="search-icon" icon="search" />
+              <input
+                type="text"
+                placeholder="Block Hash / Tx Hash / Account..."
+                v-model="input"
+                @keyup.enter="search"
+              />
+            </div>
+            <div class="notificationsContainer">
+              <notifications group="search">
+                <template slot="body" slot-scope="props">
+                  <div class="searchError">
+                    <a class="close" @click="props.close">
+                      <i class="fa fa-fw fa-close"></i>
+                    </a>
+                    <div v-html="props.item.text">
+                    </div>
+                  </div>
+                </template>
+              </notifications>
+            </div>
           </div>
         </div>
       </div>
@@ -121,41 +155,49 @@
 </template>
 
 <script>
-import service from "../explorer/service";
+import service from '../explorer/service';
 export default {
-  name: "SiteHeader",
+  name: 'SiteHeader',
   data() {
     return {
-      input: "",
-      showNav: localStorage.getItem("nav")
+      input: '',
+      showNav: localStorage.getItem('nav')
     };
   },
   methods: {
     search() {
       let input = this.input.trim();
-      this.input = "";
+      this.input = '';
       if (!input) {
         //  || (input.length !== 32 && input.length !== 20)
-        alert("invalid input");
+        alert('invalid input');
         return;
       }
       service
         .search(input)
         .then(result => {
-          if (result.type === "block") {
+          if (result.type === 'block') {
             this.$router.push(`/block/${input}`);
-          } else if (result.type === "tx") {
+          } else if (result.type === 'tx') {
             this.$router.push(`/tx/${input}`);
-          } else if (result.type === "address") {
+          } else if (result.type === 'address') {
             this.$router.push(`/address/${input}`);
           }
         })
         .catch(r => {
-          if (r.response && r.response.status === 401) {
-            alert(r.response.data.error);
-          } else {
-            alert("Not Found!");
+          let errMessage = 'Not Found!';
+
+          if (r.response && r.response.data && r.response.data.err) {
+            errMessage = r.response.data.err;
           }
+
+          this.$notify({
+            group: 'search',
+            position: 'top center',
+            type: 'search-error',
+            text: 'Search failed: ' + errMessage,
+            duration: 3000
+          });
         });
     }
   }
