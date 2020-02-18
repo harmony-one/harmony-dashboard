@@ -28,6 +28,7 @@
     "numeral": "^2.0.6",
     "vue": "^2.6.10",
     "vue-json-pretty": "^1.6.3",
+    "vue-notification": "^1.3.20",
     "vue-router": "^3.1.3",
     "vue-scrollto": "^2.17.1"
   },

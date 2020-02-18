@@ -6,6 +6,8 @@ import router from "./router";
 import VueScrollTo from "vue-scrollto";
 import Highcharts from "highcharts";
 import HighchartsVue from "highcharts-vue";
+import Notifications from 'vue-notification'
+
 import "./filter";
 import "./icon";
 
@@ -40,6 +42,7 @@ Highcharts.setOptions({
   }
 });
 Vue.use(HighchartsVue);
+Vue.use(Notifications);
 
 /* eslint-disable no-new */
 new Vue({
