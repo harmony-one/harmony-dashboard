@@ -1,5 +1,5 @@
 <style scoped lang="less">
-@import "../less/common.less";
+@import '../less/common.less';
 </style>
 
 <template>
@@ -7,13 +7,13 @@
 </template>
 
 <script>
-import Highcharts from "highcharts";
-import stockInit from "highcharts/modules/stock";
+import Highcharts from 'highcharts';
+import stockInit from 'highcharts/modules/stock';
 stockInit(Highcharts);
 
 export default {
-  name: "LiveLineChart",
-  props: ["value", "title", "data"],
+  name: 'LiveLineChart',
+  props: ['value', 'title', 'data'],
   data() {
     return {
       series: null
@@ -31,24 +31,24 @@ export default {
   mounted() {
     let options = {
       chart: {
-        type: "spline"
+        type: 'spline'
       },
 
       rangeSelector: {
         buttons: [
           {
             count: 1,
-            type: "minute",
-            text: "1M"
+            type: 'minute',
+            text: '1M'
           },
           {
             count: 5,
-            type: "minute",
-            text: "5M"
+            type: 'minute',
+            text: '5M'
           },
           {
-            type: "all",
-            text: "All"
+            type: 'all',
+            text: 'All'
           }
         ],
         inputEnabled: false,
@@ -78,7 +78,7 @@ export default {
         valueDecimals: 2
       }
     };
-    let chart = Highcharts.stockChart("container", options);
+    let chart = Highcharts.stockChart('container', options);
     this.series = chart.series[0];
   }
 };

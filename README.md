@@ -4,7 +4,7 @@ The dashboard for harmony blockchain displaying interesting metrics.
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 npm install
 

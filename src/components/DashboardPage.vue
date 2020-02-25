@@ -1,5 +1,5 @@
 <style scoped lang="less">
-@import "../less/common.less";
+@import '../less/common.less';
 
 .dashboard-page {
   display: flex;
@@ -48,10 +48,10 @@
 </template>
 
 <script>
-import store from "../dashboard/store";
+import store from '../dashboard/store';
 
 export default {
-  name: "DashboardPage",
+  name: 'DashboardPage',
   data() {
     return {
       globalData: store.data

@@ -1,5 +1,5 @@
 <style scoped lang="less">
-@import "../less/common.less";
+@import '../less/common.less';
 
 .loading-message {
   font-size: 2em;
@@ -25,6 +25,6 @@
 
 <script>
 export default {
-  name: "LoadingMessage"
+  name: 'LoadingMessage'
 };
 </script>

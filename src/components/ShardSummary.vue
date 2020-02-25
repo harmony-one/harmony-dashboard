@@ -1,5 +1,5 @@
 <style scoped lang="less">
-@import "../less/common.less";
+@import '../less/common.less';
 </style>
 
 <template>
@@ -94,7 +94,7 @@
               v-for="(hash, index) in summary.latestBlockHashes"
               :key="index"
             >
-              {{ hash || "#" }}
+              {{ hash || '#' }}
             </div>
           </div>
         </div>
@@ -113,7 +113,7 @@
               v-for="(hash, index) in summary.latestTxHashes"
               :key="index"
             >
-              {{ hash || "#" }}
+              {{ hash || '#' }}
             </div>
           </div>
         </div>
@@ -124,8 +124,8 @@
 
 <script>
 export default {
-  name: "ShardSummary",
-  props: ["summary"],
+  name: 'ShardSummary',
+  props: ['summary'],
   data() {
     return {
       timer: null,

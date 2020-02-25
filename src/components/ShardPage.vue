@@ -1,5 +1,5 @@
 <style scoped lang="less">
-@import "../less/common.less";
+@import '../less/common.less';
 
 .page-title {
   font-size: 1.8em;
@@ -201,16 +201,16 @@
 </template>
 
 <script>
-import store from "../explorer/store";
-import LoadingMessage from "./LoadingMessage";
+import store from '../explorer/store';
+import LoadingMessage from './LoadingMessage';
 
 export default {
-  name: "ShardPage",
+  name: 'ShardPage',
   data() {
     return {
       globalData: store.data,
       loading: true,
-      id: "",
+      id: '',
       timer: null,
       now: Date.now(),
       showTx: true

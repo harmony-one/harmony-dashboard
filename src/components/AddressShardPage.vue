@@ -1,5 +1,5 @@
 <style scoped lang="less">
-@import "../less/common.less";
+@import '../less/common.less';
 </style>
 
 <template>
@@ -118,11 +118,11 @@
 </template>
 
 <script>
-import service from "../explorer/service";
-import LoadingMessage from "./LoadingMessage";
+import service from '../explorer/service';
+import LoadingMessage from './LoadingMessage';
 
 export default {
-  name: "AddressShardPage",
+  name: 'AddressShardPage',
   data() {
     return {
       loading: true,
@@ -206,7 +206,7 @@ export default {
       if (index < 0) index = 0;
       if (index >= this.pageCount) index = this.pageCount - 1;
       this.$router.replace({
-        name: "AddressShardPage",
+        name: 'AddressShardPage',
         params: { pageIndex: index + 1 }
       });
     },

@@ -15,7 +15,7 @@
             :class="{ 'rolling-in-the-deep': openBar === true }"
           ></div>
         </div>
-        <div class="left-index">{{ !openBar ? "Show more" : "Hide" }}</div>
+        <div class="left-index">{{ !openBar ? 'Show more' : 'Hide' }}</div>
       </div>
     </div>
   </div>
@@ -23,7 +23,7 @@
 
 <script>
 export default {
-  name: "expand-panel",
+  name: 'expand-panel',
   data() {
     return {
       openBar: false
@@ -78,7 +78,7 @@ export default {
         div.arrow::after {
           display: inline-block;
           position: absolute;
-          content: " ";
+          content: ' ';
           margin-left: 8px;
           height: 6px;
           width: 6px;

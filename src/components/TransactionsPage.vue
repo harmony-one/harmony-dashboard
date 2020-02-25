@@ -1,5 +1,5 @@
 <style scoped lang="less">
-@import "../less/common.less";
+@import '../less/common.less';
 </style>
 
 <template>
@@ -103,12 +103,12 @@
 </template>
 
 <script>
-import store from "../explorer/store";
-import service from "../explorer/service";
-import LoadingMessage from "./LoadingMessage";
+import store from '../explorer/store';
+import service from '../explorer/service';
+import LoadingMessage from './LoadingMessage';
 
 export default {
-  name: "TransactionsPage",
+  name: 'TransactionsPage',
   data() {
     return {
       globalData: store.data,
@@ -142,7 +142,7 @@ export default {
       if (index < 0) index = 0;
       if (index >= this.pageCount) index = this.pageCount - 1;
       this.$router.replace({
-        name: "TransactionsPage",
+        name: 'TransactionsPage',
         params: { pageIndex: index + 1 }
       });
     },

@@ -1,5 +1,5 @@
 <style scoped lang="less">
-@import "../less/common.less";
+@import '../less/common.less';
 </style>
 
 <template>
@@ -108,8 +108,8 @@
 
 <script>
 export default {
-  name: "ShardSummary",
-  props: ["summary"],
+  name: 'ShardSummary',
+  props: ['summary'],
   data() {
     return {
       timer: null,

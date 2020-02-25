@@ -141,8 +141,7 @@
                     <a class="close" @click="props.close">
                       <i class="fa fa-fw fa-close"></i>
                     </a>
-                    <div v-html="props.item.text">
-                    </div>
+                    <div v-html="props.item.text"></div>
                   </div>
                 </template>
               </notifications>

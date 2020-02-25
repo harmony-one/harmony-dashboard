@@ -1,5 +1,5 @@
 <style scoped lang="less">
-@import "../less/common.less";
+@import '../less/common.less';
 footer {
   padding-bottom: @space-lg;
   background-color: #fff;
@@ -67,6 +67,6 @@ footer {
 
 <script>
 export default {
-  name: "SiteFooter"
+  name: 'SiteFooter'
 };
 </script>

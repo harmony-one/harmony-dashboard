@@ -13,7 +13,7 @@ copy($$('.fader.ng-scope').map(x => {
 // https://www.blockchain.com/btc/block/0000000000000000001c48da2a21c9d098efcab0f4904ff4773c0896c63c62f8
 // https://etherscan.io/block/6865061
 // https://etherscan.io/txs?block=6865061
-copy((function() {
+copy((function () {
     var block = {};
     block.height = $('h1').textContent.replace('Block #', '');
     block.hash = $('#wrap > section > section > div:nth-child(3) > div.well.well-sm.ellipsis > span.txid.text-muted.ng-binding').textContent;

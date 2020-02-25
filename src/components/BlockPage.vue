@@ -1,5 +1,5 @@
 <style scoped lang="less">
-@import "../less/common.less";
+@import '../less/common.less';
 </style>
 
 <template>
@@ -106,11 +106,11 @@
 </template>
 
 <script>
-import service from "../explorer/service";
-import LoadingMessage from "./LoadingMessage";
+import service from '../explorer/service';
+import LoadingMessage from './LoadingMessage';
 
 export default {
-  name: "BlockPage",
+  name: 'BlockPage',
   data() {
     return {
       loading: true,

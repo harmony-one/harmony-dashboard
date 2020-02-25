@@ -1,5 +1,5 @@
 <style scoped lang="less">
-@import "../less/common.less";
+@import '../less/common.less';
 
 .admin-page {
   display: flex;
@@ -32,7 +32,7 @@
       display: block;
       margin: 0.5em 0;
 
-      input[type="password"] {
+      input[type='password'] {
         display: block;
         margin: @space-xs 0;
         width: 100%;
@@ -75,15 +75,15 @@
 </template>
 
 <script>
-import DashboardService from "../dashboard/service";
-import ExplorerService from "../explorer/service";
-import SiteFooter from "./SiteFooter";
+import DashboardService from '../dashboard/service';
+import ExplorerService from '../explorer/service';
+import SiteFooter from './SiteFooter';
 
 export default {
-  name: "AdminPage",
+  name: 'AdminPage',
   data() {
     return {
-      secret: ""
+      secret: ''
     };
   },
   components: {
@@ -97,10 +97,10 @@ export default {
         ExplorerService.reset(this.secret)
       ]).then(
         () => {
-          alert("Reset Successful!");
+          alert('Reset Successful!');
         },
         () => {
-          alert("Reset Failed!");
+          alert('Reset Failed!');
         }
       );
     }

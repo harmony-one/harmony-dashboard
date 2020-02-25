@@ -299,6 +299,6 @@ export default {
   components: {
     SiteFooter,
     SiteHeader
-  },
+  }
 };
 </script>

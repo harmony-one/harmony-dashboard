@@ -52,8 +52,8 @@ export function calculateFee(transaction) {
     isNaN(transaction.gas) || isNaN(transaction.gasPrice)
       ? 0
       : (Number(transaction.gas) * Number(transaction.gasPrice)) /
-        10 ** 14 /
-        10000;
+      10 ** 14 /
+      10000;
 
   return Intl.NumberFormat('en-US', { maximumFractionDigits: 18 }).format(fee);
   //return Math.round(fee * 10 ** 9) / 10 ** 9;
