@@ -73,7 +73,7 @@
               </tr>
               <tr>
                 <td class="td-title">From Address</td>
-                <td>
+                <td class="address_link">
                   <router-link
                     :to="'/address/' + transaction.from"
                     v-if="transaction.from"
@@ -95,7 +95,7 @@
               </tr>
               <tr v-if="!isStaking">
                 <td class="td-title">To Address</td>
-                <td>
+                <td class="address_link">
                   <router-link
                     :to="'/address/' + transaction.to"
                     v-if="transaction.to"
