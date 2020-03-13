@@ -1,7 +1,7 @@
 import axios from 'axios';
 import store from './store';
 
-const BACKEND_URL = `${window.location.hostname}:3000`;
+const BACKEND_URL = `${window.location.hostname}:2000`;
 const HTTP_BACKEND_URL = `http://${BACKEND_URL}`;
 
 function sendPost(url, params, config) {
