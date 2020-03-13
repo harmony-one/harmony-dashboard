@@ -8,7 +8,6 @@
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-<<<<<<< Updated upstream
     "elint": "eslint --ext .js,.vue src test",
     "elint-autofix": "eslint --ext .js,.vue src --fix",
     "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",
@@ -17,9 +16,6 @@
   },
   "engines": {
     "node": "10.x.x"
-=======
-    "serve": "http-server -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE"
->>>>>>> Stashed changes
   },
   "dependencies": {
     "@fortawesome/fontawesome": "^1.1.8",
