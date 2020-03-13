@@ -13,7 +13,9 @@
 <template>
   <div class="shard-page explorer-page page">
     <div class="shard-body explorer-body">
-      <div class="container" v-if="shard">
+      <div
+v-if="shard" class="container"
+>
         <h1 class="page-title">Shard {{ $route.params.id }}</h1>
         <div class="explorer-card status-card">
           <div class="row">
@@ -21,11 +23,13 @@
               <div class="flex-horizontal">
                 <div class="icon-column">
                   <div class="data-icon-circle">
-                    <div class="data-icon icon-block-count"></div>
+                    <div class="data-icon icon-block-count" />
                   </div>
                 </div>
                 <div class="data-num-column">
-                  <div class="data-num">{{ shard.blockCount | number }}</div>
+                  <div class="data-num">
+                    {{ shard.blockCount | number }}
+                  </div>
                   <h1>Block Count</h1>
                 </div>
               </div>
@@ -34,7 +38,7 @@
               <div class="flex-horizontal">
                 <div class="icon-column">
                   <div class="data-icon-circle">
-                    <div class="data-icon icon-tx-count"></div>
+                    <div class="data-icon icon-tx-count" />
                   </div>
                 </div>
                 <div class="data-num-column">
@@ -49,11 +53,13 @@
               <div class="flex-horizontal">
                 <div class="icon-column">
                   <div class="data-icon-circle">
-                    <div class="data-icon icon-node-count"></div>
+                    <div class="data-icon icon-node-count" />
                   </div>
                 </div>
                 <div class="data-num-column">
-                  <div class="data-num">{{ shard.nodeCount | number }}</div>
+                  <div class="data-num">
+                    {{ shard.nodeCount | number }}
+                  </div>
                   <h1>Node Count</h1>
                 </div>
               </div>
@@ -62,11 +68,13 @@
               <div class="flex-horizontal">
                 <div class="icon-column">
                   <div class="data-icon-circle">
-                    <div class="data-icon icon-block-count"></div>
+                    <div class="data-icon icon-block-count" />
                   </div>
                 </div>
                 <div class="data-num-column">
-                  <div class="data-num">{{ shard.txCount | number }}</div>
+                  <div class="data-num">
+                    {{ shard.txCount | number }}
+                  </div>
                   <h1>Tx Count</h1>
                 </div>
               </div>
@@ -76,7 +84,9 @@
 
         <div class="explorer-card latest-block-card">
           <header>
-            <h1 class="flex-grow">Latest Blocks</h1>
+            <h1 class="flex-grow">
+              Latest Blocks
+            </h1>
             <div class="secondary-info">
               <div class="timer">
                 Updated
@@ -85,40 +95,61 @@
                     | number
                 }}s ago...
               </div>
-              <span class="total-block-num"></span>
+              <span class="total-block-num" />
             </div>
           </header>
           <div class="explorer-card-body">
             <div class="explorer-table-responsive latest-block-table">
               <div class="tr">
-                <div class="th">Shard</div>
-                <div class="th">Hash</div>
-                <div class="th">Height</div>
-                <div class="th text-right">Timestamp</div>
-                <div class="th text-right">Age</div>
-                <div class="th text-right" v-if="showTx">Transactions</div>
+                <div class="th">
+                  Shard
+                </div>
+                <div class="th">
+                  Hash
+                </div>
+                <div class="th">
+                  Height
+                </div>
+                <div class="th text-right">
+                  Timestamp
+                </div>
+                <div class="th text-right">
+                  Age
+                </div>
+                <div
+v-if="showTx" class="th text-right"
+>
+                  Transactions
+                </div>
               </div>
-              <div class="tr" v-for="block in shard.blocks" :key="block.id">
+              <div
+v-for="block in shard.blocks" class="tr"
+:key="block.id"
+>
                 <div class="td">
-                  <router-link :to="'/shard/' + block.shardID">{{
-                    block.shardID
-                  }}</router-link>
+                  <router-link :to="'/shard/' + block.shardID">
+                    {{ block.shardID }}
+                  </router-link>
                 </div>
                 <div class="td">
-                  <router-link :to="'/block/' + block.id">{{
-                    block.id | shorten
-                  }}</router-link>
+                  <router-link :to="'/block/' + block.id">
+                    block.id | shorten }}
+                  </router-link>
                 </div>
                 <div class="td">
-                  <router-link :to="'/block/' + block.id">{{
-                    block.height | number
-                  }}</router-link>
+                  <router-link :to="'/block/' + block.id">
+                    {{ block.height | number }}
+                  </router-link>
                 </div>
                 <div class="td text-right">
                   {{ block.timestamp | timestamp }}
                 </div>
-                <div class="td text-right">{{ block.timestamp | age }}</div>
-                <div class="td text-right" v-if="showTx">
+                <div class="td text-right">
+                  {{ block.timestamp | age }}
+                </div>
+                <div
+v-if="showTx" class="td text-right"
+>
                   {{ block.txCount }}
                 </div>
               </div>
@@ -134,7 +165,9 @@
         </div>
         <div class="explorer-card latest-block-card">
           <header>
-            <h1 class="flex-grow">Latest Transactions</h1>
+            <h1 class="flex-grow">
+              Latest Transactions
+            </h1>
             <div class="secondary-info">
               <div class="timer">
                 Updated
@@ -143,44 +176,67 @@
                     | number
                 }}s ago...
               </div>
-              <span class="total-block-num"></span>
+              <span class="total-block-num" />
             </div>
           </header>
           <div class="explorer-card-body">
             <div class="explorer-table-responsive latest-tx-table">
               <div class="tr">
-                <div class="th">Shard</div>
-                <div class="th">Hash</div>
-                <div class="th">From</div>
-                <div class="th">To</div>
-                <div class="th">Age</div>
-                <div class="th">Value</div>
-                <div class="th text-right">Txn Fee</div>
+                <div class="th">
+                  Shard
+                </div>
+                <div class="th">
+                  Hash
+                </div>
+                <div class="th">
+                  From
+                </div>
+                <div class="th">
+                  To
+                </div>
+                <div class="th">
+                  Age
+                </div>
+                <div class="th">
+                  Value
+                </div>
+                <div class="th text-right">
+                  Txn Fee
+                </div>
               </div>
-              <div class="tr" v-for="tx in shard.txs" :key="tx.id">
+              <div
+v-for="tx in shard.txs" class="tr"
+:key="tx.id"
+>
                 <div class="td">
-                  <router-link :to="'/shard/' + tx.shardID">{{
-                    tx.shardID
-                  }}</router-link>
+                  <router-link :to="'/shard/' + tx.shardID">
+                    {{ tx.shardID }}
+                  </router-link>
                 </div>
                 <div class="td">
-                  <router-link :to="'/tx/' + tx.id">{{
-                    tx.id | shorten
-                  }}</router-link>
+                  <router-link :to="'/tx/' + tx.id">
+                    {{ tx.id | shorten }}
+                  </router-link>
                 </div>
                 <div class="td">
-                  <router-link :to="'/address/' + tx.from.bech32">{{
-                    tx.from.bech32 | shorten
-                  }}</router-link>
+                  <router-link :to="'/address/' + tx.from.bech32">
+                    {{ tx.from.bech32 | shorten }}
+                  </router-link>
                 </div>
                 <div class="td">
-                  <router-link :to="'/address/' + tx.to.bech32">{{
-                    tx.to.bech32 | shorten
-                  }}</router-link>
+                  <router-link :to="'/address/' + tx.to.bech32">
+                    {{ tx.to.bech32 | shorten }}
+                  </router-link>
                 </div>
-                <div class="td">{{ tx.timestamp | age }}</div>
-                <div class="td no-break">{{ tx.value | amount }}</div>
-                <div class="td text-right no-break">{{ tx | fee }}</div>
+                <div class="td">
+                  {{ tx.timestamp | age }}
+                </div>
+                <div class="td no-break">
+                  {{ tx.value | amount }}
+                </div>
+                <div class="td text-right no-break">
+                  {{ tx | fee }}
+                </div>
               </div>
             </div>
           </div>
@@ -193,7 +249,9 @@
           </footer>-->
         </div>
       </div>
-      <div class="container" v-else>
+      <div
+v-else class="container"
+>
         <loading-message />
       </div>
     </div>
@@ -206,6 +264,9 @@ import LoadingMessage from './LoadingMessage';
 
 export default {
   name: 'ShardPage',
+  components: {
+    LoadingMessage,
+  },
   data() {
     return {
       globalData: store.data,
@@ -213,21 +274,18 @@ export default {
       id: '',
       timer: null,
       now: Date.now(),
-      showTx: true
+      showTx: true,
     };
-  },
-  components: {
-    LoadingMessage
-  },
-  watch: {
-    shard() {
-      this.resetTimer();
-    }
   },
   computed: {
     shard() {
       return this.globalData.shards[this.$route.params.id];
-    }
+    },
+  },
+  watch: {
+    shard() {
+      this.resetTimer();
+    },
   },
   mounted() {
     this.resetTimer();
@@ -239,7 +297,7 @@ export default {
       this.timer = setInterval(() => {
         this.now = Date.now();
       }, 1000);
-    }
-  }
+    },
+  },
 };
 </script>

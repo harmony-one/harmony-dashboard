@@ -5,7 +5,9 @@
 <template>
   <div class="transaction-page explorer-page page">
     <div class="transaction-body explorer-body">
-      <div class="container" v-if="!firstLoading || (!loading && transaction)">
+      <div
+v-if="!firstLoading || (!loading && transaction)" class="container"
+>
         <div class="explorer-card">
           <header>
             <h1>{{ isStaking ? 'Staking Transaction' : 'Transaction' }}</h1>
@@ -13,28 +15,40 @@
           <div class="explorer-card-body">
             <table class="explorer-table">
               <tr v-if="isStaking">
-                <td class="td-title">Type</td>
+                <td class="td-title">
+                  Type
+                </td>
                 <td>{{ transaction.type }}</td>
               </tr>
               <tr>
-                <td class="td-title">ID</td>
+                <td class="td-title">
+                  ID
+                </td>
                 <td>{{ transaction.hash || $route.params.transactionId }}</td>
               </tr>
               <tr>
-                <td class="td-title">Status</td>
+                <td class="td-title">
+                  Status
+                </td>
                 <td>{{ transaction.status | txStatus }}</td>
               </tr>
               <tr v-if="isFailedTransaction">
-                <td class="td-title">Reason</td>
+                <td class="td-title">
+                  Reason
+                </td>
                 <td>{{ transaction.message }}</td>
               </tr>
               <tr v-if="!isStaking">
-                <td class="td-title">Value</td>
+                <td class="td-title">
+                  Value
+                </td>
                 <td>{{ transaction.value | amount }}</td>
               </tr>
 
               <tr v-if="isStaking">
-                <td class="td-title">Value</td>
+                <td class="td-title">
+                  Value
+                </td>
                 <td>
                   <vue-json-pretty :data="transaction.msg" />
                 </td>
@@ -48,7 +62,9 @@
                 <td>{{ transaction.receivedTime }}</td>
               </tr>-->
               <tr>
-                <td class="td-title">Timestamp</td>
+                <td class="td-title">
+                  Timestamp
+                </td>
                 <td>
                   {{ (Number(transaction.timestamp) * 1000) | timestamp }}
                 </td>
@@ -64,43 +80,55 @@
                 <td>{{ transaction.shardID }}</td>
               </tr>
               <tr>
-                <td class="td-title">Sender shard block</td>
+                <td class="td-title">
+                  Sender shard block
+                </td>
                 <td>
-                  <router-link :to="'/block/' + transaction.blockHash">{{
-                    Number(transaction.blockNumber)
-                  }}</router-link>
+                  <router-link :to="'/block/' + transaction.blockHash">
+                    {{ Number(transaction.blockNumber) }}
+                  </router-link>
                 </td>
               </tr>
               <tr>
-                <td class="td-title">From Address</td>
+                <td class="td-title">
+                  From Address
+                </td>
                 <td>
                   <router-link
-                    :to="'/address/' + transaction.from"
                     v-if="transaction.from"
-                    >{{ transaction.from }}</router-link
+                    :to="'/address/' + transaction.from"
                   >
+                    {{ transaction.from }}
+                  </router-link>
                 </td>
               </tr>
               <tr v-if="transaction.shardID !== transaction.toShardID">
-                <td class="td-title">To Shard</td>
+                <td class="td-title">
+                  To Shard
+                </td>
                 <td>{{ transaction.toShardID }}</td>
               </tr>
               <tr v-if="receipt">
-                <td class="td-title">Receiving shard block</td>
+                <td class="td-title">
+                  Receiving shard block
+                </td>
                 <td>
-                  <router-link :to="'/block/' + receipt.blockHash">{{
-                    Number(receipt.blockNumber)
-                  }}</router-link>
+                  <router-link :to="'/block/' + receipt.blockHash">
+                    {{ Number(receipt.blockNumber) }}
+                  </router-link>
                 </td>
               </tr>
               <tr v-if="!isStaking">
-                <td class="td-title">To Address</td>
+                <td class="td-title">
+                  To Address
+                </td>
                 <td>
                   <router-link
-                    :to="'/address/' + transaction.to"
                     v-if="transaction.to"
-                    >{{ transaction.to }}</router-link
+                    :to="'/address/' + transaction.to"
                   >
+                    {{ transaction.to }}
+                  </router-link>
                 </td>
               </tr>
 
@@ -124,24 +152,32 @@
               <!--              </tr>-->
 
               <tr>
-                <td class="td-title">Network Fee</td>
+                <td class="td-title">
+                  Network Fee
+                </td>
                 <td>{{ normalizedGas() }} ONE</td>
               </tr>
               <tr v-if="sequence">
-                <td class="td-title">Sequence</td>
+                <td class="td-title">
+                  Sequence
+                </td>
                 <td>{{ sequence }}</td>
               </tr>
             </table>
 
             <expand-panel>
               <table class="explorer-table">
-                <tr></tr>
+                <tr />
                 <tr>
-                  <td class="td-title">Data (Hex)</td>
+                  <td class="td-title">
+                    Data (Hex)
+                  </td>
                   <td>{{ transaction.input || '-' }}</td>
                 </tr>
                 <tr>
-                  <td class="td-title">Data (UTF-8)</td>
+                  <td class="td-title">
+                    Data (UTF-8)
+                  </td>
                   <td>{{ hexToUTF8(transaction.input) || '-' }}</td>
                 </tr>
               </table>
@@ -149,7 +185,9 @@
           </div>
         </div>
       </div>
-      <div class="container" v-else>
+      <div
+v-else class="container"
+>
         <loading-message />
       </div>
     </div>
@@ -165,10 +203,15 @@ import ExpandPanel from '@/ui/ExpandPanel';
 
 export default {
   name: 'TransactionPage',
+  components: {
+    LoadingMessage,
+    VueJsonPretty,
+    ExpandPanel,
+  },
   props: {
     isStaking: {
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   data() {
     return {
@@ -177,22 +220,8 @@ export default {
       transaction: null,
       receipt: null,
       sequence: null,
-      globalData: store.data
+      globalData: store.data,
     };
-  },
-  components: {
-    LoadingMessage,
-    VueJsonPretty,
-    ExpandPanel
-  },
-  watch: {
-    $route() {
-      this.firstLoading = true;
-      this.getTransaction();
-    }
-  },
-  mounted() {
-    this.getTransaction();
   },
   computed: {
     isCrossShard() {
@@ -203,7 +232,16 @@ export default {
     },
     isFailedTransaction() {
       return this.transaction.status === 'FAILURE';
-    }
+    },
+  },
+  watch: {
+    $route() {
+      this.firstLoading = true;
+      this.getTransaction();
+    },
+  },
+  mounted() {
+    this.getTransaction();
   },
   methods: {
     getSequence() {
@@ -283,7 +321,7 @@ export default {
       return Intl.NumberFormat('en-US', { maximumFractionDigits: 18 }).format(
         fee
       );
-    }
-  }
+    },
+  },
 };
 </script>

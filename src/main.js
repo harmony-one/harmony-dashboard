@@ -1,45 +1,45 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from "vue";
-import App from "./App";
-import router from "./router";
-import VueScrollTo from "vue-scrollto";
-import Highcharts from "highcharts";
-import HighchartsVue from "highcharts-vue";
-import Notifications from 'vue-notification'
+import Vue from 'vue';
+import App from './App';
+import router from './router';
+import VueScrollTo from 'vue-scrollto';
+import Highcharts from 'highcharts';
+import HighchartsVue from 'highcharts-vue';
+import Notifications from 'vue-notification';
 
-import "./filter";
-import "./icon";
+import './filter';
+import './icon';
 
 Vue.use(VueScrollTo, {
-  offset: -68
+  offset: -68,
 });
 
 Vue.config.productionTip = false;
 
 Vue.component(
-  "shard-summary",
-  require("./components/ShardSummary.vue").default
+  'shard-summary',
+  require('./components/ShardSummary.vue').default
 );
 Vue.component(
-  "global-summary",
-  require("./components/GlobalSummary.vue").default
+  'global-summary',
+  require('./components/GlobalSummary.vue').default
 );
 Vue.component(
-  "live-line-chart",
-  require("./components/LiveLineChart.vue").default
+  'live-line-chart',
+  require('./components/LiveLineChart.vue').default
 );
 
 Highcharts.setOptions({
   global: {
-    useUTC: false
+    useUTC: false,
   },
   lang: {
-    thousandsSep: ","
+    thousandsSep: ',',
   },
   credits: {
-    enabled: false
-  }
+    enabled: false,
+  },
 });
 Vue.use(HighchartsVue);
 Vue.use(Notifications);
@@ -47,5 +47,5 @@ Vue.use(Notifications);
 /* eslint-disable no-new */
 new Vue({
   router,
-  render: h => h(App)
-}).$mount("#app");
+  render: h => h(App),
+}).$mount('#app');

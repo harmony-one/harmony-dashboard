@@ -30,18 +30,22 @@
   <div class="dashboard-page page">
     <div class="dashboard-body">
       <div
-        class="container"
         v-if="Object.keys(globalData.shardSummaries).length"
+        class="container"
       >
-        <global-summary :summary="globalData.globalSummary"></global-summary>
+        <global-summary :summary="globalData.globalSummary" />
         <shard-summary
-          :summary="summary"
           v-for="(summary, key) in globalData.shardSummaries"
           :key="key"
-        ></shard-summary>
+          :summary="summary"
+        />
       </div>
-      <div class="container flex-hv-center" v-else>
-        <div class="placeholder-text">No Data</div>
+      <div
+v-else class="container flex-hv-center"
+>
+        <div class="placeholder-text">
+          No Data
+        </div>
       </div>
     </div>
   </div>
@@ -54,9 +58,9 @@ export default {
   name: 'DashboardPage',
   data() {
     return {
-      globalData: store.data
+      globalData: store.data,
     };
   },
-  mounted() {}
+  mounted() {},
 };
 </script>

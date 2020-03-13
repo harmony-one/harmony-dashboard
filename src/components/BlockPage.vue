@@ -5,7 +5,9 @@
 <template>
   <div class="block-page explorer-page page">
     <div class="block-body explorer-body">
-      <div class="container" v-if="!loading && block">
+      <div
+v-if="!loading && block" class="container"
+>
         <div class="explorer-card">
           <header>
             <h1>Block #{{ block.height }}</h1>
@@ -14,23 +16,31 @@
             <section>
               <table class="explorer-table">
                 <tr>
-                  <td class="td-title">ID</td>
+                  <td class="td-title">
+                    ID
+                  </td>
                   <td>{{ block.id }}</td>
                 </tr>
                 <tr>
-                  <td class="td-title">Number of Transactions</td>
+                  <td class="td-title">
+                    Number of Transactions
+                  </td>
                   <td>
-                    <router-link :to="'/block/' + block.id + '/txs'">{{
-                      block.txCount | number
-                    }}</router-link>
+                    <router-link :to="'/block/' + block.id + '/txs'">
+                      {{ block.txCount | number }}
+                    </router-link>
                   </td>
                 </tr>
                 <tr>
-                  <td class="td-title">Height</td>
+                  <td class="td-title">
+                    Height
+                  </td>
                   <td>{{ block.height | number }}</td>
                 </tr>
                 <tr>
-                  <td class="td-title">Timestamp</td>
+                  <td class="td-title">
+                    Timestamp
+                  </td>
                   <td>{{ block.timestamp | timestamp }}</td>
                 </tr>
                 <!-- <tr>
@@ -38,33 +48,47 @@
                   <td>{{ block.merkleRoot }}</td>
                 </tr>-->
                 <tr>
-                  <td class="td-title">Size (bytes)</td>
+                  <td class="td-title">
+                    Size (bytes)
+                  </td>
                   <td>{{ block.bytes }}</td>
                 </tr>
                 <tr>
-                  <td class="td-title">Included In Shard</td>
+                  <td class="td-title">
+                    Included In Shard
+                  </td>
                   <td>{{ block.shardID | number }}</td>
                 </tr>
                 <tr>
-                  <td class="td-title">Previous Block</td>
-                  <td v-if="block.prevBlock && block.prevBlock.id">
-                    <router-link :to="'/block/' + block.prevBlock.id">{{
-                      block.prevBlock.height | number
-                    }}</router-link>
+                  <td class="td-title">
+                    Previous Block
                   </td>
-                  <td v-else>-</td>
+                  <td v-if="block.prevBlock && block.prevBlock.id">
+                    <router-link :to="'/block/' + block.prevBlock.id">
+                      {{ block.prevBlock.height | number }}
+                    </router-link>
+                  </td>
+                  <td v-else>
+                    -
+                  </td>
                 </tr>
                 <tr>
-                  <td class="td-title">Next Block</td>
-                  <td v-if="block.nextBlock && block.nextBlock.id">
-                    <router-link :to="'/block/' + block.nextBlock.id">{{
-                      block.nextBlock.height | number
-                    }}</router-link>
+                  <td class="td-title">
+                    Next Block
                   </td>
-                  <td v-else>-</td>
+                  <td v-if="block.nextBlock && block.nextBlock.id">
+                    <router-link :to="'/block/' + block.nextBlock.id">
+                      {{ block.nextBlock.height | number }}
+                    </router-link>
+                  </td>
+                  <td v-else>
+                    -
+                  </td>
                 </tr>
                 <tr v-if="block.extraData">
-                  <td class="td-title">Extra Data</td>
+                  <td class="td-title">
+                    Extra Data
+                  </td>
                   <td>{{ block.extraData }}</td>
                 </tr>
               </table>
@@ -98,7 +122,9 @@
           </div>
         </div>
       </div>
-      <div class="container" v-else>
+      <div
+v-else class="container"
+>
         <loading-message />
       </div>
     </div>
@@ -111,19 +137,19 @@ import LoadingMessage from './LoadingMessage';
 
 export default {
   name: 'BlockPage',
+  components: {
+    LoadingMessage,
+  },
   data() {
     return {
       loading: true,
-      block: null
+      block: null,
     };
-  },
-  components: {
-    LoadingMessage
   },
   watch: {
     $route() {
       this.getBlock();
-    }
+    },
   },
   mounted() {
     this.getBlock();
@@ -135,7 +161,7 @@ export default {
         .getBlock(this.$route.params.blockId)
         .then(block => (this.block = block))
         .finally(() => (this.loading = false));
-    }
-  }
+    },
+  },
 };
 </script>

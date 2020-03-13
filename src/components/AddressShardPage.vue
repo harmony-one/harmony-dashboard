@@ -5,7 +5,9 @@
 <template>
   <div class="address-page explorer-page page">
     <div class="address-body explorer-body">
-      <div class="container" v-if="!loading && address">
+      <div
+v-if="!loading && address" class="container"
+>
         <div class="explorer-card">
           <header>
             <h1>Address</h1>
@@ -15,19 +17,27 @@
             <section>
               <table class="explorer-table">
                 <tr>
-                  <td class="td-title">id</td>
+                  <td class="td-title">
+                    id
+                  </td>
                   <td>{{ address.id }}</td>
                 </tr>
                 <tr>
-                  <td class="td-title">Shard</td>
+                  <td class="td-title">
+                    Shard
+                  </td>
                   <td>{{ $route.params.shardId }}</td>
                 </tr>
                 <tr>
-                  <td class="td-title">Balance</td>
+                  <td class="td-title">
+                    Balance
+                  </td>
                   <td>{{ address.balance | amount }}</td>
                 </tr>
                 <tr>
-                  <td class="td-title">Transactions</td>
+                  <td class="td-title">
+                    Transactions
+                  </td>
                   <td>{{ address.txCount }}</td>
                 </tr>
               </table>
@@ -36,22 +46,24 @@
         </div>
         <div class="explorer-card">
           <header>
-            <h1 class="flex-grow">Transactions</h1>
+            <h1 class="flex-grow">
+              Transactions
+            </h1>
             <div class="pagination-controls">
               <span class="total-tx-num">{{ txCount }} txs</span>
               <span class="page-controllers">
                 <span class="page-navigator">
                   <button
                     class="btn btn-light btn-icon-only"
-                    @click="first()"
                     :disabled="pageIndex === 0"
+                    @click="first()"
                   >
                     <font-awesome-icon icon="angle-double-left" />
                   </button>
                   <button
                     class="btn btn-light btn-icon-only"
-                    @click="prev()"
                     :disabled="pageIndex === 0"
+                    @click="prev()"
                   >
                     <font-awesome-icon icon="chevron-left" />
                   </button>
@@ -60,15 +72,15 @@
                   >
                   <button
                     class="btn btn-light btn-icon-only"
-                    @click="next()"
                     :disabled="pageIndex === pageCount - 1"
+                    @click="next()"
                   >
                     <font-awesome-icon icon="chevron-right" />
                   </button>
                   <button
                     class="btn btn-light btn-icon-only"
-                    @click="last()"
                     :disabled="pageIndex === pageCount - 1"
+                    @click="last()"
                   >
                     <font-awesome-icon icon="angle-double-right" />
                   </button>
@@ -88,20 +100,20 @@
               </tr>
               <tr v-for="tx in txs" :key="tx.hash">
                 <td>
-                  <router-link :to="'/tx/' + tx.hash">{{
-                    tx.hash | shorten
-                  }}</router-link>
+                  <router-link :to="'/tx/' + tx.hash">
+                    {{ tx.hash | shorten }}
+                  </router-link>
                 </td>
                 <td>{{ (Number(tx.timestamp) * 1000) | timestamp }}</td>
                 <td>
-                  <router-link :to="'/address/' + tx.from">{{
-                    tx.from | shorten
-                  }}</router-link>
+                  <router-link :to="'/address/' + tx.from">
+                    {{ tx.from | shorten }}
+                  </router-link>
                 </td>
                 <td>
-                  <router-link :to="'/address/' + tx.to">{{
-                    tx.to | shorten
-                  }}</router-link>
+                  <router-link :to="'/address/' + tx.to">
+                    {{ tx.to | shorten }}
+                  </router-link>
                 </td>
                 <td>{{ tx.value | amount }}</td>
                 <td>{{ tx | fee }}</td>
@@ -110,7 +122,9 @@
           </div>
         </div>
       </div>
-      <div class="container" v-else>
+      <div
+v-else class="container"
+>
         <loading-message />
       </div>
     </div>
@@ -123,6 +137,9 @@ import LoadingMessage from './LoadingMessage';
 
 export default {
   name: 'AddressShardPage',
+  components: {
+    LoadingMessage,
+  },
   data() {
     return {
       loading: true,
@@ -130,11 +147,8 @@ export default {
       shardId: -1,
       pageIndex: 0,
       pageSize: 10,
-      txs: null
+      txs: null,
     };
-  },
-  components: {
-    LoadingMessage
   },
   computed: {
     txCount() {
@@ -143,7 +157,7 @@ export default {
     },
     pageCount() {
       return Math.ceil(this.txCount / this.pageSize);
-    }
+    },
   },
   watch: {
     $route(to) {
@@ -169,7 +183,7 @@ export default {
         .then(txs => {
           this.txs = txs;
         });
-    }
+    },
   },
   mounted() {
     this.getAddress().then(() => {
@@ -207,7 +221,7 @@ export default {
       if (index >= this.pageCount) index = this.pageCount - 1;
       this.$router.replace({
         name: 'AddressShardPage',
-        params: { pageIndex: index + 1 }
+        params: { pageIndex: index + 1 },
       });
     },
     first() {
@@ -223,7 +237,7 @@ export default {
     next() {
       if (this.pageIndex === this.pageCount - 1) return;
       this.goToPage(this.pageIndex + 1);
-    }
-  }
+    },
+  },
 };
 </script>

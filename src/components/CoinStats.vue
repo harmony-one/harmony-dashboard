@@ -5,7 +5,9 @@
 <template>
   <div class="metrics-summary">
     <div class="justify-between">
-      <h1 class="flex-grow stats-title">Coin Stats</h1>
+      <h1 class="flex-grow stats-title">
+        Coin Stats
+      </h1>
       <div class="timer">
         Updated {{ Math.round((now - this.stats.updateTime) / 1000) | number }}s
         ago...
@@ -20,9 +22,13 @@
             col-lg-3"
       >
         <div class="dashboard-card">
-          <div class="card-title">Price</div>
+          <div class="card-title">
+            Price
+          </div>
           <div class="justify-between">
-            <div class="card-value currency">{{ stats.price | currency }}</div>
+            <div class="card-value currency">
+              {{ stats.price | currency }}
+            </div>
             <div class="card-value" :style="stylePriceChanged">
               {{ stats.priceChange1d + '%' }}
             </div>
@@ -37,7 +43,9 @@
             col-lg-3"
       >
         <div class="dashboard-card">
-          <div class="card-title">Volume 24H</div>
+          <div class="card-title">
+            Volume 24H
+          </div>
           <div class="card-value currency">
             {{ stats.volume | bigCurrency }}
           </div>
@@ -51,7 +59,9 @@
             col-lg-3"
       >
         <div class="dashboard-card">
-          <div class="card-title">Market Cap</div>
+          <div class="card-title">
+            Market Cap
+          </div>
           <div class="card-value currency">
             {{ stats.marketCap | bigCurrency }}
           </div>
@@ -65,7 +75,9 @@
             col-lg-3"
       >
         <div class="dashboard-card">
-          <div class="card-title">Total Supply ONEs</div>
+          <div class="card-title">
+            Total Supply ONEs
+          </div>
           <div class="card-value currency">
             {{ stats.totalSupply | bigCurrencyOne }}
           </div>
@@ -81,54 +93,57 @@ import numeral from 'numeral';
 numeral.register('locale', 'us', {
   delimiters: {
     thousands: ',',
-    decimal: '.'
+    decimal: '.',
   },
   abbreviations: {
     thousand: 'K',
     million: 'M',
     billion: 'B',
-    trillion: 'T'
+    trillion: 'T',
   },
   ordinal: function(number) {
     return number === 1 ? 'er' : 'ème';
   },
   currency: {
-    symbol: '$'
-  }
+    symbol: '$',
+  },
 });
 
 numeral.locale('us');
 
 export default {
   name: 'CoinStats',
-  props: ['stats'],
   filters: {
     currency: value =>
       new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
-        maximumSignificantDigits: 5
+        maximumSignificantDigits: 5,
       }).format(value),
     bigCurrency: value => numeral(value).format('$ 0.00 a'),
-    bigCurrencyOne: value => numeral(value).format('0.00 a')
+    bigCurrencyOne: value => numeral(value).format('0.00 a'),
   },
+  props: ['stats'],
   data() {
     return {
       timer: null,
-      now: Date.now()
+      now: Date.now(),
     };
-  },
-  watch: {
-    stats() {
-      this.resetTimer();
-    }
   },
   computed: {
     stylePriceChanged() {
       return {
-        color: this.stats.priceChange1d > 0 ? 'green' : 'red'
+        color: this.stats.priceChange1d > 0 ? 'green' : 'red',
       };
-    }
+    },
+  },
+  watch: {
+    stats() {
+      this.resetTimer();
+    },
+  },
+  mounted() {
+    this.resetTimer();
   },
   methods: {
     resetTimer() {
@@ -137,10 +152,7 @@ export default {
       this.timer = setInterval(() => {
         this.now = Date.now();
       }, 1000);
-    }
+    },
   },
-  mounted() {
-    this.resetTimer();
-  }
 };
 </script>

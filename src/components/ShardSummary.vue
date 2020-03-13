@@ -17,8 +17,12 @@
             col-lg-3"
       >
         <div class="dashboard-card">
-          <div class="card-title"># of Blocks</div>
-          <div class="card-value number">{{ summary.blockCount | number }}</div>
+          <div class="card-title">
+            # of Blocks
+          </div>
+          <div class="card-value number">
+            {{ summary.blockCount | number }}
+          </div>
         </div>
       </div>
       <div
@@ -28,8 +32,12 @@
             col-lg-3"
       >
         <div class="dashboard-card">
-          <div class="card-title"># of Transactions</div>
-          <div class="card-value number">{{ summary.txCount | number }}</div>
+          <div class="card-title">
+            # of Transactions
+          </div>
+          <div class="card-value number">
+            {{ summary.txCount | number }}
+          </div>
         </div>
       </div>
       <div
@@ -39,8 +47,12 @@
             col-lg-3"
       >
         <div class="dashboard-card">
-          <div class="card-title"># of Nodes Online</div>
-          <div class="card-value number">{{ summary.nodeCount | number }}</div>
+          <div class="card-title">
+            # of Nodes Online
+          </div>
+          <div class="card-value number">
+            {{ summary.nodeCount | number }}
+          </div>
         </div>
       </div>
       <div
@@ -50,8 +62,12 @@
             col-lg-3"
       >
         <div class="dashboard-card">
-          <div class="card-title">Transaction Per Second</div>
-          <div class="card-value number">{{ summary.tps | decimal }}</div>
+          <div class="card-title">
+            Transaction Per Second
+          </div>
+          <div class="card-value number">
+            {{ summary.tps | decimal }}
+          </div>
         </div>
       </div>
       <div
@@ -61,8 +77,12 @@
             col-lg-3"
       >
         <div class="dashboard-card">
-          <div class="card-title">Max TPS</div>
-          <div class="card-value number">{{ summary.maxTps | decimal }}</div>
+          <div class="card-title">
+            Max TPS
+          </div>
+          <div class="card-value number">
+            {{ summary.maxTps | decimal }}
+          </div>
         </div>
       </div>
       <div
@@ -72,7 +92,9 @@
             col-lg-3"
       >
         <div class="dashboard-card">
-          <div class="card-title">Block Latency</div>
+          <div class="card-title">
+            Block Latency
+          </div>
           <div class="card-value number">
             {{ summary.blockLatency | decimal }}s
           </div>
@@ -87,12 +109,14 @@
             col-lg-6"
       >
         <div class="dashboard-card">
-          <div class="card-title">Latest Block Hashes</div>
+          <div class="card-title">
+            Latest Block Hashes
+          </div>
           <div class="card-value hashes">
             <div
-              class="hash"
               v-for="(hash, index) in summary.latestBlockHashes"
               :key="index"
+              class="hash"
             >
               {{ hash || '#' }}
             </div>
@@ -106,12 +130,14 @@
             col-lg-6"
       >
         <div class="dashboard-card">
-          <div class="card-title">Latest Transaction Hashes</div>
+          <div class="card-title">
+            Latest Transaction Hashes
+          </div>
           <div class="card-value hashes">
             <div
-              class="hash"
               v-for="(hash, index) in summary.latestTxHashes"
               :key="index"
+              class="hash"
             >
               {{ hash || '#' }}
             </div>
@@ -129,13 +155,16 @@ export default {
   data() {
     return {
       timer: null,
-      now: Date.now()
+      now: Date.now(),
     };
   },
   watch: {
     summary() {
       this.resetTimer();
-    }
+    },
+  },
+  mounted() {
+    this.resetTimer();
   },
   methods: {
     resetTimer() {
@@ -144,10 +173,7 @@ export default {
       this.timer = setInterval(() => {
         this.now = Date.now();
       }, 1000);
-    }
+    },
   },
-  mounted() {
-    this.resetTimer();
-  }
 };
 </script>

@@ -5,7 +5,9 @@
 <template>
   <div class="address-page explorer-page page">
     <div class="address-body explorer-body">
-      <div class="container" v-if="!loading && address">
+      <div
+v-if="!loading && address" class="container"
+>
         <div class="explorer-card">
           <header>
             <h1>Address</h1>
@@ -15,15 +17,21 @@
             <section>
               <table class="explorer-table">
                 <tr>
-                  <td class="td-title">id</td>
+                  <td class="td-title">
+                    id
+                  </td>
                   <td>{{ address.id }}</td>
                 </tr>
                 <tr>
-                  <td class="td-title">Balance</td>
+                  <td class="td-title">
+                    Balance
+                  </td>
                   <td>{{ address.balance | amount }}</td>
                 </tr>
                 <tr>
-                  <td class="td-title">Transactions</td>
+                  <td class="td-title">
+                    Transactions
+                  </td>
                   <td>{{ txCount | number }}</td>
                 </tr>
               </table>
@@ -31,23 +39,31 @@
           </div>
         </div>
         <div
-          class="explorer-card"
           v-for="(shard, index) in address.shardData"
           :key="index"
+          class="explorer-card"
         >
           <header>
             <h1>Shard {{ index }}</h1>
           </header>
           <div class="explorer-card-body">
             <section>
-              <div v-if="shard.err" class="text-error">{{ shard.err }}</div>
-              <table class="explorer-table" v-else>
+              <div v-if="shard.err" class="text-error">
+                {{ shard.err }}
+              </div>
+              <table
+v-else class="explorer-table"
+>
                 <tr>
-                  <td class="td-title">Balance</td>
+                  <td class="td-title">
+                    Balance
+                  </td>
                   <td>{{ shard.balance | amount }}</td>
                 </tr>
                 <tr>
-                  <td class="td-title">Transactions</td>
+                  <td class="td-title">
+                    Transactions
+                  </td>
                   <td>{{ shard.txCount | number }}</td>
                 </tr>
               </table>
@@ -55,9 +71,11 @@
           </div>
         </div>
 
-        <transactions-table :allTxs="allTxs" with-shards="true" />
+        <transactions-table :all-txs="allTxs" with-shards="true" />
       </div>
-      <div class="container" v-else>
+      <div
+v-else class="container"
+>
         <loading-message />
       </div>
     </div>
@@ -71,26 +89,26 @@ import TransactionsTable from './TransactionsTable';
 
 export default {
   name: 'AddressPage',
+  components: {
+    LoadingMessage,
+    TransactionsTable,
+  },
   data() {
     return {
       loading: true,
       address: null,
-      allTxs: []
+      allTxs: [],
     };
-  },
-  components: {
-    LoadingMessage,
-    TransactionsTable
   },
   computed: {
     txCount() {
       return this.allTxs.length;
-    }
+    },
   },
   watch: {
     $route() {
       this.getAddress();
-    }
+    },
   },
   mounted() {
     this.getAddress();
@@ -116,7 +134,7 @@ export default {
           );
           this.loading = false;
         });
-    }
-  }
+    },
+  },
 };
 </script>

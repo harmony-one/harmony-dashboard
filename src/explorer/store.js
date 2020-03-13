@@ -32,7 +32,7 @@ let store = {
     txCount: 0,
     stakingTxCount: 0,
     nodeCount: 0,
-    lastUpdateTime: 0
+    lastUpdateTime: 0,
   },
 
   update(data) {
@@ -133,7 +133,7 @@ let store = {
     this.data.nodeCount = 0;
     this.data.nodes = {};
     this.data.shardCount = 0;
-  }
+  },
 };
 
 export default store;

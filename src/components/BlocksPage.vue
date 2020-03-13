@@ -8,7 +8,9 @@
       <div class="container">
         <div class="explorer-card">
           <header>
-            <h1 class="flex-grow">Blocks</h1>
+            <h1 class="flex-grow">
+              Blocks
+            </h1>
             <div class="pagination-controls">
               <span class="total-block-num"
                 >{{ globalData.blockCount }} blocks</span
@@ -17,15 +19,15 @@
                 <span class="page-navigator">
                   <button
                     class="btn btn-light btn-icon-only"
-                    @click="first()"
                     :disabled="pageIndex === 0"
+                    @click="first()"
                   >
                     <font-awesome-icon icon="angle-double-left" />
                   </button>
                   <button
                     class="btn btn-light btn-icon-only"
-                    @click="prev()"
                     :disabled="pageIndex === 0"
+                    @click="prev()"
                   >
                     <font-awesome-icon icon="chevron-left" />
                   </button>
@@ -34,15 +36,15 @@
                   >
                   <button
                     class="btn btn-light btn-icon-only"
-                    @click="next()"
                     :disabled="pageIndex === pageCount - 1"
+                    @click="next()"
                   >
                     <font-awesome-icon icon="chevron-right" />
                   </button>
                   <button
                     class="btn btn-light btn-icon-only"
-                    @click="last()"
                     :disabled="pageIndex === pageCount - 1"
+                    @click="last()"
                   >
                     <font-awesome-icon icon="angle-double-right" />
                   </button>
@@ -57,7 +59,9 @@
             </div>
           </header>
           <div class="explorer-card-body">
-            <table class="explorer-table" v-if="blocks.length">
+            <table
+v-if="blocks.length" class="explorer-table"
+>
               <tr>
                 <th>Shard</th>
                 <th>Hash</th>
@@ -65,28 +69,37 @@
                 <th>Timestamp</th>
                 <th>Age</th>
                 <!-- <th class="text-right">Transactions</th> -->
-                <th class="text-right">Size (bytes)</th>
+                <th class="text-right">
+                  Size (bytes)
+                </th>
               </tr>
-              <tr class="container" v-for="block in blocks" :key="block.id">
+              <tr
+v-for="block in blocks" class="container"
+:key="block.id"
+>
                 <td>
                   <!-- <router-link :to="'/shard/' + block.shardID"> -->
                   {{ block.shardID }}
                   <!-- </router-link> -->
                 </td>
                 <td>
-                  <router-link :to="'/block/' + block.id">{{
-                    block.id | shorten
-                  }}</router-link>
+                  <router-link :to="'/block/' + block.id">
+                    {{ block.id | shorten }}
+                  </router-link>
                 </td>
                 <td>
-                  <router-link :to="'/block/' + block.id">{{
-                    block.height
-                  }}</router-link>
+                  <router-link :to="'/block/' + block.id">
+                    {{ block.height }}
+                  </router-link>
                 </td>
                 <td>{{ block.timestamp | timestamp }}</td>
                 <td>{{ block.timestamp | age }}</td>
-                <td class="text-right">{{ block.txCount }}</td>
-                <td class="text-right">{{ block.bytes }}</td>
+                <td class="text-right">
+                  {{ block.txCount }}
+                </td>
+                <td class="text-right">
+                  {{ block.bytes }}
+                </td>
               </tr>
             </table>
 
@@ -107,16 +120,27 @@ import LoadingMessage from './LoadingMessage';
 
 export default {
   name: 'BlocksPage',
+  components: {
+    LoadingMessage,
+  },
   data() {
     return {
       globalData: store.data,
       blocks: [],
       pageIndex: 0,
-      pageSize: 50
+      pageSize: 50,
     };
   },
-  components: {
-    LoadingMessage
+  computed: {
+    pageCount() {
+      return Math.ceil(this.globalData.blockCount / this.pageSize);
+    },
+  },
+  watch: {
+    $route(to) {
+      this.pageIndex = (+to.params.pageIndex || 1) - 1;
+      this.getBlocks();
+    },
   },
   mounted() {
     if (this.$route.params.pageIndex) {
@@ -124,24 +148,13 @@ export default {
     }
     this.getBlocks();
   },
-  watch: {
-    $route(to) {
-      this.pageIndex = (+to.params.pageIndex || 1) - 1;
-      this.getBlocks();
-    }
-  },
-  computed: {
-    pageCount() {
-      return Math.ceil(this.globalData.blockCount / this.pageSize);
-    }
-  },
   methods: {
     goToPage(index) {
       if (index < 0) index = 0;
       if (index >= this.pageCount) index = this.pageCount - 1;
       this.$router.replace({
         name: 'BlocksPage',
-        params: { pageIndex: index + 1 }
+        params: { pageIndex: index + 1 },
       });
     },
     first() {
@@ -163,7 +176,7 @@ export default {
       service.getBlocks(this.pageIndex, this.pageSize).then(blocks => {
         this.blocks = blocks;
       });
-    }
-  }
+    },
+  },
 };
 </script>

@@ -2,20 +2,22 @@
   <div class="vue-expand-panel">
     <div class="item-container">
       <div class="content" :class="{ 'content-height': openBar === true }">
-        <slot></slot>
+        <slot />
       </div>
       <div
         class="index-bar"
-        @click="clickBar()"
         :class="{ 'index-bar-border-radius': openBar === true }"
+        @click="clickBar()"
       >
         <div class="right-arrow">
           <div
             class="arrow"
             :class="{ 'rolling-in-the-deep': openBar === true }"
-          ></div>
+          />
         </div>
-        <div class="left-index">{{ !openBar ? 'Show more' : 'Hide' }}</div>
+        <div class="left-index">
+          {{ !openBar ? 'Show more' : 'Hide' }}
+        </div>
       </div>
     </div>
   </div>
@@ -23,18 +25,18 @@
 
 <script>
 export default {
-  name: 'expand-panel',
+  name: 'ExpandPanel',
   data() {
     return {
-      openBar: false
+      openBar: false,
     };
   },
   methods: {
     clickBar() {
       const currentOpenBar = this.openBar;
       this.openBar = !currentOpenBar;
-    }
-  }
+    },
+  },
 };
 </script>
 

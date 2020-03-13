@@ -5,7 +5,9 @@
 <template>
   <div class="address-page explorer-page page">
     <div class="address-body explorer-body">
-      <div class="container" v-if="!loading">
+      <div
+v-if="!loading" class="container"
+>
         <div class="explorer-card">
           <header>
             <h1>Block</h1>
@@ -15,15 +17,19 @@
             <section>
               <table class="explorer-table">
                 <tr>
-                  <td class="td-title">Number</td>
+                  <td class="td-title">
+                    Number
+                  </td>
                   <td>
-                    <router-link :to="'/block/' + block.id">{{
-                      block.height
-                    }}</router-link>
+                    <router-link :to="'/block/' + block.id">
+                      {{ block.height }}
+                    </router-link>
                   </td>
                 </tr>
                 <tr>
-                  <td class="td-title">Transactions</td>
+                  <td class="td-title">
+                    Transactions
+                  </td>
                   <td>{{ block.txCount | number }}</td>
                 </tr>
               </table>
@@ -31,9 +37,11 @@
           </div>
         </div>
 
-        <transactions-table :allTxs="block.txs" />
+        <transactions-table :all-txs="block.txs" />
       </div>
-      <div class="container" v-else>
+      <div
+v-else class="container"
+>
         <loading-message />
       </div>
     </div>
@@ -49,20 +57,20 @@ const isObject = value => typeof value === 'object';
 
 export default {
   name: 'TransactionsByBlockPage',
+  components: {
+    TransactionsTable,
+    LoadingMessage,
+  },
   data() {
     return {
       loading: true,
-      block: null
+      block: null,
     };
-  },
-  components: {
-    TransactionsTable,
-    LoadingMessage
   },
   watch: {
     $route() {
       this.getBlock();
-    }
+    },
   },
   mounted() {
     this.getBlock();
@@ -82,14 +90,14 @@ export default {
               from: isObject(tx.from) ? tx.from.bech32 : tx.from,
               to: isObject(tx.to) ? tx.to.bech32 : tx.to,
               hash: tx.id,
-              timestamp: tx.timestamp / 1000
+              timestamp: tx.timestamp / 1000,
             }))
             .sort((a, b) =>
               Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
             );
         })
         .finally(() => (this.loading = false));
-    }
-  }
+    },
+  },
 };
 </script>

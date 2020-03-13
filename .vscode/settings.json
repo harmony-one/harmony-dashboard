@@ -8,7 +8,29 @@
     "*.js": "javascriptreact"
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
   "prettier.singleQuote": true,
-  "editor.formatOnPaste": false
+  "editor.formatOnPaste": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": [
+    "vue",
+    "vue-html",
+    "javascript",
+    "javascriptreact",
+  ],
+  /* ... other options skipped */
+  "eslint.enable": true,
+  "eslint.run": "onType",
+  "vetur.format.defaultFormatter.js": "prettier",
+  "vetur.format.defaultFormatter.css": "prettier",
+  "vetur.format.defaultFormatter.less": "prettier",
+  "vetur.format.defaultFormatter.postcss": "prettier",
+  "vetur.format.defaultFormatter.scss": "prettier",
+  // at the time of this writing there is no stylus support by prettier
+  "vetur.format.defaultFormatter.stylus": "stylus-supremacy",
+  "vetur.format.defaultFormatter.ts": "prettier",
+  "vetur.validation.style": true,
+  // Validate vue-html in <template> using eslint-plugin-vue
+  "vetur.validation.template": true
 }

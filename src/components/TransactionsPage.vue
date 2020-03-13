@@ -8,22 +8,24 @@
       <div class="container">
         <div class="explorer-card">
           <header>
-            <h1 class="flex-grow">Transactions</h1>
+            <h1 class="flex-grow">
+              Transactions
+            </h1>
             <div class="pagination-controls">
               <span class="total-tx-num">{{ globalData.txCount }} txs</span>
               <span class="page-controllers">
                 <span class="page-navigator">
                   <button
                     class="btn btn-light btn-icon-only"
-                    @click="first()"
                     :disabled="pageIndex === 0"
+                    @click="first()"
                   >
                     <font-awesome-icon icon="angle-double-left" />
                   </button>
                   <button
                     class="btn btn-light btn-icon-only"
-                    @click="prev()"
                     :disabled="pageIndex === 0"
+                    @click="prev()"
                   >
                     <font-awesome-icon icon="chevron-left" />
                   </button>
@@ -32,15 +34,15 @@
                   >
                   <button
                     class="btn btn-light btn-icon-only"
-                    @click="next()"
                     :disabled="pageIndex === pageCount - 1"
+                    @click="next()"
                   >
                     <font-awesome-icon icon="chevron-right" />
                   </button>
                   <button
                     class="btn btn-light btn-icon-only"
-                    @click="last()"
                     :disabled="pageIndex === pageCount - 1"
+                    @click="last()"
                   >
                     <font-awesome-icon icon="angle-double-right" />
                   </button>
@@ -49,46 +51,65 @@
             </div>
           </header>
           <div class="explorer-card-body">
-            <table class="explorer-table" v-if="txs.length">
+            <table
+v-if="txs.length" class="explorer-table"
+>
               <tr>
                 <th>Shard</th>
                 <th>Hash</th>
                 <th>From</th>
                 <th>To</th>
                 <th>Age</th>
-                <th class="text-right">Value</th>
-                <th class="text-right">Txn Fee</th>
-                <th class="text-right">Size (bytes)</th>
+                <th class="text-right">
+                  Value
+                </th>
+                <th class="text-right">
+                  Txn Fee
+                </th>
+                <th class="text-right">
+                  Size (bytes)
+                </th>
               </tr>
-              <tr class="container" v-for="tx in txs" :key="tx.id">
+              <tr
+v-for="tx in txs" class="container"
+:key="tx.id"
+>
                 <td>
                   <!-- <router-link :to="'/shard/' + tx.shardID"> -->
                   {{ tx.shardID }}
                   <!-- </router-link> -->
                 </td>
                 <td>
-                  <router-link :to="'/tx/' + tx.id">{{
-                    tx.id | shorten
-                  }}</router-link>
+                  <router-link :to="'/tx/' + tx.id">
+                    {{ tx.id | shorten }}
+                  </router-link>
                 </td>
                 <td>
                   <router-link
                     v-if="tx.from.bech32"
                     :to="'/address/' + tx.from.bech32"
-                    >{{ tx.from.bech32 | shorten }}</router-link
                   >
+                    {{ tx.from.bech32 | shorten }}
+                  </router-link>
                 </td>
                 <td>
                   <router-link
                     v-if="tx.to.bech32"
                     :to="'/address/' + tx.to.bech32"
-                    >{{ tx.to.bech32 | shorten }}</router-link
                   >
+                    {{ tx.to.bech32 | shorten }}
+                  </router-link>
                 </td>
                 <td>{{ tx.timestamp | age }}</td>
-                <td class="text-right no-break">{{ tx.value | amount }}</td>
-                <td class="text-right no-break">{{ tx | fee }}</td>
-                <td class="text-right">{{ tx.bytes }}</td>
+                <td class="text-right no-break">
+                  {{ tx.value | amount }}
+                </td>
+                <td class="text-right no-break">
+                  {{ tx | fee }}
+                </td>
+                <td class="text-right">
+                  {{ tx.bytes }}
+                </td>
               </tr>
             </table>
 
@@ -109,16 +130,27 @@ import LoadingMessage from './LoadingMessage';
 
 export default {
   name: 'TransactionsPage',
+  components: {
+    LoadingMessage,
+  },
   data() {
     return {
       globalData: store.data,
       txs: [],
       pageIndex: 0,
-      pageSize: 50
+      pageSize: 50,
     };
   },
-  components: {
-    LoadingMessage
+  computed: {
+    pageCount() {
+      return Math.ceil(this.globalData.txCount / this.pageSize);
+    },
+  },
+  watch: {
+    $route(to) {
+      this.pageIndex = (+to.params.pageIndex || 1) - 1;
+      this.getTransactions();
+    },
   },
   mounted() {
     if (this.$route.params.pageIndex) {
@@ -126,24 +158,13 @@ export default {
     }
     this.getTransactions();
   },
-  watch: {
-    $route(to) {
-      this.pageIndex = (+to.params.pageIndex || 1) - 1;
-      this.getTransactions();
-    }
-  },
-  computed: {
-    pageCount() {
-      return Math.ceil(this.globalData.txCount / this.pageSize);
-    }
-  },
   methods: {
     goToPage(index) {
       if (index < 0) index = 0;
       if (index >= this.pageCount) index = this.pageCount - 1;
       this.$router.replace({
         name: 'TransactionsPage',
-        params: { pageIndex: index + 1 }
+        params: { pageIndex: index + 1 },
       });
     },
     first() {
@@ -165,7 +186,7 @@ export default {
       service.getTransactions(this.pageIndex, this.pageSize).then(txs => {
         this.txs = txs;
       });
-    }
-  }
+    },
+  },
 };
 </script>

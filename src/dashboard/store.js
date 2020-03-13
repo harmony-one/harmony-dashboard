@@ -1,4 +1,4 @@
-import Vue from "vue";
+import Vue from 'vue';
 
 class GlobalSummary {
   tps = 0;
@@ -33,7 +33,7 @@ let store = {
     globalSummary: {},
 
     blocks: [],
-    blockMap: {}
+    blockMap: {},
   },
   reset() {
     this.data.shardSummaries = {};
@@ -62,7 +62,7 @@ let store = {
   setBlock(block) {
     if (!block) return;
     Vue.set(this.data.blockMap, block.id, block);
-  }
+  },
 };
 
 export default store;

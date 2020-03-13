@@ -114,23 +114,28 @@
     <div class="container">
       <div class="navbar-header">
         <div class="site-brand flex-horizontal">
-          <router-link class="navbar-brand" to="/"></router-link>
+          <router-link
+class="navbar-brand" to="/" />
           <span class="tagline">Open Consensus for 10B</span>
         </div>
         <div class="navbar-actions">
-          <router-link class="navbar-nav" to="/dashboard" v-if="showNav"
-            >Dashboard</router-link
-          >
-          <router-link class="navbar-nav" to="/blocks" v-if="showNav"
-            >Explorer</router-link
-          >
+          <router-link class="navbar-nav" to="/dashboard"
+v-if="showNav"
+>
+            Dashboard
+          </router-link>
+          <router-link class="navbar-nav" to="/blocks"
+v-if="showNav"
+>
+            Explorer
+          </router-link>
           <div>
             <div class="search">
               <font-awesome-icon class="search-icon" icon="search" />
               <input
+                v-model="input"
                 type="text"
                 placeholder="Block Hash / Tx Hash / Account..."
-                v-model="input"
                 @keyup.enter="search"
               />
             </div>
@@ -139,9 +144,9 @@
                 <template slot="body" slot-scope="props">
                   <div class="searchError">
                     <a class="close" @click="props.close">
-                      <i class="fa fa-fw fa-close"></i>
+                      <i class="fa fa-fw fa-close" />
                     </a>
-                    <div v-html="props.item.text"></div>
+                    <div v-html="props.item.text" />
                   </div>
                 </template>
               </notifications>
@@ -160,7 +165,7 @@ export default {
   data() {
     return {
       input: '',
-      showNav: localStorage.getItem('nav')
+      showNav: localStorage.getItem('nav'),
     };
   },
   methods: {
@@ -195,10 +200,10 @@ export default {
             position: 'top center',
             type: 'search-error',
             text: 'Search failed: ' + errMessage,
-            duration: 3000
+            duration: 3000,
           });
         });
-    }
-  }
+    },
+  },
 };
 </script>

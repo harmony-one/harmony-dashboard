@@ -298,7 +298,7 @@ export default {
   name: 'App',
   components: {
     SiteFooter,
-    SiteHeader
-  }
+    SiteHeader,
+  },
 };
 </script>

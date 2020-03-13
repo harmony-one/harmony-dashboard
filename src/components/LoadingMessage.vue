@@ -17,14 +17,16 @@
 <template>
   <div class="loading-message flex-hv-center">
     <div>
-      <i class="loading-spinner"></i>
-      <div class="loading-message-text">Loading...</div>
+      <i class="loading-spinner" />
+      <div class="loading-message-text">
+        Loading...
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'LoadingMessage'
+  name: 'LoadingMessage',
 };
 </script>

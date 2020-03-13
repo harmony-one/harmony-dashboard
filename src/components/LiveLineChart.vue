@@ -3,7 +3,7 @@
 </style>
 
 <template>
-  <div id="container"></div>
+  <div id="container" />
 </template>
 
 <script>
@@ -16,7 +16,7 @@ export default {
   props: ['value', 'title', 'data'],
   data() {
     return {
-      series: null
+      series: null,
     };
   },
   watch: {
@@ -26,12 +26,12 @@ export default {
         true, // do redraw
         false // don't shift out points
       );
-    }
+    },
   },
   mounted() {
     let options = {
       chart: {
-        type: 'spline'
+        type: 'spline',
       },
 
       rangeSelector: {
@@ -39,47 +39,47 @@ export default {
           {
             count: 1,
             type: 'minute',
-            text: '1M'
+            text: '1M',
           },
           {
             count: 5,
             type: 'minute',
-            text: '5M'
+            text: '5M',
           },
           {
             type: 'all',
-            text: 'All'
-          }
+            text: 'All',
+          },
         ],
         inputEnabled: false,
-        selected: 2
+        selected: 2,
       },
 
       title: {
-        text: this.title
+        text: this.title,
       },
 
       plotOptions: {
         series: {
           marker: {
-            enabled: true
-          }
-        }
+            enabled: true,
+          },
+        },
       },
 
       series: [
         {
           name: this.title,
-          data: this.data
-        }
+          data: this.data,
+        },
       ],
 
       tooltip: {
-        valueDecimals: 2
-      }
+        valueDecimals: 2,
+      },
     };
     let chart = Highcharts.stockChart('container', options);
     this.series = chart.series[0];
-  }
+  },
 };
 </script>

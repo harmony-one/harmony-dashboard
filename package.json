@@ -8,7 +8,14 @@
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "elint": "eslint --ext .js,.vue src test",
+    "elint-autofix": "eslint --ext .js,.vue src --fix",
+    "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",
+    "start": "http-server -p 2000 dist --ssl --cert $CERT_FILE --key $KEY_FILE",
     "serve": "http-server -p 2000 dist --ssl --cert $CERT_FILE --key $KEY_FILE"
+  },
+  "engines": {
+    "node": "10.x.x"
   },
   "dependencies": {
     "@fortawesome/fontawesome": "^1.1.8",
@@ -38,14 +45,18 @@
     "@vue/cli-plugin-router": "^4.1.0",
     "@vue/cli-service": "^4.1.0",
     "@vue/eslint-config-prettier": "^5.0.0",
-    "babel-eslint": "^10.0.3",
-    "eslint": "^5.16.0",
-    "eslint-plugin-prettier": "^3.1.1",
-    "eslint-plugin-vue": "^5.0.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-loader": "^3.0.3",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-vue": "^5.2.3",
     "http-server": "^0.12.1",
     "less": "^3.0.4",
     "less-loader": "^5.0.0",
+    "npx": "^10.2.2",
     "prettier": "^1.19.1",
+    "prettier-eslint-cli": "^5.0.0",
     "vue-template-compiler": "^2.6.10"
   }
 }

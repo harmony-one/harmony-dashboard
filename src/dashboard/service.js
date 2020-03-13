@@ -2,14 +2,14 @@ import axios from 'axios';
 import store from './store';
 
 const BACKEND_URL = `${window.location.hostname}:3000`;
-const HTTP_BACKEND_URL = `https://${BACKEND_URL}`;
+const HTTP_BACKEND_URL = `http://${BACKEND_URL}`;
 
 function sendPost(url, params, config) {
   return axios.post(HTTP_BACKEND_URL + url, params, config);
 }
 
 (function listenWebsocket() {
-  const ws = new WebSocket(`wss://${BACKEND_URL}`);
+  const ws = new WebSocket(`ws://${BACKEND_URL}`);
   ws.addEventListener('open', () => {
     ws.send('front-end: Hi.');
   });
@@ -35,5 +35,5 @@ function sendPost(url, params, config) {
 export default {
   reset(secret) {
     return sendPost('/reset', { secret });
-  }
+  },
 };
