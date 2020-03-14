@@ -13,9 +13,7 @@
 <template>
   <div class="shard-page explorer-page page">
     <div class="shard-body explorer-body">
-      <div
-v-if="shard" class="container"
->
+      <div v-if="shard" class="container">
         <h1 class="page-title">Shard {{ $route.params.id }}</h1>
         <div class="explorer-card status-card">
           <div class="row">
@@ -116,16 +114,11 @@ v-if="shard" class="container"
                 <div class="th text-right">
                   Age
                 </div>
-                <div
-v-if="showTx" class="th text-right"
->
+                <div v-if="showTx" class="th text-right">
                   Transactions
                 </div>
               </div>
-              <div
-v-for="block in shard.blocks" class="tr"
-:key="block.id"
->
+              <div v-for="block in shard.blocks" :key="block.id" class="tr">
                 <div class="td">
                   <router-link :to="'/shard/' + block.shardID">
                     {{ block.shardID }}
@@ -147,9 +140,7 @@ v-for="block in shard.blocks" class="tr"
                 <div class="td text-right">
                   {{ block.timestamp | age }}
                 </div>
-                <div
-v-if="showTx" class="td text-right"
->
+                <div v-if="showTx" class="td text-right">
                   {{ block.txCount }}
                 </div>
               </div>
@@ -204,10 +195,7 @@ v-if="showTx" class="td text-right"
                   Txn Fee
                 </div>
               </div>
-              <div
-v-for="tx in shard.txs" class="tr"
-:key="tx.id"
->
+              <div v-for="tx in shard.txs" :key="tx.id" class="tr">
                 <div class="td">
                   <router-link :to="'/shard/' + tx.shardID">
                     {{ tx.shardID }}
@@ -249,9 +237,7 @@ v-for="tx in shard.txs" class="tr"
           </footer>-->
         </div>
       </div>
-      <div
-v-else class="container"
->
+      <div v-else class="container">
         <loading-message />
       </div>
     </div>

@@ -114,19 +114,14 @@
     <div class="container">
       <div class="navbar-header">
         <div class="site-brand flex-horizontal">
-          <router-link
-class="navbar-brand" to="/" />
+          <router-link class="navbar-brand" to="/" />
           <span class="tagline">Open Consensus for 10B</span>
         </div>
         <div class="navbar-actions">
-          <router-link class="navbar-nav" to="/dashboard"
-v-if="showNav"
->
+          <router-link v-if="showNav" class="navbar-nav" to="/dashboard">
             Dashboard
           </router-link>
-          <router-link class="navbar-nav" to="/blocks"
-v-if="showNav"
->
+          <router-link v-if="showNav" class="navbar-nav" to="/blocks">
             Explorer
           </router-link>
           <div>

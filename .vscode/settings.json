@@ -1,27 +1,27 @@
 {
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+
+  "prettier.singleQuote": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": false,
+  "vetur.format.defaultFormatter.html": "none",
+  "javascript.format.enable": false,
+  "[javascript]": { "editor.formatOnSave": false },
   "[markdown]": {
     "editor.formatOnSave": true,
     "editor.renderWhitespace": "all",
     "editor.acceptSuggestionOnEnter": "off"
   },
-  "files.associations": {
-    "*.js": "javascriptreact"
-  },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "prettier.singleQuote": true,
-  "editor.formatOnPaste": false,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  },
-  "eslint.validate": [
-    "vue",
-    "vue-html",
-    "javascript",
-    "javascriptreact",
-  ],
-  /* ... other options skipped */
   "eslint.enable": true,
   "eslint.run": "onType",
+  "eslint.alwaysShowStatus": true,
+  "eslint.options": {
+    "extensions": [".html", ".js", ".vue", ".jsx"]
+  },
+  "eslint.validate": ["html", "vue", "javascript", "javascriptreact"],
   "vetur.format.defaultFormatter.js": "prettier",
   "vetur.format.defaultFormatter.css": "prettier",
   "vetur.format.defaultFormatter.less": "prettier",

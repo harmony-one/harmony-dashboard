@@ -35,12 +35,8 @@
 <template>
   <div class="home-page explorer-page page">
     <div class="home-body explorer-body">
-      <div
-v-if="globalData.blocks.length" class="container"
->
-        <div
-v-if="!!coinStats" class="explorer-card status-card"
->
+      <div v-if="globalData.blocks.length" class="container">
+        <div v-if="!!coinStats" class="explorer-card status-card">
           <CoinStats :stats="coinStats" />
         </div>
 
@@ -145,9 +141,7 @@ v-if="!!coinStats" class="explorer-card status-card"
                     <div class="th text-right">
                       Age
                     </div>
-                    <div
-v-if="showTx" class="th text-right"
->
+                    <div v-if="showTx" class="th text-right">
                       Transactions
                     </div>
                   </div>
@@ -177,9 +171,7 @@ v-if="showTx" class="th text-right"
                     <div class="td text-right">
                       {{ block.timestamp | age }}
                     </div>
-                    <div
-v-if="showTx" class="td text-right"
->
+                    <div v-if="showTx" class="td text-right">
                       {{ block.txCount }}
                     </div>
                   </div>
@@ -195,9 +187,7 @@ v-if="showTx" class="td text-right"
             </div>
           </div>
 
-          <div
-v-if="showTx" class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
->
+          <div v-if="showTx" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="explorer-card latest-block-card">
               <header>
                 <h1 class="flex-grow">
@@ -240,10 +230,7 @@ v-if="showTx" class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
                       Txn Fee
                     </div>
                   </div>
-                  <div
-v-for="tx in globalData.txs" class="tr"
-:key="tx.id"
->
+                  <div v-for="tx in globalData.txs" :key="tx.id" class="tr">
                     <div class="td">
                       <router-link :to="'/shard/' + tx.shardID">
                         {{ tx.shardID }}
@@ -380,9 +367,7 @@ v-for="tx in globalData.txs" class="tr"
           </div>
         </div>
       </div>
-      <div
-v-else class="container"
->
+      <div v-else class="container">
         <loading-message />
       </div>
     </div>

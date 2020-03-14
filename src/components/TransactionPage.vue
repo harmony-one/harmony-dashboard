@@ -5,9 +5,7 @@
 <template>
   <div class="transaction-page explorer-page page">
     <div class="transaction-body explorer-body">
-      <div
-v-if="!firstLoading || (!loading && transaction)" class="container"
->
+      <div v-if="!firstLoading || (!loading && transaction)" class="container">
         <div class="explorer-card">
           <header>
             <h1>{{ isStaking ? 'Staking Transaction' : 'Transaction' }}</h1>
@@ -185,9 +183,7 @@ v-if="!firstLoading || (!loading && transaction)" class="container"
           </div>
         </div>
       </div>
-      <div
-v-else class="container"
->
+      <div v-else class="container">
         <loading-message />
       </div>
     </div>
@@ -246,6 +242,7 @@ export default {
   methods: {
     getSequence() {
       const data = this.transaction.input;
+      if (!data) return;
       const re = /.+?7c7c((30|31|32|33|34|35|36|37|38|39|4c|52|55|44)+) 7c7c0*$/;
       const match = data.match(re);
       if (match && match[1] && match[1].length % 2 == 0) {

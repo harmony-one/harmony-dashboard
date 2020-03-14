@@ -5,9 +5,7 @@
 <template>
   <div class="address-page explorer-page page">
     <div class="address-body explorer-body">
-      <div
-v-if="!loading && address" class="container"
->
+      <div v-if="!loading && address" class="container">
         <div class="explorer-card">
           <header>
             <h1>Address</h1>
@@ -51,9 +49,7 @@ v-if="!loading && address" class="container"
               <div v-if="shard.err" class="text-error">
                 {{ shard.err }}
               </div>
-              <table
-v-else class="explorer-table"
->
+              <table v-else class="explorer-table">
                 <tr>
                   <td class="td-title">
                     Balance
@@ -73,9 +69,7 @@ v-else class="explorer-table"
 
         <transactions-table :all-txs="allTxs" with-shards="true" />
       </div>
-      <div
-v-else class="container"
->
+      <div v-else class="container">
         <loading-message />
       </div>
     </div>

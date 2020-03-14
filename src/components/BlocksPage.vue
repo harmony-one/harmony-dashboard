@@ -12,9 +12,9 @@
               Blocks
             </h1>
             <div class="pagination-controls">
-              <span class="total-block-num"
-                >{{ globalData.blockCount }} blocks</span
-              >
+              <span class="total-block-num">
+                {{ globalData.blockCount }} blocks
+              </span>
               <span class="page-controllers">
                 <span class="page-navigator">
                   <button
@@ -31,9 +31,9 @@
                   >
                     <font-awesome-icon icon="chevron-left" />
                   </button>
-                  <span class="pagination-nums"
-                    >{{ pageIndex + 1 }} / {{ pageCount }}</span
-                  >
+                  <span class="pagination-nums">
+                    {{ pageIndex + 1 }} / {{ pageCount }}
+                  </span>
                   <button
                     class="btn btn-light btn-icon-only"
                     :disabled="pageIndex === pageCount - 1"
@@ -59,9 +59,7 @@
             </div>
           </header>
           <div class="explorer-card-body">
-            <table
-v-if="blocks.length" class="explorer-table"
->
+            <table v-if="blocks.length" class="explorer-table">
               <tr>
                 <th>Shard</th>
                 <th>Hash</th>
@@ -73,10 +71,7 @@ v-if="blocks.length" class="explorer-table"
                   Size (bytes)
                 </th>
               </tr>
-              <tr
-v-for="block in blocks" class="container"
-:key="block.id"
->
+              <tr v-for="block in blocks" :key="block.id" class="container">
                 <td>
                   <!-- <router-link :to="'/shard/' + block.shardID"> -->
                   {{ block.shardID }}

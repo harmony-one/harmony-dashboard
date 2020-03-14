@@ -26,9 +26,9 @@
             >
               <font-awesome-icon icon="chevron-left" />
             </button>
-            <span class="pagination-nums"
-              >{{ pageIndex + 1 }} / {{ pageCount }}</span
-            >
+            <span class="pagination-nums">
+              {{ pageIndex + 1 }} / {{ pageCount }}
+            </span>
             <button
               class="btn btn-light btn-icon-only"
               :disabled="pageIndex === pageCount - 1"

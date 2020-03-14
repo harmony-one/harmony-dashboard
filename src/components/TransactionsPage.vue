@@ -29,9 +29,9 @@
                   >
                     <font-awesome-icon icon="chevron-left" />
                   </button>
-                  <span class="pagination-nums"
-                    >{{ pageIndex + 1 }} / {{ pageCount }}</span
-                  >
+                  <span class="pagination-nums">
+                    {{ pageIndex + 1 }} / {{ pageCount }}
+                  </span>
                   <button
                     class="btn btn-light btn-icon-only"
                     :disabled="pageIndex === pageCount - 1"
@@ -51,9 +51,7 @@
             </div>
           </header>
           <div class="explorer-card-body">
-            <table
-v-if="txs.length" class="explorer-table"
->
+            <table v-if="txs.length" class="explorer-table">
               <tr>
                 <th>Shard</th>
                 <th>Hash</th>
@@ -70,10 +68,7 @@ v-if="txs.length" class="explorer-table"
                   Size (bytes)
                 </th>
               </tr>
-              <tr
-v-for="tx in txs" class="container"
-:key="tx.id"
->
+              <tr v-for="tx in txs" :key="tx.id" class="container">
                 <td>
                   <!-- <router-link :to="'/shard/' + tx.shardID"> -->
                   {{ tx.shardID }}

@@ -5,9 +5,7 @@
 <template>
   <div class="address-page explorer-page page">
     <div class="address-body explorer-body">
-      <div
-v-if="!loading && address" class="container"
->
+      <div v-if="!loading && address" class="container">
         <div class="explorer-card">
           <header>
             <h1>Address</h1>
@@ -67,8 +65,8 @@ v-if="!loading && address" class="container"
                   >
                     <font-awesome-icon icon="chevron-left" />
                   </button>
-                  <span class="pagination-nums"
-                    >{{ pageIndex + 1 }} / {{ pageCount }}</span
+                  <span class="pagination-nums">
+                    {{ pageIndex + 1 }} / {{ pageCount }}</span
                   >
                   <button
                     class="btn btn-light btn-icon-only"
@@ -122,9 +120,7 @@ v-if="!loading && address" class="container"
           </div>
         </div>
       </div>
-      <div
-v-else class="container"
->
+      <div v-else class="container">
         <loading-message />
       </div>
     </div>
