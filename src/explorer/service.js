@@ -35,7 +35,7 @@ function sendGet(url, params) {
 }
 
 (function listenWebsocket() {
-  const ws = new WebSocket(`ws://${BACKEND_URL}`, [SECRET]);
+  const ws = new WebSocket(`wss://${BACKEND_URL}`, [SECRET]);
 
   ws.addEventListener('open', () => {
     ws.send('front-end: Hi.');
