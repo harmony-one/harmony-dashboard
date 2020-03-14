@@ -40,9 +40,11 @@ let store = {
     this.data.globalSummary = {};
   },
   update(data) {
-    Object.values(data.shardSummaries).forEach(summary => {
-      Vue.set(this.data.shardSummaries, summary.key, summary);
-    });
+    if (data && data.shardSummaries) {
+      Object.values(data.shardSummaries).forEach(summary => {
+        Vue.set(this.data.shardSummaries, summary.key, summary);
+      });
+    }
 
     let globalSummary = new GlobalSummary(this.data.shardSummaries);
     if (data.globalSummary) {
