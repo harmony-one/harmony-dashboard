@@ -126,7 +126,7 @@
                 </div>
                 <div class="td">
                   <router-link :to="'/block/' + block.id">
-                    block.id | shorten }}
+                    {{ block.id | shorten }}
                   </router-link>
                 </div>
                 <div class="td">
