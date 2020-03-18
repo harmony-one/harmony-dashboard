@@ -13,7 +13,7 @@
     "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",
     "format": "prettier --write './*.js'",
     "start": "http-server -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE",
-    "serve": "http-server -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE > http.log"
+    "serve": "http-server -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE > http.log 2>&1 &"
   },
   "engines": {
     "node": "10.x.x"
