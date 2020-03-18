@@ -11,8 +11,9 @@
     "elint": "eslint --ext .js,.vue src test",
     "elint-autofix": "eslint --ext .js,.vue src --fix",
     "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",
+    "format": "prettier --write './*.js'",
     "start": "http-server -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE",
-    "serve": "http-server -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE"
+    "serve": "http-server -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE > http.log"
   },
   "engines": {
     "node": "10.x.x"

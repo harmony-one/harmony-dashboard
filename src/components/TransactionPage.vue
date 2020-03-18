@@ -253,6 +253,7 @@ export default {
       const routeTxId = this.$route.params.transactionId;
 
       if (txId && txId !== routeTxId) {
+        console.log(`transaction ${routeTxId} not found.`);
         return;
       }
 
@@ -269,8 +270,17 @@ export default {
             transaction.id &&
             transaction.id !== this.$route.params.transactionId
           ) {
+            console.log(
+              `transaction ${routeTxId} not found. data: ` +
+                `${JSON.stringify(transaction)}`
+            );
             return;
           }
+
+          // console.log(
+          //   `transaction ${routeTxId} found. data: ` +
+          //     `${JSON.stringify(transaction)}`
+          // );
 
           this.transaction = transaction;
           this.firstLoading = false;
