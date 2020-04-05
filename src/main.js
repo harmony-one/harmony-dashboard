@@ -8,6 +8,8 @@ import Highcharts from 'highcharts';
 import HighchartsVue from 'highcharts-vue';
 import Notifications from 'vue-notification';
 
+Vue.config.devtools = true;
+
 import './filter';
 import './icon';
 
