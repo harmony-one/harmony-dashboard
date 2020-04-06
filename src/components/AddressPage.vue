@@ -137,8 +137,8 @@ export default {
             data.stakingTxs.forEach(tx => {
               stakingTxs[tx.hash] = {
                 ...tx,
-                delegator: tx.msg.delegatorAddress || tx.from,
-                validator: tx.msg.validatorAddress || tx.from,
+                delegator: tx.msg.delegatorAddress,
+                validator: tx.msg.validatorAddress,
               };
             });
           });
