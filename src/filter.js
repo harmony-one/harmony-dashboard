@@ -34,8 +34,8 @@ export function formatAge(timestamp) {
 }
 
 export function formatAmount(amount) {
-  if (amount === undefined) {
-    return '-';
+  if (amount === undefined || amount === null) {
+    return 0;
   }
 
   const value = Number(amount) / 10 ** 18;

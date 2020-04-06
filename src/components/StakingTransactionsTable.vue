@@ -51,11 +51,12 @@
       <section>
         <table class="explorer-table">
           <tr>
-            <th v-if="!withShards">
+            <th>
               Shard
             </th>
             <th>TxHash</th>
             <th>Timestamp</th>
+            <th>Type</th>
             <th>Validator</th>
             <th>Delegator</th>
             <th>Value</th>
@@ -63,20 +64,28 @@
           </tr>
           <tr v-for="tx in txs" :key="tx.hash">
             <td>
-              <router-link :to="'/tx/' + tx.hash">
+              {{ tx.shardID }}
+            </td>
+            <td>
+              <router-link :to="'/staking-tx/' + tx.hash">
                 {{ tx.hash | shorten }}
               </router-link>
             </td>
             <td>{{ (Number(tx.timestamp) * 1000) | timestamp }}</td>
             <td>
-              <router-link :to="'/address/' + tx.validator">
-                {{ tx.validator | shorten }}
-              </router-link>
+              {{ tx.type }}
             </td>
             <td>
-              <router-link :to="'/address/' + tx.from">
+              <router-link :to="'/address/' + tx.validator" v-if="tx.validator">
+                {{ tx.validator | shorten }}
+              </router-link>
+              <div v-else>-</div>
+            </td>
+            <td>
+              <router-link :to="'/address/' + tx.from" v-if="tx.delegator">
                 {{ tx.delegator | shorten }}
               </router-link>
+              <div v-else>-</div>
             </td>
             <td class="no-break">
               {{ tx.value | amount }}

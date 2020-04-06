@@ -133,12 +133,14 @@ export default {
             });
           });
 
-          address.shardData.forEach(data => {
+          address.shardData.forEach((data, idx) => {
             data.stakingTxs.forEach(tx => {
               stakingTxs[tx.hash] = {
                 ...tx,
+                shardID: idx,
                 delegator: tx.msg.delegatorAddress,
                 validator: tx.msg.validatorAddress,
+                value: tx.msg.amount,
               };
             });
           });
