@@ -304,13 +304,16 @@
                       Hash
                     </div>
                     <div class="th">
+                      Age
+                    </div>
+                    <div class="th">
+                      Type
+                    </div>
+                    <div class="th">
                       Validator
                     </div>
                     <div class="th">
                       Delegator
-                    </div>
-                    <div class="th">
-                      Age
                     </div>
                     <div class="th">
                       Value
@@ -335,17 +338,28 @@
                       </router-link>
                     </div>
                     <div class="td">
-                      <router-link :to="'/address/' + tx.validator.bech32">
+                      {{ tx.timestamp | age }}
+                    </div>
+                    <div class="td">
+                      {{ tx.type }}
+                    </div>
+                    <div class="td">
+                      <router-link
+                        :to="'/address/' + tx.validator.bech32"
+                        v-if="tx.validator.bech32"
+                      >
                         {{ tx.validator.bech32 | shorten }}
                       </router-link>
+                      <div v-else>-</div>
                     </div>
                     <div class="td">
-                      <router-link :to="'/address/' + tx.delegator.bech32">
+                      <router-link
+                        :to="'/address/' + tx.delegator.bech32"
+                        v-if="tx.delegator.bech32"
+                      >
                         {{ tx.delegator.bech32 | shorten }}
                       </router-link>
-                    </div>
-                    <div class="td">
-                      {{ tx.timestamp | age }}
+                      <div v-else>-</div>
                     </div>
                     <div class="td no-break">
                       {{ tx.value | amount }}

@@ -62,12 +62,19 @@
                   </td>
                   <td>{{ shard.txCount | number }}</td>
                 </tr>
+                <tr>
+                  <td class="td-title">
+                    Staking transactions
+                  </td>
+                  <td>{{ shard.stakingTxCount | number }}</td>
+                </tr>
               </table>
             </section>
           </div>
         </div>
 
-        <transactions-table :all-txs="allTxs" with-shards="true" />
+        <TransactionsTable :all-txs="allTxs" with-shards="true" />
+        <StakingTransactionsTable :all-txs="stakingTxs" with-shards="true" />
       </div>
       <div v-else class="container">
         <loading-message />
@@ -80,12 +87,14 @@
 import service from '../explorer/service';
 import LoadingMessage from './LoadingMessage';
 import TransactionsTable from './TransactionsTable';
+import StakingTransactionsTable from './StakingTransactionsTable';
 
 export default {
   name: 'AddressPage',
   components: {
     LoadingMessage,
     TransactionsTable,
+    StakingTransactionsTable,
   },
   data() {
     return {
@@ -111,8 +120,12 @@ export default {
     getAddress() {
       this.loading = true;
       let txs = {};
+      let stakingTxs = {};
+
+      const address = this.$route.params.address;
+
       service
-        .getAddress(this.$route.params.address)
+        .getAddress(address)
         .then(address => {
           address.shardData.forEach(data => {
             data.txs.forEach(tx => {
@@ -120,10 +133,26 @@ export default {
             });
           });
 
+          address.shardData.forEach((data, idx) => {
+            data.stakingTxs.forEach(tx => {
+              stakingTxs[tx.hash] = {
+                ...tx,
+                shardID: idx,
+                delegator: tx.msg.delegatorAddress,
+                validator: tx.msg.validatorAddress,
+                value: tx.msg.amount,
+              };
+            });
+          });
+
           this.address = address;
         })
         .finally(() => {
           this.allTxs = Object.values(txs).sort((a, b) =>
+            Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
+          );
+
+          this.stakingTxs = Object.values(stakingTxs).sort((a, b) =>
             Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
           );
           this.loading = false;
