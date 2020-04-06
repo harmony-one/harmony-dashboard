@@ -62,6 +62,12 @@
                   </td>
                   <td>{{ shard.txCount | number }}</td>
                 </tr>
+                <tr>
+                  <td class="td-title">
+                    Staking transactions
+                  </td>
+                  <td>{{ shard.stakingTxCount | number }}</td>
+                </tr>
               </table>
             </section>
           </div>
@@ -115,8 +121,11 @@ export default {
       this.loading = true;
       let txs = {};
       let stakingTxs = {};
+
+      const address = this.$route.params.address;
+
       service
-        .getAddress(this.$route.params.address)
+        .getAddress(address)
         .then(address => {
           address.shardData.forEach(data => {
             data.txs.forEach(tx => {
@@ -126,7 +135,11 @@ export default {
 
           address.shardData.forEach(data => {
             data.stakingTxs.forEach(tx => {
-              stakingTxs[tx.hash] = tx;
+              stakingTxs[tx.hash] = {
+                ...tx,
+                delegator: tx.msg.delegatorAddress || tx.from,
+                validator: tx.msg.validatorAddress || tx.from,
+              };
             });
           });
 

@@ -56,35 +56,26 @@
             </th>
             <th>TxHash</th>
             <th>Timestamp</th>
-            <th v-if="withShards">
-              From ShardID
-            </th>
-            <th v-if="withShards">
-              To ShardID
-            </th>
+            <th>Validator</th>
             <th>Delegator</th>
             <th>Value</th>
             <th>Txn Fee</th>
           </tr>
           <tr v-for="tx in txs" :key="tx.hash">
-            <td v-if="!withShards">
-              {{ tx.shardID }}
-            </td>
             <td>
               <router-link :to="'/tx/' + tx.hash">
                 {{ tx.hash | shorten }}
               </router-link>
             </td>
             <td>{{ (Number(tx.timestamp) * 1000) | timestamp }}</td>
-            <td v-if="withShards">
-              {{ tx.shardID }}
-            </td>
-            <td v-if="withShards">
-              {{ tx.toShardID }}
+            <td>
+              <router-link :to="'/address/' + tx.validator">
+                {{ tx.validator | shorten }}
+              </router-link>
             </td>
             <td>
               <router-link :to="'/address/' + tx.from">
-                {{ tx.from | shorten }}
+                {{ tx.delegator | shorten }}
               </router-link>
             </td>
             <td class="no-break">
@@ -152,67 +143,4 @@ export default {
     },
   },
 };
-
-// <div class="explorer-card-body">
-//         <div class="explorer-table-responsive latest-tx-table">
-//         <div class="tr">
-//         <div class="th">
-//         Shard
-//         </div>
-//         <div class="th">
-//         Hash
-//         </div>
-//         <div class="th">
-//         Validator
-//         </div>
-//         <div class="th">
-//         Delegator
-//         </div>
-//         <div class="th">
-//         Age
-//         </div>
-//         <div class="th">
-//         Value
-//         </div>
-//         <div class="th text-right">
-//         Txn Fee
-// </div>
-// </div>
-// <div
-// v-for="tx in globalData.stakingTxs"
-//   :key="tx.id"
-// class="tr"
-//         >
-//         <div class="td">
-//         <router-link :to="'/shard/' + tx.shardID">
-//         {{ tx.shardID }}
-// </router-link>
-// </div>
-// <div class="td">
-//         <router-link :to="'/staking-tx/' + tx.id">
-//         {{ tx.id | shorten }}
-// </router-link>
-// </div>
-// <div class="td">
-//         <router-link :to="'/address/' + tx.validator.bech32">
-//         {{ tx.validator.bech32 | shorten }}
-// </router-link>
-// </div>
-// <div class="td">
-//         <router-link :to="'/address/' + tx.delegator.bech32">
-//         {{ tx.delegator.bech32 | shorten }}
-// </router-link>
-// </div>
-// <div class="td">
-//         {{ tx.timestamp | age }}
-// </div>
-// <div class="td no-break">
-//         {{ tx.value | amount }}
-// </div>
-// <div class="td text-right no-break">
-//         {{ tx | fee }}
-// </div>
-// </div>
-// </div>
-// </div>
 </script>
