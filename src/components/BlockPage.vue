@@ -31,6 +31,16 @@
                 </tr>
                 <tr>
                   <td class="td-title">
+                    Number of Staking Transactions
+                  </td>
+                  <td>
+                    <router-link :to="'/block/' + block.id + '/txs'">
+                      {{ block.stakingTxCount | number }}
+                    </router-link>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="td-title">
                     Height
                   </td>
                   <td>{{ block.height | number }}</td>

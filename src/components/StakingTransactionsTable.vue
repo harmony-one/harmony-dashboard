@@ -76,16 +76,20 @@
               {{ tx.type }}
             </td>
             <td>
-              <router-link :to="'/address/' + tx.validator" v-if="tx.validator">
+              <router-link v-if="tx.validator" :to="'/address/' + tx.validator">
                 {{ tx.validator | shorten }}
               </router-link>
-              <div v-else>-</div>
+              <div v-else>
+                -
+              </div>
             </td>
             <td>
-              <router-link :to="'/address/' + tx.from" v-if="tx.delegator">
+              <router-link v-if="tx.delegator" :to="'/address/' + tx.from">
                 {{ tx.delegator | shorten }}
               </router-link>
-              <div v-else>-</div>
+              <div v-else>
+                -
+              </div>
             </td>
             <td class="no-break">
               {{ tx.value | amount }}
@@ -102,8 +106,8 @@
 
 <script>
 export default {
-  name: 'TransactionsTable',
-  props: ['allTxs', 'withShards'],
+  name: 'StakingTransactionsTable',
+  props: ['allStakingTxs', 'withShards'],
   data() {
     return {
       loading: true,
@@ -113,7 +117,7 @@ export default {
   },
   computed: {
     txCount() {
-      return this.allTxs.length;
+      return this.allStakingTxs.length;
     },
     pageCount() {
       return Math.ceil(this.txCount / this.pageSize);
@@ -121,11 +125,11 @@ export default {
     txs() {
       const begin = this.pageIndex * this.pageSize;
 
-      return this.allTxs.slice(begin, begin + this.pageSize);
+      return this.allStakingTxs.slice(begin, begin + this.pageSize);
     },
   },
   watch: {
-    allTxs() {
+    allStakingTxs() {
       this.pageIndex = 0;
     },
   },

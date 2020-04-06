@@ -34,6 +34,7 @@
     "moment": "^2.23.0",
     "moment-timezone": "^0.5.27",
     "numeral": "^2.0.6",
+    "promise": "^8.1.0",
     "vue": "^2.6.10",
     "vue-json-pretty": "^1.6.3",
     "vue-notification": "^1.3.20",

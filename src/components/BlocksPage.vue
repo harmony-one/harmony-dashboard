@@ -93,6 +93,9 @@
                   {{ block.txCount }}
                 </td>
                 <td class="text-right">
+                  {{ block.stakingTxCount }}
+                </td>
+                <td class="text-right">
                   {{ block.bytes }}
                 </td>
               </tr>
