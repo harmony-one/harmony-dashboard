@@ -49,11 +49,26 @@
           </div>
         </div>
 
-        <TransactionsTable :all-txs="allTxs" with-shards="false" />
         <StakingTransactionsTable
-          :all-staking-txs="allStakingTxs"
-          with-shards="false"
-        />
+          v-if="showStaking"
+          :all-staking-txs="stakingTxs"
+          with-shards="true"
+        >
+          <slot>
+            <TransactionTableTabs
+              :value="showStaking"
+              :on-change="value => (showStaking = value)"
+            />
+          </slot>
+        </StakingTransactionsTable>
+        <TransactionsTable v-else :all-txs="allTxs" with-shards="true">
+          <slot>
+            <TransactionTableTabs
+              :value="showStaking"
+              :on-change="value => (showStaking = value)"
+            />
+          </slot>
+        </TransactionsTable>
       </div>
       <div v-else class="container">
         <loading-message />
@@ -79,7 +94,8 @@ export default {
       address: null,
       shardId: -1,
       allTxs: null,
-      allStakingTxs: null,
+      allStakingTxs: [],
+      showStaking: false,
     };
   },
   computed: {
@@ -95,7 +111,7 @@ export default {
       this.getAddressShard();
     },
   },
-  allStakingTxs() {
+  mounted() {
     this.getAddressShard();
   },
   methods: {
@@ -126,11 +142,13 @@ export default {
         ])
           .then(data => {
             // console.log(stringify(data, null, 2));
+            if (data[0]) {
+              data[0].forEach(tx => {
+                txs[tx.hash] = tx;
+              });
+            }
 
-            data[0].forEach(tx => {
-              txs[tx.hash] = tx;
-            });
-            if (stakingTxsData) {
+            if (data[1]) {
               data[1].forEach(tx => {
                 stakingTxs[tx.hash] = {
                   ...tx,

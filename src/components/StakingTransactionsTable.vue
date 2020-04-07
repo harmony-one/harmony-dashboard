@@ -5,9 +5,7 @@
 <template>
   <div class="transactions-table explorer-card">
     <header>
-      <h1 class="flex-grow">
-        Staking transactions
-      </h1>
+      <slot></slot>
       <div class="pagination-controls">
         <span class="total-tx-num">{{ txCount }} txs</span>
         <span class="page-controllers">
@@ -62,7 +60,7 @@
             <th>Value</th>
             <th>Txn Fee</th>
           </tr>
-          <tr v-for="tx in txs" :key="tx.hash">
+          <tr v-for="tx in stakingTxs" :key="tx.hash">
             <td>
               {{ tx.shardID }}
             </td>
@@ -122,7 +120,7 @@ export default {
     pageCount() {
       return Math.ceil(this.txCount / this.pageSize);
     },
-    txs() {
+    stakingTxs() {
       const begin = this.pageIndex * this.pageSize;
 
       return this.allStakingTxs.slice(begin, begin + this.pageSize);

@@ -35,7 +35,13 @@
           </div>
         </div>
 
-        <transactions-table :all-txs="block.txs" />
+        <transactions-table :all-txs="block.txs">
+          <template v-slot>
+            <h1 class="flex-grow">
+              Transactions
+            </h1>
+          </template>
+        </transactions-table>
       </div>
       <div v-else class="container">
         <loading-message />

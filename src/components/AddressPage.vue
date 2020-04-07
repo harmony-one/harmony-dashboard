@@ -79,11 +79,26 @@
           </div>
         </div>
 
-        <TransactionsTable :all-txs="allTxs" with-shards="true" />
         <StakingTransactionsTable
+          v-if="showStaking"
           :all-staking-txs="allStakingTxs"
           with-shards="true"
-        />
+        >
+          <slot>
+            <TransactionTableTabs
+              :value="showStaking"
+              :on-change="value => (showStaking = value)"
+            />
+          </slot>
+        </StakingTransactionsTable>
+        <TransactionsTable v-else :all-txs="allTxs" with-shards="true">
+          <slot>
+            <TransactionTableTabs
+              :value="showStaking"
+              :on-change="value => (showStaking = value)"
+            />
+          </slot>
+        </TransactionsTable>
       </div>
       <div v-else class="container">
         <loading-message />
@@ -97,6 +112,7 @@ import service from '../explorer/service';
 import LoadingMessage from './LoadingMessage';
 import TransactionsTable from './TransactionsTable';
 import StakingTransactionsTable from './StakingTransactionsTable';
+import TransactionTableTabs from './TransactionTableTabs';
 
 export default {
   name: 'AddressPage',
@@ -104,6 +120,7 @@ export default {
     LoadingMessage,
     TransactionsTable,
     StakingTransactionsTable,
+    TransactionTableTabs,
   },
   data() {
     return {
@@ -111,6 +128,7 @@ export default {
       address: null,
       allTxs: [],
       allStakingTxs: [],
+      showStaking: false,
     };
   },
   computed: {
@@ -141,9 +159,11 @@ export default {
         .getAddress(address)
         .then(address => {
           address.shardData.forEach(data => {
-            data.txs.forEach(tx => {
-              txs[tx.hash] = tx;
-            });
+            if (data.txs) {
+              data.txs.forEach(tx => {
+                txs[tx.hash] = tx;
+              });
+            }
             if (data.stakingTxs) {
               data.stakingTxs.forEach(stakingTx => {
                 stakingTxs[stakingTx.hash] = stakingTx;
