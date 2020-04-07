@@ -60,7 +60,7 @@
             <th>Value</th>
             <th>Txn Fee</th>
           </tr>
-          <tr v-for="tx in txs" :key="tx.hash">
+          <tr v-for="tx in stakingTxs" :key="tx.hash">
             <td>
               {{ tx.shardID }}
             </td>
@@ -120,7 +120,7 @@ export default {
     pageCount() {
       return Math.ceil(this.txCount / this.pageSize);
     },
-    txs() {
+    stakingTxs() {
       const begin = this.pageIndex * this.pageSize;
 
       return this.allStakingTxs.slice(begin, begin + this.pageSize);

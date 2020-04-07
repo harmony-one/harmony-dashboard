@@ -80,8 +80,8 @@
         </div>
 
         <StakingTransactionsTable
-          :all-txs="stakingTxs"
           v-if="showStaking"
+          :all-staking-txs="allStakingTxs"
           with-shards="true"
         >
           <slot>
@@ -91,7 +91,7 @@
             />
           </slot>
         </StakingTransactionsTable>
-        <TransactionsTable :all-txs="allTxs" v-else with-shards="true">
+        <TransactionsTable v-else :all-txs="allTxs" with-shards="true">
           <slot>
             <TransactionTableTabs
               :value="showStaking"
@@ -127,6 +127,7 @@ export default {
       loading: true,
       address: null,
       allTxs: [],
+      allStakingTxs: [],
       showStaking: false,
     };
   },
@@ -158,9 +159,11 @@ export default {
         .getAddress(address)
         .then(address => {
           address.shardData.forEach(data => {
-            data.txs.forEach(tx => {
-              txs[tx.hash] = tx;
-            });
+            if (data.txs) {
+              data.txs.forEach(tx => {
+                txs[tx.hash] = tx;
+              });
+            }
             if (data.stakingTxs) {
               data.stakingTxs.forEach(stakingTx => {
                 stakingTxs[stakingTx.hash] = stakingTx;
