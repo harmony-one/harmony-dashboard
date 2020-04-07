@@ -51,7 +51,7 @@
 
         <StakingTransactionsTable
           v-if="showStaking"
-          :all-staking-txs="stakingTxs"
+          :all-staking-txs="allStakingTxs"
           with-shards="true"
         >
           <slot>
@@ -82,11 +82,15 @@ import service from '../explorer/service';
 import LoadingMessage from './LoadingMessage';
 import TransactionsTable from './TransactionsTable';
 import StakingTransactionsTable from './StakingTransactionsTable';
+import TransactionTableTabs from './TransactionTableTabs';
 
 export default {
   name: 'AddressShardPage',
   components: {
     LoadingMessage,
+    StakingTransactionsTable,
+    TransactionsTable,
+    TransactionTableTabs,
   },
   data() {
     return {
@@ -125,53 +129,55 @@ export default {
       const txs = {};
       const stakingTxs = {};
 
-      return service.getAddressShardSummary(address, shardId).then(address => {
-        Promise.all([
-          service.getAddressShardTxHistory(
-            address,
-            shardId,
-            pageIndex,
-            this.pageSize
-          ),
-          service.getAddressShardStakingTxHistory(
-            address,
-            shardId,
-            0, // TODO: fix later
-            this.pageSize
-          ),
-        ])
-          .then(data => {
-            // console.log(stringify(data, null, 2));
-            if (data[0]) {
-              data[0].forEach(tx => {
-                txs[tx.hash] = tx;
-              });
-            }
+      return service
+        .getAddressShardSummary(address, shardId)
+        .then(shardData => {
+          this.address = shardData;
 
-            if (data[1]) {
-              data[1].forEach(tx => {
-                stakingTxs[tx.hash] = {
-                  ...tx,
-                  shardID: idx,
-                  delegator: tx.msg.delegatorAddress,
-                  validator: tx.msg.validatorAddress,
-                  value: tx.msg.amount,
-                };
-              });
-            }
+          return Promise.all([
+            service.getAddressShardTxHistory(
+              address,
+              shardId,
+              pageIndex,
+              this.pageSize
+            ),
+            service.getAddressShardStakingTxHistory(
+              address,
+              shardId,
+              0, // TODO: fix later
+              this.pageSize
+            ),
+          ])
+            .then(data => {
+              // console.log(stringify(data, null, 2));
+              if (data[0]) {
+                data[0].forEach(tx => {
+                  txs[tx.hash] = tx;
+                });
+              }
 
-            this.address = address;
-          })
-          .finally(() => {
-            this.allTxs = Object.values(txs).sort((a, b) =>
-              Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
-            );
-            this.allStakingTxs = Object.values(stakingTxs).sort((a, b) =>
-              Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
-            );
-            this.loading = false;
-          });
-      });
+              if (data[1]) {
+                data[1].forEach(tx => {
+                  stakingTxs[tx.hash] = {
+                    ...tx,
+                    shardID: shardId,
+                    delegator: tx.msg.delegatorAddress,
+                    validator: tx.msg.validatorAddress,
+                    value: tx.msg.amount,
+                  };
+                });
+              }
+            })
+            .finally(() => {
+              this.allTxs = Object.values(txs).sort((a, b) =>
+                Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
+              );
+              this.allStakingTxs = Object.values(stakingTxs).sort((a, b) =>
+                Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
+              );
+              this.loading = false;
+            });
+        });
     },
   },
 };

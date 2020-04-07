@@ -146,7 +146,7 @@ export default {
     return authGet('/address-shard-txs', {
       params: { address, shardID, pageIndex, pageSize },
     }).then(res => {
-      let txs = res.txs;
+      let txs = res.data.txs;
       return txs;
     });
   },
@@ -154,7 +154,7 @@ export default {
     return authGet('/address-shard-staking-txs', {
       params: { address, shardID, pageIndex, pageSize },
     }).then(res => {
-      let txs = res.txs;
+      let txs = res.data.txs;
       return txs;
     });
   },
