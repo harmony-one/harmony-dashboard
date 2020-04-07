@@ -187,12 +187,17 @@
             </div>
           </div>
 
-          <div v-if="showTx" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div
+            v-if="!showStaking"
+            class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+          >
             <div class="explorer-card latest-block-card">
               <header>
-                <h1 class="flex-grow">
-                  Latest Transactions
-                </h1>
+                <TransactionTableTabs
+                  :value="showStaking"
+                  :on-change="value => (showStaking = value)"
+                  title-prefix="Latest"
+                />
                 <div class="secondary-info">
                   <div class="timer">
                     Updated
@@ -274,14 +279,16 @@
           </div>
 
           <div
-            v-if="showStakingTx"
+            v-if="showStaking"
             class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
           >
             <div class="explorer-card latest-block-card">
               <header>
-                <h1 class="flex-grow">
-                  Latest Staking Transactions
-                </h1>
+                <TransactionTableTabs
+                  :value="showStaking"
+                  :on-change="value => (showStaking = value)"
+                  title-prefix="Latest"
+                />
                 <div class="secondary-info">
                   <div class="timer">
                     Updated
@@ -304,9 +311,6 @@
                       Hash
                     </div>
                     <div class="th">
-                      Age
-                    </div>
-                    <div class="th">
                       Type
                     </div>
                     <div class="th">
@@ -314,6 +318,9 @@
                     </div>
                     <div class="th">
                       Delegator
+                    </div>
+                    <div class="th">
+                      Age
                     </div>
                     <div class="th">
                       Value
@@ -338,9 +345,6 @@
                       </router-link>
                     </div>
                     <div class="td">
-                      {{ tx.timestamp | age }}
-                    </div>
-                    <div class="td">
                       {{ tx.type }}
                     </div>
                     <div class="td">
@@ -360,6 +364,9 @@
                         {{ tx.delegator.bech32 | shorten }}
                       </router-link>
                       <div v-else>-</div>
+                    </div>
+                    <div class="td">
+                      {{ tx.timestamp | age }}
                     </div>
                     <div class="td no-break">
                       {{ tx.value | amount }}
@@ -392,12 +399,14 @@
 import store from '../explorer/store';
 import LoadingMessage from './LoadingMessage';
 import CoinStats from './CoinStats';
+import TransactionTableTabs from './TransactionTableTabs';
 
 export default {
   name: 'HomePage',
   components: {
     LoadingMessage,
     CoinStats,
+    TransactionTableTabs,
   },
   data() {
     return {
@@ -406,6 +415,7 @@ export default {
       pageSize: 50,
       timer: null,
       now: Date.now(),
+      showStaking: false,
       showTx: true,
       coinStats: null,
     };
@@ -413,9 +423,6 @@ export default {
   computed: {
     length() {
       return Math.ceil(this.globalData.blocks.length / this.pageSize);
-    },
-    showStakingTx() {
-      return !!this.globalData.stakingTxs.length;
     },
   },
   watch: {
