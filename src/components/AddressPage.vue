@@ -32,6 +32,12 @@
                   </td>
                   <td>{{ txCount | number }}</td>
                 </tr>
+                <tr>
+                  <td class="td-title">
+                    Staking Transactions
+                  </td>
+                  <td>{{ stakingTxCount | number }}</td>
+                </tr>
               </table>
             </section>
           </div>
@@ -75,21 +81,21 @@
 
         <StakingTransactionsTable
           :all-txs="stakingTxs"
-          with-shards="true"
           v-if="showStaking"
+          with-shards="true"
         >
           <slot>
             <TransactionTableTabs
               :value="showStaking"
-              :onChange="value => (showStaking = value)"
+              :on-change="value => (showStaking = value)"
             />
           </slot>
         </StakingTransactionsTable>
-        <TransactionsTable :all-txs="allTxs" with-shards="true" v-else>
+        <TransactionsTable :all-txs="allTxs" v-else with-shards="true">
           <slot>
             <TransactionTableTabs
               :value="showStaking"
-              :onChange="value => (showStaking = value)"
+              :on-change="value => (showStaking = value)"
             />
           </slot>
         </TransactionsTable>
@@ -128,6 +134,9 @@ export default {
     txCount() {
       return this.allTxs.length;
     },
+    stakingTxCount() {
+      return this.allStakingTxs.length;
+    },
   },
   watch: {
     $route() {
@@ -140,8 +149,8 @@ export default {
   methods: {
     getAddress() {
       this.loading = true;
-      let txs = {};
-      let stakingTxs = {};
+      const txs = {};
+      const stakingTxs = {};
 
       const address = this.$route.params.address;
 
@@ -152,6 +161,11 @@ export default {
             data.txs.forEach(tx => {
               txs[tx.hash] = tx;
             });
+            if (data.stakingTxs) {
+              data.stakingTxs.forEach(stakingTx => {
+                stakingTxs[stakingTx.hash] = stakingTx;
+              });
+            }
           });
 
           address.shardData.forEach((data, idx) => {
@@ -172,8 +186,7 @@ export default {
           this.allTxs = Object.values(txs).sort((a, b) =>
             Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
           );
-
-          this.stakingTxs = Object.values(stakingTxs).sort((a, b) =>
+          this.allStakingTxs = Object.values(stakingTxs).sort((a, b) =>
             Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
           );
           this.loading = false;

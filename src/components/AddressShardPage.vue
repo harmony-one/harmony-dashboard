@@ -36,89 +36,24 @@
                   <td class="td-title">
                     Transactions
                   </td>
-                  <td>{{ address.txCount }}</td>
+                  <td>{{ address.txCount | number }}</td>
+                </tr>
+                <tr>
+                  <td class="td-title">
+                    Staking transactions
+                  </td>
+                  <td>{{ address.stakingTxCount | number }}</td>
                 </tr>
               </table>
             </section>
           </div>
         </div>
-        <div class="explorer-card">
-          <header>
-            <h1 class="flex-grow">
-              Transactions
-            </h1>
-            <div class="pagination-controls">
-              <span class="total-tx-num">{{ txCount }} txs</span>
-              <span class="page-controllers">
-                <span class="page-navigator">
-                  <button
-                    class="btn btn-light btn-icon-only"
-                    :disabled="pageIndex === 0"
-                    @click="first()"
-                  >
-                    <font-awesome-icon icon="angle-double-left" />
-                  </button>
-                  <button
-                    class="btn btn-light btn-icon-only"
-                    :disabled="pageIndex === 0"
-                    @click="prev()"
-                  >
-                    <font-awesome-icon icon="chevron-left" />
-                  </button>
-                  <span class="pagination-nums">
-                    {{ pageIndex + 1 }} / {{ pageCount }}</span
-                  >
-                  <button
-                    class="btn btn-light btn-icon-only"
-                    :disabled="pageIndex === pageCount - 1"
-                    @click="next()"
-                  >
-                    <font-awesome-icon icon="chevron-right" />
-                  </button>
-                  <button
-                    class="btn btn-light btn-icon-only"
-                    :disabled="pageIndex === pageCount - 1"
-                    @click="last()"
-                  >
-                    <font-awesome-icon icon="angle-double-right" />
-                  </button>
-                </span>
-              </span>
-            </div>
-          </header>
-          <div class="explorer-card-body">
-            <table class="explorer-table">
-              <tr>
-                <th>TxHash</th>
-                <th>Timestamp</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Value</th>
-                <th>Txn Fee</th>
-              </tr>
-              <tr v-for="tx in txs" :key="tx.hash">
-                <td>
-                  <router-link :to="'/tx/' + tx.hash">
-                    {{ tx.hash | shorten }}
-                  </router-link>
-                </td>
-                <td>{{ (Number(tx.timestamp) * 1000) | timestamp }}</td>
-                <td>
-                  <router-link :to="'/address/' + tx.from">
-                    {{ tx.from | shorten }}
-                  </router-link>
-                </td>
-                <td>
-                  <router-link :to="'/address/' + tx.to">
-                    {{ tx.to | shorten }}
-                  </router-link>
-                </td>
-                <td>{{ tx.value | amount }}</td>
-                <td>{{ tx | fee }}</td>
-              </tr>
-            </table>
-          </div>
-        </div>
+
+        <TransactionsTable :all-txs="allTxs" with-shards="false" />
+        <StakingTransactionsTable
+          :all-staking-txs="allStakingTxs"
+          with-shards="false"
+        />
       </div>
       <div v-else class="container">
         <loading-message />
@@ -130,6 +65,8 @@
 <script>
 import service from '../explorer/service';
 import LoadingMessage from './LoadingMessage';
+import TransactionsTable from './TransactionsTable';
+import StakingTransactionsTable from './StakingTransactionsTable';
 
 export default {
   name: 'AddressShardPage',
@@ -141,98 +78,82 @@ export default {
       loading: true,
       address: null,
       shardId: -1,
-      pageIndex: 0,
-      pageSize: 10,
-      txs: null,
+      allTxs: null,
+      allStakingTxs: null,
     };
   },
   computed: {
     txCount() {
-      if (!this.address) return 0;
-      return this.address.txCount;
+      return this.allTxs.length;
     },
-    pageCount() {
-      return Math.ceil(this.txCount / this.pageSize);
+    stakingTxCount() {
+      return this.allStakingTxs.length;
     },
   },
   watch: {
-    $route(to) {
-      let address = to.params.address;
-      let shardId = +to.params.shardId;
-      if (
-        !this.address ||
-        this.address.id !== address ||
-        this.shardId !== shardId
-      ) {
-        this.getAddress();
-      }
-      let pageIndex = (+to.params.pageIndex || 1) - 1;
-      this.pageIndex = pageIndex;
-      this.shardId = shardId;
-      service
-        .getAddressShardTxHistory(
-          address,
-          shardId,
-          this.pageIndex,
-          this.pageSize
-        )
-        .then(txs => {
-          this.txs = txs;
-        });
+    $route() {
+      this.getAddressShard();
     },
   },
-  mounted() {
-    this.getAddress().then(() => {
-      let pageIndex = (+this.$route.params.pageIndex || 1) - 1;
-      // let shardId = +this.$route.params.shardId;
-      service
-        .getAddressShardTxHistory(
-          this.$route.params.address,
-          this.$route.params.shardId,
-          pageIndex,
-          this.pageSize
-        )
-        .then(txs => {
-          this.txs = txs;
-        });
-    });
+  allStakingTxs() {
+    this.getAddressShard();
   },
   methods: {
-    getAddress() {
+    getAddressShard() {
       this.loading = true;
-      return service
-        .getAddressShardSummary(
-          this.$route.params.address,
-          this.$route.params.shardId
-        )
-        .then(address => {
-          this.address = address;
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    },
-    goToPage(index) {
-      if (index < 0) index = 0;
-      if (index >= this.pageCount) index = this.pageCount - 1;
-      this.$router.replace({
-        name: 'AddressShardPage',
-        params: { pageIndex: index + 1 },
+
+      const pageIndex = (+this.$route.params.pageIndex || 1) - 1;
+      const address = this.$route.params.address;
+      const shardId = this.$route.params.shardId;
+
+      const txs = {};
+      const stakingTxs = {};
+
+      return service.getAddressShardSummary(address, shardId).then(address => {
+        Promise.all([
+          service.getAddressShardTxHistory(
+            address,
+            shardId,
+            pageIndex,
+            this.pageSize
+          ),
+          service.getAddressShardStakingTxHistory(
+            address,
+            shardId,
+            0, // TODO: fix later
+            this.pageSize
+          ),
+        ])
+          .then(data => {
+            // console.log(stringify(data, null, 2));
+
+            data[0].forEach(tx => {
+              txs[tx.hash] = tx;
+            });
+            if (stakingTxsData) {
+              data[1].forEach(tx => {
+                stakingTxs[tx.hash] = {
+                  ...tx,
+                  shardID: idx,
+                  delegator: tx.msg.delegatorAddress,
+                  validator: tx.msg.validatorAddress,
+                  value: tx.msg.amount,
+                };
+              });
+            }
+
+            this.address = address;
+          })
+          .finally(() => {
+            this.allTxs = Object.values(txs).sort((a, b) =>
+              Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
+            );
+            this.allStakingTxs = Object.values(stakingTxs).sort((a, b) =>
+              Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
+            );
+            this.loading = false;
+          });
       });
-    },
-    first() {
-      this.goToPage(0);
-    },
-    last() {
-      this.goToPage(this.pageCount - 1);
-    },
-    prev() {
-      if (this.pageIndex === 0) return;
-      this.goToPage(this.pageIndex - 1);
-    },
-    next() {
-      if (this.pageIndex === this.pageCount - 1) return;
-      this.goToPage(this.pageIndex + 1);
     },
   },
 };
