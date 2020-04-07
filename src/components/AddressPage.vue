@@ -182,21 +182,3 @@ export default {
   },
 };
 </script>
-
-<style lang="less">
-.tabs {
-  flex-grow: 1;
-
-  .tabItem {
-    cursor: pointer;
-    color: var(--color-table-link);
-    margin-right: 20px;
-
-    &.active {
-      font-size: 1.3em;
-      color: #1b295e;
-      font-weight: 500;
-    }
-  }
-}
-</style>
