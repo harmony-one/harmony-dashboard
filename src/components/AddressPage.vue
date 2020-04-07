@@ -73,8 +73,26 @@
           </div>
         </div>
 
-        <TransactionsTable :all-txs="allTxs" with-shards="true" />
-        <StakingTransactionsTable :all-txs="stakingTxs" with-shards="true" />
+        <StakingTransactionsTable
+          :all-txs="stakingTxs"
+          with-shards="true"
+          v-if="showStaking"
+        >
+          <slot>
+            <TransactionTableTabs
+              :value="showStaking"
+              :onChange="value => (showStaking = value)"
+            />
+          </slot>
+        </StakingTransactionsTable>
+        <TransactionsTable :all-txs="allTxs" with-shards="true" v-else>
+          <slot>
+            <TransactionTableTabs
+              :value="showStaking"
+              :onChange="value => (showStaking = value)"
+            />
+          </slot>
+        </TransactionsTable>
       </div>
       <div v-else class="container">
         <loading-message />
@@ -88,6 +106,7 @@ import service from '../explorer/service';
 import LoadingMessage from './LoadingMessage';
 import TransactionsTable from './TransactionsTable';
 import StakingTransactionsTable from './StakingTransactionsTable';
+import TransactionTableTabs from './TransactionTableTabs';
 
 export default {
   name: 'AddressPage',
@@ -95,12 +114,14 @@ export default {
     LoadingMessage,
     TransactionsTable,
     StakingTransactionsTable,
+    TransactionTableTabs,
   },
   data() {
     return {
       loading: true,
       address: null,
       allTxs: [],
+      showStaking: false,
     };
   },
   computed: {
@@ -161,3 +182,21 @@ export default {
   },
 };
 </script>
+
+<style lang="less">
+.tabs {
+  flex-grow: 1;
+
+  .tabItem {
+    cursor: pointer;
+    color: var(--color-table-link);
+    margin-right: 20px;
+
+    &.active {
+      font-size: 1.3em;
+      color: #1b295e;
+      font-weight: 500;
+    }
+  }
+}
+</style>

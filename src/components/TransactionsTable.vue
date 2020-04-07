@@ -5,9 +5,7 @@
 <template>
   <div class="transactions-table explorer-card">
     <header>
-      <h1 class="flex-grow">
-        Transactions
-      </h1>
+      <slot></slot>
       <div class="pagination-controls">
         <span class="total-tx-num">{{ txCount }} txs</span>
         <span class="page-controllers">
