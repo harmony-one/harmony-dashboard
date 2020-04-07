@@ -30,15 +30,25 @@ export default {
 
   .tabItem {
     cursor: pointer;
-    color: var(--color-table-link);
+    color: #1b295e;
     margin-right: 20px;
-    order: 1;
+    font-size: 1.1em;
+    font-weight: 500;
 
     &.active {
-      font-size: 1em;
-      color: #1b295e;
-      font-weight: 500;
-      order: 0;
+      color: var(--color-table-link);
+      position: relative;
+      display: inline-block;
+
+      &:after {
+        display: block;
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        background-color: var(--color-table-link);
+        bottom: -17px;
+      }
     }
   }
 }
