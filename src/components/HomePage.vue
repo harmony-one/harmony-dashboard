@@ -416,6 +416,7 @@ export default {
       timer: null,
       now: Date.now(),
       showStaking: false,
+      showTx: true,
       coinStats: null,
     };
   },
