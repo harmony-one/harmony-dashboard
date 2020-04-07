@@ -97,7 +97,7 @@ export default {
       loading: true,
       address: null,
       shardId: -1,
-      allTxs: null,
+      allTxs: [],
       allStakingTxs: [],
       showStaking: false,
     };
@@ -130,53 +130,38 @@ export default {
       const stakingTxs = {};
 
       return service
-        .getAddressShardSummary(address, shardId)
-        .then(shardData => {
-          this.address = shardData;
-
-          return Promise.all([
-            service.getAddressShardTxHistory(
-              address,
-              shardId,
-              pageIndex,
-              this.pageSize
-            ),
-            service.getAddressShardStakingTxHistory(
-              address,
-              shardId,
-              0, // TODO: fix later
-              this.pageSize
-            ),
-          ])
-            .then(data => {
-              // console.log(stringify(data, null, 2));
-              if (data[0]) {
-                data[0].forEach(tx => {
-                  txs[tx.hash] = tx;
-                });
-              }
-
-              if (data[1]) {
-                data[1].forEach(tx => {
-                  stakingTxs[tx.hash] = {
-                    ...tx,
-                    shardID: shardId,
-                    delegator: tx.msg.delegatorAddress,
-                    validator: tx.msg.validatorAddress,
-                    value: tx.msg.amount,
-                  };
-                });
-              }
-            })
-            .finally(() => {
-              this.allTxs = Object.values(txs).sort((a, b) =>
-                Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
-              );
-              this.allStakingTxs = Object.values(stakingTxs).sort((a, b) =>
-                Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
-              );
-              this.loading = false;
+        .getAddressShard(address, shardId)
+        .then(address => {
+          if (address.txs) {
+            address.txs.forEach(tx => {
+              txs[tx.hash] = {
+                ...tx,
+                shardID: shardId,
+              };
             });
+          }
+          if (address.stakingTxs) {
+            address.stakingTxs.forEach(tx => {
+              stakingTxs[tx.hash] = {
+                ...tx,
+                shardID: shardId,
+                delegator: tx.msg.delegatorAddress,
+                validator: tx.msg.validatorAddress,
+                value: tx.msg.amount,
+              };
+            });
+          }
+
+          this.address = address;
+        })
+        .finally(() => {
+          this.allTxs = Object.values(txs).sort((a, b) =>
+            Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
+          );
+          this.allStakingTxs = Object.values(stakingTxs).sort((a, b) =>
+            Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
+          );
+          this.loading = false;
         });
     },
   },
