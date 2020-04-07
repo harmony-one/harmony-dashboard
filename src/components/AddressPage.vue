@@ -158,29 +158,26 @@ export default {
       service
         .getAddress(address)
         .then(address => {
-          address.shardData.forEach(data => {
+          address.shardData.forEach((data, idx) => {
             if (data.txs) {
               data.txs.forEach(tx => {
-                txs[tx.hash] = tx;
+                txs[tx.hash] = {
+                  ...tx,
+                  shardID: idx,
+                };
               });
             }
             if (data.stakingTxs) {
-              data.stakingTxs.forEach(stakingTx => {
-                stakingTxs[stakingTx.hash] = stakingTx;
+              data.stakingTxs.forEach(tx => {
+                stakingTxs[tx.hash] = {
+                  ...tx,
+                  shardID: idx,
+                  delegator: tx.msg.delegatorAddress,
+                  validator: tx.msg.validatorAddress,
+                  value: tx.msg.amount,
+                };
               });
             }
-          });
-
-          address.shardData.forEach((data, idx) => {
-            data.stakingTxs.forEach(tx => {
-              stakingTxs[tx.hash] = {
-                ...tx,
-                shardID: idx,
-                delegator: tx.msg.delegatorAddress,
-                validator: tx.msg.validatorAddress,
-                value: tx.msg.amount,
-              };
-            });
           });
 
           this.address = address;
