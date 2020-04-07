@@ -32,6 +32,12 @@
                   </td>
                   <td>{{ txCount | number }}</td>
                 </tr>
+                <tr>
+                  <td class="td-title">
+                    Staking Transactions
+                  </td>
+                  <td>{{ stakingTxCount | number }}</td>
+                </tr>
               </table>
             </section>
           </div>
@@ -74,7 +80,10 @@
         </div>
 
         <TransactionsTable :all-txs="allTxs" with-shards="true" />
-        <StakingTransactionsTable :all-txs="stakingTxs" with-shards="true" />
+        <StakingTransactionsTable
+          :all-staking-txs="allStakingTxs"
+          with-shards="true"
+        />
       </div>
       <div v-else class="container">
         <loading-message />
@@ -101,11 +110,15 @@ export default {
       loading: true,
       address: null,
       allTxs: [],
+      allStakingTxs: [],
     };
   },
   computed: {
     txCount() {
       return this.allTxs.length;
+    },
+    stakingTxCount() {
+      return this.allStakingTxs.length;
     },
   },
   watch: {
@@ -119,8 +132,8 @@ export default {
   methods: {
     getAddress() {
       this.loading = true;
-      let txs = {};
-      let stakingTxs = {};
+      const txs = {};
+      const stakingTxs = {};
 
       const address = this.$route.params.address;
 
@@ -131,6 +144,11 @@ export default {
             data.txs.forEach(tx => {
               txs[tx.hash] = tx;
             });
+            if (data.stakingTxs) {
+              data.stakingTxs.forEach(stakingTx => {
+                stakingTxs[stakingTx.hash] = stakingTx;
+              });
+            }
           });
 
           address.shardData.forEach((data, idx) => {
@@ -151,8 +169,7 @@ export default {
           this.allTxs = Object.values(txs).sort((a, b) =>
             Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
           );
-
-          this.stakingTxs = Object.values(stakingTxs).sort((a, b) =>
+          this.allStakingTxs = Object.values(stakingTxs).sort((a, b) =>
             Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
           );
           this.loading = false;
