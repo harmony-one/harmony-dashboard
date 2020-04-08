@@ -36,21 +36,16 @@
                 </td>
                 <td>{{ transaction.message }}</td>
               </tr>
-              <tr v-if="!isStaking">
+              <tr>
                 <td class="td-title">
                   Value
                 </td>
-                <td>{{ transaction.value | amount }}</td>
+                <td v-if="isStaking && transaction.type === 'EditValidator'">
+                  -
+                </td>
+                <td v-else>{{ transaction.value | amount }}</td>
               </tr>
 
-              <tr v-if="isStaking">
-                <td class="td-title">
-                  Value
-                </td>
-                <td>
-                  <vue-json-pretty :data="transaction.msg" />
-                </td>
-              </tr>
               <!-- <tr>
                 <td class="td-title">Size (bytes)</td>
                 <td>{{ transaction.bytes }}</td>
@@ -87,7 +82,7 @@
                   </router-link>
                 </td>
               </tr>
-              <tr>
+              <tr v-if="!isStaking">
                 <td class="td-title">
                   From Address
                 </td>
@@ -130,24 +125,28 @@
                 </td>
               </tr>
 
-              <!--              <tr v-if="isStaking">-->
-              <!--                <td class="td-title">Validator Address</td>-->
-              <!--                <td>-->
-              <!--                  <router-link-->
-              <!--                    :to="'/address/' + transaction.validator"-->
-              <!--                    v-if="transaction.validator"-->
-              <!--                  >{{ transaction.validator }}</router-link>-->
-              <!--                </td>-->
-              <!--              </tr>-->
-              <!--              <tr v-if="isStaking">-->
-              <!--                <td class="td-title">Delegator Address</td>-->
-              <!--                <td>-->
-              <!--                  <router-link-->
-              <!--                    :to="'/address/' + transaction.delegator"-->
-              <!--                    v-if="transaction.delegator"-->
-              <!--                  >{{ transaction.delegator }}</router-link>-->
-              <!--                </td>-->
-              <!--              </tr>-->
+              <tr v-if="isStaking">
+                <td class="td-title">Validator Address</td>
+                <td>
+                  <router-link
+                    v-if="transaction.validator"
+                    :to="'/address/' + transaction.validator"
+                    >{{ transaction.validator }}</router-link
+                  >
+                  <span v-else>-</span>
+                </td>
+              </tr>
+              <tr v-if="isStaking">
+                <td class="td-title">Delegator Address</td>
+                <td>
+                  <router-link
+                    v-if="transaction.delegator"
+                    :to="'/address/' + transaction.delegator"
+                    >{{ transaction.delegator }}</router-link
+                  >
+                  <span v-else>-</span>
+                </td>
+              </tr>
 
               <tr>
                 <td class="td-title">
@@ -194,14 +193,12 @@
 import service from '../explorer/service';
 import store from '../explorer/store';
 import LoadingMessage from './LoadingMessage';
-import VueJsonPretty from 'vue-json-pretty';
 import ExpandPanel from '@/ui/ExpandPanel';
 
 export default {
   name: 'TransactionPage',
   components: {
     LoadingMessage,
-    VueJsonPretty,
     ExpandPanel,
   },
   props: {
@@ -282,7 +279,17 @@ export default {
           //     `${JSON.stringify(transaction)}`
           // );
 
-          this.transaction = transaction;
+          if (this.isStaking) {
+            this.transaction = {
+              ...transaction,
+              validator: transaction.msg.validatorAddress,
+              delegator: transaction.msg.delegatorAddress,
+              value: transaction.msg.amount,
+            };
+          } else {
+            this.transaction = transaction;
+          }
+
           this.firstLoading = false;
 
           if (transaction.status === 'PENDING') {
