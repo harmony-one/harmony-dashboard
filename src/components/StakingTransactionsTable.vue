@@ -65,7 +65,7 @@
               {{ tx.shardID }}
             </td>
             <td>
-              <router-link :to="'/staking-tx/' + tx.hash">
+              <router-link :to="'/stakingTx/' + tx.hash">
                 {{ tx.hash | shorten }}
               </router-link>
             </td>

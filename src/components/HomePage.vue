@@ -340,7 +340,7 @@
                       </router-link>
                     </div>
                     <div class="td">
-                      <router-link :to="'/staking-tx/' + tx.id">
+                      <router-link :to="'/stakingTx/' + tx.id">
                         {{ tx.id | shorten }}
                       </router-link>
                     </div>
@@ -349,21 +349,25 @@
                     </div>
                     <div class="td">
                       <router-link
-                        :to="'/address/' + tx.validator.bech32"
                         v-if="tx.validator.bech32"
+                        :to="'/address/' + tx.validator.bech32"
                       >
                         {{ tx.validator.bech32 | shorten }}
                       </router-link>
-                      <div v-else>-</div>
+                      <div v-else>
+                        -
+                      </div>
                     </div>
                     <div class="td">
                       <router-link
-                        :to="'/address/' + tx.delegator.bech32"
                         v-if="tx.delegator.bech32"
+                        :to="'/address/' + tx.delegator.bech32"
                       >
                         {{ tx.delegator.bech32 | shorten }}
                       </router-link>
-                      <div v-else>-</div>
+                      <div v-else>
+                        -
+                      </div>
                     </div>
                     <div class="td">
                       {{ tx.timestamp | age }}
