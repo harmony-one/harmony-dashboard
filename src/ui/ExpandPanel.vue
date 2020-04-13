@@ -95,7 +95,7 @@ export default {
       }
     }
     .content-height {
-      max-height: 200px !important;
+      max-height: 800px !important;
     }
     .content {
       width: 100%;
