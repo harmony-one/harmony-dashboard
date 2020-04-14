@@ -74,7 +74,10 @@
               {{ tx.type }}
             </td>
             <td>
-              <router-link v-if="tx.validator" :to="'/address/' + tx.validator">
+              <router-link
+                v-if="tx.validator"
+                :to="'/address/' + tx.validator + '?txType=staking'"
+              >
                 {{ tx.validator | shorten }}
               </router-link>
               <div v-else>
@@ -82,7 +85,10 @@
               </div>
             </td>
             <td>
-              <router-link v-if="tx.delegator" :to="'/address/' + tx.from">
+              <router-link
+                v-if="tx.delegator"
+                :to="'/address/' + tx.from + '?txType=staking'"
+              >
                 {{ tx.delegator | shorten }}
               </router-link>
               <div v-else>
