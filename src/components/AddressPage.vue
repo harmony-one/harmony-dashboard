@@ -140,7 +140,7 @@ export default {
       return this.allStakingTxs.length;
     },
     showStaking() {
-      return this.$route.params.txType === 'staking' ? true : false;
+      return this.$route.query.txType === 'staking' ? true : false;
     },
     page() {
       return this.$route.query.page - 1 || 0;
@@ -160,14 +160,13 @@ export default {
     changeTab(value) {
       this.$router.replace({
         name: 'AddressPage',
-        params: { txType: value ? 'staking' : null },
+        query: { txType: value ? 'staking' : 'regular' },
       });
     },
     changePage(value) {
       this.$router.replace({
         name: 'AddressPage',
-        params: { txType: this.showStaking ? 'staking' : null },
-        query: { page: value + 1 },
+        query: { page: value + 1, txType: value ? 'staking' : 'regular' },
       });
     },
     getAddress() {

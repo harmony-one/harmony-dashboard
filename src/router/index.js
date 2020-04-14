@@ -63,7 +63,7 @@ export default new Router({
       props: { isStaking: true },
     },
     {
-      path: '/address/:address/:txType?',
+      path: '/address/:address',
       name: 'AddressPage',
       component: AddressPage,
     },
