@@ -83,20 +83,22 @@
           v-if="showStaking"
           :all-staking-txs="allStakingTxs"
           with-shards="true"
+          :page="page"
+          :changePage="changePage"
         >
           <slot>
-            <TransactionTableTabs
-              :value="showStaking"
-              :on-change="value => (showStaking = value)"
-            />
+            <TransactionTableTabs :value="showStaking" :on-change="changeTab" />
           </slot>
         </StakingTransactionsTable>
-        <TransactionsTable v-else :all-txs="allTxs" with-shards="true">
+        <TransactionsTable
+          v-else
+          :all-txs="allTxs"
+          with-shards="true"
+          :page="page"
+          :changePage="changePage"
+        >
           <slot>
-            <TransactionTableTabs
-              :value="showStaking"
-              :on-change="value => (showStaking = value)"
-            />
+            <TransactionTableTabs :value="showStaking" :on-change="changeTab" />
           </slot>
         </TransactionsTable>
       </div>
@@ -128,7 +130,6 @@ export default {
       address: null,
       allTxs: [],
       allStakingTxs: [],
-      showStaking: false,
     };
   },
   computed: {
@@ -138,16 +139,37 @@ export default {
     stakingTxCount() {
       return this.allStakingTxs.length;
     },
+    showStaking() {
+      return this.$route.params.txType === 'staking' ? true : false;
+    },
+    page() {
+      return this.$route.query.page - 1 || 0;
+    },
   },
   watch: {
     $route() {
-      this.getAddress();
+      if (this.$route.params.address !== (this.address && this.address.id)) {
+        this.getAddress();
+      }
     },
   },
   mounted() {
     this.getAddress();
   },
   methods: {
+    changeTab(value) {
+      this.$router.replace({
+        name: 'AddressPage',
+        params: { txType: value ? 'staking' : null },
+      });
+    },
+    changePage(value) {
+      this.$router.replace({
+        name: 'AddressPage',
+        params: { txType: this.showStaking ? 'staking' : null },
+        query: { page: value + 1 },
+      });
+    },
     getAddress() {
       this.loading = true;
       const txs = {};
@@ -189,6 +211,7 @@ export default {
           this.allStakingTxs = Object.values(stakingTxs).sort((a, b) =>
             Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
           );
+
           this.loading = false;
         });
     },

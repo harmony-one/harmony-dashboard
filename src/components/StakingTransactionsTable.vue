@@ -105,11 +105,11 @@
 <script>
 export default {
   name: 'StakingTransactionsTable',
-  props: ['allStakingTxs', 'withShards'],
+  props: ['allStakingTxs', 'withShards', 'page', 'changePage'],
   data() {
     return {
       loading: true,
-      pageIndex: 0,
+      pageIndex: this.page || 0,
       pageSize: 20,
     };
   },
@@ -137,6 +137,10 @@ export default {
       if (index >= this.pageCount) index = this.pageCount - 1;
 
       this.pageIndex = index;
+
+      if (this.changePage) {
+        this.changePage(index);
+      }
     },
     first() {
       this.goToPage(0);
