@@ -74,7 +74,10 @@
               {{ tx.type }}
             </td>
             <td>
-              <router-link v-if="tx.validator" :to="'/address/' + tx.validator">
+              <router-link
+                v-if="tx.validator"
+                :to="'/address/' + tx.validator + '?txType=staking'"
+              >
                 {{ tx.validator | shorten }}
               </router-link>
               <div v-else>
@@ -82,7 +85,10 @@
               </div>
             </td>
             <td>
-              <router-link v-if="tx.delegator" :to="'/address/' + tx.from">
+              <router-link
+                v-if="tx.delegator"
+                :to="'/address/' + tx.from + '?txType=staking'"
+              >
                 {{ tx.delegator | shorten }}
               </router-link>
               <div v-else>
@@ -105,11 +111,11 @@
 <script>
 export default {
   name: 'StakingTransactionsTable',
-  props: ['allStakingTxs', 'withShards'],
+  props: ['allStakingTxs', 'withShards', 'page', 'changePage'],
   data() {
     return {
       loading: true,
-      pageIndex: 0,
+      pageIndex: this.page || 0,
       pageSize: 20,
     };
   },
@@ -137,6 +143,10 @@ export default {
       if (index >= this.pageCount) index = this.pageCount - 1;
 
       this.pageIndex = index;
+
+      if (this.changePage) {
+        this.changePage(index);
+      }
     },
     first() {
       this.goToPage(0);

@@ -55,18 +55,12 @@
           with-shards="true"
         >
           <slot>
-            <TransactionTableTabs
-              :value="showStaking"
-              :on-change="value => (showStaking = value)"
-            />
+            <TransactionTableTabs :value="showStaking" :on-change="changeTab" />
           </slot>
         </StakingTransactionsTable>
         <TransactionsTable v-else :all-txs="allTxs" with-shards="true">
           <slot>
-            <TransactionTableTabs
-              :value="showStaking"
-              :on-change="value => (showStaking = value)"
-            />
+            <TransactionTableTabs :value="showStaking" :on-change="changeTab" />
           </slot>
         </TransactionsTable>
       </div>
@@ -99,7 +93,6 @@ export default {
       shardId: -1,
       allTxs: [],
       allStakingTxs: [],
-      showStaking: false,
     };
   },
   computed: {
@@ -108,6 +101,9 @@ export default {
     },
     stakingTxCount() {
       return this.allStakingTxs.length;
+    },
+    showStaking() {
+      return this.$route.query.txType === 'staking' ? true : false;
     },
   },
   watch: {
@@ -119,6 +115,12 @@ export default {
     this.getAddressShard();
   },
   methods: {
+    changeTab(value) {
+      this.$router.replace({
+        name: 'AddressShardPage',
+        query: { txType: value ? 'staking' : 'regular' },
+      });
+    },
     getAddressShard() {
       this.loading = true;
 

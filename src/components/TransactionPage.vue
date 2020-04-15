@@ -130,7 +130,9 @@
                 <td>
                   <router-link
                     v-if="transaction.validator"
-                    :to="'/address/' + transaction.validator"
+                    :to="
+                      '/address/' + transaction.validator + '?txType=staking'
+                    "
                     >{{ transaction.validator }}</router-link
                   >
                   <span v-else>-</span>
@@ -141,7 +143,9 @@
                 <td>
                   <router-link
                     v-if="transaction.delegator"
-                    :to="'/address/' + transaction.delegator"
+                    :to="
+                      '/address/' + transaction.delegator + '?txType=staking'
+                    "
                     >{{ transaction.delegator }}</router-link
                   >
                   <span v-else>-</span>
