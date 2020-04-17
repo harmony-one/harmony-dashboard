@@ -169,7 +169,7 @@
                 <td class="td-title">
                   Nonce
                 </td>
-                <td>{{ transaction.nonce }}</td>
+                <td>{{ parseInt(transaction.nonce) }}</td>
               </tr>
             </table>
 
