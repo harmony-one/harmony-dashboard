@@ -107,14 +107,14 @@ export default {
     });
   },
   getStakingTransaction(id) {
-    return authGet('/stakingTx', { params: { id } }).then(res => {
+    return authGet('/staking-tx', { params: { id } }).then(res => {
       let tx = res.data.tx;
 
       return tx;
     });
   },
   getCoinStats() {
-    return authGet('/coinStats').then(res => {
+    return authGet('/coin-stats').then(res => {
       const coinStats = res.data.coinStats;
 
       return coinStats;
@@ -127,7 +127,7 @@ export default {
     });
   },
   getTxHistory(address, shardID, pageIndex) {
-    return authGet('/txHistory', {
+    return authGet('/tx-history', {
       params: { id: address, shardID, txView: 'ALL', pageIndex, pageSize: 25 },
     }).then(res => {
       let address = res.data.address;

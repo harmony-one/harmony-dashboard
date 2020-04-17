@@ -57,7 +57,7 @@ export default new Router({
       component: TransactionPage,
     },
     {
-      path: '/stakingTx/:transactionId',
+      path: '/staking-tx/:transactionId',
       name: 'TransactionPage',
       component: TransactionPage,
       props: { isStaking: true },
