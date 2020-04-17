@@ -164,13 +164,6 @@
                 </td>
                 <td>{{ sequence }}</td>
               </tr>
-
-              <tr>
-                <td class="td-title">
-                  Nonce
-                </td>
-                <td>{{ parseInt(transaction.nonce) }}</td>
-              </tr>
             </table>
 
             <expand-panel>
@@ -195,6 +188,12 @@
                     Data (UTF-8)
                   </td>
                   <td>{{ hexToUTF8(transaction.input) || '-' }}</td>
+                </tr>
+                <tr>
+                  <td class="td-title">
+                    Nonce
+                  </td>
+                  <td>{{ parseInt(transaction.nonce) }}</td>
                 </tr>
               </table>
             </expand-panel>
