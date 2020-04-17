@@ -164,6 +164,13 @@
                 </td>
                 <td>{{ sequence }}</td>
               </tr>
+
+              <tr>
+                <td class="td-title">
+                  Nonce
+                </td>
+                <td>{{ transaction.nonce }}</td>
+              </tr>
             </table>
 
             <expand-panel>
