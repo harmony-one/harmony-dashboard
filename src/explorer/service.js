@@ -100,7 +100,7 @@ export default {
     });
   },
   getStakingTransactions(pageIndex, pageSize) {
-    return authGet('/stakingTxs', { params: { pageIndex, pageSize } }).then(
+    return authGet('/staking-txs', { params: { pageIndex, pageSize } }).then(
       res => {
         let txs = res.data.txs;
 

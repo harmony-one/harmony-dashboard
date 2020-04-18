@@ -43,7 +43,7 @@ export default new Router({
       component: TransactionsPage,
     },
     {
-      path: '/stakingTxs/:pageIndex?',
+      path: '/staking-txs/:pageIndex?',
       name: 'StakingTransactionsPage',
       component: StakingTransactionsPage,
     },

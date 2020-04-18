@@ -54,8 +54,8 @@
           </header>
           <div class="explorer-card-body">
             <div
-              class="explorer-table-responsive latest-tx-table"
               v-if="stakingTxs.length"
+              class="explorer-table-responsive latest-tx-table"
             >
               <div class="tr">
                 <div class="th">
@@ -90,7 +90,7 @@
                   </router-link>
                 </div>
                 <div class="td">
-                  <router-link :to="'/stakingTx/' + tx.id">
+                  <router-link :to="'/staking-tx/' + tx.id">
                     {{ tx.id | shorten }}
                   </router-link>
                 </div>
