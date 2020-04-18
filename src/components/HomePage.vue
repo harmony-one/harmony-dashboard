@@ -340,7 +340,7 @@
                       </router-link>
                     </div>
                     <div class="td">
-                      <router-link :to="'/stakingTx/' + tx.id">
+                      <router-link :to="'/staking-tx/' + tx.id">
                         {{ tx.id | shorten }}
                       </router-link>
                     </div>
