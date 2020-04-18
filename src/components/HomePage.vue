@@ -195,7 +195,7 @@
               <header>
                 <TransactionTableTabs
                   :value="showStaking"
-                  :on-change="value => (showStaking = value)"
+                  :on-change="changeTab"
                   title-prefix="Latest"
                 />
                 <div class="secondary-info">
@@ -286,7 +286,7 @@
               <header>
                 <TransactionTableTabs
                   :value="showStaking"
-                  :on-change="value => (showStaking = value)"
+                  :on-change="changeTab"
                   title-prefix="Latest"
                 />
                 <div class="secondary-info">
@@ -340,7 +340,7 @@
                       </router-link>
                     </div>
                     <div class="td">
-                      <router-link :to="'/stakingTx/' + tx.id">
+                      <router-link :to="'/staking-tx/' + tx.id">
                         {{ tx.id | shorten }}
                       </router-link>
                     </div>
@@ -350,7 +350,9 @@
                     <div class="td">
                       <router-link
                         v-if="tx.validator.bech32"
-                        :to="'/address/' + tx.validator.bech32"
+                        :to="
+                          '/address/' + tx.validator.bech32 + '?txType=staking'
+                        "
                       >
                         {{ tx.validator.bech32 | shorten }}
                       </router-link>
@@ -361,7 +363,9 @@
                     <div class="td">
                       <router-link
                         v-if="tx.delegator.bech32"
-                        :to="'/address/' + tx.delegator.bech32"
+                        :to="
+                          '/address/' + tx.delegator.bech32 + '?txType=staking'
+                        "
                       >
                         {{ tx.delegator.bech32 | shorten }}
                       </router-link>
@@ -419,7 +423,6 @@ export default {
       pageSize: 50,
       timer: null,
       now: Date.now(),
-      showStaking: false,
       showTx: true,
       coinStats: null,
     };
@@ -427,6 +430,9 @@ export default {
   computed: {
     length() {
       return Math.ceil(this.globalData.blocks.length / this.pageSize);
+    },
+    showStaking() {
+      return this.$route.query.txType === 'staking' ? true : false;
     },
   },
   watch: {
@@ -442,6 +448,12 @@ export default {
     // });
   },
   methods: {
+    changeTab(value) {
+      this.$router.replace({
+        name: 'HomePage',
+        query: { txType: value ? 'staking' : 'regular' },
+      });
+    },
     resetTimer() {
       clearInterval(this.timer);
       this.now = Date.now();

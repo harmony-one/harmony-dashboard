@@ -130,7 +130,9 @@
                 <td>
                   <router-link
                     v-if="transaction.validator"
-                    :to="'/address/' + transaction.validator"
+                    :to="
+                      '/address/' + transaction.validator + '?txType=staking'
+                    "
                     >{{ transaction.validator }}</router-link
                   >
                   <span v-else>-</span>
@@ -141,7 +143,9 @@
                 <td>
                   <router-link
                     v-if="transaction.delegator"
-                    :to="'/address/' + transaction.delegator"
+                    :to="
+                      '/address/' + transaction.delegator + '?txType=staking'
+                    "
                     >{{ transaction.delegator }}</router-link
                   >
                   <span v-else>-</span>
@@ -165,13 +169,21 @@
             <expand-panel>
               <table class="explorer-table">
                 <tr />
-                <tr>
+                <tr v-if="isStaking">
+                  <td class="td-title">
+                    Data
+                  </td>
+                  <td>
+                    <vue-json-pretty :data="transaction.msg" />
+                  </td>
+                </tr>
+                <tr v-if="!isStaking">
                   <td class="td-title">
                     Data (Hex)
                   </td>
                   <td>{{ transaction.input || '-' }}</td>
                 </tr>
-                <tr>
+                <tr v-if="!isStaking">
                   <td class="td-title">
                     Data (UTF-8)
                   </td>
@@ -194,12 +206,14 @@ import service from '../explorer/service';
 import store from '../explorer/store';
 import LoadingMessage from './LoadingMessage';
 import ExpandPanel from '@/ui/ExpandPanel';
+import VueJsonPretty from 'vue-json-pretty';
 
 export default {
   name: 'TransactionPage',
   components: {
     LoadingMessage,
     ExpandPanel,
+    VueJsonPretty,
   },
   props: {
     isStaking: {
