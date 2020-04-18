@@ -7,6 +7,7 @@ import HomePage from '@/components/HomePage';
 import BlockPage from '@/components/BlockPage';
 import TransactionPage from '@/components/TransactionPage';
 import TransactionsPage from '@/components/TransactionsPage';
+import StakingTransactionsPage from '@/components/StakingTransactionsPage';
 import AddressPage from '@/components/AddressPage';
 import ShardPage from '@/components/ShardPage';
 import AddressShardPage from '@/components/AddressShardPage';
@@ -40,6 +41,11 @@ export default new Router({
       path: '/txs/:pageIndex?',
       name: 'TransactionsPage',
       component: TransactionsPage,
+    },
+    {
+      path: '/staking-txs/:pageIndex?',
+      name: 'StakingTransactionsPage',
+      component: StakingTransactionsPage,
     },
     {
       path: '/block/:blockId',

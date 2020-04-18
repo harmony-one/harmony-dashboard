@@ -99,6 +99,15 @@ export default {
       return txs;
     });
   },
+  getStakingTransactions(pageIndex, pageSize) {
+    return authGet('/staking-txs', { params: { pageIndex, pageSize } }).then(
+      res => {
+        let txs = res.data.txs;
+
+        return txs;
+      }
+    );
+  },
   getTransaction(id) {
     return authGet('/tx', { params: { id } }).then(res => {
       let tx = res.data.tx;
