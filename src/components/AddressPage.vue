@@ -166,7 +166,7 @@ export default {
     changePage(value) {
       this.$router.replace({
         name: 'AddressPage',
-        query: { page: value + 1, txType: value ? 'staking' : 'regular' },
+        query: { page: value + 1, txType: this.$route.query.txType },
       });
     },
     getAddress() {
