@@ -53,12 +53,20 @@
           v-if="showStaking"
           :all-staking-txs="allStakingTxs"
           with-shards="true"
+          :page="page"
+          :changePage="changePage"
         >
           <slot>
             <TransactionTableTabs :value="showStaking" :on-change="changeTab" />
           </slot>
         </StakingTransactionsTable>
-        <TransactionsTable v-else :all-txs="allTxs" with-shards="true">
+        <TransactionsTable
+          v-else
+          :all-txs="allTxs"
+          with-shards="true"
+          :page="page"
+          :changePage="changePage"
+        >
           <slot>
             <TransactionTableTabs :value="showStaking" :on-change="changeTab" />
           </slot>
@@ -105,10 +113,18 @@ export default {
     showStaking() {
       return this.$route.query.txType === 'staking' ? true : false;
     },
+    page() {
+      return this.$route.query.page - 1 || 0;
+    },
   },
   watch: {
     $route() {
-      this.getAddressShard();
+      if (
+        this.$route.params.address !== (this.address && this.address.id) ||
+        this.$route.params.shardId !== this.shardId
+      ) {
+        this.getAddressShard();
+      }
     },
   },
   mounted() {
@@ -121,24 +137,30 @@ export default {
         query: { txType: value ? 'staking' : 'regular' },
       });
     },
+    changePage(value) {
+      this.$router.replace({
+        name: 'AddressShardPage',
+        query: { page: value + 1, txType: this.$route.query.txType },
+      });
+    },
     getAddressShard() {
       this.loading = true;
 
       const pageIndex = (+this.$route.params.pageIndex || 1) - 1;
       const address = this.$route.params.address;
-      const shardId = this.$route.params.shardId;
+      this.shardId = this.$route.params.shardId;
 
       const txs = {};
       const stakingTxs = {};
 
       return service
-        .getAddressShard(address, shardId)
+        .getAddressShard(address, this.shardId)
         .then(address => {
           if (address.txs) {
             address.txs.forEach(tx => {
               txs[tx.hash] = {
                 ...tx,
-                shardID: shardId,
+                shardID: this.shardId,
               };
             });
           }
@@ -146,7 +168,7 @@ export default {
             address.stakingTxs.forEach(tx => {
               stakingTxs[tx.hash] = {
                 ...tx,
-                shardID: shardId,
+                shardID: this.shardId,
                 delegator: tx.msg.delegatorAddress,
                 validator: tx.msg.validatorAddress,
                 value: tx.msg.amount,
