@@ -45,7 +45,12 @@
         </span>
       </div>
     </header>
-    <div class="explorer-card-body">
+
+    <div
+      class="explorer-card-body"
+      style="position: relative; min-height: 200px;"
+      ref="loadingContainer"
+    >
       <section>
         <table class="explorer-table">
           <tr>
@@ -111,33 +116,55 @@
 <script>
 export default {
   name: 'StakingTransactionsTable',
-  props: ['allStakingTxs', 'withShards', 'page', 'changePage'],
+  props: [
+    'allStakingTxs',
+    'withShards',
+    'page',
+    'changePage',
+    'isLocal',
+    'txCount',
+    'loading',
+  ],
   data() {
     return {
-      loading: true,
       pageIndex: this.page || 0,
       pageSize: 20,
+      loader: null,
     };
   },
-  computed: {
-    txCount() {
-      return this.allStakingTxs.length;
+  mounted() {
+    this.setLoader();
+  },
+  watch: {
+    loading() {
+      this.setLoader();
     },
+  },
+  computed: {
     pageCount() {
       return Math.ceil(this.txCount / this.pageSize);
     },
     stakingTxs() {
       const begin = this.pageIndex * this.pageSize;
 
-      return this.allStakingTxs.slice(begin, begin + this.pageSize);
-    },
-  },
-  watch: {
-    allStakingTxs() {
-      this.pageIndex = 0;
+      if (!this.isLocal) {
+        return this.allStakingTxs;
+      } else {
+        return this.allStakingTxs.slice(begin, begin + this.pageSize);
+      }
     },
   },
   methods: {
+    setLoader() {
+      if (this.loading) {
+        this.loader = this.$loading.show({
+          container: this.$refs.loadingContainer,
+          canCancel: false,
+        });
+      } else if (this.loader) {
+        this.loader.hide();
+      }
+    },
     goToPage(index) {
       if (index < 0) index = 0;
       if (index >= this.pageCount) index = this.pageCount - 1;

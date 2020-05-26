@@ -5,7 +5,7 @@
 <template>
   <div class="address-page explorer-page page">
     <div class="address-body explorer-body">
-      <div v-if="!loading && address" class="container">
+      <div v-if="showPanel" class="container">
         <div class="explorer-card">
           <header>
             <h1>Address</h1>
@@ -81,7 +81,9 @@
 
         <StakingTransactionsTable
           v-if="showStaking"
+          :loading="loading"
           :all-staking-txs="allStakingTxs"
+          :tx-count="stakingTxCount"
           with-shards="true"
           :page="page"
           :changePage="changePage"
@@ -92,7 +94,9 @@
         </StakingTransactionsTable>
         <TransactionsTable
           v-else
+          :loading="loading"
           :all-txs="allTxs"
+          :tx-count="txCount"
           with-shards="true"
           :page="page"
           :changePage="changePage"
@@ -130,20 +134,22 @@ export default {
       address: null,
       allTxs: [],
       allStakingTxs: [],
+      txCount: 0,
+      stakingTxCount: 0,
     };
   },
   computed: {
-    txCount() {
-      return this.allTxs.length;
-    },
-    stakingTxCount() {
-      return this.allStakingTxs.length;
-    },
     showStaking() {
       return this.$route.query.txType === 'staking' ? true : false;
     },
     page() {
       return this.$route.query.page - 1 || 0;
+    },
+    showPanel() {
+      return (
+        !this.loading ||
+        this.$route.params.address === (this.address && this.address.id)
+      );
     },
   },
   watch: {
@@ -151,6 +157,9 @@ export default {
       if (this.$route.params.address !== (this.address && this.address.id)) {
         this.getAddress();
       }
+    },
+    page() {
+      this.getAddress();
     },
   },
   mounted() {
@@ -177,7 +186,7 @@ export default {
       const address = this.$route.params.address;
 
       service
-        .getAddress(address)
+        .getAddress({ id: address, pageIndex: this.page, pageSize: 20 })
         .then(address => {
           address.shardData.forEach((data, idx) => {
             if (data.txs) {
@@ -200,6 +209,9 @@ export default {
               });
             }
           });
+
+          this.txCount = address.txCount;
+          this.stakingTxCount = address.stakingTxCount;
 
           this.address = address;
         })
