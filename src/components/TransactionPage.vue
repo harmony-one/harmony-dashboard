@@ -12,12 +12,10 @@
           </header>
           <div class="explorer-card-body">
             <table class="explorer-table">
-              <tr v-if="isStaking">
-                <td class="td-title">
-                  Type
-                </td>
-                <td>{{ transaction.type }}</td>
-              </tr>
+              <td class="td-title">
+                Type
+              </td>
+              <td>{{ transaction | txType }}</td>
               <tr>
                 <td class="td-title">
                   ID
@@ -43,7 +41,9 @@
                 <td v-if="isStaking && transaction.type === 'EditValidator'">
                   -
                 </td>
-                <td v-else>{{ transaction.value | amount }}</td>
+                <td v-else>
+                  {{ transaction.value | amount }}
+                </td>
               </tr>
 
               <!-- <tr>
@@ -116,38 +116,41 @@
                   To Address
                 </td>
                 <td>
-                  <router-link
-                    v-if="transaction.to"
-                    :to="'/address/' + transaction.to"
-                  >
-                    {{ transaction.to }}
+                  <router-link :to="'/address/' + transaction.to">
+                    {{ transaction.to || '-' }}
                   </router-link>
                 </td>
               </tr>
 
               <tr v-if="isStaking">
-                <td class="td-title">Validator Address</td>
+                <td class="td-title">
+                  Validator Address
+                </td>
                 <td>
                   <router-link
                     v-if="transaction.validator"
                     :to="
                       '/address/' + transaction.validator + '?txType=staking'
                     "
-                    >{{ transaction.validator }}</router-link
                   >
+                    {{ transaction.validator }}
+                  </router-link>
                   <span v-else>-</span>
                 </td>
               </tr>
               <tr v-if="isStaking">
-                <td class="td-title">Delegator Address</td>
+                <td class="td-title">
+                  Delegator Address
+                </td>
                 <td>
                   <router-link
                     v-if="transaction.delegator"
                     :to="
                       '/address/' + transaction.delegator + '?txType=staking'
                     "
-                    >{{ transaction.delegator }}</router-link
                   >
+                    {{ transaction.delegator }}
+                  </router-link>
                   <span v-else>-</span>
                 </td>
               </tr>
@@ -175,6 +178,20 @@
                   </td>
                   <td>
                     <vue-json-pretty :data="transaction.msg" />
+                  </td>
+                </tr>
+                <tr v-if="!isStaking">
+                  <td class="td-title">
+                    Data Parse
+                  </td>
+                  <td v-if="transaction.to">
+                    {{ transaction.input ? ABIDecode(transaction.input) : '-' }}
+                  </td>
+                  <td v-else>
+                    Deploy Contract
+                    <router-link :to="'/address/' + ContractAddress">
+                      {{ ContractAddress }}
+                    </router-link>
                   </td>
                 </tr>
                 <tr v-if="!isStaking">
@@ -245,6 +262,14 @@ export default {
     },
     isFailedTransaction() {
       return this.transaction.status === 'FAILURE';
+    },
+    ContractAddress() {
+      let tx = this.transaction;
+      let address = this.globalData.hmy.hmySDK.crypto.getContractAddress(
+        tx.from,
+        tx.nonce
+      );
+      return this.globalData.hmy.hmySDK.crypto.toBech32(address);
     },
   },
   watch: {
@@ -355,6 +380,10 @@ export default {
       return Intl.NumberFormat('en-US', { maximumFractionDigits: 18 }).format(
         fee
       );
+    },
+    ABIDecode(data) {
+      let c = this.globalData.hmy.contract(this.globalData.HRC20_ABI);
+      return c.decodeInput(data).toString();
     },
   },
 };

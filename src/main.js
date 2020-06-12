@@ -7,6 +7,9 @@ import VueScrollTo from 'vue-scrollto';
 import Highcharts from 'highcharts';
 import HighchartsVue from 'highcharts-vue';
 import Notifications from 'vue-notification';
+import store from './explorer/store';
+
+Vue.prototype.$store = store;
 
 Vue.config.devtools = true;
 

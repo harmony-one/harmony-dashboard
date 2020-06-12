@@ -1,0 +1,28 @@
+[
+    {
+        "address": "one10y76c0kyj6d9hmngf0859yx49l4c75d5z77zxr",
+        "decimals": 6,
+        "totalSupply": "201925001200",
+        "name": "SEED",
+        "symbol": "SEED",
+        "logo": "https://s2.coinmarketcap.com/static/img/coins/64x64/825.png",
+        "website": "https://harmony.one",
+        "description": {
+            "en": "...",
+            "cn": "..."
+        }
+    },
+    {
+        "address": "one1s79temh438hyvh8a0hc3q5ujgf0ev7fl8t3ckj",
+        "decimals": 6,
+        "totalSupply": "1000000000000",
+        "name": "example",
+        "symbol": "ex",
+        "logo": "https://xxxxx",
+        "website": "https://harmony.one",
+        "description": {
+            "en": "...",
+            "cn": "..."
+        }
+    }
+]

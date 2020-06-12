@@ -1,16 +1,22 @@
 <template>
   <div class="tabs">
     <span
-      :class="{ tabItem: true, active: !value }"
-      @click="() => onChange(false)"
+      :class="{ tabItem: true, active: value == 0 }"
+      @click="() => onChange(0)"
     >
       {{ titlePrefix }} Transactions
     </span>
     <span
-      :class="{ tabItem: true, active: value }"
-      @click="() => onChange(true)"
+      :class="{ tabItem: true, active: value == 1 }"
+      @click="() => onChange(1)"
     >
       {{ titlePrefix }} Staking transactions
+    </span>
+    <span
+      :class="{ tabItem: true, active: value == 2 }"
+      @click="() => onChange(2)"
+    >
+      {{ titlePrefix }} HRC20 transactions
     </span>
   </div>
 </template>

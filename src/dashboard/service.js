@@ -1,15 +1,16 @@
 import axios from 'axios';
 import store from './store';
 
-const BACKEND_URL = `${window.location.hostname}:3000`;
-const HTTP_BACKEND_URL = `https://${BACKEND_URL}`;
+const BACKEND_URL = `${'explorer.harmony.one'}`;
+//const BACKEND_URL = `${window.location.hostname}:3000`;
+const HTTP_BACKEND_URL = `https://${BACKEND_URL}:3000`;
 
 function sendPost(url, params, config) {
   return axios.post(HTTP_BACKEND_URL + url, params, config);
 }
 
 (function listenWebsocket() {
-  const ws = new WebSocket(`wss://${window.location.hostname}:8888`);
+  const ws = new WebSocket(`wss://${BACKEND_URL}:8888`);
   ws.addEventListener('open', () => {
     ws.send('front-end: Hi.');
   });

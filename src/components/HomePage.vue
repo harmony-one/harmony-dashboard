@@ -188,13 +188,13 @@
           </div>
 
           <div
-            v-if="!showStaking"
+            v-if="showWhich == 'regular'"
             class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
           >
             <div class="explorer-card latest-block-card">
               <header>
                 <TransactionTableTabs
-                  :value="showStaking"
+                  :value="tabValue"
                   :on-change="changeTab"
                   title-prefix="Latest"
                 />
@@ -226,6 +226,9 @@
                       To
                     </div>
                     <div class="th">
+                      Type
+                    </div>
+                    <div class="th">
                       Age
                     </div>
                     <div class="th">
@@ -253,8 +256,11 @@
                     </div>
                     <div class="td">
                       <router-link :to="'/address/' + tx.to.bech32">
-                        {{ tx.to.bech32 | shorten }}
+                        {{ tx.to.bech32 || '-' | shorten }}
                       </router-link>
+                    </div>
+                    <div class="td">
+                      {{ tx | txType }}
                     </div>
                     <div class="td">
                       {{ tx.timestamp | age }}
@@ -279,13 +285,13 @@
           </div>
 
           <div
-            v-if="showStaking"
+            v-else-if="showWhich == 'staking'"
             class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
           >
             <div class="explorer-card latest-block-card">
               <header>
                 <TransactionTableTabs
-                  :value="showStaking"
+                  :value="tabValue"
                   :on-change="changeTab"
                   title-prefix="Latest"
                 />
@@ -394,6 +400,104 @@
               </footer>-->
             </div>
           </div>
+
+          <div v-else class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="explorer-card latest-block-card">
+              <header>
+                <TransactionTableTabs
+                  :value="tabValue"
+                  :on-change="changeTab"
+                  title-prefix="Latest"
+                />
+                <div class="secondary-info">
+                  <div class="timer">
+                    Updated
+                    {{
+                      Math.round(
+                        Math.max((now - globalData.lastUpdateTime) / 1000, 0)
+                      ) | number
+                    }}s ago...
+                  </div>
+                  <span class="total-block-num" />
+                </div>
+              </header>
+              <div class="explorer-card-body">
+                Coming soon...
+                <div
+                  v-if="false"
+                  class="explorer-table-responsive latest-tx-table"
+                >
+                  <div class="tr">
+                    <div class="th">
+                      Shard
+                    </div>
+                    <div class="th">
+                      Hash
+                    </div>
+                    <div class="th">
+                      From
+                    </div>
+                    <div class="th">
+                      To
+                    </div>
+                    <div class="th">
+                      Type
+                    </div>
+                    <div class="th">
+                      Age
+                    </div>
+                    <div class="th">
+                      Value
+                    </div>
+                    <div class="th text-right">
+                      Txn Fee
+                    </div>
+                  </div>
+                  <div v-for="tx in globalData.txs" :key="tx.id" class="tr">
+                    <div class="td">
+                      <router-link :to="'/shard/' + tx.shardID">
+                        {{ tx.shardID }}
+                      </router-link>
+                    </div>
+                    <div class="td">
+                      <router-link :to="'/tx/' + tx.id">
+                        {{ tx.id | shorten }}
+                      </router-link>
+                    </div>
+                    <div class="td">
+                      <router-link :to="'/address/' + tx.from.bech32">
+                        {{ tx.from.bech32 | shorten }}
+                      </router-link>
+                    </div>
+                    <div class="td">
+                      <router-link :to="'/address/' + tx.to.bech32">
+                        {{ tx.to.bech32 || '-' | shorten }}
+                      </router-link>
+                    </div>
+                    <div class="td">
+                      {{ tx | txType }}
+                    </div>
+                    <div class="td">
+                      {{ tx.timestamp | age }}
+                    </div>
+                    <div class="td no-break">
+                      {{ tx.value | amount }}
+                    </div>
+                    <div class="td text-right no-break">
+                      {{ tx | fee }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- <footer class="button-only-footer">
+                <router-link
+                  tag="button"
+                  class="btn btn-light btn-block btn-mini"
+                  to="txs"
+                >View all transactions</router-link>
+              </footer>-->
+            </div>
+          </div>
         </div>
       </div>
       <div v-else class="container">
@@ -431,8 +535,12 @@ export default {
     length() {
       return Math.ceil(this.globalData.blocks.length / this.pageSize);
     },
-    showStaking() {
-      return this.$route.query.txType === 'staking' ? true : false;
+    showWhich() {
+      return this.$route.query.txType || 'regular'; // 'staking','regular','hrc20';
+    },
+    tabValue() {
+      const status = { staking: 1, regular: 0, hrc20: 2 };
+      return status[this.$route.query.txType] || 0;
     },
   },
   watch: {
@@ -449,9 +557,12 @@ export default {
   },
   methods: {
     changeTab(value) {
+      let txType = 'regular';
+      if (value == 1) txType = 'staking';
+      if (value == 2) txType = 'hrc20';
       this.$router.replace({
         name: 'HomePage',
-        query: { txType: value ? 'staking' : 'regular' },
+        query: { txType },
       });
     },
     resetTimer() {

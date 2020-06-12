@@ -1,5 +1,16 @@
 <style scoped lang="less">
 @import '../less/common.less';
+.shard {
+  width: 25%;
+  display: inline-block;
+}
+.hrclogo {
+  vertical-align: text-bottom;
+  border-radius: 0.25rem;
+  width: 1.3em;
+  border: 1px solid var(--bc-dim);
+  margin-left: 1em;
+}
 </style>
 
 <template>
@@ -8,12 +19,55 @@
       <div v-if="!loading && address" class="container">
         <div class="explorer-card">
           <header>
-            <h1>Address</h1>
+            <h1 v-if="isHrc20(address.id)">
+              HRC20 Token:
+              <img :src="Hrc20Info.logo" class="hrclogo" />
+              <a target="_blank" :href="Hrc20Info.website">
+                {{ Hrc20Info.name + '(' + Hrc20Info.symbol + ')' }}
+              </a>
+            </h1>
+            <h1 v-else>
+              Address
+            </h1>
           </header>
 
           <div class="explorer-card-body">
             <section>
               <table class="explorer-table">
+                <tr v-if="isHrc20(address.id)">
+                  <td colspan="2">
+                    <tr>
+                      <td class="td-title">
+                        Name(Symbol)
+                      </td>
+                      <td>
+                        {{ Hrc20Info.name + '(' + Hrc20Info.symbol + ')' }}
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td class="td-title">
+                        Decimals
+                      </td>
+                      <td>{{ Hrc20Info.decimals }}</td>
+                    </tr>
+
+                    <tr>
+                      <td class="td-title">
+                        TotalSupply
+                      </td>
+                      <td>{{ Hrc20Info.totalSupply }}</td>
+                    </tr>
+
+                    <tr>
+                      <td class="td-title">
+                        Description
+                      </td>
+                      <td>{{ Hrc20Info.description.en }}</td>
+                    </tr>
+                  </td>
+                </tr>
+
                 <tr>
                   <td class="td-title">
                     id
@@ -45,7 +99,7 @@
         <div
           v-for="(shard, index) in address.shardData"
           :key="index"
-          class="explorer-card"
+          class="explorer-card shard"
         >
           <header>
             <h1>Shard {{ index }}</h1>
@@ -79,31 +133,42 @@
           </div>
         </div>
 
-        <StakingTransactionsTable
-          v-if="showStaking"
-          :all-staking-txs="allStakingTxs"
-          with-shards="true"
-          :page="page"
-          :changePage="changePage"
-        >
-          <slot>
-            <TransactionTableTabs :value="showStaking" :on-change="changeTab" />
-          </slot>
-        </StakingTransactionsTable>
         <TransactionsTable
-          v-else
+          v-if="showWhich == 'regular'"
           :all-txs="allTxs"
           with-shards="true"
           :page="page"
           :changePage="changePage"
         >
           <slot>
-            <TransactionTableTabs :value="showStaking" :on-change="changeTab" />
+            <TransactionTableTabs :value="tabValue" :on-change="changeTab" />
           </slot>
         </TransactionsTable>
+        <Hrc20TransactionsTable
+          v-else-if="showWhich == 'hrc20'"
+          :all-txs="allTxs"
+          with-shards="true"
+          :page="page"
+          :changePage="changePage"
+        >
+          <slot>
+            <TransactionTableTabs :value="tabValue" :on-change="changeTab" />
+          </slot>
+        </Hrc20TransactionsTable>
+        <StakingTransactionsTable
+          v-else
+          :all-staking-txs="allStakingTxs"
+          with-shards="true"
+          :page="page"
+          :changePage="changePage"
+        >
+          <slot>
+            <TransactionTableTabs :value="tabValue" :on-change="changeTab" />
+          </slot>
+        </StakingTransactionsTable>
       </div>
       <div v-else class="container">
-        <loading-message />
+        <loading-message v-if="false" />
       </div>
     </div>
   </div>
@@ -114,8 +179,11 @@ import service from '../explorer/service';
 import LoadingMessage from './LoadingMessage';
 import TransactionsTable from './TransactionsTable';
 import StakingTransactionsTable from './StakingTransactionsTable';
+import Hrc20TransactionsTable from './Hrc20TransactionsTable';
 import TransactionTableTabs from './TransactionTableTabs';
 
+const status = { staking: 1, regular: 0, hrc20: 2 };
+const defaultStatus = 'regular';
 export default {
   name: 'AddressPage',
   components: {
@@ -123,6 +191,7 @@ export default {
     TransactionsTable,
     StakingTransactionsTable,
     TransactionTableTabs,
+    Hrc20TransactionsTable,
   },
   data() {
     return {
@@ -139,11 +208,19 @@ export default {
     stakingTxCount() {
       return this.allStakingTxs.length;
     },
-    showStaking() {
-      return this.$route.query.txType === 'staking' ? true : false;
+    showWhich() {
+      return this.$route.query.txType || defaultStatus; // 'staking','regular','hrc20';
     },
     page() {
       return this.$route.query.page - 1 || 0;
+    },
+    tabValue() {
+      return status[this.$route.query.txType] != undefined
+        ? status[this.$route.query.txType]
+        : status[defaultStatus];
+    },
+    Hrc20Info() {
+      return this.$store.data.Hrc20Address[this.address.id];
     },
   },
   watch: {
@@ -158,9 +235,12 @@ export default {
   },
   methods: {
     changeTab(value) {
+      let txType = 'regular';
+      if (value == 1) txType = 'staking';
+      if (value == 2) txType = 'hrc20';
       this.$router.replace({
         name: 'AddressPage',
-        query: { txType: value ? 'staking' : 'regular' },
+        query: { txType },
       });
     },
     changePage(value) {
@@ -213,6 +293,9 @@ export default {
 
           this.loading = false;
         });
+    },
+    isHrc20(address) {
+      return this.$store.data.Hrc20Address[address] != undefined;
     },
   },
 };

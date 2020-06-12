@@ -1,6 +1,8 @@
 import moment from 'moment-timezone';
 import Vue from 'vue';
 
+import store from './explorer/store.js';
+
 /**
  * Ref:
  * * https://momentjs.com/docs/#/customization/relative-time-threshold/
@@ -76,6 +78,15 @@ export function formatTxStatus(status) {
   }
 }
 
+export function TxType(transaction) {
+  let tx = transaction;
+  if (tx.type) return tx.type;
+  let to = tx.to;
+  if (to.hasOwnProperty('bech32')) to = to.bech32;
+  if (!to) return 'Deploy Contract';
+  return store.data.Hrc20Address[to] ? 'HRC20' : 'Transfer ONE';
+}
+
 Vue.filter('decimal', formatDecimal);
 Vue.filter('number', formatNumber);
 Vue.filter('shorten', shortenHash);
@@ -85,3 +96,4 @@ Vue.filter('amount', formatAmount);
 Vue.filter('txStatus', formatTxStatus);
 Vue.filter('fee', calculateFee);
 Vue.filter('blockLatency', formatBlockLatency);
+Vue.filter('txType', TxType);

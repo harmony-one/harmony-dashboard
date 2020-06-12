@@ -1,5 +1,10 @@
 import Vue from 'vue';
+import hmy from './hmy.js';
+import axios from 'axios';
 
+window.hmy = hmy;
+const HRC20_ABI = require('./HRC20_ABI.json');
+const HRC20_LIST = require('./HRC20List.json');
 const Limit = 10;
 function postprocessBlocks(items) {
   return items
@@ -22,6 +27,16 @@ function getTotalBlockLatency(latencies) {
   );
 }
 
+const HRC20LIST_URL = `https://github.com/harmony-one/hrc20list/list.json`;
+function fetchHrc20List(url) {
+  return axios.get(url).then(rez => {
+    return rez.data;
+  });
+}
+
+let Hrc20Address = {};
+HRC20_LIST.map(hrc20 => (Hrc20Address[hrc20.address] = hrc20));
+
 let store = {
   data: {
     shards: {},
@@ -33,11 +48,19 @@ let store = {
     stakingTxCount: 0,
     nodeCount: 0,
     lastUpdateTime: 0,
+    Hrc20Address,
+    HRC20_ABI,
+    hmy,
   },
 
   update(data) {
     this.updateShards(data.shards);
     this.updateGlobalData();
+  },
+  updateHrc20List() {
+    fetchHrc20List(HRC20LIST_URL).then(harc20list =>
+      harc20list.map(hrc20 => (this.data.Hrc20Address[hrc20.address] = hrc20))
+    );
   },
   updateShards(shards) {
     if (shards) {
