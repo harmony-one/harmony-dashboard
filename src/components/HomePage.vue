@@ -255,9 +255,7 @@
                       </router-link>
                     </div>
                     <div class="td">
-                      <router-link :to="'/address/' + tx.to.bech32">
-                        {{ tx.to.bech32 || '-' | shorten }}
-                      </router-link>
+                      <Address :bech32="tx.to.bech32" />
                     </div>
                     <div class="td">
                       {{ tx | txType }}
@@ -512,6 +510,7 @@ import store from '../explorer/store';
 import LoadingMessage from './LoadingMessage';
 import CoinStats from './CoinStats';
 import TransactionTableTabs from './TransactionTableTabs';
+import Address from './Address';
 
 export default {
   name: 'HomePage',
@@ -519,6 +518,7 @@ export default {
     LoadingMessage,
     CoinStats,
     TransactionTableTabs,
+    Address,
   },
   data() {
     return {

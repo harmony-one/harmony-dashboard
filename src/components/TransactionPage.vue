@@ -116,9 +116,7 @@
                   To Address
                 </td>
                 <td>
-                  <router-link :to="'/address/' + transaction.to">
-                    {{ transaction.to || '-' }}
-                  </router-link>
+                  <Address :bech32="transaction.to" :showRaw="true" />
                 </td>
               </tr>
 
@@ -230,6 +228,7 @@ import store from '../explorer/store';
 import LoadingMessage from './LoadingMessage';
 import ExpandPanel from '@/ui/ExpandPanel';
 import VueJsonPretty from 'vue-json-pretty';
+import Address from './Address';
 
 export default {
   name: 'TransactionPage',
@@ -237,6 +236,7 @@ export default {
     LoadingMessage,
     ExpandPanel,
     VueJsonPretty,
+    Address,
   },
   props: {
     isStaking: {

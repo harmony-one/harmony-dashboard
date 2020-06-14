@@ -74,9 +74,7 @@
               </router-link>
             </td>
             <td style="width:8em">
-              <router-link :to="'/address/' + tx.to">
-                {{ tx.to | shorten }}
-              </router-link>
+              <Address :bech32="tx.to" />
             </td>
             <td class="no-break wfont">
               {{ ABIDecode(tx.input) }}
@@ -89,8 +87,10 @@
 </template>
 
 <script>
+import Address from './Address';
 export default {
   name: 'TransactionsTable',
+  components: { Address },
   props: ['allTxs', 'withShards', 'page', 'changePage'],
   data() {
     return {
