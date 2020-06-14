@@ -5,7 +5,12 @@
       {{ hrc20Info.name }}
       <span v-if="showRaw"> ({{ bech32 || '-' }})</span>
     </span>
-    <span v-else>{{ bech32 || '-' | shorten }}</span>
+    <span v-else-if="showRaw">
+      {{ bech32 || '-' }}
+    </span>
+    <span v-else>
+      {{ bech32 || '-' | shorten }}
+    </span>
   </router-link>
 </template>
 
