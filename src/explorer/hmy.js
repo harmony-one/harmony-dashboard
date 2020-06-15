@@ -164,12 +164,15 @@ function contract(
     if (!method) return false;
     let argv = method.decodeInputs('0x' + no0x.slice(8));
     let obj = contract.methods['0x' + sig](...argv);
+
+    for (let i = 0; i < obj.params.length; i++) {
+      if (obj.abiItem.inputs[i].type == 'address')
+        obj.params[i] = hmySDK.crypto.toBech32(obj.params[i]);
+    }
     obj.toString = () => {
       let str = obj.abiItem.name + '(';
       for (let i = 0; i < obj.params.length; i++) {
         if (i > 0) str += ', ';
-        if (obj.abiItem.inputs[i].type == 'address')
-          str += hmySDK.crypto.toBech32(obj.params[i]);
         else str += obj.params[i];
       }
       str += ')';
