@@ -145,11 +145,11 @@ function contract(
     if (0 == abi.length) return [];
     let params = contract.abiCoder.decodeParameters(abi, hexdata);
     params.length = abi.length;
-    for (let i = 0; i < abi.length; i++) {
-      if (abi[i].type.startsWith('address'))
-        params[i] = hmySDK.crypto.toBech32(params[i]);
-    }
-    return params;
+    //for (let i = 0; i < abi.length; i++) {
+    //  if (abi[i].type.startsWith('address'))
+    //    params[i] = hmySDK.crypto.toBech32(params[i]);
+    //}
+    return Array.from(params);
   };
   for (let name in contract.abiModel.getMethods()) {
     let method = contract.abiModel.getMethod(name);
@@ -162,19 +162,20 @@ function contract(
     let sig = no0x.slice(0, 8).toLowerCase();
     let method = contract.abiModel.getMethod('0x' + sig);
     if (!method) return false;
-    let obj = {
-      name: method.name,
-      params: method.decodeInputs('0x' + no0x.slice(8)),
-    };
+    let argv = method.decodeInputs('0x' + no0x.slice(8));
+    let obj = contract.methods['0x' + sig](...argv);
     obj.toString = () => {
-      let str = obj.name + '(';
+      let str = obj.abiItem.name + '(';
       for (let i = 0; i < obj.params.length; i++) {
         if (i > 0) str += ', ';
-        str += obj.params[i];
+        if (obj.abiItem.inputs[i].type == 'address')
+          str += hmySDK.crypto.toBech32(obj.params[i]);
+        else str += obj.params[i];
       }
       str += ')';
       return str;
     };
+    window.xobj = obj;
     return obj;
   };
   return contract;
