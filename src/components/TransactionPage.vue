@@ -116,7 +116,7 @@
                   To Address
                 </td>
                 <td>
-                  <Address :bech32="transaction.to" :showRaw="true" />
+                  <Address :bech32="transaction.to" :show-raw="true" />
                 </td>
               </tr>
 
@@ -183,7 +183,11 @@
                     Data Parse
                   </td>
                   <td v-if="transaction.to">
-                    {{ transaction.input ? ABIDecode(transaction.input) : '-' }}
+                    <DecodeABI
+                      :abi="$store.data.HRC20_ABI"
+                      :data="transaction.input"
+                      :is-hrc20="isHrc20(transaction.hash)"
+                    />
                   </td>
                   <td v-else>
                     Deploy Contract
@@ -229,6 +233,7 @@ import LoadingMessage from './LoadingMessage';
 import ExpandPanel from '@/ui/ExpandPanel';
 import VueJsonPretty from 'vue-json-pretty';
 import Address from './Address';
+import DecodeABI from './DecodeABI';
 
 export default {
   name: 'TransactionPage',
@@ -237,6 +242,7 @@ export default {
     ExpandPanel,
     VueJsonPretty,
     Address,
+    DecodeABI,
   },
   props: {
     isStaking: {
@@ -381,9 +387,8 @@ export default {
         fee
       );
     },
-    ABIDecode(data) {
-      let c = this.globalData.hmy.contract(this.globalData.HRC20_ABI);
-      return c.decodeInput(data).toString();
+    isHrc20(address) {
+      return this.$store.data.Hrc20Address[address] != undefined;
     },
   },
 };

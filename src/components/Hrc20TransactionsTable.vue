@@ -77,7 +77,11 @@
               <Address :bech32="tx.to" />
             </td>
             <td class="no-break wfont">
-              {{ ABIDecode(tx.input) }}
+              <DecodeABI
+                :abi="$store.data.HRC20_ABI"
+                :data="tx.input"
+                :is-hrc20="isHrc20(tx.hash)"
+              />
             </td>
           </tr>
         </table>
@@ -88,9 +92,10 @@
 
 <script>
 import Address from './Address';
+import DecodeABI from './DecodeABI';
 export default {
   name: 'TransactionsTable',
-  components: { Address },
+  components: { Address, DecodeABI },
   props: ['allTxs', 'withShards', 'page', 'changePage'],
   data() {
     return {
@@ -142,9 +147,8 @@ export default {
       if (this.pageIndex === this.pageCount - 1) return;
       this.goToPage(this.pageIndex + 1);
     },
-    ABIDecode(data) {
-      let c = this.$store.data.hmy.contract(this.$store.data.HRC20_ABI);
-      return c.decodeInput(data).toString();
+    isHrc20(address) {
+      return this.$store.data.Hrc20Address[address] != undefined;
     },
   },
 };
