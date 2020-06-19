@@ -173,7 +173,7 @@ function contract(
       let str = obj.abiItem.name + '(';
       for (let i = 0; i < obj.params.length; i++) {
         if (i > 0) str += ', ';
-        else str += obj.params[i];
+        str += obj.params[i];
       }
       str += ')';
       return str;
