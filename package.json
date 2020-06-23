@@ -25,7 +25,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.26",
     "@fortawesome/free-solid-svg-icons": "^5.12.0",
     "@fortawesome/vue-fontawesome": "0.1.9",
-    "@harmony-js/core": "^0.1.45",
+    "@harmony-js/core": "^0.1.36",
     "animate.css": "^3.6.1",
     "axios": "^0.19.1",
     "core-js": "^3.4.4",

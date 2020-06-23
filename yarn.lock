@@ -875,7 +875,7 @@
     "@harmony-js/transaction" "^0.1.45"
     "@harmony-js/utils" "^0.1.45"
 
-"@harmony-js/core@^0.1.45":
+"@harmony-js/core@^0.1.36", "@harmony-js/core@^0.1.45":
   version "0.1.45"
   resolved "https://registry.yarnpkg.com/@harmony-js/core/-/core-0.1.45.tgz#b2534f8907243c712fe9e09f1ef33237568348ae"
   integrity sha512-tLBHlmXtsEJsw+K9DwEEjZ4Xk0RhcSQ0X8Se5sUvhOnAYN+c3GKXmKyVADKxJ1rlu9nIzILGhKCuzjITt+p2tQ==

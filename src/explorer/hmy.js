@@ -140,7 +140,8 @@ function contract(
   }
 ) {
   let contract = hmySDK.contracts.createContract(abi, to, options);
-  contract.wallet.signTransaction = window.harmony.signTransaction; // or importPrivate
+  if (window.harmony)
+    contract.wallet.signTransaction = window.harmony.signTransaction; // or importPrivate
   let decodeParameters = (abi, hexdata) => {
     if (0 == abi.length) return [];
     let params = contract.abiCoder.decodeParameters(abi, hexdata);

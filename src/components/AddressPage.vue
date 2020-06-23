@@ -133,6 +133,26 @@
           </div>
         </div>
 
+        <HrcTokenTabs v-model="HrcTabActive">
+          <TabPane :name="'HRC20'">
+            <section>
+              <table class="explorer-table">
+                <tr v-for="balanceOf in Hrc20Balance" :key="balanceOf.id">
+                  <td class="td-title">
+                    <Address :bech32="balanceOf.id" />
+                  </td>
+                  <td>
+                    {{ balanceOf.balance }}
+                  </td>
+                </tr>
+              </table>
+            </section>
+          </TabPane>
+          <TabPane :name="'HRC721'">
+            comming soon...
+          </TabPane>
+        </HrcTokenTabs>
+
         <TransactionsTable
           v-if="showWhich == 'regular'"
           :all-txs="allTxs"
@@ -181,6 +201,9 @@ import TransactionsTable from './TransactionsTable';
 import StakingTransactionsTable from './StakingTransactionsTable';
 import Hrc20TransactionsTable from './Hrc20TransactionsTable';
 import TransactionTableTabs from './TransactionTableTabs';
+import HrcTokenTabs from './HrcTokenTabs';
+import TabPane from './TabPane';
+import Address from './Address';
 
 const status = { staking: 1, regular: 0, hrc20: 2 };
 const defaultStatus = 'regular';
@@ -192,6 +215,9 @@ export default {
     StakingTransactionsTable,
     TransactionTableTabs,
     Hrc20TransactionsTable,
+    HrcTokenTabs,
+    TabPane,
+    Address,
   },
   data() {
     return {
@@ -199,6 +225,8 @@ export default {
       address: null,
       allTxs: [],
       allStakingTxs: [],
+      HrcTabActive: '',
+      Hrc20Balance: [],
     };
   },
   computed: {
@@ -282,6 +310,7 @@ export default {
           });
 
           this.address = address;
+          this.hrc20BalanceOf();
         })
         .finally(() => {
           this.allTxs = Object.values(txs).sort((a, b) =>
@@ -296,6 +325,16 @@ export default {
     },
     isHrc20(address) {
       return this.$store.data.Hrc20Address[address] != undefined;
+    },
+    async hrc20BalanceOf() {
+      const hmy = this.$store.data.hmy;
+      const toHex = hmy.hmySDK.crypto.fromBech32;
+      console.log('hrc20', this.address);
+      for (let hrc20 in this.$store.data.Hrc20Address) {
+        const c = hmy.contract(this.$store.data.HRC20_ABI, toHex(hrc20));
+        let balance = await c.methods.balanceOf(toHex(this.address.id)).call();
+        this.Hrc20Balance.push({ id: hrc20, balance: balance.toString() });
+      }
     },
   },
 };
