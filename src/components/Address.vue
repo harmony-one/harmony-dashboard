@@ -3,9 +3,9 @@
     <span v-if="isHrc20">
       <img :src="hrc20Info.logo" class="hrclogo" />
       {{ hrc20Info.name }}
-      <span v-if="show_raw"> ({{ bech32 || '-' }})</span>
+      <span v-if="showRaw"> ({{ bech32 || '-' }})</span>
     </span>
-    <span v-else-if="show_raw">
+    <span v-else-if="showRaw">
       {{ bech32 || '-' }}
     </span>
     <span v-else>
@@ -17,8 +17,9 @@
 <script>
 export default {
   name: 'Address',
-  props: ['bech32', 'show_raw'],
+  props: ['bech32', 'showRaw'],
   data() {
+    console.log('showRaw:', this.showRaw);
     return {};
   },
   computed: {

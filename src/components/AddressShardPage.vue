@@ -54,7 +54,7 @@
           :all-staking-txs="allStakingTxs"
           with-shards="true"
           :page="page"
-          :changePage="changePage"
+          :change-page="changePage"
         >
           <slot>
             <TransactionTableTabs :value="showStaking" :on-change="changeTab" />
@@ -65,7 +65,7 @@
           :all-txs="allTxs"
           with-shards="true"
           :page="page"
-          :changePage="changePage"
+          :change-page="changePage"
         >
           <slot>
             <TransactionTableTabs :value="showStaking" :on-change="changeTab" />
