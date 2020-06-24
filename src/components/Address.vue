@@ -3,9 +3,9 @@
     <span v-if="isHrc20">
       <img :src="hrc20Info.logo" class="hrclogo" />
       {{ hrc20Info.name }}
-      <span v-if="showRaw"> ({{ bech32 || '-' }})</span>
+      <span v-if="show_raw"> ({{ bech32 || '-' }})</span>
     </span>
-    <span v-else-if="showRaw">
+    <span v-else-if="show_raw">
       {{ bech32 || '-' }}
     </span>
     <span v-else>

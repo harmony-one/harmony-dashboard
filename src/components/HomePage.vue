@@ -104,6 +104,80 @@
             </div>
           </div>
         </div>
+
+        <div class="explorer-card status-card status-shard">
+          <header>
+            <h1 class="flex-grow">
+              Shards Status
+            </h1>
+            <div class="secondary-info">
+              <div class="timer">
+                Updated
+                {{
+                  Math.round(
+                    Math.max((now - globalData.lastUpdateTime) / 1000, 0)
+                  ) | number
+                }}s ago...
+              </div>
+              <span class="total-block-num" />
+            </div>
+          </header>
+          <div class="row">
+            <div
+              v-for="(block, shard) in lastBlocks"
+              :key="shard"
+              class="col-xs-12 col-sm-6 col-md-3 col-lg-3"
+            >
+              <div class="data-num-column">
+                <router-link :to="'/shard/' + shard" class="data-shard">
+                  Shard {{ shard }}
+                </router-link>
+                <div class="data-slot">
+                  <router-link :to="'/block/' + block.id" class="link">
+                    {{ block.height | number }}
+                  </router-link>
+                  <div class="sub-title">
+                    Height
+                  </div>
+                </div>
+                <div class="data-slot">
+                  <div class="data">
+                    {{ block.timestamp | timestamp | onlyData }}
+                  </div>
+                  <div class="data">
+                    {{ block.timestamp | timestamp | onlyTime }}
+                  </div>
+                  <div class="sub-title">
+                    Time
+                  </div>
+                </div>
+                <div class="data-slot">
+                  <div class="data">
+                    {{ block.txCount }}
+                  </div>
+                  <div class="sub-title">
+                    Transactions
+                  </div>
+                </div>
+                <div class="data-slot">
+                  <div class="data">
+                    {{ block.timestamp | age }}
+                  </div>
+                  <div class="sub-title">
+                    Age
+                  </div>
+                </div>
+                <div class="data-slot">
+                  <Address :bech32="bech32(block.miner)" class="link" />
+                  <div class="sub-title">
+                    Validator
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="explorer-card latest-block-card">
@@ -520,6 +594,14 @@ export default {
     TransactionTableTabs,
     Address,
   },
+  filters: {
+    onlyData(fulldata) {
+      return fulldata.slice(0, 10);
+    },
+    onlyTime(fulldata) {
+      return fulldata.slice(11);
+    },
+  },
   data() {
     return {
       globalData: store.data,
@@ -542,6 +624,11 @@ export default {
       const status = { staking: 1, regular: 0, hrc20: 2 };
       return status[this.$route.query.txType] || 0;
     },
+    lastBlocks() {
+      return Object.values(this.$store.data.shards).map(
+        shard => shard.blocks[0]
+      );
+    },
   },
   watch: {
     globalData() {
@@ -556,6 +643,9 @@ export default {
     // });
   },
   methods: {
+    bech32(hexaddr) {
+      return this.$store.data.hmy.hmySDK.crypto.toBech32(hexaddr);
+    },
     changeTab(value) {
       let txType = 'regular';
       if (value == 1) txType = 'staking';

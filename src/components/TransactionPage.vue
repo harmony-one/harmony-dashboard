@@ -116,7 +116,7 @@
                   To Address
                 </td>
                 <td>
-                  <Address :bech32="transaction.to" :show-raw="true" />
+                  <Address :bech32="transaction.to" :show_raw="true" />
                 </td>
               </tr>
 
