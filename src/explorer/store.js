@@ -27,7 +27,8 @@ function getTotalBlockLatency(latencies) {
   );
 }
 
-const HRC20LIST_URL = `https://github.com/harmony-one/hrc20list/list.json`;
+const BASE_HRC20URL = 'https://raw.githubusercontent.com/harmony-one/HRC20-logos/master';
+const HRC20LIST_URL = `${BASE_HRC20URL}/list.json`;
 function fetchHrc20List(url) {
   return axios.get(url).then(rez => {
     return rez.data;
@@ -59,7 +60,9 @@ let store = {
   },
   updateHrc20List() {
     fetchHrc20List(HRC20LIST_URL).then(harc20list =>
-      harc20list.map(hrc20 => (this.data.Hrc20Address[hrc20.address] = hrc20))
+      harc20list.map(hrc20 =>
+        this.data.Hrc20Address[hrc20.address] = {...hrc20, logo:`${BASE_HRC20URL}/HRC20/${hrc20.address}.jpg`}
+      )
     );
   },
   updateShards(shards) {
