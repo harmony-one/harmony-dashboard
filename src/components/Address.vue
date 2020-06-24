@@ -17,7 +17,7 @@
 <script>
 export default {
   name: 'Address',
-  props: ['bech32', 'showRaw'],
+  props: ['bech32', 'show_raw'],
   data() {
     return {};
   },
