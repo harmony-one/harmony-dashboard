@@ -8,10 +8,15 @@ import Highcharts from 'highcharts';
 import HighchartsVue from 'highcharts-vue';
 import Notifications from 'vue-notification';
 
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
+
 Vue.config.devtools = true;
 
 import './filter';
 import './icon';
+
+Vue.use(Loading);
 
 Vue.use(VueScrollTo, {
   offset: -68,

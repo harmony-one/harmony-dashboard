@@ -129,8 +129,8 @@ export default {
       return coinStats;
     });
   },
-  getAddress(id) {
-    return authGet('/address', { params: { id } }).then(res => {
+  getAddress(params) {
+    return authGet('/address', { params }).then(res => {
       let address = res.data.address;
       return address;
     });
@@ -143,13 +143,11 @@ export default {
       return address;
     });
   },
-  getAddressShard(address, shardID) {
-    return authGet('/address-shard', { params: { address, shardID } }).then(
-      res => {
-        let address = res.data.address;
-        return address;
-      }
-    );
+  getAddressShard(params) {
+    return authGet('/address-shard', { params }).then(res => {
+      let address = res.data.address;
+      return address;
+    });
   },
   getAddressShardTxHistory(address, shardID, pageIndex, pageSize) {
     return authGet('/address-shard-txs', {

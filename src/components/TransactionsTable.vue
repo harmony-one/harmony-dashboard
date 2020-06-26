@@ -45,7 +45,11 @@
         </span>
       </div>
     </header>
-    <div class="explorer-card-body">
+    <div
+      class="explorer-card-body"
+      style="position: relative; min-height: 200px;"
+      ref="loadingContainer"
+    >
       <section>
         <table class="explorer-table">
           <tr>
@@ -107,33 +111,54 @@
 <script>
 export default {
   name: 'TransactionsTable',
-  props: ['allTxs', 'withShards', 'page', 'changePage'],
+  props: [
+    'allTxs',
+    'withShards',
+    'page',
+    'changePage',
+    'isLocal',
+    'txCount',
+    'loading',
+  ],
   data() {
     return {
-      loading: true,
       pageIndex: this.page || 0,
       pageSize: 20,
     };
   },
   computed: {
-    txCount() {
-      return this.allTxs.length;
-    },
     pageCount() {
       return Math.ceil(this.txCount / this.pageSize);
     },
     txs() {
       const begin = this.pageIndex * this.pageSize;
 
-      return this.allTxs.slice(begin, begin + this.pageSize);
+      if (!this.isLocal) {
+        return this.allTxs;
+      } else {
+        return this.allTxs.slice(begin, begin + this.pageSize);
+      }
     },
   },
+  mounted() {
+    this.setLoader();
+  },
   watch: {
-    allTxs() {
-      this.pageIndex = 0;
+    loading() {
+      this.setLoader();
     },
   },
   methods: {
+    setLoader() {
+      if (this.loading) {
+        this.loader = this.$loading.show({
+          container: this.$refs.loadingContainer,
+          canCancel: false,
+        });
+      } else if (this.loader) {
+        this.loader.hide();
+      }
+    },
     goToPage(index) {
       if (index < 0) index = 0;
       if (index >= this.pageCount) index = this.pageCount - 1;
