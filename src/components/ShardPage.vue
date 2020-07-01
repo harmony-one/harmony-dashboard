@@ -8,6 +8,9 @@
   text-transform: uppercase;
   font-weight: 500;
 }
+.wfont {
+  font-family: monospace, 'Courier New', Courier;
+}
 </style>
 
 <template>
@@ -236,6 +239,107 @@
                 >View all transactions</router-link>
           </footer>-->
         </div>
+
+        <div class="explorer-card latest-block-card">
+          <header>
+            <h1 class="flex-grow">
+              Latest Blocks
+            </h1>
+            <div class="secondary-info">
+              <div class="timer">
+                Updated
+                {{
+                  Math.round(Math.max((now - shard.lastUpdateTime) / 1000, 0))
+                    | number
+                }}s ago...
+              </div>
+              <span class="total-block-num" />
+            </div>
+          </header>
+          <div class="explorer-card-body">
+            <div class="explorer-table-responsive latest-block-table">
+              <div class="tr">
+                <div class="th">
+                  Shard
+                </div>
+                <div class="th">
+                  Hash
+                </div>
+                <div class="th">
+                  Height
+                </div>
+                <div class="th text-right">
+                  Timestamp
+                </div>
+                <div class="th text-right">
+                  Age
+                </div>
+                <div v-if="showTx" class="th text-right">
+                  Transactions
+                </div>
+              </div>
+              <div v-for="block in shard.blocks" :key="block.id" class="tr">
+                <div class="td">
+                  <router-link :to="'/shard/' + block.shardID">
+                    {{ block.shardID }}
+                  </router-link>
+                </div>
+                <div class="td">
+                  <router-link :to="'/block/' + block.id">
+                    {{ block.id | shorten }}
+                  </router-link>
+                </div>
+                <div class="td">
+                  <router-link :to="'/block/' + block.id">
+                    {{ block.height | number }}
+                  </router-link>
+                </div>
+                <div class="td text-right">
+                  {{ block.timestamp | timestamp }}
+                </div>
+                <div class="td text-right">
+                  {{ block.timestamp | age }}
+                </div>
+                <div v-if="showTx" class="td text-right">
+                  {{ block.txCount }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <footer class="button-only-footer">
+                <router-link
+                  tag="button"
+                  class="btn btn-light btn-block btn-mini"
+                  to="blocks"
+                >View all blocks</router-link>
+          </footer>-->
+        </div>
+
+        <div class="explorer-card latest-block-card">
+          <header>
+            <h1 class="flex-grow">
+              Active Validators
+            </h1>
+          </header>
+          <div class="explorer-card-body">
+            <section>
+              <table class="explorer-table">
+                <tr>
+                  <th>Address</th>
+                  <th>Balance</th>
+                </tr>
+                <tr v-for="validator in validators" :key="validator.address" class="wfont">
+                  <td>
+                    <Address :bech32="validator.address" :showRaw="true" />
+                  </td>
+                  <td>   
+                    {{ validator.balance }}
+                  </td>
+                </tr>
+              </table>
+            </section>
+          </div>
+        </div>
       </div>
       <div v-else class="container">
         <loading-message />
@@ -247,11 +351,13 @@
 <script>
 import store from '../explorer/store';
 import LoadingMessage from './LoadingMessage';
+import Address from './Address';
 
 export default {
   name: 'ShardPage',
   components: {
     LoadingMessage,
+    Address,
   },
   data() {
     return {
@@ -261,11 +367,17 @@ export default {
       timer: null,
       now: Date.now(),
       showTx: true,
+      holderTab: null,
     };
   },
   computed: {
     shard() {
       return this.globalData.shards[this.$route.params.id];
+    },
+    validators() {
+      if (this.$route.params.id < this.$store.data.shardsValidators.length)
+        return this.$store.data.shardsValidators[this.$route.params.id];
+      return [];
     },
   },
   watch: {

@@ -18,6 +18,20 @@ function postprocessTxs(items) {
     .slice(0, Limit);
 }
 
+async function hrc20TxsFilter(items, isHrc20, exist) {
+  let retTxs = [];
+  let txs = items.sort((a, b) => (Number(a.timestamp) > Number(b.timestamp) ? -1 : 1));
+  for(let i in txs){
+    let tx = txs[i];
+    if(isHrc20(tx.to.bech32) && !exist(tx.id)){
+      if(tx.input == undefined)
+        tx.input = (await hmy.hmySDK.blockchain.Transaction.getTransactionByHash(tx.id)).result.input;
+      retTxs.push(tx);
+    }
+  }
+  return retTxs.slice(0, Limit);
+}
+
 function getTotalBlockLatency(latencies) {
   latencies = latencies.filter(x => isFinite(x));
   if (!latencies.length) return NaN;
@@ -32,6 +46,8 @@ const BASE_HRC20URL =
 const HRC20LIST_URL = `${BASE_HRC20URL}/list.json`;
 function fetchHrc20List(url) {
   return axios.get(url).then(rez => {
+    window.__vue = Vue;
+    console.log("fetch update");
     return rez.data;
   });
 }
@@ -42,9 +58,11 @@ HRC20_LIST.map(hrc20 => (Hrc20Address[hrc20.address] = hrc20));
 let store = {
   data: {
     shards: {},
+    shardsValidators:[],
     blocks: [],
     txs: [],
     stakingTxs: [],
+    hrc20Txs: [],
     blockCount: 0,
     txCount: 0,
     stakingTxCount: 0,
@@ -59,11 +77,17 @@ let store = {
     this.updateShards(data.shards);
     this.updateGlobalData();
   },
+  async updateValidtors(){
+    for(let i = 0; i < 4; i++){
+      let shardi = await hmy.hmySDK.blockchain.Staking.getValidators(i);
+      this.data.shardsValidators.push(shardi.result.validators);
+    }
+  },
   updateHrc20List() {
     fetchHrc20List(HRC20LIST_URL).then(harc20list =>
       harc20list.map(
         hrc20 =>
-          (this.data.Hrc20Address[hrc20.address] = {
+          Vue.set(this.data.Hrc20Address, hrc20.address, {
             ...hrc20,
             logo: `${BASE_HRC20URL}/HRC20/${hrc20.address}.png`,
           })
@@ -109,7 +133,7 @@ let store = {
     shardData.txCount = shard.txCount;
     shardData.stakingTxCount = shard.stakingTxCount;
   },
-  updateGlobalData() {
+  async updateGlobalData() {
     this.data.blocks = postprocessBlocks(
       Object.values(this.data.shards).reduce(
         (memo, shard) => memo.concat(shard.blocks),
@@ -122,6 +146,18 @@ let store = {
         []
       )
     );
+
+    let newHrc20Txs = await hrc20TxsFilter(
+      Object.values(this.data.shards).reduce(
+      (memo, shard) => memo.concat(shard.txs),
+      []
+      ),
+      id=>!!this.data.Hrc20Address[id],
+      id=>this.data.hrc20Txs.filter(tx=>tx.id==id).length
+    )//newHrc20Txs=>{
+        const remain = Limit - newHrc20Txs.length;
+        this.data.hrc20Txs = [...newHrc20Txs, ...this.data.hrc20Txs.slice(0, remain)];
+    //  });
     this.data.stakingTxs = postprocessTxs(
       Object.values(this.data.shards).reduce(
         (memo, shard) => memo.concat(shard.stakingTxs),
@@ -168,5 +204,9 @@ let store = {
 };
 
 store.updateHrc20List();
+store.updateValidtors();
+
+Vue.prototype.$store = store;
+
 
 export default store;

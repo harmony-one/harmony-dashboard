@@ -19,7 +19,6 @@ export default {
   name: 'Address',
   props: ['bech32', 'showRaw'],
   data() {
-    console.log('showRaw:', this.showRaw);
     return {};
   },
   computed: {

@@ -168,9 +168,11 @@
                   </div>
                 </div>
                 <div class="data-slot">
-                  <Address :bech32="bech32(block.miner)" class="link" />
+                  <div class="data">
+                    {{ $store.data.shardsValidators.length > shard ? $store.data.shardsValidators[shard].length : '...' }}
+                  </div>
                   <div class="sub-title">
-                    Validator
+                    Validators
                   </div>
                 </div>
               </div>
@@ -178,89 +180,33 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="explorer-card latest-block-card">
-              <header>
-                <h1 class="flex-grow">
-                  Latest Blocks
-                </h1>
-                <div class="secondary-info">
-                  <div class="timer">
-                    Updated
-                    {{
-                      Math.round(
-                        Math.max((now - globalData.lastUpdateTime) / 1000, 0)
-                      ) | number
-                    }}s ago...
-                  </div>
-                  <span class="total-block-num" />
-                </div>
-              </header>
-              <div class="explorer-card-body">
-                <div class="explorer-table-responsive latest-block-table">
-                  <div class="tr">
-                    <div class="th">
-                      Shard
-                    </div>
-                    <div class="th">
-                      Hash
-                    </div>
-                    <div class="th">
-                      Height
-                    </div>
-                    <div class="th text-right">
-                      Timestamp
-                    </div>
-                    <div class="th text-right">
-                      Age
-                    </div>
-                    <div v-if="showTx" class="th text-right">
-                      Transactions
-                    </div>
-                  </div>
-                  <div
-                    v-for="block in globalData.blocks"
-                    :key="block.id"
-                    class="tr"
-                  >
-                    <div class="td">
-                      <router-link :to="'/shard/' + block.shardID">
-                        {{ block.shardID }}
-                      </router-link>
-                    </div>
-                    <div class="td">
-                      <router-link :to="'/block/' + block.id">
-                        {{ block.id | shorten }}
-                      </router-link>
-                    </div>
-                    <div class="td">
-                      <router-link :to="'/block/' + block.id">
-                        {{ block.height | number }}
-                      </router-link>
-                    </div>
-                    <div class="td text-right">
-                      {{ block.timestamp | timestamp }}
-                    </div>
-                    <div class="td text-right">
-                      {{ block.timestamp | age }}
-                    </div>
-                    <div v-if="showTx" class="td text-right">
-                      {{ block.txCount }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- <footer class="button-only-footer">
-                <router-link
-                  tag="button"
-                  class="btn btn-light btn-block btn-mini"
-                  to="blocks"
-                >View all blocks</router-link>
-              </footer>-->
-            </div>
-          </div>
+      
+        <CommonTabs v-model="holderTab">
+          <TabPane :name="'Token Holders'">
+            <section>
+              <table class="explorer-table">
+                <tr>
+                  <td class="td-title">
+                    ONE
+                  </td>
+                  <td>   
+                    <a href="https://balance.harmony.one/#/" target="_blank">{{ 100000 }}</a>
+                  </td>
+                </tr>
+                <tr v-for="token in tokenHolders" :key="token.id">
+                  <td class="td-title">
+                    <Address :bech32="token.id" />
+                  </td>
+                  <td>
+                    <a :href="`https://harmony-hrc-holder.firebaseapp.com/#/address/${token.id}`" target="_blank">{{ token.holders }}</a>
+                  </td>
+                </tr>
+              </table>
+            </section>
+          </TabPane>
+        </CommonTabs>
 
+        <div class="row">
           <div
             v-if="showWhich == 'regular'"
             class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
@@ -494,17 +440,13 @@
                 </div>
               </header>
               <div class="explorer-card-body">
-                Coming soon...
-                <div
-                  v-if="false"
-                  class="explorer-table-responsive latest-tx-table"
-                >
+                <div class="explorer-table-responsive latest-tx-table">
                   <div class="tr">
                     <div class="th">
-                      Shard
+                      TxHash
                     </div>
                     <div class="th">
-                      Hash
+                      Timestamp
                     </div>
                     <div class="th">
                       From
@@ -513,28 +455,21 @@
                       To
                     </div>
                     <div class="th">
-                      Type
-                    </div>
-                    <div class="th">
-                      Age
-                    </div>
-                    <div class="th">
-                      Value
-                    </div>
-                    <div class="th text-right">
-                      Txn Fee
+                      Data Decode
                     </div>
                   </div>
-                  <div v-for="tx in globalData.txs" :key="tx.id" class="tr">
+                  <div
+                    v-for="tx in $store.data.hrc20Txs"
+                    :key="tx.id"
+                    class="tr"
+                  >
                     <div class="td">
-                      <router-link :to="'/shard/' + tx.shardID">
-                        {{ tx.shardID }}
-                      </router-link>
+                    <router-link :to="'/tx/' + tx.id">
+                      {{ tx.id | shorten }}
+                    </router-link>
                     </div>
                     <div class="td">
-                      <router-link :to="'/tx/' + tx.id">
-                        {{ tx.id | shorten }}
-                      </router-link>
+                      {{ (Number(tx.timestamp) * 1000) | timestamp }}
                     </div>
                     <div class="td">
                       <router-link :to="'/address/' + tx.from.bech32">
@@ -542,21 +477,14 @@
                       </router-link>
                     </div>
                     <div class="td">
-                      <router-link :to="'/address/' + tx.to.bech32">
-                        {{ tx.to.bech32 || '-' | shorten }}
-                      </router-link>
+                      <Address :bech32="tx.to.bech32" />
                     </div>
                     <div class="td">
-                      {{ tx | txType }}
-                    </div>
-                    <div class="td">
-                      {{ tx.timestamp | age }}
-                    </div>
-                    <div class="td no-break">
-                      {{ tx.value | amount }}
-                    </div>
-                    <div class="td text-right no-break">
-                      {{ tx | fee }}
+                      <DecodeABI
+                        :abi="$store.data.HRC20_ABI"
+                        :data="tx.input"
+                        :is-hrc20="true"
+                      />
                     </div>
                   </div>
                 </div>
@@ -585,6 +513,9 @@ import LoadingMessage from './LoadingMessage';
 import CoinStats from './CoinStats';
 import TransactionTableTabs from './TransactionTableTabs';
 import Address from './Address';
+import CommonTabs from './HrcTokenTabs';
+import TabPane from './TabPane';
+import DecodeABI from './DecodeABI';
 
 export default {
   name: 'HomePage',
@@ -593,6 +524,9 @@ export default {
     CoinStats,
     TransactionTableTabs,
     Address,
+    CommonTabs,
+    TabPane,
+    DecodeABI,
   },
   filters: {
     onlyData(fulldata) {
@@ -611,6 +545,8 @@ export default {
       now: Date.now(),
       showTx: true,
       coinStats: null,
+      holderTab: null,
+      tokenHolders: [],
     };
   },
   computed: {
@@ -629,20 +565,32 @@ export default {
         shard => shard.blocks[0]
       );
     },
+    Hrc20Address() {
+      return this.$store.data.Hrc20Address;
+    },
   },
   watch: {
     globalData() {
       this.resetTimer();
     },
+    Hrc20Address() {
+      this.updateHolders();
+    },
   },
   mounted() {
+    this.updateHolders();
     this.resetTimer();
-
     // service.getCoinStats().then(stats => {
     //   this.coinStats = stats;
     // });
   },
   methods: {
+    async updateHolders() {
+      let tokenHolders = [];
+      for (let hrc20 in this.Hrc20Address)
+        tokenHolders.push({ id: hrc20, holders: 10000 });
+      this.tokenHolders = tokenHolders;
+    },
     bech32(hexaddr) {
       return this.$store.data.hmy.hmySDK.crypto.toBech32(hexaddr);
     },

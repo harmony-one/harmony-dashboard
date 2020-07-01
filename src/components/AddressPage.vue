@@ -134,7 +134,7 @@
         </div>
 
         <HrcTokenTabs v-model="HrcTabActive">
-          <TabPane :name="'HRC20'">
+          <TabPane :name="'HRC20 Balance'">
             <section>
               <table class="explorer-table">
                 <tr v-for="balanceOf in Hrc20Balance" :key="balanceOf.id">
@@ -148,7 +148,7 @@
               </table>
             </section>
           </TabPane>
-          <TabPane :name="'HRC721'">
+          <TabPane v-if="false" :name="'HRC721'">
             comming soon...
           </TabPane>
         </HrcTokenTabs>
@@ -247,11 +247,17 @@ export default {
         ? status[this.$route.query.txType]
         : status[defaultStatus];
     },
+    Hrc20Address() {
+      return this.$store.data.Hrc20Address;
+    },
     Hrc20Info() {
-      return this.$store.data.Hrc20Address[this.address.id];
+      return this.Hrc20Address[this.address.id];
     },
   },
   watch: {
+    Hrc20Address() {
+      this.hrc20BalanceOf();
+    },
     $route() {
       if (this.$route.params.address !== (this.address && this.address.id)) {
         this.getAddress();
@@ -329,11 +335,24 @@ export default {
     async hrc20BalanceOf() {
       const hmy = this.$store.data.hmy;
       const toHex = hmy.hmySDK.crypto.fromBech32;
-      console.log('hrc20', this.address);
+      this.Hrc20Balance = [];
       for (let hrc20 in this.$store.data.Hrc20Address) {
         const c = hmy.contract(this.$store.data.HRC20_ABI, toHex(hrc20));
-        let balance = await c.methods.balanceOf(toHex(this.address.id)).call();
-        this.Hrc20Balance.push({ id: hrc20, balance: balance.toString() });
+        const hrc20Info = this.$store.data.Hrc20Address[hrc20];
+        let balance;
+        try {
+          balance = await c.methods.balanceOf(toHex(this.address.id)).call();
+          console.log('ba:', balance.toString());
+        } catch {
+          // ...
+        }
+        this.Hrc20Balance.push({
+          id: hrc20,
+          balance:
+            balance == undefined
+              ? 'error'
+              : balance.toString() / 10 ** hrc20Info.decimals,
+        });
       }
     },
   },

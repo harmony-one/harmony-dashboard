@@ -10,13 +10,13 @@
       :class="{ tabItem: true, active: value == 1 }"
       @click="() => onChange(1)"
     >
-      {{ titlePrefix }} Staking transactions
+      {{ titlePrefix }} Staking Transactions
     </span>
     <span
       :class="{ tabItem: true, active: value == 2 }"
       @click="() => onChange(2)"
     >
-      {{ titlePrefix }} HRC20 transactions
+      {{ titlePrefix }} HRC20 Transactions
     </span>
   </div>
 </template>
