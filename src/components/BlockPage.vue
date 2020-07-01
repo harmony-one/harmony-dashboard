@@ -5,7 +5,10 @@
 <template>
   <div class="block-page explorer-page page">
     <div class="block-body explorer-body">
-      <div v-if="!loading && block" class="container">
+      <div
+        v-if="!loading && block"
+        class="container"
+      >
         <div class="explorer-card">
           <header>
             <h1>Block #{{ block.height }}</h1>
@@ -130,7 +133,10 @@
           </div>
         </div>
       </div>
-      <div v-else class="container">
+      <div
+        v-else
+        class="container"
+      >
         <loading-message />
       </div>
     </div>

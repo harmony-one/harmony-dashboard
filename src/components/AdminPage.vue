@@ -52,7 +52,10 @@
     <header class="navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <router-link class="navbar-brand" to="/" />
+          <router-link
+            class="navbar-brand"
+            to="/"
+          />
         </div>
       </div>
     </header>
@@ -63,9 +66,15 @@
           <header>Reset Dashboard</header>
           <label>
             Secret:
-            <input v-model="secret" type="password" />
+            <input
+              v-model="secret"
+              type="password"
+            >
           </label>
-          <button class="btn btn-primary" @click="reset">
+          <button
+            class="btn btn-primary"
+            @click="reset"
+          >
             Reset
           </button>
         </div>

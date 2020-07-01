@@ -1,7 +1,10 @@
 <template>
   <router-link :to="'/address/' + bech32">
     <span v-if="isHrc20">
-      <img :src="hrc20Info.logo" class="hrclogo" />
+      <img
+        :src="hrc20Info.logo"
+        class="hrclogo"
+      >
       {{ hrc20Info.name }}
       <span v-if="showRaw"> ({{ bech32 || '-' }})</span>
     </span>

@@ -5,7 +5,10 @@
 <template>
   <div class="transaction-page explorer-page page">
     <div class="transaction-body explorer-body">
-      <div v-if="!firstLoading || (!loading && transaction)" class="container">
+      <div
+        v-if="!firstLoading || (!loading && transaction)"
+        class="container"
+      >
         <div class="explorer-card">
           <header>
             <h1>{{ isStaking ? 'Staking Transaction' : 'Transaction' }}</h1>
@@ -116,7 +119,10 @@
                   To Address
                 </td>
                 <td>
-                  <Address :bech32="transaction.to" :show-raw="true" />
+                  <Address
+                    :bech32="transaction.to"
+                    :show-raw="true"
+                  />
                 </td>
               </tr>
 
@@ -219,7 +225,10 @@
           </div>
         </div>
       </div>
-      <div v-else class="container">
+      <div
+        v-else
+        class="container"
+      >
         <loading-message />
       </div>
     </div>

@@ -9,7 +9,7 @@
 <template>
   <div class="transactions-table explorer-card">
     <header>
-      <slot></slot>
+      <slot />
       <div class="pagination-controls">
         <span class="total-tx-num">{{ txCount }} txs</span>
         <span class="page-controllers">
@@ -59,7 +59,10 @@
             <th>To</th>
             <th>Data Decode</th>
           </tr>
-          <tr v-for="tx in txs.filter(tx => tx.input != '0x')" :key="tx.hash">
+          <tr
+            v-for="tx in txs.filter(tx => tx.input != '0x')"
+            :key="tx.hash"
+          >
             <td style="width:8em">
               <router-link :to="'/tx/' + tx.hash">
                 {{ tx.hash | shorten }}

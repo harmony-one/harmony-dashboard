@@ -25,7 +25,6 @@ export default {
     methodInfo() {
       let c = this.$store.data.hmy.contract(this.abi);
       let obj = c.decodeInput(this.data);
-      window.xobj = obj;
       return c.decodeInput(this.data);
     },
   },

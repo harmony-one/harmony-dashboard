@@ -14,7 +14,7 @@
     </header>
     <div class="explorer-card-body">
       <section>
-        <slot></slot>
+        <slot />
       </section>
     </div>
   </div>

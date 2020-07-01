@@ -35,8 +35,14 @@
 <template>
   <div class="home-page explorer-page page">
     <div class="home-body explorer-body">
-      <div v-if="globalData.blocks.length" class="container">
-        <div v-if="!!coinStats" class="explorer-card status-card">
+      <div
+        v-if="globalData.blocks.length"
+        class="container"
+      >
+        <div
+          v-if="!!coinStats"
+          class="explorer-card status-card"
+        >
           <CoinStats :stats="coinStats" />
         </div>
 
@@ -129,11 +135,17 @@
               class="col-xs-12 col-sm-6 col-md-3 col-lg-3"
             >
               <div class="data-num-column">
-                <router-link :to="'/shard/' + shard" class="data-shard">
+                <router-link
+                  :to="'/shard/' + shard"
+                  class="data-shard"
+                >
                   Shard {{ shard }}
                 </router-link>
                 <div class="data-slot">
-                  <router-link :to="'/block/' + block.id" class="link">
+                  <router-link
+                    :to="'/block/' + block.id"
+                    class="link"
+                  >
                     {{ block.height | number }}
                   </router-link>
                   <div class="sub-title">
@@ -190,15 +202,24 @@
                     ONE
                   </td>
                   <td>   
-                    <a href="https://balance.harmony.one/#/" target="_blank">{{ 100000 }}</a>
+                    <a
+                      href="https://balance.harmony.one/#/"
+                      target="_blank"
+                    >{{ 100000 }}</a>
                   </td>
                 </tr>
-                <tr v-for="token in tokenHolders" :key="token.id">
+                <tr
+                  v-for="token in tokenHolders"
+                  :key="token.id"
+                >
                   <td class="td-title">
                     <Address :bech32="token.id" />
                   </td>
                   <td>
-                    <a :href="`https://harmony-hrc-holder.firebaseapp.com/#/address/${token.id}`" target="_blank">{{ token.holders }}</a>
+                    <a
+                      :href="`https://harmony-hrc-holder.firebaseapp.com/#/address/${token.id}`"
+                      target="_blank"
+                    >{{ token.holders }}</a>
                   </td>
                 </tr>
               </table>
@@ -258,7 +279,11 @@
                       Txn Fee
                     </div>
                   </div>
-                  <div v-for="tx in globalData.txs" :key="tx.id" class="tr">
+                  <div
+                    v-for="tx in globalData.txs"
+                    :key="tx.id"
+                    class="tr"
+                  >
                     <div class="td">
                       <router-link :to="'/shard/' + tx.shardID">
                         {{ tx.shardID }}
@@ -419,7 +444,10 @@
             </div>
           </div>
 
-          <div v-else class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div
+            v-else
+            class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+          >
             <div class="explorer-card latest-block-card">
               <header>
                 <TransactionTableTabs
@@ -464,9 +492,9 @@
                     class="tr"
                   >
                     <div class="td">
-                    <router-link :to="'/tx/' + tx.id">
-                      {{ tx.id | shorten }}
-                    </router-link>
+                      <router-link :to="'/tx/' + tx.id">
+                        {{ tx.id | shorten }}
+                      </router-link>
                     </div>
                     <div class="td">
                       {{ (Number(tx.timestamp) * 1000) | timestamp }}
@@ -500,7 +528,10 @@
           </div>
         </div>
       </div>
-      <div v-else class="container">
+      <div
+        v-else
+        class="container"
+      >
         <loading-message />
       </div>
     </div>

@@ -114,31 +114,51 @@
     <div class="container">
       <div class="navbar-header">
         <div class="site-brand flex-horizontal">
-          <router-link class="navbar-brand" to="/" />
+          <router-link
+            class="navbar-brand"
+            to="/"
+          />
           <span class="tagline">Open Consensus for 10B</span>
         </div>
         <div class="navbar-actions">
-          <router-link v-if="showNav" class="navbar-nav" to="/dashboard">
+          <router-link
+            v-if="showNav"
+            class="navbar-nav"
+            to="/dashboard"
+          >
             Dashboard
           </router-link>
-          <router-link v-if="showNav" class="navbar-nav" to="/blocks">
+          <router-link
+            v-if="showNav"
+            class="navbar-nav"
+            to="/blocks"
+          >
             Explorer
           </router-link>
           <div>
             <div class="search">
-              <font-awesome-icon class="search-icon" icon="search" />
+              <font-awesome-icon
+                class="search-icon"
+                icon="search"
+              />
               <input
                 v-model="input"
                 type="text"
                 placeholder="Block Hash / Tx Hash / Account..."
                 @keyup.enter="search"
-              />
+              >
             </div>
             <div class="notificationsContainer">
               <notifications group="search">
-                <template slot="body" slot-scope="props">
+                <template
+                  slot="body"
+                  slot-scope="props"
+                >
                   <div class="searchError">
-                    <a class="close" @click="props.close">
+                    <a
+                      class="close"
+                      @click="props.close"
+                    >
                       <i class="fa fa-fw fa-close" />
                     </a>
                     <div v-html="props.item.text" />

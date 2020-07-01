@@ -179,7 +179,6 @@ function contract(
       str += ')';
       return str;
     };
-    window.xobj = obj;
     return obj;
   };
   return contract;

@@ -1,6 +1,6 @@
 <template>
   <div v-if="$parent.value === name">
-    <slot></slot>
+    <slot />
   </div>
 </template>
 

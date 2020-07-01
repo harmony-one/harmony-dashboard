@@ -5,7 +5,7 @@
 <template>
   <div class="transactions-table explorer-card">
     <header>
-      <slot></slot>
+      <slot />
       <div class="pagination-controls">
         <span class="total-tx-num">{{ txCount }} txs</span>
         <span class="page-controllers">
@@ -60,7 +60,10 @@
             <th>Value</th>
             <th>Txn Fee</th>
           </tr>
-          <tr v-for="tx in stakingTxs" :key="tx.hash">
+          <tr
+            v-for="tx in stakingTxs"
+            :key="tx.hash"
+          >
             <td>
               {{ tx.shardID }}
             </td>

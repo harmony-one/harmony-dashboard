@@ -12,9 +12,9 @@
               Staking Transactions
             </h1>
             <div class="pagination-controls">
-              <span class="total-tx-num"
-                >{{ globalData.stakingTxCount }} txs</span
-              >
+              <span
+                class="total-tx-num"
+              >{{ globalData.stakingTxCount }} txs</span>
               <span class="page-controllers">
                 <span class="page-navigator">
                   <button
@@ -83,7 +83,11 @@
                   Txn Fee
                 </div>
               </div>
-              <div v-for="tx in stakingTxs" :key="tx.id" class="tr">
+              <div
+                v-for="tx in stakingTxs"
+                :key="tx.id"
+                class="tr"
+              >
                 <div class="td">
                   <router-link :to="'/shard/' + tx.shardID">
                     {{ tx.shardID }}

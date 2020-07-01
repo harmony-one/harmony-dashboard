@@ -1,7 +1,10 @@
 <template>
   <div class="vue-expand-panel">
     <div class="item-container">
-      <div class="content" :class="{ 'content-height': openBar === true }">
+      <div
+        class="content"
+        :class="{ 'content-height': openBar === true }"
+      >
         <slot />
       </div>
       <div

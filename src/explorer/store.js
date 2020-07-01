@@ -46,8 +46,6 @@ const BASE_HRC20URL =
 const HRC20LIST_URL = `${BASE_HRC20URL}/list.json`;
 function fetchHrc20List(url) {
   return axios.get(url).then(rez => {
-    window.__vue = Vue;
-    console.log("fetch update");
     return rez.data;
   });
 }
