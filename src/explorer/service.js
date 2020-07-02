@@ -1,6 +1,6 @@
 import axios from 'axios';
 import store from './store';
-import {BACKEND_URL} from './globalConfig.js';
+import {EXPLORER_BACKEND_URL} from './globalConfig.js';
 
 // For test: asios.get('...').delay(1000)
 Promise.prototype.delay = function(time) {
@@ -11,6 +11,7 @@ Promise.prototype.delay = function(time) {
   });
 };
 
+const BACKEND_URL = EXPLORER_BACKEND_URL;
 const HTTP_BACKEND_URL = `https://${BACKEND_URL}`;
 const SECRET = localStorage.getItem('secret');
 

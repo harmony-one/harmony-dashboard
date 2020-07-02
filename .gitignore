@@ -2,7 +2,6 @@
 
 node_modules
 /dist
-./src/explorer/HRC20List.json
 
 # local env files
 .env.local

@@ -44,6 +44,7 @@ function getTotalBlockLatency(latencies) {
 
 const HRC20LIST_URL = `${BASE_HRC20URL}/list.json`;
 function fetchHrc20List(url) {
+  console.log("fetchHrc20List", url);
   return axios.get(url).then(rez => {
     return rez.data;
   });
