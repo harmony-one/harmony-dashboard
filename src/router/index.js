@@ -38,12 +38,12 @@ export default new Router({
       component: BlocksPage,
     },
     {
-      path: '/txs/:pageIndex?',
+      path: '/txs',
       name: 'TransactionsPage',
       component: TransactionsPage,
     },
     {
-      path: '/staking-txs/:pageIndex?',
+      path: '/staking-txs',
       name: 'StakingTransactionsPage',
       component: StakingTransactionsPage,
     },
