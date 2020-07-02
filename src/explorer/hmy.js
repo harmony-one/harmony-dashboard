@@ -1,13 +1,14 @@
+import {SDK_NODE} from './globalConfig.js'
+
 const { Harmony } = require('@harmony-js/core');
 const { ChainID, ChainType } = require('@harmony-js/utils');
 const stakingAPIs = require('./stakingAPIs.json');
 
+
 const shardID = 0;
-//const main = 'https://api.s0.dry.hmny.io' // ostn
-const main = 'https://api.s0.t.hmny.io'; // main
 const hmySDK = new Harmony(
   // rpc url
-  main,
+  SDK_NODE,
   {
     // chainType set to Harmony
     chainType: ChainType.Harmony,

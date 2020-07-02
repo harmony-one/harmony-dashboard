@@ -1,5 +1,6 @@
 import axios from 'axios';
 import store from './store';
+import {BACKEND_URL} from './globalConfig.js';
 
 // For test: asios.get('...').delay(1000)
 Promise.prototype.delay = function(time) {
@@ -9,9 +10,6 @@ Promise.prototype.delay = function(time) {
     }, time);
   });
 };
-
-const BACKEND_URL = `${'explorer.harmony.one'}:8888`; // local run
-//const BACKEND_URL = `${window.location.hostname}:8888`;
 
 const HTTP_BACKEND_URL = `https://${BACKEND_URL}`;
 const SECRET = localStorage.getItem('secret');

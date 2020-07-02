@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import hmy from './hmy.js';
 import axios from 'axios';
+import {BASE_HRC20URL} from './globalConfig.js';
 
 window.hmy = hmy;
 const HRC20_ABI = require('./HRC20_ABI.json');
@@ -41,8 +42,6 @@ function getTotalBlockLatency(latencies) {
   );
 }
 
-const BASE_HRC20URL =
-  'https://raw.githubusercontent.com/harmony-one/HRC20-logos/master';
 const HRC20LIST_URL = `${BASE_HRC20URL}/list.json`;
 function fetchHrc20List(url) {
   return axios.get(url).then(rez => {
