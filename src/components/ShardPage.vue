@@ -262,21 +262,25 @@
         <div class="explorer-card latest-block-card">
           <header>
             <h1 class="flex-grow">
-              Active Validators
+              Validators
             </h1>
           </header>
           <div class="explorer-card-body">
             <section>
               <table class="explorer-table">
                 <tr>
+                  <th>Index</th>
                   <th>Address</th>
                   <th>Balance</th>
                 </tr>
                 <tr
-                  v-for="validator in validators"
+                  v-for="(validator,index) in validators"
                   :key="validator.address"
                   class="wfont"
                 >
+                  <td>
+                    {{ index }}
+                  </td>
                   <td>
                     <Address
                       :bech32="validator.address"
@@ -284,7 +288,7 @@
                     />
                   </td>
                   <td>   
-                    {{ validator.balance }}
+                    {{ (validator.balance/1e18).toFixed(2) }}
                   </td>
                 </tr>
               </table>

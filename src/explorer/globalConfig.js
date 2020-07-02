@@ -1,9 +1,9 @@
 // remote server
-//export const EXPLORER_BACKEND_URL = `${window.location.hostname}:8888`;
-//export const DASHBOARD_BACKEND_URL = `${window.location.hostname}`;
+export const EXPLORER_BACKEND_URL = `${window.location.hostname}:8888`;
+export const DASHBOARD_BACKEND_URL = `${window.location.hostname}`;
 // local run
-export const EXPLORER_BACKEND_URL = 'explorer.harmony.one:8888';
-export const DASHBOARD_BACKEND_URL = 'explorer.harmony.one';
+//export const EXPLORER_BACKEND_URL = 'explorer.harmony.one:8888';
+//export const DASHBOARD_BACKEND_URL = 'explorer.harmony.one';
 
 // mainnet
 export const SDK_NODE = 'https://api.s0.t.hmny.io';
