@@ -92,15 +92,15 @@ export default {
       return block;
     });
   },
-  getTransactions(pageIndex, pageSize) {
-    return authGet('/txs', { params: { pageIndex, pageSize } }).then(res => {
+  getTransactions(cursor, size) {
+    return authGet('/txs-new', { params: { cursor, size } }).then(res => {
       let txs = res.data.txs;
 
       return txs;
     });
   },
-  getStakingTransactions(pageIndex, pageSize) {
-    return authGet('/staking-txs', { params: { pageIndex, pageSize } }).then(
+  getStakingTransactions(cursor, size) {
+    return authGet('/staking-txs-new', { params: { cursor, size } }).then(
       res => {
         let txs = res.data.txs;
 

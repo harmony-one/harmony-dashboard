@@ -342,3 +342,32 @@ a {
 .hmy-bg {
   background: linear-gradient(to right top, #00aee9, #4fe7c8);
 }
+
+:global {
+  .date-time-picker,
+  .date-time-picker input,
+  .date-time-picker label,
+  .date-time-picker p,
+  .date-time-picker span {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+  }
+}
+
+.date-time-picker,
+.date-time-picker input,
+.date-time-picker label,
+.date-time-picker p,
+.date-time-picker span {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+}
+
+.page-controllers-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+
+  > div {
+    margin-right: 20px;
+  }
+}

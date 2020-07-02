@@ -7,6 +7,8 @@ import VueScrollTo from 'vue-scrollto';
 import Highcharts from 'highcharts';
 import HighchartsVue from 'highcharts-vue';
 import Notifications from 'vue-notification';
+import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
+import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css';
 
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
@@ -50,6 +52,8 @@ Highcharts.setOptions({
 });
 Vue.use(HighchartsVue);
 Vue.use(Notifications);
+
+Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker);
 
 /* eslint-disable no-new */
 new Vue({
