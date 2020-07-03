@@ -24,7 +24,6 @@ export default {
   computed: {
     methodInfo() {
       let c = this.$store.data.hmy.contract(this.abi);
-      let obj = c.decodeInput(this.data);
       return c.decodeInput(this.data);
     },
   },

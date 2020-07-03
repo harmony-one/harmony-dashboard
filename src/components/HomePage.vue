@@ -1,5 +1,22 @@
 <style scoped lang="less">
 @import '../less/common.less';
+.shard {
+  width: 25%;
+  display: inline-block;
+
+  td {
+    word-break: unset;
+  }
+
+  .td-title {
+    width: 11em;
+  }
+
+  .explorer-card-body {
+    min-height: auto;
+    padding-right: 0;
+  }
+}
 
 .explorer-card-body {
   min-height: 24em;
@@ -111,88 +128,76 @@
           </div>
         </div>
 
-        <div class="explorer-card status-card status-shard">
+        <div class="explorer-card">
+        <div
+          v-for="(block, shard) in lastBlocks"
+          :key="shard"
+          class="shard"
+        >
           <header>
-            <h1 class="flex-grow">
-              Shards Status
-            </h1>
-            <div class="secondary-info">
-              <div class="timer">
-                Updated
-                {{
-                  Math.round(
-                    Math.max((now - globalData.lastUpdateTime) / 1000, 0)
-                  ) | number
-                }}s ago...
-              </div>
-              <span class="total-block-num" />
-            </div>
-          </header>
-          <div class="row">
-            <div
-              v-for="(block, shard) in lastBlocks"
-              :key="shard"
-              class="col-xs-12 col-sm-6 col-md-3 col-lg-3"
-            >
-              <div class="data-num-column">
-                <router-link
+            <h1>          
+              <router-link
                   :to="'/shard/' + shard"
                   class="data-shard"
                 >
                   Shard {{ shard }}
                 </router-link>
-                <div class="data-slot">
-                  <router-link
+            </h1>
+          </header>
+          <div class="explorer-card-body">
+            <section>
+              <table
+                class="explorer-table"
+              >
+                <tr>
+                  <td class="td-title">
+                    Height
+                  </td>
+                  <td>
+                    <router-link
                     :to="'/block/' + block.id"
                     class="link"
                   >
                     {{ block.height | number }}
                   </router-link>
-                  <div class="sub-title">
-                    Height
-                  </div>
-                </div>
-                <div class="data-slot">
-                  <div class="data">
-                    {{ block.timestamp | timestamp | onlyData }}
-                  </div>
-                  <div class="data">
-                    {{ block.timestamp | timestamp | onlyTime }}
-                  </div>
-                  <div class="sub-title">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="td-title">
                     Time
-                  </div>
-                </div>
-                <div class="data-slot">
-                  <div class="data">
-                    {{ block.txCount }}
-                  </div>
-                  <div class="sub-title">
+                  </td>
+                  <td>{{ block.timestamp | timestamp }}</td>
+                </tr>
+                <tr>
+                  <td class="td-title">
                     Transactions
-                  </div>
-                </div>
-                <div class="data-slot">
-                  <div class="data">
-                    {{ block.timestamp | age }}
-                  </div>
-                  <div class="sub-title">
+                  </td>
+                  <td>{{  block.txCount }}</td>
+                </tr>
+                <tr>
+                  <td class="td-title">
                     Age
-                  </div>
-                </div>
-                <div class="data-slot">
-                  <div class="data">
-                    {{ $store.data.shardsValidators.length > shard ? $store.data.shardsValidators[shard].length : '...' }}
-                  </div>
-                  <div class="sub-title">
+                  </td>
+                  <td>{{ block.timestamp | age }}</td>
+                </tr>
+                <tr>
+                  <td class="td-title">
+                    Transactions
+                  </td>
+                  <td>{{  block.txCount }}</td>
+                </tr>
+                <tr>
+                  <td class="td-title">
                     Validators
-                  </div>
-                </div>
-              </div>
-            </div>
+                  </td>
+                  <td>{{ $store.data.shardsValidators.length > shard ? $store.data.shardsValidators[shard].length : '...' }}</td>
+                </tr>
+              </table>
+            </section>
           </div>
         </div>
+        </div>
 
-      
         <CommonTabs v-model="holderTab">
           <TabPane :name="'Token Holders'">
             <section>
@@ -237,7 +242,7 @@
                 <TransactionTableTabs
                   :value="tabValue"
                   :on-change="changeTab"
-                  title-prefix="Latest"
+                  title-prefix=""
                 />
                 <div class="secondary-info">
                   <div class="timer">
@@ -336,7 +341,7 @@
                 <TransactionTableTabs
                   :value="tabValue"
                   :on-change="changeTab"
-                  title-prefix="Latest"
+                  title-prefix=""
                 />
                 <div class="secondary-info">
                   <div class="timer">
@@ -453,7 +458,7 @@
                 <TransactionTableTabs
                   :value="tabValue"
                   :on-change="changeTab"
-                  title-prefix="Latest"
+                  title-prefix=""
                 />
                 <div class="secondary-info">
                   <div class="timer">
@@ -471,10 +476,10 @@
                 <div class="explorer-table-responsive latest-tx-table">
                   <div class="tr">
                     <div class="th">
-                      TxHash
+                      Shard
                     </div>
                     <div class="th">
-                      Timestamp
+                      Hash
                     </div>
                     <div class="th">
                       From
@@ -483,36 +488,46 @@
                       To
                     </div>
                     <div class="th">
-                      Data Decode
+                      Token
+                    </div>
+                    <div class="th">
+                      Age
+                    </div>
+                    <div class="th">
+                      Token Amount
                     </div>
                   </div>
                   <div
-                    v-for="tx in $store.data.hrc20Txs"
-                    :key="tx.id"
+                    v-for="tx in Hrc20Txs"
+                    :key="tx.tx.id"
                     class="tr"
                   >
                     <div class="td">
-                      <router-link :to="'/tx/' + tx.id">
-                        {{ tx.id | shorten }}
+                      <router-link :to="'/shard/' + tx.tx.shardID">
+                        {{ tx.tx.shardID }}
                       </router-link>
                     </div>
                     <div class="td">
-                      {{ (Number(tx.timestamp) * 1000) | timestamp }}
-                    </div>
-                    <div class="td">
-                      <router-link :to="'/address/' + tx.from.bech32">
-                        {{ tx.from.bech32 | shorten }}
+                      <router-link :to="'/tx/' + tx.tx.id">
+                        {{ tx.tx.id | shorten }}
                       </router-link>
                     </div>
                     <div class="td">
-                      <Address :bech32="tx.to.bech32" />
+                      <Address :bech32="tx.hrc20tx.from" />
                     </div>
                     <div class="td">
-                      <DecodeABI
-                        :abi="$store.data.HRC20_ABI"
-                        :data="tx.input"
-                        :is-hrc20="true"
-                      />
+                      <router-link :to="'/address/' + tx.hrc20tx.to">
+                        {{ tx.hrc20tx.to | shorten }}
+                      </router-link>
+                    </div>
+                    <div class="td">
+                      <Address :bech32="tx.tx.to.bech32"/>
+                    </div>
+                    <div class="td">
+                      {{ tx.tx.timestamp | age }}
+                    </div>
+                    <div class="td" :title="tx.hrc20tx.amount">
+                      {{ hrc20Balance(tx.tx.to.bech32, tx.hrc20tx.amount) }}
                     </div>
                   </div>
                 </div>
@@ -546,7 +561,6 @@ import TransactionTableTabs from './TransactionTableTabs';
 import Address from './Address';
 import CommonTabs from './HrcTokenTabs';
 import TabPane from './TabPane';
-import DecodeABI from './DecodeABI';
 
 export default {
   name: 'HomePage',
@@ -557,7 +571,6 @@ export default {
     Address,
     CommonTabs,
     TabPane,
-    DecodeABI,
   },
   filters: {
     onlyData(fulldata) {
@@ -599,6 +612,31 @@ export default {
     Hrc20Address() {
       return this.$store.data.Hrc20Address;
     },
+    Hrc20Txs() {
+      return this.$store.data.hrc20Txs.reduce((list, tx) => {
+        const c = this.$store.data.hmy.contract(this.$store.data.HRC20_ABI);
+        const decodeObj = c.decodeInput(tx.input);
+        if (decodeObj.abiItem && decodeObj.abiItem.name == 'transfer')
+          list.push({
+            tx,
+            hrc20tx: {
+              from: tx.from.bech32,
+              to: decodeObj.params[0],
+              amount: decodeObj.params[1],
+            },
+          });
+        else if (decodeObj.abiItem && decodeObj.abiItem.name == 'transferFrom')
+          list.push({
+            tx,
+            hrc20tx: {
+              from: decodeObj.params[0],
+              to: decodeObj.params[1],
+              amount: decodeObj.params[2],
+            },
+          });
+        return list;
+      }, []);
+    },
   },
   watch: {
     globalData() {
@@ -616,6 +654,16 @@ export default {
     // });
   },
   methods: {
+    hrc20info(id) {
+      return this.$store.data.Hrc20Address[id];
+    },
+    hrc20Balance(id, amount) {
+      return (
+        (amount / 10 ** this.hrc20info(id).decimals).toFixed(4) +
+        ' ' +
+        this.hrc20info(id).symbol
+      );
+    },
     async updateHolders() {
       let tokenHolders = [];
       for (let hrc20 in this.Hrc20Address)

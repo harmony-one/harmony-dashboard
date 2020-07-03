@@ -3,6 +3,9 @@
 .shard {
   width: 25%;
   display: inline-block;
+  td {
+    word-break: unset;
+  }
 }
 .hrclogo {
   vertical-align: text-bottom;
@@ -105,10 +108,12 @@
             </section>
           </div>
         </div>
+
+        <div class="explorer-card">
         <div
           v-for="(shard, index) in address.shardData"
           :key="index"
-          class="explorer-card shard"
+          class="shard"
         >
           <header>
             <h1>Shard {{ index }}</h1>
@@ -146,6 +151,7 @@
               </table>
             </section>
           </div>
+        </div>
         </div>
 
         <HrcTokenTabs v-model="HrcTabActive">
