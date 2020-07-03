@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import hmy from './hmy.js';
 import axios from 'axios';
-import {BASE_HRC20URL} from './globalConfig.js';
+import {BASE_HRC20URL, HRC20_HOLDERURL, ONE_HOLDERURL} from './globalConfig.js';
 
 window.hmy = hmy;
 const HRC20_ABI = require('./HRC20_ABI.json');
@@ -68,6 +68,8 @@ let store = {
     Hrc20Address,
     HRC20_ABI,
     hmy,
+    HRC20_HOLDERURL,
+    ONE_HOLDERURL
   },
 
   update(data) {

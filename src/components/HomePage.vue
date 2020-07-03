@@ -208,7 +208,7 @@
                   </td>
                   <td>   
                     <a
-                      href="https://balance.harmony.one/#/"
+                      :href="$store.data.ONE_HOLDERURL"
                       target="_blank"
                     >{{ 100000 }}</a>
                   </td>
@@ -222,7 +222,7 @@
                   </td>
                   <td>
                     <a
-                      :href="`https://harmony-hrc-holder.firebaseapp.com/#/address/${token.id}`"
+                      :href="`${$store.data.HRC20_HOLDERURL}/${token.id}`"
                       target="_blank"
                     >{{ token.holders }}</a>
                   </td>
