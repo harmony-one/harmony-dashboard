@@ -84,6 +84,7 @@
                 :abi="$store.data.HRC20_ABI"
                 :data="tx.input"
                 :is-hrc20="isHrc20(tx.hash)"
+                :bech32="tx.to"
               />
             </td>
           </tr>
