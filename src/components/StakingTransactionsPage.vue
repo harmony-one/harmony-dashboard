@@ -7,49 +7,30 @@
     <div class="txs-body explorer-body">
       <div class="container">
         <div class="explorer-card">
-          <header>
+          <header style="align-items: center;">
             <h1 class="flex-grow">
               Staking Transactions
             </h1>
             <div class="pagination-controls">
-              <span
-                class="total-tx-num"
-              >{{ globalData.stakingTxCount }} txs</span>
-              <span class="page-controllers">
-                <span class="page-navigator">
-                  <button
-                    class="btn btn-light btn-icon-only"
-                    :disabled="pageIndex === 0"
-                    @click="first()"
-                  >
-                    <font-awesome-icon icon="angle-double-left" />
-                  </button>
-                  <button
-                    class="btn btn-light btn-icon-only"
-                    :disabled="pageIndex === 0"
-                    @click="prev()"
-                  >
-                    <font-awesome-icon icon="chevron-left" />
-                  </button>
-                  <span class="pagination-nums">
-                    {{ pageIndex + 1 }} / {{ pageCount }}
-                  </span>
-                  <button
-                    class="btn btn-light btn-icon-only"
-                    :disabled="pageIndex === pageCount - 1"
-                    @click="next()"
-                  >
-                    <font-awesome-icon icon="chevron-right" />
-                  </button>
-                  <button
-                    class="btn btn-light btn-icon-only"
-                    :disabled="pageIndex === pageCount - 1"
-                    @click="last()"
-                  >
-                    <font-awesome-icon icon="angle-double-right" />
-                  </button>
-                </span>
-              </span>
+              <div class="page-controllers-row">
+                <div>From:</div>
+                <VueCtkDateTimePicker
+                  format="YYYY-MM-DD hh:mm"
+                  color="#33cbda"
+                  buttonColor="#33cbda"
+                  :noClearButton="true"
+                  :max-date="maxDate"
+                  v-model="cursor"
+                />
+                <button
+                  class="btn btn-light btn-icon-only"
+                  style="width: 200px; margin-left: 40px;"
+                  @click="next()"
+                >
+                  <span style="margin-right: 10px;">Prev 50 txs</span>
+                  <font-awesome-icon icon="chevron-right" />
+                </button>
+              </div>
             </div>
           </header>
           <div class="explorer-card-body">
@@ -149,6 +130,7 @@
 import store from '../explorer/store';
 import service from '../explorer/service';
 import LoadingMessage from './LoadingMessage';
+import moment from 'moment';
 
 export default {
   name: 'StakingTransactionsPage',
@@ -159,57 +141,56 @@ export default {
     return {
       globalData: store.data,
       stakingTxs: [],
-      pageIndex: 0,
+      cursor: moment(),
+      maxDate: moment().toString(),
       pageSize: 50,
     };
   },
-  computed: {
-    pageCount() {
-      return Math.ceil(this.globalData.stakingTxCount / this.pageSize);
-    },
-  },
   watch: {
-    $route(to) {
-      this.pageIndex = (+to.params.pageIndex || 1) - 1;
-      this.getStakingTransactions();
+    $route() {
+      let queryCursor = Number(this.$route.query.from);
+      queryCursor = isNaN(queryCursor) ? undefined : queryCursor;
+
+      const cursor = moment(queryCursor);
+
+      if (cursor.diff(this.cursor)) {
+        this.cursor = cursor;
+        this.getTransactions();
+      }
+    },
+    cursor() {
+      const unixCursor = moment(this.cursor).unix() * 1000;
+
+      this.$router.replace({
+        name: 'StakingTransactionsPage',
+        query: { from: unixCursor },
+      });
+
+      this.getTransactions();
     },
   },
   mounted() {
-    if (this.$route.params.pageIndex) {
-      this.pageIndex = +this.$route.params.pageIndex - 1;
-    }
-    this.getStakingTransactions();
+    let queryCursor = Number(this.$route.query.from);
+    queryCursor = isNaN(queryCursor) ? undefined : queryCursor;
+
+    this.cursor = moment(queryCursor);
+
+    this.getTransactions();
   },
   methods: {
-    goToPage(index) {
-      if (index < 0) index = 0;
-      if (index >= this.pageCount) index = this.pageCount - 1;
-      this.$router.replace({
-        name: 'StakingTransactionsPage',
-        params: { pageIndex: index + 1 },
-      });
-    },
-    first() {
-      this.goToPage(0);
-    },
-    last() {
-      this.goToPage(this.pageCount - 1);
-    },
-    prev() {
-      if (this.pageIndex === 0) return;
-      this.goToPage(this.pageIndex - 1);
-    },
     next() {
-      if (this.pageIndex === this.pageCount - 1) return;
-      this.goToPage(this.pageIndex + 1);
+      this.cursor = moment(
+        this.stakingTxs[this.stakingTxs.length - 1].timestamp
+      );
     },
-    getStakingTransactions() {
+    getTransactions() {
       this.stakingTxs = [];
-      service
-        .getStakingTransactions(this.pageIndex, this.pageSize)
-        .then(txs => {
-          this.stakingTxs = txs;
-        });
+
+      const cursor = moment(this.cursor).unix() * 1000;
+
+      service.getStakingTransactions(cursor, this.pageSize).then(txs => {
+        this.stakingTxs = txs;
+      });
     },
   },
 };

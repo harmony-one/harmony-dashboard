@@ -12,10 +12,7 @@
 <template>
   <div class="address-page explorer-page page">
     <div class="address-body explorer-body">
-      <div
-        v-if="!loading && address"
-        class="container"
-      >
+      <div v-if="showPanel" class="container">
         <div class="explorer-card">
           <header>
             <h1 v-if="isHrc20(address.id)">
@@ -104,45 +101,45 @@
 
 
         <HrcTokenTabs type='select'>
-        <TabPane
-          v-for="(shard, index) in address.shardData"
-          :key="index"
-          :name="`Shard ${index}`"
-        >
-          <div class="explorer-card-body">
-            <section>
-              <div
-                v-if="shard.err"
-                class="text-error"
-              >
-                {{ shard.err }}
-              </div>
-              <table
-                v-else
-                class="explorer-table"
-              >
-                <tr>
-                  <td class="td-title">
-                    Balance
-                  </td>
-                  <td>{{ shard.balance | amount }}</td>
-                </tr>
-                <tr>
-                  <td class="td-title">
-                    Transactions
-                  </td>
-                  <td>{{ shard.txCount | number }}</td>
-                </tr>
-                <tr>
-                  <td class="td-title">
-                    Staking transactions
-                  </td>
-                  <td>{{ shard.stakingTxCount | number }}</td>
-                </tr>
-              </table>
-            </section>
-          </div>
-        </TabPane>
+          <TabPane
+            v-for="(shard, index) in address.shardData"
+            :key="index"
+            :name="`Shard ${index}`"
+          >
+            <div class="explorer-card-body">
+              <section>
+                <div
+                  v-if="shard.err"
+                  class="text-error"
+                >
+                  {{ shard.err }}
+                </div>
+                <table
+                  v-else
+                  class="explorer-table"
+                >
+                  <tr>
+                    <td class="td-title">
+                      Balance
+                    </td>
+                    <td>{{ shard.balance | amount }}</td>
+                  </tr>
+                  <tr>
+                    <td class="td-title">
+                      Transactions
+                    </td>
+                    <td>{{ shard.txCount | number }}</td>
+                  </tr>
+                  <tr>
+                    <td class="td-title">
+                      Staking transactions
+                    </td>
+                    <td>{{ shard.stakingTxCount | number }}</td>
+                  </tr>
+                </table>
+              </section>
+            </div>
+          </TabPane>
         </HrcTokenTabs>
 
         <HrcTokenTabs>
@@ -175,7 +172,9 @@
           v-if="showWhich == 'regular'"
           :all-txs="allTxs"
           with-shards="true"
+          :tx-count="txCount"
           :page="page"
+          :loading = "loading"
           :change-page="changePage"
         >
           <slot>
@@ -189,6 +188,8 @@
           v-else-if="showWhich == 'hrc20'"
           :all-txs="allTxs"
           with-shards="true"
+          :loading = "loading"
+          :tx-count="txCount"
           :page="page"
           :change-page="changePage"
         >
@@ -205,6 +206,8 @@
           with-shards="true"
           :page="page"
           :change-page="changePage"
+          :loading="loading"
+          :tx-count="stakingTxCount"
         >
           <slot>
             <TransactionTableTabs
@@ -255,16 +258,12 @@ export default {
       address: null,
       allTxs: [],
       allStakingTxs: [],
+      txCount: 0,
+      stakingTxCount: 0,
       Hrc20Balance: [],
     };
   },
   computed: {
-    txCount() {
-      return this.allTxs.length;
-    },
-    stakingTxCount() {
-      return this.allStakingTxs.length;
-    },
     showWhich() {
       return this.$route.query.txType || defaultStatus; // 'staking','regular','hrc20';
     },
@@ -282,6 +281,12 @@ export default {
     Hrc20Info() {
       return this.Hrc20Address[this.address.id];
     },
+    showPanel() {
+      return (
+        !this.loading ||
+        this.$route.params.address === (this.address && this.address.id)
+      );
+    },
   },
   watch: {
     Hrc20Address() {
@@ -291,6 +296,9 @@ export default {
       if (this.$route.params.address !== (this.address && this.address.id)) {
         this.getAddress();
       }
+    },
+    page() {
+      this.getAddress();
     },
   },
   mounted() {
@@ -320,7 +328,7 @@ export default {
       const address = this.$route.params.address;
 
       service
-        .getAddress(address)
+        .getAddress({ id: address, pageIndex: this.page, pageSize: 20 })
         .then(address => {
           address.shardData.forEach((data, idx) => {
             if (data.txs) {
@@ -344,8 +352,12 @@ export default {
             }
           });
 
+          this.txCount = address.txCount;
+          this.stakingTxCount = address.stakingTxCount;
+
+          let needUpdate = !this.address || this.address.id != address.id;
           this.address = address;
-          this.hrc20BalanceOf();
+          needUpdate && this.hrc20BalanceOf();
         })
         .finally(() => {
           this.allTxs = Object.values(txs).sort((a, b) =>

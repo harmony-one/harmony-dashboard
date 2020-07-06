@@ -8,11 +8,18 @@ import Highcharts from 'highcharts';
 import HighchartsVue from 'highcharts-vue';
 import Notifications from 'vue-notification';
 import './explorer/store';
+import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
+import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css';
+
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 Vue.config.devtools = true;
 
 import './filter';
 import './icon';
+
+Vue.use(Loading);
 
 Vue.use(VueScrollTo, {
   offset: -68,
@@ -46,6 +53,8 @@ Highcharts.setOptions({
 });
 Vue.use(HighchartsVue);
 Vue.use(Notifications);
+
+Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker);
 
 /* eslint-disable no-new */
 new Vue({

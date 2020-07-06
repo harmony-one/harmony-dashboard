@@ -5,10 +5,7 @@
 <template>
   <div class="address-page explorer-page page">
     <div class="address-body explorer-body">
-      <div
-        v-if="!loading && address"
-        class="container"
-      >
+      <div v-if="showPanel" class="container">
         <div class="explorer-card">
           <header>
             <h1>Address</h1>
@@ -55,6 +52,8 @@
         <StakingTransactionsTable
           v-if="showStaking"
           :all-staking-txs="allStakingTxs"
+          :tx-count="stakingTxCount"
+          :loading="loading"
           with-shards="true"
           :page="page"
           :change-page="changePage"
@@ -69,6 +68,8 @@
         <TransactionsTable
           v-else
           :all-txs="allTxs"
+          :tx-count="txCount"
+          :loading="loading"
           with-shards="true"
           :page="page"
           :change-page="changePage"
@@ -116,17 +117,18 @@ export default {
     };
   },
   computed: {
-    txCount() {
-      return this.allTxs.length;
-    },
-    stakingTxCount() {
-      return this.allStakingTxs.length;
-    },
     showStaking() {
       return this.$route.query.txType === 'staking' ? true : false;
     },
     page() {
       return this.$route.query.page - 1 || 0;
+    },
+    showPanel() {
+      return (
+        !this.loading ||
+        (this.$route.params.address === (this.address && this.address.id) &&
+          this.$route.params.shardId === this.shardId)
+      );
     },
   },
   watch: {
@@ -137,6 +139,9 @@ export default {
       ) {
         this.getAddressShard();
       }
+    },
+    page() {
+      this.getAddressShard();
     },
   },
   mounted() {
@@ -166,7 +171,12 @@ export default {
       const stakingTxs = {};
 
       return service
-        .getAddressShard(address, this.shardId)
+        .getAddressShard({
+          address,
+          shardID: this.shardId,
+          pageSize: 20,
+          pageIndex,
+        })
         .then(address => {
           if (address.txs) {
             address.txs.forEach(tx => {
@@ -187,6 +197,9 @@ export default {
               };
             });
           }
+
+          this.txCount = address.txCount;
+          this.stakingTxCount = address.stakingTxCount;
 
           this.address = address;
         })
