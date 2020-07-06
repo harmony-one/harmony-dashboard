@@ -7,6 +7,18 @@
   border: 1px solid var(--bc-dim);
   margin-left: 1em;
 }
+.selectItem {
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: unset;
+  color: unset;
+  background-color: rgba(0, 0, 0, 0);
+  /*appearance: none;*/
+}
+.selectItem:focus {
+  box-shadow: none !important;
+}
 </style>
 
 <template>
@@ -80,67 +92,39 @@
                   <td class="td-title">
                     Balance
                   </td>
-                  <td>{{ address.balance | amount }}</td>
+                  <td>
+                    <select class="selectItem">
+                      <option v-for="(shard, index) in address.shardData"
+                      :key="index">
+                        {{ shard.balance | number }}
+                      </option>
+                    </select>
+                  </td>
                 </tr>
                 <tr>
                   <td class="td-title">
                     Transactions
                   </td>
-                  <td>{{ txCount | number }}</td>
+                  <td>
+                    <select class="selectItem">
+                      <option v-for="(shard, index) in address.shardData"
+                      :key="index">{{ shard.txCount | number }}</option>
+                    </select></td>
                 </tr>
                 <tr>
                   <td class="td-title">
                     Staking Transactions
                   </td>
-                  <td>{{ stakingTxCount | number }}</td>
+                  <td>
+                    <select class="selectItem">
+                      <option v-for="(shard, index) in address.shardData"
+                      :key="index">{{ shard.stakingTxCount | number }}</option>
+                    </select></td>
                 </tr>
               </table>
             </section>
           </div>
         </div>
-
-
-        <HrcTokenTabs type='select'>
-          <TabPane
-            v-for="(shard, index) in address.shardData"
-            :key="index"
-            :name="`Shard ${index}`"
-          >
-            <div class="explorer-card-body">
-              <section>
-                <div
-                  v-if="shard.err"
-                  class="text-error"
-                >
-                  {{ shard.err }}
-                </div>
-                <table
-                  v-else
-                  class="explorer-table"
-                >
-                  <tr>
-                    <td class="td-title">
-                      Balance
-                    </td>
-                    <td>{{ shard.balance | amount }}</td>
-                  </tr>
-                  <tr>
-                    <td class="td-title">
-                      Transactions
-                    </td>
-                    <td>{{ shard.txCount | number }}</td>
-                  </tr>
-                  <tr>
-                    <td class="td-title">
-                      Staking transactions
-                    </td>
-                    <td>{{ shard.stakingTxCount | number }}</td>
-                  </tr>
-                </table>
-              </section>
-            </div>
-          </TabPane>
-        </HrcTokenTabs>
 
         <HrcTokenTabs>
           <TabPane :name="'HRC20 Balance'">
