@@ -198,7 +198,7 @@
         </div>
         </div>
 
-        <CommonTabs v-model="holderTab">
+        <CommonTabs>
           <TabPane :name="'Token Holders'">
             <section>
               <table class="explorer-table">
@@ -589,7 +589,6 @@ export default {
       now: Date.now(),
       showTx: true,
       coinStats: null,
-      holderTab: null,
       tokenHolders: [],
     };
   },

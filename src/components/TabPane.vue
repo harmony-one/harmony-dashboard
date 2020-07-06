@@ -1,5 +1,5 @@
 <template>
-  <div v-if="$parent.value === name">
+  <div v-if="$parent.selected === name">
     <slot />
   </div>
 </template>

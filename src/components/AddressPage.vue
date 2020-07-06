@@ -1,12 +1,5 @@
 <style scoped lang="less">
 @import '../less/common.less';
-.shard {
-  width: 25%;
-  display: inline-block;
-  td {
-    word-break: unset;
-  }
-}
 .hrclogo {
   vertical-align: text-bottom;
   border-radius: 0.25rem;
@@ -109,15 +102,13 @@
           </div>
         </div>
 
-        <div class="explorer-card">
-        <div
+
+        <HrcTokenTabs type='select'>
+        <TabPane
           v-for="(shard, index) in address.shardData"
           :key="index"
-          class="shard"
+          :name="`Shard ${index}`"
         >
-          <header>
-            <h1>Shard {{ index }}</h1>
-          </header>
           <div class="explorer-card-body">
             <section>
               <div
@@ -151,10 +142,10 @@
               </table>
             </section>
           </div>
-        </div>
-        </div>
+        </TabPane>
+        </HrcTokenTabs>
 
-        <HrcTokenTabs v-model="HrcTabActive">
+        <HrcTokenTabs>
           <TabPane :name="'HRC20 Balance'">
             <section>
               <table class="explorer-table">
@@ -264,7 +255,6 @@ export default {
       address: null,
       allTxs: [],
       allStakingTxs: [],
-      HrcTabActive: '',
       Hrc20Balance: [],
     };
   },

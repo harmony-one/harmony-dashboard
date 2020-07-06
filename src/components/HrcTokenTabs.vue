@@ -1,15 +1,23 @@
 <template>
   <div class="transactions-table explorer-card">
     <header>
-      <div class="tabs">
+      <select v-if="type=='select'" class="optionItem" @change="event=>selectTab(event.target.selectedIndex)">
+        <option v-for="(name, index) in tabNames"
+        :key="index"
+          :value="name"
+        >{{ name }}
+        </option>
+      </select>
+      <div v-else class="tabs">
         <span
           v-for="(name, index) in tabNames"
           :key="index"
-          :class="{ tabItem: true, active: value == name }"
+          :class="{ tabItem: true, active: selected == name }"
           @click="selectTab(index)"
         >
           {{ name }}
         </span>
+
       </div>
     </header>
     <div class="explorer-card-body">
@@ -27,19 +35,27 @@ export default {
     prop: 'value',
     event: 'change',
   },
-  props: ['value', 'onChange', 'titlePrefix'],
+  props: ['value', 'onChange', 'titlePrefix', 'type'],
   data() {
     return {
       tabNames: [],
+      selected: null,
     };
   },
   mounted() {
     this.tabNames = this.getTabs();
     if (!this.value && this.tabNames.length) this.selectTab(0);
+    //else this.selected = this.value;
+  },
+  watch: {
+    value() {
+      this.selected = this.value;
+    },
   },
   methods: {
     selectTab(index) {
-      this.$emit('change', this.tabNames[index]);
+      this.selected = this.tabNames[index];
+      if (this.value != undefined) this.$emit('change', this.selected);
     },
     getTabs() {
       // return this.$children.filter(item => item.$options.name === 'TabPane');
@@ -74,20 +90,20 @@ export default {
       display: inline-block;
       color: #1b295e;
       // color: var(--color-table-link);
-
-      &:after {
-        display: none;
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 2px;
-        background-color: var(--color-table-link);
-        // background-color: #1b295e;
-        opacity: 0.8;
-        border-radius: 10px;
-        bottom: -17px;
-      }
     }
   }
+}
+
+.optionItem {
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #1b295e;
+  font-size: 1.1em;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 500;
+}
+.optionItem:focus {
+  box-shadow: none !important;
 }
 </style>
