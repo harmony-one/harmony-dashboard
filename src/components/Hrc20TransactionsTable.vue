@@ -87,7 +87,6 @@
               <DecodeABI
                 :abi="$store.data.HRC20_ABI"
                 :data="tx.input"
-                :is-hrc20="isHrc20(tx.hash)"
                 :bech32="tx.to"
               />
             </td>
@@ -125,7 +124,6 @@ export default {
     },
     txs() {
       const begin = this.pageIndex * this.pageSize;
-
       if (!this.isLocal) {
         return this.allTxs;
       } else {
@@ -175,9 +173,6 @@ export default {
     next() {
       if (this.pageIndex === this.pageCount - 1) return;
       this.goToPage(this.pageIndex + 1);
-    },
-    isHrc20(address) {
-      return this.$store.data.Hrc20Address[address] != undefined;
     },
   },
 };
