@@ -145,7 +145,7 @@ let store = {
         []
       )
     );
-
+    await this.updateHrc20List();
     let newHrc20Txs = await hrc20TxsFilter(
       Object.values(this.data.shards).reduce(
       (memo, shard) => memo.concat(shard.txs),
@@ -202,7 +202,6 @@ let store = {
   },
 };
 
-store.updateHrc20List();
 store.updateValidtors();
 
 Vue.prototype.$store = store;

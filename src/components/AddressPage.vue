@@ -244,7 +244,8 @@ export default {
       allStakingTxs: [],
       txCount: 0,
       stakingTxCount: 0,
-      Hrc20Balance: [],
+      Hrc20Balance: {},
+      $store: this.$store.data,
     };
   },
   computed: {
@@ -274,7 +275,7 @@ export default {
   },
   watch: {
     Hrc20Address() {
-      this.hrc20BalanceOf();
+      if (this.address) this.hrc20BalanceOf();
     },
     $route() {
       if (this.$route.params.address !== (this.address && this.address.id)) {
@@ -355,22 +356,22 @@ export default {
         });
     },
     isHrc20(address) {
-      return this.$store.data.Hrc20Address[address] != undefined;
+      return this.Hrc20Address[address] != undefined;
     },
     async hrc20BalanceOf() {
       const hmy = this.$store.data.hmy;
       const toHex = hmy.hmySDK.crypto.fromBech32;
-      this.Hrc20Balance = [];
-      for (let hrc20 in this.$store.data.Hrc20Address) {
+      for (let hrc20 in this.Hrc20Address) {
+        if (this.Hrc20Balance[hrc20]) continue;
         const c = hmy.contract(this.$store.data.HRC20_ABI, toHex(hrc20));
-        const hrc20Info = this.$store.data.Hrc20Address[hrc20];
+        const hrc20Info = this.Hrc20Address[hrc20];
         let balance;
         try {
           balance = await c.methods.balanceOf(toHex(this.address.id)).call();
-        } catch {
+        } catch (e) {
           // ...
         }
-        this.Hrc20Balance.push({
+        this.$set(this.Hrc20Balance, hrc20, {
           id: hrc20,
           balance:
             balance == undefined
