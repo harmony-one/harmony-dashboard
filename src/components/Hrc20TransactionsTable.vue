@@ -57,38 +57,48 @@
       <section>
         <table class="explorer-table">
           <tr>
+            <th>Shard</th>
             <th>TxHash</th>
             <th>Timestamp</th>
             <th>From</th>
             <th>To</th>
-            <th>Data Decode</th>
+            <th>Token</th>
+            <th>Token Amount</th>
           </tr>
           <tr
-            v-for="tx in txs.filter(tx => tx.input != '0x')"
-            :key="tx.hash"
+            v-for="tx in Hrc20Txs"
+            :key="tx.tx.hash"
           >
-            <td style="width:8em">
-              <router-link :to="'/tx/' + tx.hash">
-                {{ tx.hash | shorten }}
+            <td>
+                <router-link
+                  :to="'/shard/' + tx.tx.shardID"
+                >
+                  {{ tx.tx.shardID }}
+                </router-link>
+            </td>
+            <td>
+              <router-link :to="'/tx/' + tx.tx.hash">
+                {{ tx.tx.hash | shorten }}
               </router-link>
             </td>
-            <td style="width:13em">
-              {{ (Number(tx.timestamp) * 1000) | timestamp }}
+            <td>
+              {{ (Number(tx.tx.timestamp) * 1000) | timestamp }}
             </td>
-            <td style="width:8em">
-              <router-link :to="'/address/' + tx.from">
-                {{ tx.from | shorten }}
+            <td>
+              <router-link :to="'/address/' + tx.tx.from">
+                {{ tx.hrc20tx.from | shorten }}
               </router-link>
             </td>
-            <td style="width:8em">
-              <Address :bech32="tx.to" />
+            <td>
+              <router-link :to="'/address/' + tx.hrc20tx.to">
+                {{ tx.hrc20tx.to | shorten }}
+              </router-link>
+            </td>
+            <td>
+              <Address :bech32="tx.tx.to" />
             </td>
             <td class="no-break wfont">
-              <DecodeABI
-                :abi="$store.data.HRC20_ABI"
-                :data="tx.input"
-                :bech32="tx.to"
-              />
+              {{ hrc20Balance(tx.tx.to, tx.hrc20tx.amount) }}
             </td>
           </tr>
         </table>
@@ -99,10 +109,9 @@
 
 <script>
 import Address from './Address';
-import DecodeABI from './DecodeABI';
 export default {
   name: 'TransactionsTable',
-  components: { Address, DecodeABI },
+  components: { Address },
   props: [
     'allTxs',
     'withShards',
@@ -129,6 +138,37 @@ export default {
       } else {
         return this.allTxs.slice(begin, begin + this.pageSize);
       }
+    },
+    Hrc20Txs() {
+      const c = this.$store.data.hmy.contract(this.$store.data.HRC20_ABI);
+      return this.txs.reduce((list, tx) => {
+        if (this.hrc20info(tx.to) == undefined) {
+          return list;
+        }
+        const decodeObj = c.decodeInput(tx.input);
+        if (decodeObj.abiItem && decodeObj.abiItem.name == 'transfer')
+          list.push({
+            tx,
+            hrc20tx: {
+              from: tx.from,
+              to: decodeObj.params[0],
+              amount: decodeObj.params[1],
+            },
+          });
+        else if (decodeObj.abiItem && decodeObj.abiItem.name == 'transferFrom')
+          list.push({
+            tx,
+            hrc20tx: {
+              from: decodeObj.params[0],
+              to: decodeObj.params[1],
+              amount: decodeObj.params[2],
+            },
+          });
+        return list;
+      }, []);
+    },
+    Hrc20Address() {
+      return this.$store.data.Hrc20Address;
     },
   },
   mounted() {
@@ -173,6 +213,16 @@ export default {
     next() {
       if (this.pageIndex === this.pageCount - 1) return;
       this.goToPage(this.pageIndex + 1);
+    },
+    hrc20info(id) {
+      return this.Hrc20Address[id];
+    },
+    hrc20Balance(id, amount) {
+      return (
+        (amount / 10 ** this.hrc20info(id).decimals).toFixed(4) +
+        ' ' +
+        this.hrc20info(id).symbol
+      );
     },
   },
 };
