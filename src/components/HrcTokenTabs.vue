@@ -1,14 +1,23 @@
 <template>
   <div class="transactions-table explorer-card">
     <header>
-      <select v-if="type=='select'" class="optionItem" @change="event=>selectTab(event.target.selectedIndex)">
-        <option v-for="(name, index) in tabNames"
-        :key="index"
+      <select
+        v-if="type=='select'"
+        class="optionItem"
+        @change="event=>selectTab(event.target.selectedIndex)"
+      >
+        <option
+          v-for="(name, index) in tabNames"
+          :key="index"
           :value="name"
-        >{{ name }}
+        >
+          {{ name }}
         </option>
       </select>
-      <div v-else class="tabs">
+      <div
+        v-else
+        class="tabs"
+      >
         <span
           v-for="(name, index) in tabNames"
           :key="index"
@@ -17,7 +26,6 @@
         >
           {{ name }}
         </span>
-
       </div>
     </header>
     <div class="explorer-card-body">
@@ -42,15 +50,15 @@ export default {
       selected: null,
     };
   },
-  mounted() {
-    this.tabNames = this.getTabs();
-    if (!this.value && this.tabNames.length) this.selectTab(0);
-    //else this.selected = this.value;
-  },
   watch: {
     value() {
       this.selected = this.value;
     },
+  },
+  mounted() {
+    this.tabNames = this.getTabs();
+    if (!this.value && this.tabNames.length) this.selectTab(0);
+    //else this.selected = this.value;
   },
   methods: {
     selectTab(index) {

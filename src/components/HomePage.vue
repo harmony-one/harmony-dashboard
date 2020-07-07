@@ -129,73 +129,73 @@
         </div>
 
         <div class="explorer-card">
-        <div
-          v-for="(block, shard) in lastBlocks"
-          :key="shard"
-          class="shard"
-        >
-          <header>
-            <h1>          
-              <router-link
+          <div
+            v-for="(block, shard) in lastBlocks"
+            :key="shard"
+            class="shard"
+          >
+            <header>
+              <h1>
+                <router-link
                   :to="'/shard/' + shard"
                   class="data-shard"
                 >
                   Shard {{ shard }}
                 </router-link>
-            </h1>
-          </header>
-          <div class="explorer-card-body">
-            <section>
-              <table
-                class="explorer-table"
-              >
-                <tr>
-                  <td class="td-title">
-                    Height
-                  </td>
-                  <td>
-                    <router-link
-                    :to="'/block/' + block.id"
-                    class="link"
-                  >
-                    {{ block.height | number }}
-                  </router-link>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="td-title">
-                    Time
-                  </td>
-                  <td>{{ block.timestamp | timestamp }}</td>
-                </tr>
-                <tr>
-                  <td class="td-title">
-                    Transactions
-                  </td>
-                  <td>{{  block.txCount }}</td>
-                </tr>
-                <tr>
-                  <td class="td-title">
-                    Age
-                  </td>
-                  <td>{{ block.timestamp | age }}</td>
-                </tr>
-                <tr>
-                  <td class="td-title">
-                    Transactions
-                  </td>
-                  <td>{{  block.txCount }}</td>
-                </tr>
-                <tr>
-                  <td class="td-title">
-                    Validators
-                  </td>
-                  <td>{{ $store.data.shardsValidators.length > shard ? $store.data.shardsValidators[shard].length : '...' }}</td>
-                </tr>
-              </table>
-            </section>
+              </h1>
+            </header>
+            <div class="explorer-card-body">
+              <section>
+                <table
+                  class="explorer-table"
+                >
+                  <tr>
+                    <td class="td-title">
+                      Height
+                    </td>
+                    <td>
+                      <router-link
+                        :to="'/block/' + block.id"
+                        class="link"
+                      >
+                        {{ block.height | number }}
+                      </router-link>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="td-title">
+                      Time
+                    </td>
+                    <td>{{ block.timestamp | timestamp }}</td>
+                  </tr>
+                  <tr>
+                    <td class="td-title">
+                      Transactions
+                    </td>
+                    <td>{{ block.txCount }}</td>
+                  </tr>
+                  <tr>
+                    <td class="td-title">
+                      Age
+                    </td>
+                    <td>{{ block.timestamp | age }}</td>
+                  </tr>
+                  <tr>
+                    <td class="td-title">
+                      Transactions
+                    </td>
+                    <td>{{ block.txCount }}</td>
+                  </tr>
+                  <tr>
+                    <td class="td-title">
+                      Validators
+                    </td>
+                    <td>{{ $store.data.shardsValidators.length > shard ? $store.data.shardsValidators[shard].length : '...' }}</td>
+                  </tr>
+                </table>
+              </section>
+            </div>
           </div>
-        </div>
         </div>
 
         <CommonTabs>
@@ -521,12 +521,15 @@
                       </router-link>
                     </div>
                     <div class="td">
-                      <Address :bech32="tx.tx.to.bech32"/>
+                      <Address :bech32="tx.tx.to.bech32" />
                     </div>
                     <div class="td">
                       {{ tx.tx.timestamp | age }}
                     </div>
-                    <div class="td" :title="tx.hrc20tx.amount">
+                    <div
+                      class="td"
+                      :title="tx.hrc20tx.amount"
+                    >
                       {{ hrc20Balance(tx.tx.to.bech32, tx.hrc20tx.amount) }}
                     </div>
                   </div>

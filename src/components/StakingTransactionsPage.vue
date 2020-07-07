@@ -15,12 +15,12 @@
               <div class="page-controllers-row">
                 <div>From:</div>
                 <VueCtkDateTimePicker
+                  v-model="cursor"
                   format="YYYY-MM-DD hh:mm"
                   color="#33cbda"
-                  buttonColor="#33cbda"
-                  :noClearButton="true"
+                  button-color="#33cbda"
+                  :no-clear-button="true"
                   :max-date="maxDate"
-                  v-model="cursor"
                 />
                 <button
                   class="btn btn-light btn-icon-only"

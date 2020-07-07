@@ -50,9 +50,9 @@
       </div>
     </header>
     <div
+      ref="loadingContainer"
       class="explorer-card-body"
       style="position: relative; min-height: 200px;"
-      ref="loadingContainer"
     >
       <section>
         <table class="explorer-table">
@@ -70,11 +70,11 @@
             :key="tx.tx.hash"
           >
             <td>
-                <router-link
-                  :to="'/shard/' + tx.tx.shardID"
-                >
-                  {{ tx.tx.shardID }}
-                </router-link>
+              <router-link
+                :to="'/shard/' + tx.tx.shardID"
+              >
+                {{ tx.tx.shardID }}
+              </router-link>
             </td>
             <td>
               <router-link :to="'/tx/' + tx.tx.hash">
@@ -171,13 +171,13 @@ export default {
       return this.$store.data.Hrc20Address;
     },
   },
-  mounted() {
-    this.setLoader();
-  },
   watch: {
     loading() {
       this.setLoader();
     },
+  },
+  mounted() {
+    this.setLoader();
   },
   methods: {
     setLoader() {

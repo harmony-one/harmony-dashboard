@@ -24,7 +24,10 @@
 <template>
   <div class="address-page explorer-page page">
     <div class="address-body explorer-body">
-      <div v-if="showPanel" class="container">
+      <div
+        v-if="showPanel"
+        class="container"
+      >
         <div class="explorer-card">
           <header>
             <h1 v-if="isHrc20(address.id)">
@@ -94,8 +97,10 @@
                   </td>
                   <td>
                     <select class="selectItem">
-                      <option v-for="(shard, index) in address.shardData"
-                      :key="index">
+                      <option
+                        v-for="(shard, index) in address.shardData"
+                        :key="index"
+                      >
                         {{ shard.balance | number }}
                       </option>
                     </select>
@@ -107,9 +112,14 @@
                   </td>
                   <td>
                     <select class="selectItem">
-                      <option v-for="(shard, index) in address.shardData"
-                      :key="index">{{ shard.txCount | number }}</option>
-                    </select></td>
+                      <option
+                        v-for="(shard, index) in address.shardData"
+                        :key="index"
+                      >
+                        {{ shard.txCount | number }}
+                      </option>
+                    </select>
+                  </td>
                 </tr>
                 <tr>
                   <td class="td-title">
@@ -117,9 +127,14 @@
                   </td>
                   <td>
                     <select class="selectItem">
-                      <option v-for="(shard, index) in address.shardData"
-                      :key="index">{{ shard.stakingTxCount | number }}</option>
-                    </select></td>
+                      <option
+                        v-for="(shard, index) in address.shardData"
+                        :key="index"
+                      >
+                        {{ shard.stakingTxCount | number }}
+                      </option>
+                    </select>
+                  </td>
                 </tr>
               </table>
             </section>
@@ -158,7 +173,7 @@
           with-shards="true"
           :tx-count="txCount"
           :page="page"
-          :loading = "loading"
+          :loading="loading"
           :change-page="changePage"
         >
           <slot>
@@ -172,7 +187,7 @@
           v-else-if="showWhich == 'hrc20'"
           :all-txs="allTxs"
           with-shards="true"
-          :loading = "loading"
+          :loading="loading"
           :tx-count="txCount"
           :page="page"
           :change-page="changePage"

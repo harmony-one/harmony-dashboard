@@ -47,9 +47,9 @@
     </header>
 
     <div
+      ref="loadingContainer"
       class="explorer-card-body"
       style="position: relative; min-height: 200px;"
-      ref="loadingContainer"
     >
       <section>
         <table class="explorer-table">
@@ -135,14 +135,6 @@ export default {
       loader: null,
     };
   },
-  mounted() {
-    this.setLoader();
-  },
-  watch: {
-    loading() {
-      this.setLoader();
-    },
-  },
   computed: {
     pageCount() {
       return Math.ceil(this.txCount / this.pageSize);
@@ -156,6 +148,14 @@ export default {
         return this.allStakingTxs.slice(begin, begin + this.pageSize);
       }
     },
+  },
+  watch: {
+    loading() {
+      this.setLoader();
+    },
+  },
+  mounted() {
+    this.setLoader();
   },
   methods: {
     setLoader() {

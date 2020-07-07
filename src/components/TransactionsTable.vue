@@ -46,9 +46,9 @@
       </div>
     </header>
     <div
+      ref="loadingContainer"
       class="explorer-card-body"
       style="position: relative; min-height: 200px;"
-      ref="loadingContainer"
     >
       <section>
         <table class="explorer-table">
@@ -113,6 +113,7 @@
 import Address from './Address';
 export default {
   name: 'TransactionsTable',
+  components: { Address },
   props: [
     'allTxs',
     'withShards',
@@ -122,7 +123,6 @@ export default {
     'txCount',
     'loading',
   ],
-  components: { Address },
   data() {
     return {
       pageIndex: this.page || 0,
@@ -143,13 +143,13 @@ export default {
       }
     },
   },
-  mounted() {
-    this.setLoader();
-  },
   watch: {
     loading() {
       this.setLoader();
     },
+  },
+  mounted() {
+    this.setLoader();
   },
   methods: {
     setLoader() {
