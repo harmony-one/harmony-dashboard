@@ -122,6 +122,7 @@ export default {
     'txCount',
     'loading',
   ],
+  components: { Address },
   data() {
     return {
       pageIndex: this.page || 0,
