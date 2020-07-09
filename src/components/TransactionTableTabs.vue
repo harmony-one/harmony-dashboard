@@ -5,12 +5,18 @@
       @click="() => onChange(false)"
     >
       {{ titlePrefix }} Transactions
+      <span v-if="titlePostfixTx" class="postfix">{{
+        titlePostfixTx | number
+      }}</span>
     </span>
     <span
       :class="{ tabItem: true, active: value }"
       @click="() => onChange(true)"
     >
       {{ titlePrefix }} Staking transactions
+      <span v-if="titlePostfixStakingTx" class="postfix">{{
+        titlePostfixStakingTx | number
+      }}</span>
     </span>
   </div>
 </template>
@@ -18,26 +24,41 @@
 <script>
 export default {
   name: 'TransactionTableTabs',
-  props: ['value', 'onChange', 'titlePrefix'],
+  props: [
+    'value',
+    'onChange',
+    'titlePrefix',
+    'titlePostfixTx',
+    'titlePostfixStakingTx',
+  ],
 };
 </script>
 
 <style lang="less">
 .tabs {
   flex-grow: 1;
+  display: flex;
   flex-direction: row;
   justify-content: flex-start;
 
   .tabItem {
     cursor: pointer;
     color: rgba(85, 91, 104, 0.7);
-    margin-right: 20px;
     font-size: 1.1em;
     font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-right: 30px;
+
+    .postfix {
+      font-size: 0.8em;
+      font-weight: 400;
+      display: block;
+    }
 
     &.active {
       position: relative;
-      display: inline-block;
       color: #1b295e;
       // color: var(--color-table-link);
 
