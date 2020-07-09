@@ -420,7 +420,7 @@
                   </div>
                 </div>
                 <div class="show-more-container">
-                  <router-link to="/txs" class="show-more-button">
+                  <router-link to="/staking-txs" class="show-more-button">
                     Show all
                     <b>{{ globalData.stakingTxCount | number }}</b> staking
                     transactions
