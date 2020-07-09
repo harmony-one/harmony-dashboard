@@ -86,7 +86,7 @@
                 <td class="td-title">
                   From Address
                 </td>
-                <td>
+                <td class="address_link">
                   <router-link
                     v-if="transaction.from"
                     :to="'/address/' + transaction.from"
@@ -115,7 +115,7 @@
                 <td class="td-title">
                   To Address
                 </td>
-                <td>
+                <td class="address_link">
                   <router-link
                     v-if="transaction.to"
                     :to="'/address/' + transaction.to"
@@ -127,7 +127,7 @@
 
               <tr v-if="isStaking">
                 <td class="td-title">Validator Address</td>
-                <td>
+                <td class="address_link">
                   <router-link
                     v-if="transaction.validator"
                     :to="
@@ -140,7 +140,7 @@
               </tr>
               <tr v-if="isStaking">
                 <td class="td-title">Delegator Address</td>
-                <td>
+                <td class="address_link">
                   <router-link
                     v-if="transaction.delegator"
                     :to="
@@ -306,6 +306,12 @@ export default {
               delegator: transaction.msg.delegatorAddress,
               value: transaction.msg.amount,
             };
+
+            const { logs = [] } = transaction;
+
+            if (transaction.type === 'CollectRewards' && logs.length) {
+              this.transaction.value = logs[0].data;
+            }
           } else {
             this.transaction = transaction;
           }
