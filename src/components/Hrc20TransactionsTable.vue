@@ -29,7 +29,7 @@
               <font-awesome-icon icon="chevron-left" />
             </button>
             <span class="pagination-nums">
-              {{ pageIndex + 1 }} / {{ pageCount }}
+              {{ pageIndex + 1 }} / {{ pageCount?pageCount:1 }}
             </span>
             <button
               class="btn btn-light btn-icon-only"
@@ -66,7 +66,7 @@
             <th>Token Amount</th>
           </tr>
           <tr
-            v-for="tx in Hrc20Txs"
+            v-for="tx in Hrc20TxsPage"
             :key="tx.tx.hash"
           >
             <td>
@@ -110,17 +110,9 @@
 <script>
 import Address from './Address';
 export default {
-  name: 'TransactionsTable',
+  name: 'Hrc20TransactionsTable',
   components: { Address },
-  props: [
-    'allTxs',
-    'withShards',
-    'page',
-    'changePage',
-    'isLocal',
-    'txCount',
-    'loading',
-  ],
+  props: ['allTxs', 'withShards', 'page', 'isLocal', 'loading'],
   data() {
     return {
       pageIndex: this.page || 0,
@@ -128,6 +120,9 @@ export default {
     };
   },
   computed: {
+    txCount() {
+      return this.Hrc20Txs.length;
+    },
     pageCount() {
       return Math.ceil(this.txCount / this.pageSize);
     },
@@ -138,6 +133,10 @@ export default {
       } else {
         return this.allTxs.slice(begin, begin + this.pageSize);
       }
+    },
+    Hrc20TxsPage() {
+      const start = this.pageSize * this.pageIndex;
+      return this.Hrc20Txs.slice(start, start + this.pageSize);
     },
     Hrc20Txs() {
       const c = this.$store.data.hmy.contract(this.$store.data.HRC20_ABI);

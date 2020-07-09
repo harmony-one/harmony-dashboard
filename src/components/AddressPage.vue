@@ -185,7 +185,7 @@
         </TransactionsTable>
         <Hrc20TransactionsTable
           v-else-if="showWhich == 'hrc20'"
-          :all-txs="allTxs"
+          :all-txs="hrc20Txs"
           with-shards="true"
           :loading="loading"
           :tx-count="txCount"
@@ -256,6 +256,7 @@ export default {
       loading: true,
       address: null,
       allTxs: [],
+      hrc20Txs: [],
       allStakingTxs: [],
       txCount: 0,
       stakingTxCount: 0,
@@ -326,6 +327,10 @@ export default {
       const stakingTxs = {};
 
       const address = this.$route.params.address;
+
+      service
+        .getHrc20Txs({ id: address })
+        .then(txs => (this.hrc20Txs = txs.reverse()));
 
       service
         .getAddress({ id: address, pageIndex: this.page, pageSize: 20 })
