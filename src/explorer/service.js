@@ -30,6 +30,8 @@ function authGet(url, _params) {
 }
 
 function sendGet(url, params) {
+  //if(url == '/hrc20-txs')
+  //  return axios.get('http://127.0.0.1:8080' + url, params); // .delay(500)
   return axios.get(HTTP_BACKEND_URL + url, params); // .delay(500)
 }
 
@@ -132,6 +134,12 @@ export default {
     return authGet('/address', { params }).then(res => {
       let address = res.data.address;
       return address;
+    });
+  },
+  getHrc20Txs(params) {
+    return authGet('/hrc20-txs', { params }).then(res => {
+      let txs = res.data.txs;
+      return txs;
     });
   },
   getTxHistory(address, shardID, pageIndex) {

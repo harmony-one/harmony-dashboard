@@ -96,14 +96,24 @@
                     Balance
                   </td>
                   <td>
-                    <select class="selectItem">
-                      <option
-                        v-for="(shard, index) in address.shardData"
-                        :key="index"
-                      >
-                        {{ shard.balance | number }}
-                      </option>
-                    </select>
+                    {{ address.balance | amount }}
+                    <img
+                      src="../assets/arrow1.png"
+                      @click="showBalance"
+                    >
+                  </td>
+                </tr>
+                <tr
+                  v-for="(shard, index) in address.shardData"
+                  :key="index"
+                  class="shard"
+                >
+                  <td
+                    v-if="allBalance"
+                    class="td-title"
+                  />
+                  <td v-if="allBalance">
+                    Shard {{ index }} : {{ shard.balance | amount }}
                   </td>
                 </tr>
                 <tr>
@@ -111,29 +121,51 @@
                     Transactions
                   </td>
                   <td>
-                    <select class="selectItem">
-                      <option
-                        v-for="(shard, index) in address.shardData"
-                        :key="index"
-                      >
-                        {{ shard.txCount | number }}
-                      </option>
-                    </select>
+                    {{ txCount | number }}
+                    <img
+                      src="../assets/arrow1.png"
+                      @click="showTxs"
+                    >
                   </td>
                 </tr>
+                <tr
+                  v-for="(shard, index) in address.shardData"
+                  :key="index"
+                  class="shard"
+                >
+                  <td
+                    v-if="allTxsCount"
+                    class="td-title"
+                  />
+                  <td v-if="allTxsCount">
+                    Shard {{ index }} : {{ shard.txCount | number }}
+                  </td>
+                </tr>
+
+
                 <tr>
                   <td class="td-title">
                     Staking Transactions
                   </td>
                   <td>
-                    <select class="selectItem">
-                      <option
-                        v-for="(shard, index) in address.shardData"
-                        :key="index"
-                      >
-                        {{ shard.stakingTxCount | number }}
-                      </option>
-                    </select>
+                    {{ stakingTxCount | number }}
+                    <img
+                      src="../assets/arrow1.png"
+                      @click="showStakingTxs"
+                    >
+                  </td>
+                </tr>
+                <tr
+                  v-for="(shard, index) in address.shardData"
+                  :key="index"
+                  class="shard"
+                >
+                  <td
+                    v-if="allStakingCount"
+                    class="td-title"
+                  />
+                  <td v-if="allStakingCount">
+                    Shard {{ index }} : {{ shard.stakingTxCount | number }}
                   </td>
                 </tr>
               </table>
@@ -253,6 +285,9 @@ export default {
   },
   data() {
     return {
+      allBalance: false,
+      allTxsCount: false,
+      allStakingCount: false,
       loading: true,
       address: null,
       allTxs: [],
@@ -399,6 +434,21 @@ export default {
               : balance.toString() / 10 ** hrc20Info.decimals,
         });
       }
+    },
+    showBalance() {
+      (this.allBalance = !this.allBalance),
+        (this.allTxsCount = false),
+        (this.allStakingCount = false);
+    },
+    showTxs() {
+      (this.allBalance = false),
+        (this.allTxsCount = !this.allTxsCount),
+        (this.allStakingCount = false);
+    },
+    showStakingTxs() {
+      (this.allBalance = false),
+        (this.allTxsCount = false),
+        (this.allStakingCount = !this.allStakingCount);
     },
   },
 };
