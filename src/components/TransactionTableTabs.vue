@@ -4,19 +4,19 @@
       :class="{ tabItem: true, active: !value }"
       @click="() => onChange(false)"
     >
-      {{ titlePrefix }} Transactions
       <span v-if="titlePostfixTx" class="postfix">{{
         titlePostfixTx | number
       }}</span>
+      {{ titlePrefix }} Transactions
     </span>
     <span
       :class="{ tabItem: true, active: value }"
       @click="() => onChange(true)"
     >
-      {{ titlePrefix }} Staking transactions
       <span v-if="titlePostfixStakingTx" class="postfix">{{
         titlePostfixStakingTx | number
       }}</span>
+      {{ titlePrefix }} Staking transactions
     </span>
   </div>
 </template>
@@ -47,14 +47,15 @@ export default {
     font-size: 1.1em;
     font-weight: 500;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: baseline;
     margin-right: 30px;
 
     .postfix {
-      font-size: 0.8em;
+      // font-size: 0.8em;
       font-weight: 400;
       display: block;
+      margin-right: 6px;
     }
 
     &.active {
