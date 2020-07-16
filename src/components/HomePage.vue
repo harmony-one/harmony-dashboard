@@ -508,12 +508,14 @@
                       </router-link>
                     </div>
                     <div class="td">
-                      <router-link :to="'/tx/' + tx.tx.id">
-                        {{ tx.tx.id | shorten }}
+                      <router-link :to="'/tx/' + tx.tx.hash">
+                        {{ tx.tx.hash | shorten }}
                       </router-link>
                     </div>
                     <div class="td">
-                      <Address :bech32="tx.hrc20tx.from" />
+                      <router-link :to="'/address/' + tx.hrc20tx.from">
+                        {{ tx.hrc20tx.from | shorten }}
+                      </router-link>
                     </div>
                     <div class="td">
                       <router-link :to="'/address/' + tx.hrc20tx.to">
@@ -521,16 +523,16 @@
                       </router-link>
                     </div>
                     <div class="td">
-                      <Address :bech32="tx.tx.to.bech32" />
+                      <Address :bech32="tx.tx.to" />
                     </div>
                     <div class="td">
-                      {{ tx.tx.timestamp | age }}
+                      {{ Number(tx.tx.timestamp)*1000 | age }}
                     </div>
                     <div
                       class="td"
                       :title="tx.hrc20tx.amount"
                     >
-                      {{ hrc20Balance(tx.tx.to.bech32, tx.hrc20tx.amount) }}
+                      {{ hrc20Balance(tx.tx.to, tx.hrc20tx.amount) }}
                     </div>
                   </div>
                 </div>
@@ -622,7 +624,7 @@ export default {
           list.push({
             tx,
             hrc20tx: {
-              from: tx.from.bech32,
+              from: tx.from,
               to: decodeObj.params[0],
               amount: decodeObj.params[1],
             },

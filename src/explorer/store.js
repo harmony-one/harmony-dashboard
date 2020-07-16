@@ -2,6 +2,7 @@ import Vue from 'vue';
 import hmy from './hmy.js';
 import axios from 'axios';
 import {BASE_HRC20URL, HRC20_HOLDERURL, ONE_HOLDERURL} from './globalConfig.js';
+import service from './service';
 
 window.hmy = hmy;
 const HRC20_ABI = require('./HRC20_ABI.json');
@@ -60,6 +61,7 @@ let store = {
     txs: [],
     stakingTxs: [],
     hrc20Txs: [],
+    hrc20TxsCount: 0,
     blockCount: 0,
     txCount: 0,
     stakingTxCount: 0,
@@ -146,17 +148,9 @@ let store = {
       )
     );
     await this.updateHrc20List();
-    let newHrc20Txs = await hrc20TxsFilter(
-      Object.values(this.data.shards).reduce(
-      (memo, shard) => memo.concat(shard.txs),
-      []
-      ),
-      id=>!!this.data.Hrc20Address[id],
-      id=>this.data.hrc20Txs.filter(tx=>tx.id==id).length
-    )//newHrc20Txs=>{
-        const remain = Limit - newHrc20Txs.length;
-        this.data.hrc20Txs = [...newHrc20Txs, ...this.data.hrc20Txs.slice(0, remain)];
-    //  });
+    const result = await service.getHrc20TxsLatest({pageSize:20,pageIndex:0});
+    this.data.hrc20Txs = result.txs;
+    this.data.hrc20TxsCount = result.total;
     this.data.stakingTxs = postprocessTxs(
       Object.values(this.data.shards).reduce(
         (memo, shard) => memo.concat(shard.stakingTxs),

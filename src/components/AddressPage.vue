@@ -91,6 +91,7 @@
                   </td>
                   <td>{{ address.id }}</td>
                 </tr>
+
                 <tr>
                   <td class="td-title">
                     Balance
@@ -105,17 +106,17 @@
                 </tr>
                 <tr
                   v-for="(shard, index) in address.shardData"
-                  :key="index"
+                  :key="`balance${index}`"
                   class="shard"
                 >
                   <td
                     v-if="allBalance"
                     class="td-title"
-                  />
-                  <td v-if="allBalance">
+                  >
                     Shard {{ index }} : {{ shard.balance | amount }}
                   </td>
                 </tr>
+
                 <tr>
                   <td class="td-title">
                     Transactions
@@ -130,14 +131,13 @@
                 </tr>
                 <tr
                   v-for="(shard, index) in address.shardData"
-                  :key="index"
+                  :key="`txCount${index}`"
                   class="shard"
                 >
                   <td
                     v-if="allTxsCount"
                     class="td-title"
-                  />
-                  <td v-if="allTxsCount">
+                  >
                     Shard {{ index }} : {{ shard.txCount | number }}
                   </td>
                 </tr>
@@ -155,16 +155,16 @@
                     >
                   </td>
                 </tr>
+                
                 <tr
                   v-for="(shard, index) in address.shardData"
-                  :key="index"
+                  :key="`stakingTxCount${index}`"
                   class="shard"
                 >
                   <td
                     v-if="allStakingCount"
                     class="td-title"
-                  />
-                  <td v-if="allStakingCount">
+                  >
                     Shard {{ index }} : {{ shard.stakingTxCount | number }}
                   </td>
                 </tr>
@@ -220,7 +220,7 @@
           :all-txs="hrc20Txs"
           with-shards="true"
           :loading="loading"
-          :tx-count="txCount"
+          :tx-count="hrc20TxsCount"
           :page="page"
           :change-page="changePage"
         >
@@ -292,6 +292,7 @@ export default {
       address: null,
       allTxs: [],
       hrc20Txs: [],
+      hrc20TxsCount: 0,
       allStakingTxs: [],
       txCount: 0,
       stakingTxCount: 0,
@@ -350,10 +351,14 @@ export default {
         query: { txType },
       });
     },
-    changePage(value) {
+    changePage(value, hrc20QueryID) {
       this.$router.replace({
         name: 'AddressPage',
-        query: { page: value + 1, txType: this.$route.query.txType },
+        query: {
+          page: value + 1,
+          txType: this.$route.query.txType,
+          hrc20QueryID,
+        },
       });
     },
     getAddress() {
@@ -362,10 +367,19 @@ export default {
       const stakingTxs = {};
 
       const address = this.$route.params.address;
+      const sortid = this.$route.params.hrc20QueryID;
 
       service
-        .getHrc20Txs({ id: address })
-        .then(txs => (this.hrc20Txs = txs.reverse()));
+        .getHrc20Txs({
+          id: address,
+          pageSize: 20,
+          pageIndex: this.page,
+          sortid,
+        })
+        .then(result => {
+          this.hrc20Txs = result.txs;
+          this.hrc20TxsCount = result.total;
+        });
 
       service
         .getAddress({ id: address, pageIndex: this.page, pageSize: 20 })

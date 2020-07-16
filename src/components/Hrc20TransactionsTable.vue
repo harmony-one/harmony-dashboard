@@ -112,7 +112,15 @@ import Address from './Address';
 export default {
   name: 'Hrc20TransactionsTable',
   components: { Address },
-  props: ['allTxs', 'withShards', 'page', 'isLocal', 'loading'],
+  props: [
+    'allTxs',
+    'txCount',
+    'withShards',
+    'page',
+    'changePage',
+    'isLocal',
+    'loading',
+  ],
   data() {
     return {
       pageIndex: this.page || 0,
@@ -120,9 +128,6 @@ export default {
     };
   },
   computed: {
-    txCount() {
-      return this.Hrc20Txs.length;
-    },
     pageCount() {
       return Math.ceil(this.txCount / this.pageSize);
     },
@@ -135,8 +140,9 @@ export default {
       }
     },
     Hrc20TxsPage() {
-      const start = this.pageSize * this.pageIndex;
-      return this.Hrc20Txs.slice(start, start + this.pageSize);
+      //const start = this.pageSize * this.pageIndex;
+      //return this.Hrc20Txs.slice(start, start + this.pageSize);
+      return this.Hrc20Txs;
     },
     Hrc20Txs() {
       const c = this.$store.data.hmy.contract(this.$store.data.HRC20_ABI);
@@ -193,10 +199,15 @@ export default {
       if (index < 0) index = 0;
       if (index >= this.pageCount) index = this.pageCount - 1;
 
+      const lastTxs = this.Hrc20Txs.slice(-1)[0].tx;
+      const sortid =
+        this.pageIndex + 1 == index
+          ? Number(lastTxs.blockNumber) * 10000 +
+            Number(lastTxs.transactionIndex)
+          : undefined;
       this.pageIndex = index;
-
       if (this.changePage) {
-        this.changePage(index);
+        this.changePage(index, sortid);
       }
     },
     first() {
