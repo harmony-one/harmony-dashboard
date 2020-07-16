@@ -30,8 +30,8 @@ function authGet(url, _params) {
 }
 
 function sendGet(url, params) {
-  if(url == '/hrc20-txs' || url == '/hrc20-latest')
-    return axios.get('http://127.0.0.1:8080' + url, params); // .delay(500)
+  //if(url == '/hrc20-txs' || url == '/hrc20-latest')
+  //  return axios.get('http://127.0.0.1:8080' + url, params); // .delay(500)
   return axios.get(HTTP_BACKEND_URL + url, params); // .delay(500)
 }
 
