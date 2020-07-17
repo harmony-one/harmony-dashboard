@@ -134,7 +134,7 @@ let store = {
     shardData.txCount = shard.txCount;
     shardData.stakingTxCount = shard.stakingTxCount;
   },
-  async updateGlobalData() {
+  updateGlobalData() {
     this.data.blocks = postprocessBlocks(
       Object.values(this.data.shards).reduce(
         (memo, shard) => memo.concat(shard.blocks),
@@ -147,10 +147,11 @@ let store = {
         []
       )
     );
-    await this.updateHrc20List();
-    const result = await service.getHrc20TxsLatest({pageSize:20,pageIndex:0});
-    this.data.hrc20Txs = result.txs;
-    this.data.hrc20TxsCount = result.total;
+    this.updateHrc20List();
+    service.getHrc20TxsLatest({pageSize:20,pageIndex:0}).then(result=>{
+      this.data.hrc20Txs = result.txs;
+      this.data.hrc20TxsCount = result.total;
+    })
     this.data.stakingTxs = postprocessTxs(
       Object.values(this.data.shards).reduce(
         (memo, shard) => memo.concat(shard.stakingTxs),

@@ -198,7 +198,7 @@
           </div>
         </div>
 
-        <CommonTabs>
+        <CommonTabs v-if="false">
           <TabPane :name="'Token Holders'">
             <section>
               <table class="explorer-table">
