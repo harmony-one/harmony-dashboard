@@ -148,7 +148,7 @@ let store = {
       )
     );
     this.updateHrc20List();
-    service.getHrc20TxsLatest({pageSize:20,pageIndex:0}).then(result=>{
+    service.getHrc20TxsLatest({pageSize:10,pageIndex:0}).then(result=>{
       this.data.hrc20Txs = result.txs;
       this.data.hrc20TxsCount = result.total;
     })
