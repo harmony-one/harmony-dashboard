@@ -8,6 +8,7 @@ import BlockPage from '@/components/BlockPage';
 import TransactionPage from '@/components/TransactionPage';
 import TransactionsPage from '@/components/TransactionsPage';
 import StakingTransactionsPage from '@/components/StakingTransactionsPage';
+import Hrc20TransactionsPage from '@/components/Hrc20TransactionsPage';
 import AddressPage from '@/components/AddressPage';
 import ShardPage from '@/components/ShardPage';
 import AddressShardPage from '@/components/AddressShardPage';
@@ -46,6 +47,11 @@ export default new Router({
       path: '/staking-txs',
       name: 'StakingTransactionsPage',
       component: StakingTransactionsPage,
+    },
+    {
+      path: '/hrc20-txs',
+      name: 'Hrc20TransactionsPage',
+      component: Hrc20TransactionsPage,
     },
     {
       path: '/block/:blockId',

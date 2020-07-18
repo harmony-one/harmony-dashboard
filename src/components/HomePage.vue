@@ -267,7 +267,9 @@
                 <TransactionTableTabs
                   :value="tabValue"
                   :on-change="changeTab"
-                  title-prefix=""
+                  :title-postfix-tx="globalData.txCount"
+                  :title-postfix-staking-tx="globalData.stakingTxCount"
+                  :title-postfix-hrc20-tx="globalData.hrc20TxsCount"
                 />
                 <div class="secondary-info">
                   <div class="timer">
@@ -346,6 +348,15 @@
                     </div>
                   </div>
                 </div>
+                <div class="show-more-container">
+                  <router-link
+                    to="/txs"
+                    class="show-more-button"
+                  >
+                    Show all
+                    <b>{{ globalData.txCount | number }}</b> transactions
+                  </router-link>
+                </div>
               </div>
               <!-- <footer class="button-only-footer">
                 <router-link
@@ -368,6 +379,7 @@
                   :on-change="changeTab"
                   :title-postfix-tx="globalData.txCount"
                   :title-postfix-staking-tx="globalData.stakingTxCount"
+                  :title-postfix-hrc20-tx="globalData.hrc20TxsCount"
                 />
 
                 <div class="secondary-info">
@@ -467,11 +479,12 @@
                 </div>
                 <div class="show-more-container">
                   <router-link
-                    to="/txs"
+                    to="/staking-txs"
                     class="show-more-button"
                   >
                     Show all
-                    <b>{{ globalData.txCount | number }}</b> transactions
+                    <b>{{ globalData.stakingTxCount | number }}</b> staking
+                    transactions
                   </router-link>
                 </div>
               </div>
@@ -496,6 +509,7 @@
                   :on-change="changeTab"
                   :title-postfix-tx="globalData.txCount"
                   :title-postfix-staking-tx="globalData.stakingTxCount"
+                  :title-postfix-hrc20-tx="globalData.hrc20TxsCount"
                 />
 
                 <div class="secondary-info">
@@ -576,12 +590,11 @@
                 </div>
                 <div class="show-more-container">
                   <router-link
-                    to="/staking-txs"
+                    to="/hrc20-txs"
                     class="show-more-button"
                   >
                     Show all
-                    <b>{{ globalData.stakingTxCount | number }}</b> staking
-                    transactions
+                    <b>{{ globalData.hrc20TxsCount | number }}</b> transactions
                   </router-link>
                 </div>
               </div>
