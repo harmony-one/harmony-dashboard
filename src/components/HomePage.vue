@@ -46,6 +46,31 @@
       overflow: auto;
     }
   }
+
+  .total-txs {
+    margin-right: 20px;
+  }
+}
+
+.show-more-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+
+  .show-more-button {
+    padding: 6px 25px;
+    border: 1px solid #008ddc50;
+    border-radius: 5px;
+    transition: all 0.3s;
+
+    font-weight: 400;
+    font-size: 0.9em;
+
+    &:hover {
+      /*border: 1px solid #1b295e;*/
+      /*color: #1b295e;*/
+    }
+  }
 }
 </style>
 
@@ -341,8 +366,10 @@
                 <TransactionTableTabs
                   :value="tabValue"
                   :on-change="changeTab"
-                  title-prefix=""
+                  :title-postfix-tx="globalData.txCount"
+                  :title-postfix-staking-tx="globalData.stakingTxCount"
                 />
+
                 <div class="secondary-info">
                   <div class="timer">
                     Updated
@@ -438,6 +465,15 @@
                     </div>
                   </div>
                 </div>
+                <div class="show-more-container">
+                  <router-link
+                    to="/txs"
+                    class="show-more-button"
+                  >
+                    Show all
+                    <b>{{ globalData.txCount | number }}</b> transactions
+                  </router-link>
+                </div>
               </div>
               <!-- <footer class="button-only-footer">
                 <router-link
@@ -458,8 +494,10 @@
                 <TransactionTableTabs
                   :value="tabValue"
                   :on-change="changeTab"
-                  title-prefix=""
+                  :title-postfix-tx="globalData.txCount"
+                  :title-postfix-staking-tx="globalData.stakingTxCount"
                 />
+
                 <div class="secondary-info">
                   <div class="timer">
                     Updated
@@ -535,6 +573,16 @@
                       {{ hrc20Balance(tx.tx.to, tx.hrc20tx.amount) }}
                     </div>
                   </div>
+                </div>
+                <div class="show-more-container">
+                  <router-link
+                    to="/staking-txs"
+                    class="show-more-button"
+                  >
+                    Show all
+                    <b>{{ globalData.stakingTxCount | number }}</b> staking
+                    transactions
+                  </router-link>
                 </div>
               </div>
               <!-- <footer class="button-only-footer">
