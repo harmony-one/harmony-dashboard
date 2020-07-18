@@ -28,6 +28,12 @@
       :class="{ tabItem: true, active: value == 2 }"
       @click="() => onChange(2)"
     >
+      <span
+        v-if="titlePostfixHrc20Tx"
+        class="postfix"
+      >{{
+        titlePostfixHrc20Tx | number
+      }}</span>
       {{ titlePrefix }} HRC20 Transactions
     </span>
   </div>
@@ -42,6 +48,7 @@ export default {
     'titlePrefix',
     'titlePostfixTx',
     'titlePostfixStakingTx',
+    'titlePostfixHrc20Tx',
   ],
 };
 </script>
