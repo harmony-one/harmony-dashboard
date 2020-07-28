@@ -5,7 +5,7 @@
   "author": "liuzhenglaichn@gmail.com",
   "private": true,
   "scripts": {
-    "dev": "vue-cli-service serve",
+    "dev": "DevMode=true vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "elint": "eslint --ext .js,.vue src test",
