@@ -5,10 +5,7 @@
 <template>
   <div class="address-page explorer-page page">
     <div class="address-body explorer-body">
-      <div
-        v-if="!loading"
-        class="container"
-      >
+      <div v-if="!loading" class="container">
         <div class="explorer-card">
           <header>
             <h1>Block</h1>
@@ -46,10 +43,7 @@
           </template>
         </transactions-table>
       </div>
-      <div
-        v-else
-        class="container"
-      >
+      <div v-else class="container">
         <loading-message />
       </div>
     </div>

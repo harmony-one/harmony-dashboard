@@ -4,9 +4,7 @@
 
 <template>
   <div class="metrics-summary">
-    <div class="summary-title">
-      Shard {{ summary.key }}
-    </div>
+    <div class="summary-title">Shard {{ summary.key }}</div>
     <div class="timer">
       Updated {{ Math.round((now - this.summary.updateTime) / 1000) | number }}s
       ago...

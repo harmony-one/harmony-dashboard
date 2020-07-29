@@ -1,7 +1,11 @@
 import Vue from 'vue';
 import hmy from './hmy.js';
 import axios from 'axios';
-import {BASE_HRC20URL, HRC20_HOLDERURL, ONE_HOLDERURL} from './globalConfig.js';
+import {
+  BASE_HRC20URL,
+  HRC20_HOLDERURL,
+  ONE_HOLDERURL,
+} from './globalConfig.js';
 import service from './service';
 
 window.hmy = hmy;
@@ -22,12 +26,16 @@ function postprocessTxs(items) {
 
 async function hrc20TxsFilter(items, isHrc20, exist) {
   let retTxs = [];
-  let txs = items.sort((a, b) => (Number(a.timestamp) > Number(b.timestamp) ? -1 : 1));
-  for(let i in txs){
+  let txs = items.sort((a, b) =>
+    Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
+  );
+  for (let i in txs) {
     let tx = txs[i];
-    if(isHrc20(tx.to.bech32) && !exist(tx.id)){
-      if(tx.input == undefined)
-        tx.input = (await hmy.hmySDK.blockchain.Transaction.getTransactionByHash(tx.id)).result.input;
+    if (isHrc20(tx.to.bech32) && !exist(tx.id)) {
+      if (tx.input == undefined)
+        tx.input = (
+          await hmy.hmySDK.blockchain.Transaction.getTransactionByHash(tx.id)
+        ).result.input;
       retTxs.push(tx);
     }
   }
@@ -56,7 +64,7 @@ HRC20_LIST.map(hrc20 => (Hrc20Address[hrc20.address] = hrc20));
 let store = {
   data: {
     shards: {},
-    shardsValidators:[],
+    shardsValidators: [],
     blocks: [],
     txs: [],
     stakingTxs: [],
@@ -71,27 +79,26 @@ let store = {
     HRC20_ABI,
     hmy,
     HRC20_HOLDERURL,
-    ONE_HOLDERURL
+    ONE_HOLDERURL,
   },
 
   update(data) {
     this.updateShards(data.shards);
     this.updateGlobalData();
   },
-  async updateValidtors(){
-    for(let i = 0; i < 4; i++){
+  async updateValidtors() {
+    for (let i = 0; i < 4; i++) {
       let shardi = await hmy.hmySDK.blockchain.Staking.getValidators(i);
       this.data.shardsValidators.push(shardi.result.validators);
     }
   },
   updateHrc20List() {
     fetchHrc20List(HRC20LIST_URL).then(harc20list =>
-      harc20list.map(
-        hrc20 =>
-          Vue.set(this.data.Hrc20Address, hrc20.address, {
-            ...hrc20,
-            logo: `${BASE_HRC20URL}/HRC20/${hrc20.address}.png`,
-          })
+      harc20list.map(hrc20 =>
+        Vue.set(this.data.Hrc20Address, hrc20.address, {
+          ...hrc20,
+          logo: `${BASE_HRC20URL}/HRC20/${hrc20.address}.png`,
+        })
       )
     );
   },
@@ -148,10 +155,10 @@ let store = {
       )
     );
     this.updateHrc20List();
-    service.getHrc20TxsLatest({pageSize:10,pageIndex:0}).then(result=>{
+    service.getHrc20TxsLatest({ pageSize: 10, pageIndex: 0 }).then(result => {
       this.data.hrc20Txs = result.txs;
       this.data.hrc20TxsCount = result.total;
-    })
+    });
     this.data.stakingTxs = postprocessTxs(
       Object.values(this.data.shards).reduce(
         (memo, shard) => memo.concat(shard.stakingTxs),
@@ -200,6 +207,5 @@ let store = {
 store.updateValidtors();
 
 Vue.prototype.$store = store;
-
 
 export default store;

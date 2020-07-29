@@ -1,6 +1,6 @@
 import axios from 'axios';
 import store from './store';
-import {EXPLORER_BACKEND_URL} from './globalConfig.js';
+import { EXPLORER_BACKEND_URL } from './globalConfig.js';
 
 // For test: asios.get('...').delay(1000)
 Promise.prototype.delay = function(time) {

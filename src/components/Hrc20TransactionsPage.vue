@@ -46,14 +46,9 @@
                 <th>Token</th>
                 <th>Token Amount</th>
               </tr>
-              <tr
-                v-for="tx in Hrc20TxsPage"
-                :key="tx.tx.hash"
-              >
+              <tr v-for="tx in Hrc20TxsPage" :key="tx.tx.hash">
                 <td>
-                  <router-link
-                    :to="'/shard/' + tx.tx.shardID"
-                  >
+                  <router-link :to="'/shard/' + tx.tx.shardID">
                     {{ tx.tx.shardID }}
                   </router-link>
                 </td>
@@ -83,6 +78,7 @@
                 </td>
               </tr>
             </table>
+
             <div v-else>
               <loading-message />
             </div>
@@ -115,6 +111,44 @@ export default {
       maxDate: moment().toString(),
       pageSize: 50,
     };
+  },
+  computed: {
+    Hrc20Address() {
+      return this.$store.data.Hrc20Address;
+    },
+    Hrc20TxsPage() {
+      //const start = this.pageSize * this.pageIndex;
+      //return this.Hrc20Txs.slice(start, start + this.pageSize);
+      return this.Hrc20Txs;
+    },
+    Hrc20Txs() {
+      const c = this.$store.data.hmy.contract(this.$store.data.HRC20_ABI);
+      return this.txs.reduce((list, tx) => {
+        if (this.hrc20info(tx.to) == undefined) {
+          return list;
+        }
+        const decodeObj = c.decodeInput(tx.input);
+        if (decodeObj.abiItem && decodeObj.abiItem.name == 'transfer')
+          list.push({
+            tx,
+            hrc20tx: {
+              from: tx.from,
+              to: decodeObj.params[0],
+              amount: decodeObj.params[1],
+            },
+          });
+        else if (decodeObj.abiItem && decodeObj.abiItem.name == 'transferFrom')
+          list.push({
+            tx,
+            hrc20tx: {
+              from: decodeObj.params[0],
+              to: decodeObj.params[1],
+              amount: decodeObj.params[2],
+            },
+          });
+        return list;
+      }, []);
+    },
   },
   watch: {
     $route() {
@@ -183,44 +217,6 @@ export default {
         ' ' +
         this.hrc20info(id).symbol
       );
-    },
-  },
-  computed: {
-    Hrc20Address() {
-      return this.$store.data.Hrc20Address;
-    },
-    Hrc20TxsPage() {
-      //const start = this.pageSize * this.pageIndex;
-      //return this.Hrc20Txs.slice(start, start + this.pageSize);
-      return this.Hrc20Txs;
-    },
-    Hrc20Txs() {
-      const c = this.$store.data.hmy.contract(this.$store.data.HRC20_ABI);
-      return this.txs.reduce((list, tx) => {
-        if (this.hrc20info(tx.to) == undefined) {
-          return list;
-        }
-        const decodeObj = c.decodeInput(tx.input);
-        if (decodeObj.abiItem && decodeObj.abiItem.name == 'transfer')
-          list.push({
-            tx,
-            hrc20tx: {
-              from: tx.from,
-              to: decodeObj.params[0],
-              amount: decodeObj.params[1],
-            },
-          });
-        else if (decodeObj.abiItem && decodeObj.abiItem.name == 'transferFrom')
-          list.push({
-            tx,
-            hrc20tx: {
-              from: decodeObj.params[0],
-              to: decodeObj.params[1],
-              amount: decodeObj.params[2],
-            },
-          });
-        return list;
-      }, []);
     },
   },
 };

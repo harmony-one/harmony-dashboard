@@ -1,6 +1,6 @@
 import axios from 'axios';
 import store from './store';
-import {DASHBOARD_BACKEND_URL} from '../explorer/globalConfig.js'
+import { DASHBOARD_BACKEND_URL } from '../explorer/globalConfig.js';
 
 const BACKEND_URL = DASHBOARD_BACKEND_URL;
 const HTTP_BACKEND_URL = `https://${BACKEND_URL}:3000`;

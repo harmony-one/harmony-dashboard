@@ -40,10 +40,7 @@
           :summary="summary"
         />
       </div>
-      <div
-        v-else
-        class="container flex-hv-center"
-      >
+      <div v-else class="container flex-hv-center">
         <div class="placeholder-text">
           No Data
         </div>

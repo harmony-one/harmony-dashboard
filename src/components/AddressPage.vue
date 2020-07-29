@@ -24,22 +24,13 @@
 <template>
   <div class="address-page explorer-page page">
     <div class="address-body explorer-body">
-      <div
-        v-if="showPanel"
-        class="container"
-      >
+      <div v-if="showPanel" class="container">
         <div class="explorer-card">
           <header>
             <h1 v-if="isHrc20(address.id)">
               HRC20 Token:
-              <img
-                :src="Hrc20Info.logo"
-                class="hrclogo"
-              >
-              <a
-                target="_blank"
-                :href="Hrc20Info.website"
-              >
+              <img :src="Hrc20Info.logo" class="hrclogo" />
+              <a target="_blank" :href="Hrc20Info.website">
                 {{ Hrc20Info.name + '(' + Hrc20Info.symbol + ')' }}
               </a>
             </h1>
@@ -98,10 +89,7 @@
                   </td>
                   <td>
                     {{ address.balance | amount }}
-                    <img
-                      src="../assets/arrow1.png"
-                      @click="showBalance"
-                    >
+                    <img src="../assets/arrow1.png" @click="showBalance" />
                   </td>
                 </tr>
                 <tr
@@ -109,10 +97,7 @@
                   :key="`balance${index}`"
                   class="shard"
                 >
-                  <td
-                    v-if="allBalance"
-                    class="td-title"
-                  >
+                  <td v-if="allBalance" class="td-title">
                     Shard {{ index }} : {{ shard.balance | amount }}
                   </td>
                 </tr>
@@ -123,10 +108,7 @@
                   </td>
                   <td>
                     {{ txCount | number }}
-                    <img
-                      src="../assets/arrow1.png"
-                      @click="showTxs"
-                    >
+                    <img src="../assets/arrow1.png" @click="showTxs" />
                   </td>
                 </tr>
                 <tr
@@ -134,14 +116,10 @@
                   :key="`txCount${index}`"
                   class="shard"
                 >
-                  <td
-                    v-if="allTxsCount"
-                    class="td-title"
-                  >
+                  <td v-if="allTxsCount" class="td-title">
                     Shard {{ index }} : {{ shard.txCount | number }}
                   </td>
                 </tr>
-
 
                 <tr>
                   <td class="td-title">
@@ -149,22 +127,16 @@
                   </td>
                   <td>
                     {{ stakingTxCount | number }}
-                    <img
-                      src="../assets/arrow1.png"
-                      @click="showStakingTxs"
-                    >
+                    <img src="../assets/arrow1.png" @click="showStakingTxs" />
                   </td>
                 </tr>
-                
+
                 <tr
                   v-for="(shard, index) in address.shardData"
                   :key="`stakingTxCount${index}`"
                   class="shard"
                 >
-                  <td
-                    v-if="allStakingCount"
-                    class="td-title"
-                  >
+                  <td v-if="allStakingCount" class="td-title">
                     Shard {{ index }} : {{ shard.stakingTxCount | number }}
                   </td>
                 </tr>
@@ -177,10 +149,7 @@
           <TabPane :name="'HRC20 Balance'">
             <section>
               <table class="explorer-table">
-                <tr
-                  v-for="balanceOf in Hrc20Balance"
-                  :key="balanceOf.id"
-                >
+                <tr v-for="balanceOf in Hrc20Balance" :key="balanceOf.id">
                   <td class="td-title">
                     <Address :bech32="balanceOf.id" />
                   </td>
@@ -191,10 +160,7 @@
               </table>
             </section>
           </TabPane>
-          <TabPane
-            v-if="false"
-            :name="'HRC721'"
-          >
+          <TabPane v-if="false" :name="'HRC721'">
             comming soon...
           </TabPane>
         </HrcTokenTabs>
@@ -209,10 +175,7 @@
           :change-page="changePage"
         >
           <slot>
-            <TransactionTableTabs
-              :value="tabValue"
-              :on-change="changeTab"
-            />
+            <TransactionTableTabs :value="tabValue" :on-change="changeTab" />
           </slot>
         </TransactionsTable>
         <Hrc20TransactionsTable
@@ -225,10 +188,7 @@
           :change-page="changePage"
         >
           <slot>
-            <TransactionTableTabs
-              :value="tabValue"
-              :on-change="changeTab"
-            />
+            <TransactionTableTabs :value="tabValue" :on-change="changeTab" />
           </slot>
         </Hrc20TransactionsTable>
         <StakingTransactionsTable
@@ -241,17 +201,11 @@
           :tx-count="stakingTxCount"
         >
           <slot>
-            <TransactionTableTabs
-              :value="tabValue"
-              :on-change="changeTab"
-            />
+            <TransactionTableTabs :value="tabValue" :on-change="changeTab" />
           </slot>
         </StakingTransactionsTable>
       </div>
-      <div
-        v-else
-        class="container"
-      >
+      <div v-else class="container">
         <loading-message v-if="false" />
       </div>
     </div>

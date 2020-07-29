@@ -34,10 +34,7 @@
             </div>
           </header>
           <div class="explorer-card-body">
-            <table
-              v-if="txs.length"
-              class="explorer-table"
-            >
+            <table v-if="txs.length" class="explorer-table">
               <tr>
                 <th>Shard</th>
                 <th>Hash</th>
@@ -54,11 +51,7 @@
                   Size (bytes)
                 </th>
               </tr>
-              <tr
-                v-for="tx in txs"
-                :key="tx.id"
-                class="container"
-              >
+              <tr v-for="tx in txs" :key="tx.id" class="container">
                 <td>
                   <!-- <router-link :to="'/shard/' + tx.shardID"> -->
                   {{ tx.shardID }}

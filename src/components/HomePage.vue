@@ -77,14 +77,8 @@
 <template>
   <div class="home-page explorer-page page">
     <div class="home-body explorer-body">
-      <div
-        v-if="globalData.blocks.length"
-        class="container"
-      >
-        <div
-          v-if="!!coinStats"
-          class="explorer-card status-card"
-        >
+      <div v-if="globalData.blocks.length" class="container">
+        <div v-if="!!coinStats" class="explorer-card status-card">
           <CoinStats :stats="coinStats" />
         </div>
 
@@ -154,35 +148,23 @@
         </div>
 
         <div class="explorer-card">
-          <div
-            v-for="(block, shard) in lastBlocks"
-            :key="shard"
-            class="shard"
-          >
+          <div v-for="(block, shard) in lastBlocks" :key="shard" class="shard">
             <header>
               <h1>
-                <router-link
-                  :to="'/shard/' + shard"
-                  class="data-shard"
-                >
+                <router-link :to="'/shard/' + shard" class="data-shard">
                   Shard {{ shard }}
                 </router-link>
               </h1>
             </header>
             <div class="explorer-card-body">
               <section>
-                <table
-                  class="explorer-table"
-                >
+                <table class="explorer-table">
                   <tr>
                     <td class="td-title">
                       Height
                     </td>
                     <td>
-                      <router-link
-                        :to="'/block/' + block.id"
-                        class="link"
-                      >
+                      <router-link :to="'/block/' + block.id" class="link">
                         {{ block.height | number }}
                       </router-link>
                     </td>
@@ -215,7 +197,13 @@
                     <td class="td-title">
                       Validators
                     </td>
-                    <td>{{ $store.data.shardsValidators.length > shard ? $store.data.shardsValidators[shard].length : '...' }}</td>
+                    <td>
+                      {{
+                        $store.data.shardsValidators.length > shard
+                          ? $store.data.shardsValidators[shard].length
+                          : '...'
+                      }}
+                    </td>
                   </tr>
                 </table>
               </section>
@@ -231,17 +219,13 @@
                   <td class="td-title">
                     ONE
                   </td>
-                  <td>   
-                    <a
-                      :href="$store.data.ONE_HOLDERURL"
-                      target="_blank"
-                    >{{ 100000 }}</a>
+                  <td>
+                    <a :href="$store.data.ONE_HOLDERURL" target="_blank">{{
+                      100000
+                    }}</a>
                   </td>
                 </tr>
-                <tr
-                  v-for="token in tokenHolders"
-                  :key="token.id"
-                >
+                <tr v-for="token in tokenHolders" :key="token.id">
                   <td class="td-title">
                     <Address :bech32="token.id" />
                   </td>
@@ -249,7 +233,9 @@
                     <a
                       :href="`${$store.data.HRC20_HOLDERURL}/${token.id}`"
                       target="_blank"
-                    >{{ token.holders }}</a>
+                    >
+                      {{ token.holders }}
+                    </a>
                   </td>
                 </tr>
               </table>
@@ -311,11 +297,7 @@
                       Txn Fee
                     </div>
                   </div>
-                  <div
-                    v-for="tx in globalData.txs"
-                    :key="tx.id"
-                    class="tr"
-                  >
+                  <div v-for="tx in globalData.txs" :key="tx.id" class="tr">
                     <div class="td">
                       <router-link :to="'/shard/' + tx.shardID">
                         {{ tx.shardID }}
@@ -349,10 +331,7 @@
                   </div>
                 </div>
                 <div class="show-more-container">
-                  <router-link
-                    to="/txs"
-                    class="show-more-button"
-                  >
+                  <router-link to="/txs" class="show-more-button">
                     Show all
                     <b>{{ globalData.txCount | number }}</b> transactions
                   </router-link>
@@ -478,10 +457,7 @@
                   </div>
                 </div>
                 <div class="show-more-container">
-                  <router-link
-                    to="/staking-txs"
-                    class="show-more-button"
-                  >
+                  <router-link to="/staking-txs" class="show-more-button">
                     Show all
                     <b>{{ globalData.stakingTxCount | number }}</b> staking
                     transactions
@@ -498,10 +474,7 @@
             </div>
           </div>
 
-          <div
-            v-else
-            class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
-          >
+          <div v-else class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="explorer-card latest-block-card">
               <header>
                 <TransactionTableTabs
@@ -549,11 +522,7 @@
                       Token Amount
                     </div>
                   </div>
-                  <div
-                    v-for="tx in Hrc20Txs"
-                    :key="tx.tx.id"
-                    class="tr"
-                  >
+                  <div v-for="tx in Hrc20Txs" :key="tx.tx.id" class="tr">
                     <div class="td">
                       <router-link :to="'/shard/' + tx.tx.shardID">
                         {{ tx.tx.shardID }}
@@ -578,21 +547,15 @@
                       <Address :bech32="tx.tx.to" />
                     </div>
                     <div class="td">
-                      {{ Number(tx.tx.timestamp)*1000 | age }}
+                      {{ (Number(tx.tx.timestamp) * 1000) | age }}
                     </div>
-                    <div
-                      class="td"
-                      :title="tx.hrc20tx.amount"
-                    >
+                    <div class="td" :title="tx.hrc20tx.amount">
                       {{ hrc20Balance(tx.tx.to, tx.hrc20tx.amount) }}
                     </div>
                   </div>
                 </div>
                 <div class="show-more-container">
-                  <router-link
-                    to="/hrc20-txs"
-                    class="show-more-button"
-                  >
+                  <router-link to="/hrc20-txs" class="show-more-button">
                     Show all
                     <b>{{ globalData.hrc20TxsCount | number }}</b> transactions
                   </router-link>
@@ -609,10 +572,7 @@
           </div>
         </div>
       </div>
-      <div
-        v-else
-        class="container"
-      >
+      <div v-else class="container">
         <loading-message />
       </div>
     </div>

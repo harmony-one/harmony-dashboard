@@ -5,15 +5,18 @@
   "author": "liuzhenglaichn@gmail.com",
   "private": true,
   "scripts": {
-    "dev": "vue-cli-service serve",
+    "dev": "DevMode=true vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "elint": "eslint --ext .js,.vue src test",
+    "elint": "eslint --ext .js,.vue src",
     "elint-autofix": "eslint --ext .js,.vue src --fix",
     "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",
     "format": "prettier --write './*.js'",
-    "start": "http-server -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE",
-    "serve": "http-server -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE > http.log 2>&1 &"
+    "start": "http-server -g -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE",
+    "serve": "http-server -g -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE > http.log 2>&1 &"
+  },
+  "gitHooks": {
+    "pre-commit": "npm run elint"
   },
   "engines": {
     "node": "10.x.x"
@@ -25,7 +28,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.26",
     "@fortawesome/free-solid-svg-icons": "^5.12.0",
     "@fortawesome/vue-fontawesome": "0.1.9",
-    "@harmony-js/core": "^0.1.36",
+    "@harmony-js/core": "0.1.36",
     "animate.css": "^3.6.1",
     "axios": "^0.19.1",
     "core-js": "^3.4.4",
@@ -51,6 +54,7 @@
     "@vue/cli-service": "^4.1.0",
     "@vue/eslint-config-prettier": "^5.0.0",
     "babel-eslint": "^10.1.0",
+    "compression-webpack-plugin": "^4.0.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-loader": "^3.0.3",
