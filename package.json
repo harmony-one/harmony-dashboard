@@ -8,12 +8,15 @@
     "dev": "DevMode=true vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "elint": "eslint --ext .js,.vue src test",
+    "elint": "eslint --ext .js,.vue src",
     "elint-autofix": "eslint --ext .js,.vue src --fix",
     "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",
     "format": "prettier --write './*.js'",
     "start": "http-server -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE",
     "serve": "http-server -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE > http.log 2>&1 &"
+  },
+  "gitHooks": {
+    "pre-commit": "npm run elint"
   },
   "engines": {
     "node": "10.x.x"
