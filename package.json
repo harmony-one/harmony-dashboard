@@ -5,9 +5,9 @@
   "author": "liuzhenglaichn@gmail.com",
   "private": true,
   "scripts": {
-    "dev": "DevMode=true vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
+    "dev": "DevMode=true npx vue-cli-service serve",
+    "build": "npx vue-cli-service build",
+    "lint": "npx vue-cli-service lint",
     "elint": "eslint --ext .js,.vue src",
     "elint-autofix": "eslint --ext .js,.vue src --fix",
     "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",
