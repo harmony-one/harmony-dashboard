@@ -2,22 +2,15 @@
   <div class="transactions-table explorer-card">
     <header>
       <select
-        v-if="type=='select'"
+        v-if="type == 'select'"
         class="optionItem"
-        @change="event=>selectTab(event.target.selectedIndex)"
+        @change="event => selectTab(event.target.selectedIndex)"
       >
-        <option
-          v-for="(name, index) in tabNames"
-          :key="index"
-          :value="name"
-        >
+        <option v-for="(name, index) in tabNames" :key="index" :value="name">
           {{ name }}
         </option>
       </select>
-      <div
-        v-else
-        class="tabs"
-      >
+      <div v-else class="tabs">
         <span
           v-for="(name, index) in tabNames"
           :key="index"

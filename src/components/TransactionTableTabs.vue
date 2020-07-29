@@ -4,10 +4,7 @@
       :class="{ tabItem: true, active: value == 0 }"
       @click="() => onChange(0)"
     >
-      <span
-        v-if="titlePostfixTx"
-        class="postfix"
-      >{{
+      <span v-if="titlePostfixTx" class="postfix">{{
         titlePostfixTx | number
       }}</span>
       {{ titlePrefix }} Transactions
@@ -16,10 +13,7 @@
       :class="{ tabItem: true, active: value == 1 }"
       @click="() => onChange(1)"
     >
-      <span
-        v-if="titlePostfixStakingTx"
-        class="postfix"
-      >{{
+      <span v-if="titlePostfixStakingTx" class="postfix">{{
         titlePostfixStakingTx | number
       }}</span>
       {{ titlePrefix }} Staking transactions
@@ -28,10 +22,7 @@
       :class="{ tabItem: true, active: value == 2 }"
       @click="() => onChange(2)"
     >
-      <span
-        v-if="titlePostfixHrc20Tx"
-        class="postfix"
-      >{{
+      <span v-if="titlePostfixHrc20Tx" class="postfix">{{
         titlePostfixHrc20Tx | number
       }}</span>
       {{ titlePrefix }} HRC20 Transactions

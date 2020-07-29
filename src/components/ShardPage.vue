@@ -16,13 +16,8 @@
 <template>
   <div class="shard-page explorer-page page">
     <div class="shard-body explorer-body">
-      <div
-        v-if="shard"
-        class="container"
-      >
-        <h1 class="page-title">
-          Shard {{ $route.params.id }}
-        </h1>
+      <div v-if="shard" class="container">
+        <h1 class="page-title">Shard {{ $route.params.id }}</h1>
         <div class="explorer-card status-card">
           <div class="row">
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
@@ -122,18 +117,11 @@
                 <div class="th text-right">
                   Age
                 </div>
-                <div
-                  v-if="showTx"
-                  class="th text-right"
-                >
+                <div v-if="showTx" class="th text-right">
                   Transactions
                 </div>
               </div>
-              <div
-                v-for="block in shard.blocks"
-                :key="block.id"
-                class="tr"
-              >
+              <div v-for="block in shard.blocks" :key="block.id" class="tr">
                 <div class="td">
                   <router-link :to="'/shard/' + block.shardID">
                     {{ block.shardID }}
@@ -155,10 +143,7 @@
                 <div class="td text-right">
                   {{ block.timestamp | age }}
                 </div>
-                <div
-                  v-if="showTx"
-                  class="td text-right"
-                >
+                <div v-if="showTx" class="td text-right">
                   {{ block.txCount }}
                 </div>
               </div>
@@ -213,11 +198,7 @@
                   Txn Fee
                 </div>
               </div>
-              <div
-                v-for="tx in shard.txs"
-                :key="tx.id"
-                class="tr"
-              >
+              <div v-for="tx in shard.txs" :key="tx.id" class="tr">
                 <div class="td">
                   <router-link :to="'/shard/' + tx.shardID">
                     {{ tx.shardID }}
@@ -274,7 +255,7 @@
                   <th>Balance</th>
                 </tr>
                 <tr
-                  v-for="(validator,index) in validators"
+                  v-for="(validator, index) in validators"
                   :key="validator.address"
                   class="wfont"
                 >
@@ -282,13 +263,10 @@
                     {{ index }}
                   </td>
                   <td>
-                    <Address
-                      :bech32="validator.address"
-                      :show-raw="true"
-                    />
+                    <Address :bech32="validator.address" :show-raw="true" />
                   </td>
-                  <td>   
-                    {{ (validator.balance/1e18).toFixed(2) }}
+                  <td>
+                    {{ (validator.balance / 1e18).toFixed(2) }}
                   </td>
                 </tr>
               </table>
@@ -296,10 +274,7 @@
           </div>
         </div>
       </div>
-      <div
-        v-else
-        class="container"
-      >
+      <div v-else class="container">
         <loading-message />
       </div>
     </div>

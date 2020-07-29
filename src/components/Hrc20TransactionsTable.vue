@@ -29,7 +29,7 @@
               <font-awesome-icon icon="chevron-left" />
             </button>
             <span class="pagination-nums">
-              {{ pageIndex + 1 }} / {{ pageCount?pageCount:1 }}
+              {{ pageIndex + 1 }} / {{ pageCount ? pageCount : 1 }}
             </span>
             <button
               class="btn btn-light btn-icon-only"
@@ -65,14 +65,9 @@
             <th>Token</th>
             <th>Token Amount</th>
           </tr>
-          <tr
-            v-for="tx in Hrc20TxsPage"
-            :key="tx.tx.hash"
-          >
+          <tr v-for="tx in Hrc20TxsPage" :key="tx.tx.hash">
             <td>
-              <router-link
-                :to="'/shard/' + tx.tx.shardID"
-              >
+              <router-link :to="'/shard/' + tx.tx.shardID">
                 {{ tx.tx.shardID }}
               </router-link>
             </td>

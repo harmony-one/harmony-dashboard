@@ -29,10 +29,7 @@
             <div class="card-value currency">
               {{ stats.price | currency }}
             </div>
-            <div
-              class="card-value"
-              :style="stylePriceChanged"
-            >
+            <div class="card-value" :style="stylePriceChanged">
               {{ stats.priceChange1d + '%' }}
             </div>
           </div>

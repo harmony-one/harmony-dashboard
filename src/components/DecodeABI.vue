@@ -2,7 +2,9 @@
   <div>
     <div v-if="methodInfo.abiItem && methodInfo.abiItem.name == 'transfer'">
       transfer
-      <b :title="methodInfo.params[1]">{{ (methodInfo.params[1]/(10**contractInfo.decimals)).toFixed(4) }}</b>
+      <b :title="methodInfo.params[1]">{{
+        (methodInfo.params[1] / 10 ** contractInfo.decimals).toFixed(4)
+      }}</b>
       to
       <router-link :to="'/address/' + methodInfo.params[0]">
         {{ methodInfo.params[0] }}

@@ -1,9 +1,8 @@
-import {SDK_NODE} from './globalConfig.js'
+import { SDK_NODE } from './globalConfig.js';
 
 const { Harmony } = require('@harmony-js/core');
 const { ChainID, ChainType } = require('@harmony-js/utils');
 const stakingAPIs = require('./stakingAPIs.json');
-
 
 const shardID = 0;
 const hmySDK = new Harmony(

@@ -3,10 +3,7 @@
 </style>
 
 <template>
-  <div
-    class="metrics-summary"
-    style="{ background: red }"
-  >
+  <div class="metrics-summary" style="{ background: red }">
     f
     <div class="summary-title">
       Global

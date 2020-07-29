@@ -65,10 +65,7 @@
             <th>Value</th>
             <th>Txn Fee</th>
           </tr>
-          <tr
-            v-for="tx in stakingTxs"
-            :key="tx.hash"
-          >
+          <tr v-for="tx in stakingTxs" :key="tx.hash">
             <td>
               {{ tx.shardID }}
             </td>

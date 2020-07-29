@@ -69,10 +69,7 @@
             <th>Value</th>
             <th>Txn Fee</th>
           </tr>
-          <tr
-            v-for="tx in txs"
-            :key="tx.hash"
-          >
+          <tr v-for="tx in txs" :key="tx.hash">
             <td v-if="!withShards">
               {{ tx.shardID }}
             </td>
