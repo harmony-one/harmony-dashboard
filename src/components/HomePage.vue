@@ -189,12 +189,6 @@
                   </tr>
                   <tr>
                     <td class="td-title">
-                      Transactions
-                    </td>
-                    <td>{{ block.txCount }}</td>
-                  </tr>
-                  <tr>
-                    <td class="td-title">
                       Validators
                     </td>
                     <td>
