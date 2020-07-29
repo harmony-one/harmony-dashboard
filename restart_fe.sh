@@ -5,7 +5,7 @@ PID=( $(pgrep npm) )
 # project specific explorer environment
 . ~/.explorer.env
 
-FEDIR=$HOME/projects/harmony-dashboard
+FEDIR=$HOME/harmony-dashboard
 
 FOUND=false
 for pid in ${PID[@]}; do
