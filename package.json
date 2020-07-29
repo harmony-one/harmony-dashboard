@@ -12,8 +12,8 @@
     "elint-autofix": "eslint --ext .js,.vue src --fix",
     "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",
     "format": "prettier --write './*.js'",
-    "start": "http-server -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE",
-    "serve": "http-server -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE > http.log 2>&1 &"
+    "start": "http-server -g -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE",
+    "serve": "http-server -g -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE > http.log 2>&1 &"
   },
   "gitHooks": {
     "pre-commit": "npm run elint"
@@ -54,6 +54,7 @@
     "@vue/cli-service": "^4.1.0",
     "@vue/eslint-config-prettier": "^5.0.0",
     "babel-eslint": "^10.1.0",
+    "compression-webpack-plugin": "^4.0.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-loader": "^3.0.3",
