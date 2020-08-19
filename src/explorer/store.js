@@ -60,7 +60,7 @@ function fetchHrc20List(url) {
         ({...o,
           address: o.contractAddress,
           decimals: +o.decimals,
-          symbol: o.name,
+          symbol: o.symbol || o.name,
           description: {en: ''},
           website: ''
         })
