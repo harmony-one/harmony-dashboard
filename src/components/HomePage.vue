@@ -677,6 +677,10 @@ export default {
       return this.$store.data.Hrc20Address[id];
     },
     hrc20Balance(id, amount) {
+      if (!this.hrc20info(id)) {
+        return amount
+      }
+
       return (
         (amount / 10 ** this.hrc20info(id).decimals).toFixed(4) +
         ' ' +

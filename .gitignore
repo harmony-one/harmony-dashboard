@@ -22,3 +22,4 @@ fe.log
 *.njsproj
 *.sln
 *.sw?
+*.iml

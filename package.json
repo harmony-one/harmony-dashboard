@@ -5,21 +5,17 @@
   "author": "liuzhenglaichn@gmail.com",
   "private": true,
   "scripts": {
-    "dev": "DevMode=true npx vue-cli-service serve",
+    "dev": "export SSL_KEY_FILE=/etc/letsencrypt/live/localhost/privkey.pem && export SSL_CERT_FILE=/etc/letsencrypt/live/localhost/fullchain.pem &&  DevMode=true npx vue-cli-service serve",
     "build": "npx vue-cli-service build",
     "lint": "npx vue-cli-service lint",
     "elint": "eslint --ext .js,.vue src",
     "elint-autofix": "eslint --ext .js,.vue src --fix",
     "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",
     "format": "prettier --write './*.js'",
-    "start": "http-server -g -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE",
+    "start": "export SSL_KEY_FILE=/etc/letsencrypt/live/localhost/privkey.pem && export SSL_CERT_FILE=/etc/letsencrypt/live/localhost/fullchain.pem && http-server -g -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE",
     "serve": "http-server -g -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE > http.log 2>&1 &"
   },
   "gitHooks": {
-    "pre-commit": "npm run elint"
-  },
-  "engines": {
-    "node": "10.x.x"
   },
   "dependencies": {
     "@fortawesome/fontawesome": "^1.1.8",

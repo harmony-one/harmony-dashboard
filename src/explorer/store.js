@@ -5,12 +5,14 @@ import {
   BASE_HRC20URL,
   HRC20_HOLDERURL,
   ONE_HOLDERURL,
+  EXPLORER_BACKEND_URL
 } from './globalConfig.js';
 import service from './service';
 
 window.hmy = hmy;
 const HRC20_ABI = require('./HRC20_ABI.json');
-const HRC20_LIST = require('./HRC20List.json');
+const HRC20_LIST = []
+
 const Limit = 10;
 function postprocessBlocks(items) {
   return items
@@ -51,10 +53,21 @@ function getTotalBlockLatency(latencies) {
   );
 }
 
-const HRC20LIST_URL = `${BASE_HRC20URL}/list.json`;
+const HRC20LIST_URL = `https://${EXPLORER_BACKEND_URL}/hrc20-token-list`;
 function fetchHrc20List(url) {
   return axios.get(url).then(rez => {
-    return rez.data;
+    const tokenList =  rez.data.map(o =>
+        ({...o,
+          address: o.contractAddress,
+          decimals: +o.decimals,
+          symbol: o.name,
+          description: {en: ''},
+          website: ''
+        })
+    );
+    console.log({tokenList})
+
+    return tokenList
   });
 }
 
