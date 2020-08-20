@@ -175,10 +175,10 @@
             <section>
               <table class="explorer-table">
                 <tr v-for="balanceOf in Hrc20Balance" :key="balanceOf.id">
-                  <td class="td-title">
+                  <td class="td-title" v-if="balanceOf.balance !==0">
                     <Address :bech32="balanceOf.id" />
                   </td>
-                  <td>
+                  <td v-if="balanceOf.balance !==0">
                     {{ balanceOf.balance }}
                   </td>
                 </tr>
@@ -420,6 +420,7 @@ export default {
     async hrc20BalanceUpdate() {
       const hmy = this.$store.data.hmy;
       const toHex = hmy.hmySDK.crypto.fromBech32;
+
       for (let hrc20 in this.Hrc20Address) {
         //if (this.Hrc20Balance[hrc20]) continue;
         const c = hmy.contract(this.$store.data.HRC20_ABI, toHex(hrc20));
