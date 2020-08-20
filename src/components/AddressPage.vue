@@ -175,10 +175,10 @@
             <section>
               <table class="explorer-table">
                 <tr v-for="balanceOf in Hrc20Balance" :key="balanceOf.id">
-                  <td class="td-title" v-if="balanceOf.balance !==0">
+                  <td class="td-title"> <!--v-if="balanceOf.balance !==0"-->
                     <Address :bech32="balanceOf.id" />
                   </td>
-                  <td v-if="balanceOf.balance !==0">
+                  <td>
                     {{ balanceOf.balance }}
                   </td>
                 </tr>
