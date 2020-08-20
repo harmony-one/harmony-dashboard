@@ -1,5 +1,25 @@
 <style scoped lang="less">
 @import '../less/common.less';
+
+.avatar-wrapper {
+  margin-left: 1em;
+}
+.avatar {
+  border-radius: 100%;
+  display: table-cell;
+  background-color: #47e0cd;
+  color: white;
+  height: 25px;
+  width: 25px;
+  font-weight: bold;
+  text-transform: capitalize;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 15px;
+  padding: 0;
+  margin: 0;
+}
+
 .hrclogo {
   vertical-align: text-bottom;
   border-radius: 0.25rem;
@@ -29,7 +49,12 @@
           <header>
             <h1 v-if="isHrc20(address.id)">
               HRC20 Token:
+              <span v-if="Hrc20Info.logo">
               <img :src="Hrc20Info.logo" class="hrclogo" />
+                </span>
+              <span v-if="!Hrc20Info.logo" class="avatar-wrapper">
+                <span class="avatar" v-bind:style="bgStyle()">{{Hrc20Info.name[0]}}</span>
+              </span>
               <a target="_blank" :href="Hrc20Info.website">
                 {{ Hrc20Info.name + '(' + Hrc20Info.symbol + ')' }}
               </a>
@@ -296,6 +321,18 @@ export default {
     this.getAddress();
   },
   methods: {
+    onError() {
+      this.Hrc20Info.logo = null
+    },
+    bgStyle() {
+      if (!this.Hrc20Info.name) {
+        return {}
+      }
+      const palette = ["#00ffff","#24dbff","#49b6ff","#6d92ff","#926dff","#b649ff","#db24ff","#ff00ff"]
+      const c = this.Hrc20Info.name.charCodeAt(0) % palette.length
+      const backgroundColor = palette[c]
+      return {backgroundColor: backgroundColor}
+    },
     changeTab(value) {
       let txType = 'regular';
       if (value == 1) txType = 'staking';

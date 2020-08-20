@@ -15,9 +15,11 @@
     "start": "export SSL_KEY_FILE=/etc/letsencrypt/live/localhost/privkey.pem && export SSL_CERT_FILE=/etc/letsencrypt/live/localhost/fullchain.pem && http-server -g -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE",
     "serve": "http-server -g -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE > http.log 2>&1 &"
   },
-  "gitHooks": {
-  },
+  "gitHooks": {},
   "dependencies": {
+    "@dicebear/avatars": "^4.2.5",
+    "@dicebear/avatars-initials-sprites": "^4.2.5",
+    "@dicebear/avatars-jdenticon-sprites": "^4.2.5",
     "@fortawesome/fontawesome": "^1.1.8",
     "@fortawesome/fontawesome-free-brands": "^5.0.13",
     "@fortawesome/fontawesome-free-solid": "^5.0.13",
@@ -31,6 +33,7 @@
     "flexboxgrid": "^6.3.1",
     "highcharts": "^8.0.0",
     "highcharts-vue": "^1.2.0",
+    "jdenticon": "^3.0.1",
     "moment": "^2.23.0",
     "moment-timezone": "^0.5.27",
     "numeral": "^2.0.6",
