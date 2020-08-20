@@ -102,10 +102,10 @@
 </template>
 
 <script>
-import store from '../explorer/store';
-import service from '../explorer/service';
-import LoadingMessage from './LoadingMessage';
-import moment from 'moment';
+import store from '../explorer/store'
+import service from '../explorer/service'
+import LoadingMessage from './LoadingMessage'
+import moment from 'moment'
 
 export default {
   name: 'TransactionsPage',
@@ -119,52 +119,52 @@ export default {
       cursor: moment(),
       maxDate: moment().toString(),
       pageSize: 50,
-    };
+    }
   },
   watch: {
     $route() {
-      let queryCursor = Number(this.$route.query.from);
-      queryCursor = isNaN(queryCursor) ? undefined : queryCursor;
+      let queryCursor = Number(this.$route.query.from)
+      queryCursor = isNaN(queryCursor) ? undefined : queryCursor
 
-      const cursor = moment(queryCursor);
+      const cursor = moment(queryCursor)
 
       if (cursor.diff(this.cursor)) {
-        this.cursor = cursor;
-        this.getTransactions();
+        this.cursor = cursor
+        this.getTransactions()
       }
     },
     cursor() {
-      const unixCursor = moment(this.cursor).unix() * 1000;
+      const unixCursor = moment(this.cursor).unix() * 1000
 
       this.$router.replace({
         name: 'TransactionsPage',
         query: { from: unixCursor },
-      });
+      })
 
-      this.getTransactions();
+      this.getTransactions()
     },
   },
   mounted() {
-    let queryCursor = Number(this.$route.query.from);
-    queryCursor = isNaN(queryCursor) ? undefined : queryCursor;
+    let queryCursor = Number(this.$route.query.from)
+    queryCursor = isNaN(queryCursor) ? undefined : queryCursor
 
-    this.cursor = moment(queryCursor);
+    this.cursor = moment(queryCursor)
 
-    this.getTransactions();
+    this.getTransactions()
   },
   methods: {
     next() {
-      this.cursor = moment(this.txs[this.txs.length - 1].timestamp);
+      this.cursor = moment(this.txs[this.txs.length - 1].timestamp)
     },
     getTransactions() {
-      this.txs = [];
+      this.txs = []
 
-      const cursor = moment(this.cursor).unix() * 1000;
+      const cursor = moment(this.cursor).unix() * 1000
 
       service.getTransactions(cursor, this.pageSize).then(txs => {
-        this.txs = txs;
-      });
+        this.txs = txs
+      })
     },
   },
-};
+}
 </script>

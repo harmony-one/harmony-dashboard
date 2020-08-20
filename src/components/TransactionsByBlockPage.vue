@@ -51,11 +51,11 @@
 </template>
 
 <script>
-import service from '../explorer/service';
-import LoadingMessage from './LoadingMessage';
-import TransactionsTable from './TransactionsTable';
+import service from '../explorer/service'
+import LoadingMessage from './LoadingMessage'
+import TransactionsTable from './TransactionsTable'
 
-const isObject = value => typeof value === 'object';
+const isObject = value => typeof value === 'object'
 
 export default {
   name: 'TransactionsByBlockPage',
@@ -67,24 +67,24 @@ export default {
     return {
       loading: true,
       block: null,
-    };
+    }
   },
   watch: {
     $route() {
-      this.getBlock();
+      this.getBlock()
     },
   },
   mounted() {
-    this.getBlock();
+    this.getBlock()
   },
   methods: {
     getBlock() {
-      this.loading = true;
+      this.loading = true
 
       service
         .getBlock(this.$route.params.blockId)
         .then(block => {
-          this.block = block;
+          this.block = block
 
           this.block.txs = this.block.txs
             .map(tx => ({
@@ -96,10 +96,10 @@ export default {
             }))
             .sort((a, b) =>
               Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
-            );
+            )
         })
-        .finally(() => (this.loading = false));
+        .finally(() => (this.loading = false))
     },
   },
-};
+}
 </script>

@@ -1,13 +1,12 @@
 <template>
   <router-link :to="'/address/' + bech32">
     <span v-if="isHrc20">
-
       <span v-if="hrc20Info.logo">
-      <img :src="hrc20Info.logo" @error="onError" class="hrclogo" />
-    </span>
-    <span v-if="!hrc20Info.logo">
-      <span class="avatar" v-bind:style="bgStyle()">{{hrc20Info.name[0]}}</span>
-    </span>
+        <img :src="hrc20Info.logo" class="hrclogo" @error="onError" />
+      </span>
+      <span v-if="!hrc20Info.logo">
+        <span class="avatar" :style="bgStyle()">{{ hrc20Info.name[0] }}</span>
+      </span>
       {{ hrc20Info.name }}
       <span v-if="showRaw"> ({{ bech32 || '-' }})</span>
     </span>
@@ -22,19 +21,18 @@
 </template>
 
 <script>
-
 export default {
   name: 'Address',
   props: ['bech32', 'showRaw'],
   data() {
-    return {};
+    return {}
   },
   computed: {
     isHrc20() {
-      return this.hrc20Info != undefined;
+      return this.hrc20Info != undefined
     },
     hrc20Info() {
-      return this.$store.data.Hrc20Address[this.bech32];
+      return this.$store.data.Hrc20Address[this.bech32]
     },
   },
   methods: {
@@ -45,13 +43,22 @@ export default {
       if (!this.hrc20Info.name) {
         return {}
       }
-      const palette = ["#00ffff","#24dbff","#49b6ff","#6d92ff","#926dff","#b649ff","#db24ff","#ff00ff"]
+      const palette = [
+        '#00ffff',
+        '#24dbff',
+        '#49b6ff',
+        '#6d92ff',
+        '#926dff',
+        '#b649ff',
+        '#db24ff',
+        '#ff00ff',
+      ]
       const c = this.hrc20Info.name.charCodeAt(0) % palette.length
       const backgroundColor = palette[c]
-      return {backgroundColor: backgroundColor}
-    }
-  }
-};
+      return { backgroundColor: backgroundColor }
+    },
+  },
+}
 </script>
 
 <style scoped>
@@ -77,5 +84,4 @@ export default {
   padding: 0;
   margin: 0;
 }
-
 </style>

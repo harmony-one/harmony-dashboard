@@ -50,10 +50,12 @@
             <h1 v-if="isHrc20(address.id)">
               HRC20 Token:
               <span v-if="Hrc20Info.logo">
-              <img :src="Hrc20Info.logo" class="hrclogo" />
-                </span>
+                <img :src="Hrc20Info.logo" class="hrclogo" />
+              </span>
               <span v-if="!Hrc20Info.logo" class="avatar-wrapper">
-                <span class="avatar" v-bind:style="bgStyle()">{{Hrc20Info.name[0]}}</span>
+                <span class="avatar" :style="bgStyle()">{{
+                  Hrc20Info.name[0]
+                }}</span>
               </span>
               <a target="_blank" :href="Hrc20Info.website">
                 {{ Hrc20Info.name + '(' + Hrc20Info.symbol + ')' }}
@@ -175,7 +177,8 @@
             <section>
               <table class="explorer-table">
                 <tr v-for="balanceOf in Hrc20Balance" :key="balanceOf.id">
-                  <td class="td-title"> <!--v-if="balanceOf.balance !==0"-->
+                  <td class="td-title">
+                    <!--v-if="balanceOf.balance !==0"-->
                     <Address :bech32="balanceOf.id" />
                   </td>
                   <td>
@@ -238,18 +241,18 @@
 </template>
 
 <script>
-import service from '../explorer/service';
-import LoadingMessage from './LoadingMessage';
-import TransactionsTable from './TransactionsTable';
-import StakingTransactionsTable from './StakingTransactionsTable';
-import Hrc20TransactionsTable from './Hrc20TransactionsTable';
-import TransactionTableTabs from './TransactionTableTabs';
-import HrcTokenTabs from './HrcTokenTabs';
-import TabPane from './TabPane';
-import Address from './Address';
+import service from '../explorer/service'
+import LoadingMessage from './LoadingMessage'
+import TransactionsTable from './TransactionsTable'
+import StakingTransactionsTable from './StakingTransactionsTable'
+import Hrc20TransactionsTable from './Hrc20TransactionsTable'
+import TransactionTableTabs from './TransactionTableTabs'
+import HrcTokenTabs from './HrcTokenTabs'
+import TabPane from './TabPane'
+import Address from './Address'
 
-const status = { staking: 1, regular: 0, hrc20: 2 };
-const defaultStatus = 'regular';
+const status = { staking: 1, regular: 0, hrc20: 2 }
+const defaultStatus = 'regular'
 export default {
   name: 'AddressPage',
   components: {
@@ -277,48 +280,48 @@ export default {
       stakingTxCount: 0,
       Hrc20Balance: {},
       $store: this.$store.data,
-    };
+    }
   },
   computed: {
     showWhich() {
-      return this.$route.query.txType || defaultStatus; // 'staking','regular','hrc20';
+      return this.$route.query.txType || defaultStatus // 'staking','regular','hrc20';
     },
     page() {
-      return this.$route.query.page - 1 || 0;
+      return this.$route.query.page - 1 || 0
     },
     tabValue() {
       return status[this.$route.query.txType] != undefined
         ? status[this.$route.query.txType]
-        : status[defaultStatus];
+        : status[defaultStatus]
     },
     Hrc20Address() {
-      return this.$store.data.Hrc20Address;
+      return this.$store.data.Hrc20Address
     },
     Hrc20Info() {
-      return this.Hrc20Address[this.address.id];
+      return this.Hrc20Address[this.address.id]
     },
     showPanel() {
       return (
         !this.loading ||
         this.$route.params.address === (this.address && this.address.id)
-      );
+      )
     },
   },
   watch: {
     Hrc20Address() {
-      if (this.address) this.hrc20BalanceUpdate();
+      if (this.address) this.hrc20BalanceUpdate()
     },
     $route() {
       if (this.$route.params.address !== (this.address && this.address.id)) {
-        this.getAddress();
+        this.getAddress()
       }
     },
     page() {
-      this.getAddress();
+      this.getAddress()
     },
   },
   mounted() {
-    this.getAddress();
+    this.getAddress()
   },
   methods: {
     onError() {
@@ -328,19 +331,28 @@ export default {
       if (!this.Hrc20Info.name) {
         return {}
       }
-      const palette = ["#00ffff","#24dbff","#49b6ff","#6d92ff","#926dff","#b649ff","#db24ff","#ff00ff"]
+      const palette = [
+        '#00ffff',
+        '#24dbff',
+        '#49b6ff',
+        '#6d92ff',
+        '#926dff',
+        '#b649ff',
+        '#db24ff',
+        '#ff00ff',
+      ]
       const c = this.Hrc20Info.name.charCodeAt(0) % palette.length
       const backgroundColor = palette[c]
-      return {backgroundColor: backgroundColor}
+      return { backgroundColor: backgroundColor }
     },
     changeTab(value) {
-      let txType = 'regular';
-      if (value == 1) txType = 'staking';
-      if (value == 2) txType = 'hrc20';
+      let txType = 'regular'
+      if (value == 1) txType = 'staking'
+      if (value == 2) txType = 'hrc20'
       this.$router.replace({
         name: 'AddressPage',
         query: { txType },
-      });
+      })
     },
     changePage(value, hrc20QueryID) {
       this.$router.replace({
@@ -350,15 +362,15 @@ export default {
           txType: this.$route.query.txType,
           hrc20QueryID,
         },
-      });
+      })
     },
     getAddress() {
-      this.loading = true;
-      const txs = {};
-      const stakingTxs = {};
+      this.loading = true
+      const txs = {}
+      const stakingTxs = {}
 
-      const address = this.$route.params.address;
-      const sortid = this.$route.params.hrc20QueryID;
+      const address = this.$route.params.address
+      const sortid = this.$route.params.hrc20QueryID
 
       service
         .getHrc20Txs({
@@ -368,9 +380,9 @@ export default {
           sortid,
         })
         .then(result => {
-          this.hrc20Txs = result.txs;
-          this.hrc20TxsCount = result.total;
-        });
+          this.hrc20Txs = result.txs
+          this.hrc20TxsCount = result.total
+        })
 
       service
         .getAddress({ id: address, pageIndex: this.page, pageSize: 20 })
@@ -381,8 +393,8 @@ export default {
                 txs[tx.hash] = {
                   ...tx,
                   shardID: idx,
-                };
-              });
+                }
+              })
             }
             if (data.stakingTxs) {
               data.stakingTxs.forEach(tx => {
@@ -392,42 +404,42 @@ export default {
                   delegator: tx.msg.delegatorAddress,
                   validator: tx.msg.validatorAddress,
                   value: tx.msg.amount,
-                };
-              });
+                }
+              })
             }
-          });
+          })
 
-          this.txCount = address.txCount;
-          this.stakingTxCount = address.stakingTxCount;
+          this.txCount = address.txCount
+          this.stakingTxCount = address.stakingTxCount
 
-          this.address = address;
-          this.hrc20BalanceUpdate();
+          this.address = address
+          this.hrc20BalanceUpdate()
         })
         .finally(() => {
           this.allTxs = Object.values(txs).sort((a, b) =>
             Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
-          );
+          )
           this.allStakingTxs = Object.values(stakingTxs).sort((a, b) =>
             Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
-          );
+          )
 
-          this.loading = false;
-        });
+          this.loading = false
+        })
     },
     isHrc20(address) {
-      return this.Hrc20Address[address] != undefined;
+      return this.Hrc20Address[address] != undefined
     },
     async hrc20BalanceUpdate() {
-      const hmy = this.$store.data.hmy;
-      const toHex = hmy.hmySDK.crypto.fromBech32;
+      const hmy = this.$store.data.hmy
+      const toHex = hmy.hmySDK.crypto.fromBech32
 
       for (let hrc20 in this.Hrc20Address) {
         //if (this.Hrc20Balance[hrc20]) continue;
-        const c = hmy.contract(this.$store.data.HRC20_ABI, toHex(hrc20));
-        const hrc20Info = this.Hrc20Address[hrc20];
-        let balance;
+        const c = hmy.contract(this.$store.data.HRC20_ABI, toHex(hrc20))
+        const hrc20Info = this.Hrc20Address[hrc20]
+        let balance
         try {
-          balance = await c.methods.balanceOf(toHex(this.address.id)).call();
+          balance = await c.methods.balanceOf(toHex(this.address.id)).call()
         } catch (e) {
           // ...
         }
@@ -437,24 +449,24 @@ export default {
             balance == undefined
               ? 'error'
               : balance.toString() / 10 ** hrc20Info.decimals,
-        });
+        })
       }
     },
     showBalance() {
-      (this.allBalance = !this.allBalance),
+      ;(this.allBalance = !this.allBalance),
         (this.allTxsCount = false),
-        (this.allStakingCount = false);
+        (this.allStakingCount = false)
     },
     showTxs() {
-      (this.allBalance = false),
+      ;(this.allBalance = false),
         (this.allTxsCount = !this.allTxsCount),
-        (this.allStakingCount = false);
+        (this.allStakingCount = false)
     },
     showStakingTxs() {
-      (this.allBalance = false),
+      ;(this.allBalance = false),
         (this.allTxsCount = false),
-        (this.allStakingCount = !this.allStakingCount);
+        (this.allStakingCount = !this.allStakingCount)
     },
   },
-};
+}
 </script>

@@ -317,10 +317,10 @@ body,
 </template>
 
 <script>
-import 'animate.css/animate.css';
-import 'flexboxgrid/dist/flexboxgrid.min.css';
-import SiteFooter from './components/SiteFooter';
-import SiteHeader from './components/SiteHeader';
+import 'animate.css/animate.css'
+import 'flexboxgrid/dist/flexboxgrid.min.css'
+import SiteFooter from './components/SiteFooter'
+import SiteHeader from './components/SiteHeader'
 
 export default {
   name: 'App',
@@ -328,5 +328,5 @@ export default {
     SiteFooter,
     SiteHeader,
   },
-};
+}
 </script>

@@ -282,9 +282,9 @@
 </template>
 
 <script>
-import store from '../explorer/store';
-import LoadingMessage from './LoadingMessage';
-import Address from './Address';
+import store from '../explorer/store'
+import LoadingMessage from './LoadingMessage'
+import Address from './Address'
 
 export default {
   name: 'ShardPage',
@@ -301,34 +301,34 @@ export default {
       now: Date.now(),
       showTx: true,
       holderTab: null,
-    };
+    }
   },
   computed: {
     shard() {
-      return this.globalData.shards[this.$route.params.id];
+      return this.globalData.shards[this.$route.params.id]
     },
     validators() {
       if (this.$route.params.id < this.$store.data.shardsValidators.length)
-        return this.$store.data.shardsValidators[this.$route.params.id];
-      return [];
+        return this.$store.data.shardsValidators[this.$route.params.id]
+      return []
     },
   },
   watch: {
     shard() {
-      this.resetTimer();
+      this.resetTimer()
     },
   },
   mounted() {
-    this.resetTimer();
+    this.resetTimer()
   },
   methods: {
     resetTimer() {
-      clearInterval(this.timer);
-      this.now = Date.now();
+      clearInterval(this.timer)
+      this.now = Date.now()
       this.timer = setInterval(() => {
-        this.now = Date.now();
-      }, 1000);
+        this.now = Date.now()
+      }, 1000)
     },
   },
-};
+}
 </script>

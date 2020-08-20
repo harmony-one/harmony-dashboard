@@ -156,24 +156,24 @@ export default {
     return {
       timer: null,
       now: Date.now(),
-    };
+    }
   },
   watch: {
     summary() {
-      this.resetTimer();
+      this.resetTimer()
     },
   },
   mounted() {
-    this.resetTimer();
+    this.resetTimer()
   },
   methods: {
     resetTimer() {
-      clearInterval(this.timer);
-      this.now = Date.now();
+      clearInterval(this.timer)
+      this.now = Date.now()
       this.timer = setInterval(() => {
-        this.now = Date.now();
-      }, 1000);
+        this.now = Date.now()
+      }, 1000)
     },
   },
-};
+}
 </script>

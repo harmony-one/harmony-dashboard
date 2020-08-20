@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import numeral from 'numeral';
+import numeral from 'numeral'
 
 numeral.register('locale', 'us', {
   delimiters: {
@@ -102,14 +102,14 @@ numeral.register('locale', 'us', {
     trillion: 'T',
   },
   ordinal: function(number) {
-    return number === 1 ? 'er' : 'ème';
+    return number === 1 ? 'er' : 'ème'
   },
   currency: {
     symbol: '$',
   },
-});
+})
 
-numeral.locale('us');
+numeral.locale('us')
 
 export default {
   name: 'CoinStats',
@@ -128,31 +128,31 @@ export default {
     return {
       timer: null,
       now: Date.now(),
-    };
+    }
   },
   computed: {
     stylePriceChanged() {
       return {
         color: this.stats.priceChange1d > 0 ? 'green' : 'red',
-      };
+      }
     },
   },
   watch: {
     stats() {
-      this.resetTimer();
+      this.resetTimer()
     },
   },
   mounted() {
-    this.resetTimer();
+    this.resetTimer()
   },
   methods: {
     resetTimer() {
-      clearInterval(this.timer);
-      this.now = Date.now();
+      clearInterval(this.timer)
+      this.now = Date.now()
       this.timer = setInterval(() => {
-        this.now = Date.now();
-      }, 1000);
+        this.now = Date.now()
+      }, 1000)
     },
   },
-};
+}
 </script>

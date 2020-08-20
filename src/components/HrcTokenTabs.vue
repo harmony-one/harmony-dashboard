@@ -41,35 +41,35 @@ export default {
     return {
       tabNames: [],
       selected: null,
-    };
+    }
   },
   watch: {
     value() {
-      this.selected = this.value;
+      this.selected = this.value
     },
   },
   mounted() {
-    this.tabNames = this.getTabs();
-    if (!this.value && this.tabNames.length) this.selectTab(0);
+    this.tabNames = this.getTabs()
+    if (!this.value && this.tabNames.length) this.selectTab(0)
     //else this.selected = this.value;
   },
   methods: {
     selectTab(index) {
-      this.selected = this.tabNames[index];
-      if (this.value != undefined) this.$emit('change', this.selected);
+      this.selected = this.tabNames[index]
+      if (this.value != undefined) this.$emit('change', this.selected)
     },
     getTabs() {
       // return this.$children.filter(item => item.$options.name === 'TabPane');
-      const AllTabPanes = this.findComponents('TabPane');
-      return AllTabPanes.map(e => e.$props.name);
+      const AllTabPanes = this.findComponents('TabPane')
+      return AllTabPanes.map(e => e.$props.name)
     },
     findComponents(componentName) {
       return this.$children.filter(
         child => child.$options.name === componentName
-      );
+      )
     },
   },
-};
+}
 </script>
 
 <style scoped lang="less">

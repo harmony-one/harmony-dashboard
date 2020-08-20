@@ -21,16 +21,16 @@ export default {
   name: 'DecodeABI',
   props: ['abi', 'data', 'bech32'],
   data() {
-    return {};
+    return {}
   },
   computed: {
     contractInfo() {
-      return this.$store.data.Hrc20Address[this.bech32];
+      return this.$store.data.Hrc20Address[this.bech32]
     },
     methodInfo() {
-      let c = this.$store.data.hmy.contract(this.abi);
-      return c.decodeInput(this.data);
+      let c = this.$store.data.hmy.contract(this.abi)
+      return c.decodeInput(this.data)
     },
   },
-};
+}
 </script>

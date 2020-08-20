@@ -574,13 +574,13 @@
 </template>
 
 <script>
-import store from '../explorer/store';
-import LoadingMessage from './LoadingMessage';
-import CoinStats from './CoinStats';
-import TransactionTableTabs from './TransactionTableTabs';
-import Address from './Address';
-import CommonTabs from './HrcTokenTabs';
-import TabPane from './TabPane';
+import store from '../explorer/store'
+import LoadingMessage from './LoadingMessage'
+import CoinStats from './CoinStats'
+import TransactionTableTabs from './TransactionTableTabs'
+import Address from './Address'
+import CommonTabs from './HrcTokenTabs'
+import TabPane from './TabPane'
 
 export default {
   name: 'HomePage',
@@ -594,10 +594,10 @@ export default {
   },
   filters: {
     onlyData(fulldata) {
-      return fulldata.slice(0, 10);
+      return fulldata.slice(0, 10)
     },
     onlyTime(fulldata) {
-      return fulldata.slice(11);
+      return fulldata.slice(11)
     },
   },
   data() {
@@ -610,31 +610,31 @@ export default {
       showTx: true,
       coinStats: null,
       tokenHolders: [],
-    };
+    }
   },
   computed: {
     length() {
-      return Math.ceil(this.globalData.blocks.length / this.pageSize);
+      return Math.ceil(this.globalData.blocks.length / this.pageSize)
     },
     showWhich() {
-      return this.$route.query.txType || 'regular'; // 'staking','regular','hrc20';
+      return this.$route.query.txType || 'regular' // 'staking','regular','hrc20';
     },
     tabValue() {
-      const status = { staking: 1, regular: 0, hrc20: 2 };
-      return status[this.$route.query.txType] || 0;
+      const status = { staking: 1, regular: 0, hrc20: 2 }
+      return status[this.$route.query.txType] || 0
     },
     lastBlocks() {
       return Object.values(this.$store.data.shards).map(
         shard => shard.blocks[0]
-      );
+      )
     },
     Hrc20Address() {
-      return this.$store.data.Hrc20Address;
+      return this.$store.data.Hrc20Address
     },
     Hrc20Txs() {
       return this.$store.data.hrc20Txs.reduce((list, tx) => {
-        const c = this.$store.data.hmy.contract(this.$store.data.HRC20_ABI);
-        const decodeObj = c.decodeInput(tx.input);
+        const c = this.$store.data.hmy.contract(this.$store.data.HRC20_ABI)
+        const decodeObj = c.decodeInput(tx.input)
         if (decodeObj.abiItem && decodeObj.abiItem.name == 'transfer')
           list.push({
             tx,
@@ -643,7 +643,7 @@ export default {
               to: decodeObj.params[0],
               amount: decodeObj.params[1],
             },
-          });
+          })
         else if (decodeObj.abiItem && decodeObj.abiItem.name == 'transferFrom')
           list.push({
             tx,
@@ -652,29 +652,29 @@ export default {
               to: decodeObj.params[1],
               amount: decodeObj.params[2],
             },
-          });
-        return list;
-      }, []);
+          })
+        return list
+      }, [])
     },
   },
   watch: {
     globalData() {
-      this.resetTimer();
+      this.resetTimer()
     },
     Hrc20Address() {
-      this.updateHolders();
+      this.updateHolders()
     },
   },
   mounted() {
-    this.updateHolders();
-    this.resetTimer();
+    this.updateHolders()
+    this.resetTimer()
     // service.getCoinStats().then(stats => {
     //   this.coinStats = stats;
     // });
   },
   methods: {
     hrc20info(id) {
-      return this.$store.data.Hrc20Address[id];
+      return this.$store.data.Hrc20Address[id]
     },
     hrc20Balance(id, amount) {
       if (!this.hrc20info(id)) {
@@ -685,33 +685,33 @@ export default {
         (amount / 10 ** this.hrc20info(id).decimals).toFixed(4) +
         ' ' +
         this.hrc20info(id).symbol
-      );
+      )
     },
     async updateHolders() {
-      let tokenHolders = [];
+      let tokenHolders = []
       for (let hrc20 in this.Hrc20Address)
-        tokenHolders.push({ id: hrc20, holders: 10000 });
-      this.tokenHolders = tokenHolders;
+        tokenHolders.push({ id: hrc20, holders: 10000 })
+      this.tokenHolders = tokenHolders
     },
     bech32(hexaddr) {
-      return this.$store.data.hmy.hmySDK.crypto.toBech32(hexaddr);
+      return this.$store.data.hmy.hmySDK.crypto.toBech32(hexaddr)
     },
     changeTab(value) {
-      let txType = 'regular';
-      if (value == 1) txType = 'staking';
-      if (value == 2) txType = 'hrc20';
+      let txType = 'regular'
+      if (value == 1) txType = 'staking'
+      if (value == 2) txType = 'hrc20'
       this.$router.replace({
         name: 'HomePage',
         query: { txType },
-      });
+      })
     },
     resetTimer() {
-      clearInterval(this.timer);
-      this.now = Date.now();
+      clearInterval(this.timer)
+      this.now = Date.now()
       this.timer = setInterval(() => {
-        this.now = Date.now();
-      }, 1000);
+        this.now = Date.now()
+      }, 1000)
     },
   },
-};
+}
 </script>

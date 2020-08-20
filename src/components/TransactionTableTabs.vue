@@ -41,7 +41,7 @@ export default {
     'titlePostfixStakingTx',
     'titlePostfixHrc20Tx',
   ],
-};
+}
 </script>
 
 <style lang="less">

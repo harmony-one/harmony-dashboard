@@ -28,5 +28,5 @@
 <script>
 export default {
   name: 'LoadingMessage',
-};
+}
 </script>
