@@ -11,7 +11,7 @@
       </router-link>
     </div>
     <div v-else>
-      {{ methodInfo.toString() }}
+      {{ methodInfo ? methodInfo.toString() : '—' }}
     </div>
   </div>
 </template>
@@ -26,15 +26,11 @@ export default {
   computed: {
     contractInfo() {
       const res =  this.$store.data.Hrc20Address[this.bech32]
-
-      console.log(res, 'contraxct')
       return res
     },
     methodInfo() {
       let c = this.$store.data.hmy.contract(this.abi)
       const res = c.decodeInput(this.data)
-
-      console.log(res, 'this')
       return res
     },
   },

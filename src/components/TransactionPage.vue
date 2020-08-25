@@ -201,13 +201,13 @@
                   <td class="td-title">
                     Data (Hex)
                   </td>
-                  <td>{{ transaction.input || '-' }}</td>
+                  <td>{{ transaction.input || '—' }}</td>
                 </tr>
                 <tr v-if="!isStaking">
                   <td class="td-title">
                     Data (UTF-8)
                   </td>
-                  <td>{{ hexToUTF8(transaction.input) || '-' }}</td>
+                  <td>{{ hexToUTF8(transaction.input) || '—' }}</td>
                 </tr>
                 <tr>
                   <td class="td-title">

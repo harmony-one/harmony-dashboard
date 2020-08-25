@@ -8,14 +8,14 @@
         <span class="avatar" :style="bgStyle()">{{ hrc20Info.name[0] }}</span>
       </span>
       {{ hrc20Info.name }}
-      <span v-if="showRaw"> ({{ bech32 || '-' }})</span>
+      <span v-if="showRaw"> ({{ bech32 || '—' }})</span>
     </span>
 
     <span v-else-if="showRaw">
-      {{ bech32 || '-' }}
+      {{ bech32 || '—' }}
     </span>
     <span v-else>
-      {{ bech32 || '-' | shorten }}
+      {{ bech32 || '—' | shorten }}
     </span>
   </router-link>
 </template>

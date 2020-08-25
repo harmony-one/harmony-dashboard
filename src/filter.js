@@ -47,7 +47,7 @@ export function formatAmount(amount) {
 
 export function formatBlockLatency(time) {
   if (!time) {
-    return '-'
+    return '—'
   }
 
   return formatDecimal(time / 10 ** 3) + 's'
