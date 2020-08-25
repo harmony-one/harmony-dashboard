@@ -682,8 +682,9 @@ export default {
       }
 
       return (
-        (amount / 10 ** this.hrc20info(id).decimals).toFixed(4) +
-        ' ' +
+        (amount / 10 ** this.hrc20info(id).decimals).toLocaleString('en-US', {
+        minimumFractionDigits: this.hrc20info(id).decimals,
+      }) + ' ' +
         this.hrc20info(id).symbol
       )
     },
