@@ -89,9 +89,9 @@
 
                     <tr>
                       <td class="td-title">
-                        TotalSupply
+                        Total Supply
                       </td>
-                      <td>{{ Hrc20Info.totalSupply }}</td>
+                      <td>{{ Hrc20Info.totalSupplyDisplay }}</td>
                     </tr>
 
                     <tr>
@@ -298,7 +298,14 @@ export default {
       return this.$store.data.Hrc20Address
     },
     Hrc20Info() {
-      return this.Hrc20Address[this.address.id]
+      const res =  this.Hrc20Address[this.address.id]
+
+      // todo wrap in BN
+      const totalSupply = +res.totalSupply / 10 ** res.decimals
+      const totalSupplyDisplay = totalSupply.toLocaleString('en-US')
+
+      res.totalSupplyDisplay = totalSupplyDisplay
+      return res
     },
     showPanel() {
       return (
