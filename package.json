@@ -29,6 +29,7 @@
     "@harmony-js/core": "0.1.36",
     "animate.css": "^3.6.1",
     "axios": "^0.19.1",
+    "bignumber.js": "^9.0.0",
     "core-js": "^3.4.4",
     "flexboxgrid": "^6.3.1",
     "highcharts": "^8.0.0",

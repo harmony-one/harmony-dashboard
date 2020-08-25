@@ -2,14 +2,9 @@
   <div>
     <div v-if="methodInfo.abiItem && methodInfo.abiItem.name === 'transfer'">
       transfer
-      <b :title="methodInfo.params[1]">{{
-        (methodInfo.params[1] / 10 ** contractInfo.decimals).toLocaleString(
-          'en-US',
-          {
-            minimumFractionDigits: contractInfo.decimals,
-          }
-        )
-      }}</b>
+      <b :title="methodInfo.params[1]">
+        {{displayAmount()}}
+      </b>
       to
       <router-link :to="'/address/' + methodInfo.params[0]">
         {{ methodInfo.params[0] }}
@@ -22,11 +17,20 @@
 </template>
 
 <script>
+
+import {displayAmount} from '@/utils/displayAmount'
+
 export default {
   name: 'DecodeABI',
   props: ['abi', 'data', 'bech32'],
   data() {
     return {}
+  },
+  methods: {
+    displayAmount() {
+      const res = displayAmount(this.methodInfo.params[1],this.contractInfo.decimals )
+      return res
+    },
   },
   computed: {
     contractInfo() {

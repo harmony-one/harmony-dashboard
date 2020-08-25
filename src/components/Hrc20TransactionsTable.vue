@@ -105,6 +105,7 @@
 
 <script>
 import Address from './Address'
+import {displayAmount} from '@/utils/displayAmount'
 
 export default {
   name: 'Hrc20TransactionsTable',
@@ -226,9 +227,7 @@ export default {
     },
     hrc20Balance(id, amount) {
       return (
-        (amount / 10 ** this.hrc20info(id).decimals).toLocaleString('en-US', {
-          minimumFractionDigits: this.hrc20info(id).decimals,
-        }) +
+          displayAmount(amount, this.hrc20info(id).decimals) +
         ' ' +
         this.hrc20info(id).symbol
       )

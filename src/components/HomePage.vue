@@ -581,6 +581,7 @@ import TransactionTableTabs from './TransactionTableTabs'
 import Address from './Address'
 import CommonTabs from './HrcTokenTabs'
 import TabPane from './TabPane'
+import {displayAmount} from '@/utils/displayAmount'
 
 export default {
   name: 'HomePage',
@@ -682,9 +683,8 @@ export default {
       }
 
       return (
-        (amount / 10 ** this.hrc20info(id).decimals).toLocaleString('en-US', {
-        minimumFractionDigits: this.hrc20info(id).decimals,
-      }) + ' ' +
+          displayAmount(amount, this.hrc20info(id).decimals)
+        + ' ' +
         this.hrc20info(id).symbol
       )
     },

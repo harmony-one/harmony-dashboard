@@ -48,7 +48,7 @@
         <div class="explorer-card">
           <header>
             <h1 v-if="isHrc20(address.id)">
-              HRC20 Token:
+              HRC20 Token1:
               <span v-if="Hrc20Info.logo">
                 <img :src="Hrc20Info.logo" class="hrclogo" />
               </span>
@@ -252,6 +252,7 @@ import TransactionTableTabs from './TransactionTableTabs'
 import HrcTokenTabs from './HrcTokenTabs'
 import TabPane from './TabPane'
 import Address from './Address'
+import {displayAmount} from '@/utils/displayAmount'
 
 const status = { staking: 1, regular: 0, hrc20: 2 }
 const defaultStatus = 'regular'
@@ -311,11 +312,7 @@ export default {
     Hrc20Info() {
       const res = this.Hrc20Address[this.address.id]
 
-      // todo wrap in BN
-      const totalSupply = +res.totalSupply / 10 ** res.decimals
-      const totalSupplyDisplay = totalSupply.toLocaleString('en-US', {
-        minimumFractionDigits: res.decimals,
-      })
+      const totalSupplyDisplay = displayAmount(res.totalSupply,res.decimals)
 
       res.totalSupplyDisplay = totalSupplyDisplay
       return res
@@ -464,12 +461,9 @@ export default {
           // ...
         }
 
-        const balanceWithDecimals =
-          balance == undefined ? undefined : balance / 10 ** hrc20Info.decimals
+        const balanceWithDecimals = displayAmount(balance, hrc20Info.decimals)
 
-        const balanceDisplay = balanceWithDecimals.toLocaleString('en-US', {
-          minimumFractionDigits: hrc20Info.decimals,
-        })
+        const balanceDisplay = displayAmount(balance, hrc20Info.decimals)
 
         this.$set(this.Hrc20Balance, hrc20, {
           id: hrc20,
