@@ -172,24 +172,26 @@
           </div>
         </div>
 
-        <HrcTokenTabs>
+        <HrcTokenTabs v-if="showHrc20Section">
           <TabPane :name="'HRC20 Balance'">
             <section>
               <table class="explorer-table">
-                <tr v-for="balanceOf in Hrc20Balance" :key="balanceOf.id">
-                  <td class="td-title">
+                <div v-for="balanceOf in Hrc20Balance" :key="balanceOf.id">
+                <tr v-if="+balanceOf.balance">
+                  <td class="td-title" v-if="+balanceOf.balance">
                     <!--v-if="balanceOf.balance !==0"-->
                     <Address :bech32="balanceOf.id" />
                   </td>
                   <td>
-                    {{ balanceOf.balance }}
+                    {{ balanceOf.balanceDisplay }}
                   </td>
                 </tr>
+                </div>
               </table>
             </section>
           </TabPane>
           <TabPane v-if="false" :name="'HRC721'">
-            comming soon...
+            coming soon...
           </TabPane>
         </HrcTokenTabs>
 
@@ -285,6 +287,12 @@ export default {
   computed: {
     showWhich() {
       return this.$route.query.txType || defaultStatus // 'staking','regular','hrc20';
+    },
+    showHrc20Section() {
+      if (!this.Hrc20Balance) {
+        return false
+      }
+      return Object.values(this.Hrc20Balance).reduce((a,o)=> a || +o.balance, false)
     },
     page() {
       return this.$route.query.page - 1 || 0
@@ -450,12 +458,17 @@ export default {
         } catch (e) {
           // ...
         }
+
+        const balanceWithDecimals = balance == undefined
+            ? undefined
+            : balance / 10 ** hrc20Info.decimals
+
+        const balanceDisplay = balanceWithDecimals.toLocaleString('en-US')
+
         this.$set(this.Hrc20Balance, hrc20, {
           id: hrc20,
-          balance:
-            balance == undefined
-              ? 'error'
-              : balance.toString() / 10 ** hrc20Info.decimals,
+          balance: balanceWithDecimals,
+          balanceDisplay
         })
       }
     },
