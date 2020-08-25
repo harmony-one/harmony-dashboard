@@ -310,7 +310,8 @@ export default {
 
       // todo wrap in BN
       const totalSupply = +res.totalSupply / 10 ** res.decimals
-      const totalSupplyDisplay = totalSupply.toLocaleString('en-US')
+      const totalSupplyDisplay = totalSupply.toLocaleString('en-US',
+          {minimumFractionDigits: res.decimals})
 
       res.totalSupplyDisplay = totalSupplyDisplay
       return res
@@ -463,7 +464,8 @@ export default {
             ? undefined
             : balance / 10 ** hrc20Info.decimals
 
-        const balanceDisplay = balanceWithDecimals.toLocaleString('en-US')
+        const balanceDisplay = balanceWithDecimals
+            .toLocaleString('en-US', {minimumFractionDigits: hrc20Info.decimals})
 
         this.$set(this.Hrc20Balance, hrc20, {
           id: hrc20,

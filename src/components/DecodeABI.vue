@@ -1,9 +1,11 @@
 <template>
   <div>
-    <div v-if="methodInfo.abiItem && methodInfo.abiItem.name == 'transfer'">
+    <div v-if="methodInfo.abiItem && methodInfo.abiItem.name === 'transfer'">
       transfer
       <b :title="methodInfo.params[1]">{{
-        (methodInfo.params[1] / 10 ** contractInfo.decimals).toLocaleString('en-US')
+        (methodInfo.params[1] / 10 ** contractInfo.decimals).toLocaleString('en-US', {
+          minimumFractionDigits: contractInfo.decimals
+        })
       }}</b>
       to
       <router-link :to="'/address/' + methodInfo.params[0]">

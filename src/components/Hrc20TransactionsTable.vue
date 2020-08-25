@@ -1,5 +1,6 @@
 <style scoped lang="less">
 @import '../less/common.less';
+
 .wfont {
   font-family: monospace, 'Courier New', Courier;
   font-size: 16px;
@@ -9,50 +10,50 @@
 <template>
   <div class="transactions-table explorer-card">
     <header>
-      <slot />
+      <slot/>
       <div class="pagination-controls">
         <span class="total-tx-num">{{ txCount }} txs</span>
         <span class="page-controllers">
           <span class="page-navigator">
             <button
-              class="btn btn-light btn-icon-only"
-              :disabled="pageIndex === 0"
-              @click="first()"
+                class="btn btn-light btn-icon-only"
+                :disabled="pageIndex === 0"
+                @click="first()"
             >
-              <font-awesome-icon icon="angle-double-left" />
+              <font-awesome-icon icon="angle-double-left"/>
             </button>
             <button
-              class="btn btn-light btn-icon-only"
-              :disabled="pageIndex === 0"
-              @click="prev()"
+                class="btn btn-light btn-icon-only"
+                :disabled="pageIndex === 0"
+                @click="prev()"
             >
-              <font-awesome-icon icon="chevron-left" />
+              <font-awesome-icon icon="chevron-left"/>
             </button>
             <span class="pagination-nums">
               {{ pageIndex + 1 }} / {{ pageCount ? pageCount : 1 }}
             </span>
             <button
-              class="btn btn-light btn-icon-only"
-              :disabled="pageIndex === pageCount - 1"
-              @click="next()"
+                class="btn btn-light btn-icon-only"
+                :disabled="pageIndex === pageCount - 1"
+                @click="next()"
             >
-              <font-awesome-icon icon="chevron-right" />
+              <font-awesome-icon icon="chevron-right"/>
             </button>
             <button
-              class="btn btn-light btn-icon-only"
-              :disabled="pageIndex === pageCount - 1"
-              @click="last()"
+                class="btn btn-light btn-icon-only"
+                :disabled="pageIndex === pageCount - 1"
+                @click="last()"
             >
-              <font-awesome-icon icon="angle-double-right" />
+              <font-awesome-icon icon="angle-double-right"/>
             </button>
           </span>
         </span>
       </div>
     </header>
     <div
-      ref="loadingContainer"
-      class="explorer-card-body"
-      style="position: relative; min-height: 200px;"
+        ref="loadingContainer"
+        class="explorer-card-body"
+        style="position: relative; min-height: 200px;"
     >
       <section>
         <table class="explorer-table">
@@ -90,7 +91,7 @@
               </router-link>
             </td>
             <td>
-              <Address :bech32="tx.tx.to" />
+              <Address :bech32="tx.tx.to"/>
             </td>
             <td class="no-break wfont">
               {{ hrc20Balance(tx.tx.to, tx.hrc20tx.amount) }}
@@ -104,9 +105,10 @@
 
 <script>
 import Address from './Address'
+
 export default {
   name: 'Hrc20TransactionsTable',
-  components: { Address },
+  components: {Address},
   props: [
     'allTxs',
     'txCount',
@@ -196,10 +198,10 @@ export default {
 
       const lastTxs = this.Hrc20Txs.slice(-1)[0].tx
       const sortid =
-        this.pageIndex + 1 == index
-          ? Number(lastTxs.blockNumber) * 10000 +
-            Number(lastTxs.transactionIndex)
-          : undefined
+          this.pageIndex + 1 == index
+              ? Number(lastTxs.blockNumber) * 10000 +
+              Number(lastTxs.transactionIndex)
+              : undefined
       this.pageIndex = index
       if (this.changePage) {
         this.changePage(index, sortid)
@@ -224,9 +226,11 @@ export default {
     },
     hrc20Balance(id, amount) {
       return (
-          (amount / 10 ** this.hrc20info(id).decimals).toLocaleString('en-US') +
+          (amount / 10 ** this.hrc20info(id).decimals).toLocaleString('en-US', {
+            minimumFractionDigits: this.hrc20info(id).decimals
+          }) +
           ' ' +
-        this.hrc20info(id).symbol
+          this.hrc20info(id).symbol
       )
     },
   },
