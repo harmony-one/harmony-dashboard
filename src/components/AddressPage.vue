@@ -252,7 +252,7 @@ import TransactionTableTabs from './TransactionTableTabs'
 import HrcTokenTabs from './HrcTokenTabs'
 import TabPane from './TabPane'
 import Address from './Address'
-import {displayAmount} from '@/utils/displayAmount'
+import { displayAmount } from '@/utils/displayAmount'
 
 const status = { staking: 1, regular: 0, hrc20: 2 }
 const defaultStatus = 'regular'
@@ -312,7 +312,7 @@ export default {
     Hrc20Info() {
       const res = this.Hrc20Address[this.address.id]
 
-      const totalSupplyDisplay = displayAmount(res.totalSupply,res.decimals)
+      const totalSupplyDisplay = displayAmount(res.totalSupply, res.decimals)
 
       res.totalSupplyDisplay = totalSupplyDisplay
       return res

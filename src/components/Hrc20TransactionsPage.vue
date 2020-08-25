@@ -16,21 +16,21 @@
                 <div v-if="false">
                   <div>From:</div>
                   <VueCtkDateTimePicker
-                      v-model="cursor"
-                      format="YYYY-MM-DD hh:mm"
-                      color="#33cbda"
-                      button-color="#33cbda"
-                      :no-clear-button="true"
-                      :max-date="maxDate"
+                    v-model="cursor"
+                    format="YYYY-MM-DD hh:mm"
+                    color="#33cbda"
+                    button-color="#33cbda"
+                    :no-clear-button="true"
+                    :max-date="maxDate"
                   />
                 </div>
                 <button
-                    class="btn btn-light btn-icon-only"
-                    style="width: 200px; margin-left: 40px;"
-                    @click="next()"
+                  class="btn btn-light btn-icon-only"
+                  style="width: 200px; margin-left: 40px;"
+                  @click="next()"
                 >
                   <span style="margin-right: 10px;">Prev 50 txs</span>
-                  <font-awesome-icon icon="chevron-right"/>
+                  <font-awesome-icon icon="chevron-right" />
                 </button>
               </div>
             </div>
@@ -71,7 +71,7 @@
                   </router-link>
                 </td>
                 <td>
-                  <Address :bech32="tx.tx.to"/>
+                  <Address :bech32="tx.tx.to" />
                 </td>
                 <td class="no-break wfont">
                   {{ hrc20Balance(tx.tx.to, tx.hrc20tx.amount) }}
@@ -80,7 +80,7 @@
             </table>
 
             <div v-else>
-              <loading-message/>
+              <loading-message />
             </div>
           </div>
         </div>
@@ -95,7 +95,7 @@ import service from '../explorer/service'
 import LoadingMessage from './LoadingMessage'
 import moment from 'moment'
 import Address from './Address'
-import {displayAmount} from '@/utils/displayAmount'
+import { displayAmount } from '@/utils/displayAmount'
 
 export default {
   name: 'Hrc20TransactionsPage',
@@ -171,7 +171,7 @@ export default {
 
       this.$router.replace({
         name: 'Hrc20TransactionsPage',
-        query: {from: unixCursor, sortid: this.sortid},
+        query: { from: unixCursor, sortid: this.sortid },
       })
 
       this.getTransactions()
@@ -192,7 +192,7 @@ export default {
       this.cursor = moment(this.txs[this.txs.length - 1].timestamp)
       const lastTxs = this.txs.slice(-1)[0]
       this.sortid =
-          Number(lastTxs.blockNumber) * 10000 + Number(lastTxs.transactionIndex)
+        Number(lastTxs.blockNumber) * 10000 + Number(lastTxs.transactionIndex)
     },
     getTransactions() {
       this.txs = []
@@ -200,24 +200,23 @@ export default {
       const cursor = moment(this.cursor).unix() * 1000
 
       service
-          .getHrc20TxsLatest({
-            pageSize: this.pageSize,
-            pageIndex: 0,
-            sortid: this.sortid,
-          })
-          .then(result => {
-            this.txs = result.txs
-          })
+        .getHrc20TxsLatest({
+          pageSize: this.pageSize,
+          pageIndex: 0,
+          sortid: this.sortid,
+        })
+        .then(result => {
+          this.txs = result.txs
+        })
     },
     hrc20info(id) {
       return this.Hrc20Address[id]
     },
     hrc20Balance(id, amount) {
       return (
-          displayAmount(amount, this.hrc20info(id).decimals)
-          +
-          ' ' +
-          this.hrc20info(id).symbol
+        displayAmount(amount, this.hrc20info(id).decimals) +
+        ' ' +
+        this.hrc20info(id).symbol
       )
     },
   },

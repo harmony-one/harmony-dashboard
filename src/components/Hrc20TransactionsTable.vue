@@ -105,7 +105,7 @@
 
 <script>
 import Address from './Address'
-import {displayAmount} from '@/utils/displayAmount'
+import { displayAmount } from '@/utils/displayAmount'
 
 export default {
   name: 'Hrc20TransactionsTable',
@@ -227,7 +227,7 @@ export default {
     },
     hrc20Balance(id, amount) {
       return (
-          displayAmount(amount, this.hrc20info(id).decimals) +
+        displayAmount(amount, this.hrc20info(id).decimals) +
         ' ' +
         this.hrc20info(id).symbol
       )
