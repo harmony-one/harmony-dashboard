@@ -12,8 +12,8 @@ function sendPost(url, params, config) {
 ;(function listenWebsocket() {
   const isDevMode = process.env.NODE_ENV === 'development'
   const ws = isDevMode
-      ? new WebSocket(`ws://${BACKEND_URL}:8888`)
-      : new WebSocket(`wss://${BACKEND_URL}:8888`)
+    ? new WebSocket(`ws://${BACKEND_URL}:8888`)
+    : new WebSocket(`wss://${BACKEND_URL}:8888`)
   ws.addEventListener('open', () => {
     ws.send('front-end: Hi.')
   })

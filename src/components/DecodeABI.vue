@@ -3,9 +3,12 @@
     <div v-if="methodInfo.abiItem && methodInfo.abiItem.name === 'transfer'">
       transfer
       <b :title="methodInfo.params[1]">{{
-        (methodInfo.params[1] / 10 ** contractInfo.decimals).toLocaleString('en-US', {
-          minimumFractionDigits: contractInfo.decimals
-        })
+        (methodInfo.params[1] / 10 ** contractInfo.decimals).toLocaleString(
+          'en-US',
+          {
+            minimumFractionDigits: contractInfo.decimals,
+          }
+        )
       }}</b>
       to
       <router-link :to="'/address/' + methodInfo.params[0]">
@@ -27,7 +30,7 @@ export default {
   },
   computed: {
     contractInfo() {
-      const res =  this.$store.data.Hrc20Address[this.bech32]
+      const res = this.$store.data.Hrc20Address[this.bech32]
       return res
     },
     methodInfo() {

@@ -177,15 +177,15 @@
             <section>
               <table class="explorer-table">
                 <div v-for="balanceOf in Hrc20Balance" :key="balanceOf.id">
-                <tr v-if="+balanceOf.balance">
-                  <td class="td-title" v-if="+balanceOf.balance">
-                    <!--v-if="balanceOf.balance !==0"-->
-                    <Address :bech32="balanceOf.id" />
-                  </td>
-                  <td>
-                    {{ balanceOf.balanceDisplay }}
-                  </td>
-                </tr>
+                  <tr v-if="+balanceOf.balance">
+                    <td v-if="+balanceOf.balance" class="td-title">
+                      <!--v-if="balanceOf.balance !==0"-->
+                      <Address :bech32="balanceOf.id" />
+                    </td>
+                    <td>
+                      {{ balanceOf.balanceDisplay }}
+                    </td>
+                  </tr>
                 </div>
               </table>
             </section>
@@ -292,7 +292,10 @@ export default {
       if (!this.Hrc20Balance) {
         return false
       }
-      return Object.values(this.Hrc20Balance).reduce((a,o)=> a || +o.balance, false)
+      return Object.values(this.Hrc20Balance).reduce(
+        (a, o) => a || +o.balance,
+        false
+      )
     },
     page() {
       return this.$route.query.page - 1 || 0
@@ -306,12 +309,13 @@ export default {
       return this.$store.data.Hrc20Address
     },
     Hrc20Info() {
-      const res =  this.Hrc20Address[this.address.id]
+      const res = this.Hrc20Address[this.address.id]
 
       // todo wrap in BN
       const totalSupply = +res.totalSupply / 10 ** res.decimals
-      const totalSupplyDisplay = totalSupply.toLocaleString('en-US',
-          {minimumFractionDigits: res.decimals})
+      const totalSupplyDisplay = totalSupply.toLocaleString('en-US', {
+        minimumFractionDigits: res.decimals,
+      })
 
       res.totalSupplyDisplay = totalSupplyDisplay
       return res
@@ -460,17 +464,17 @@ export default {
           // ...
         }
 
-        const balanceWithDecimals = balance == undefined
-            ? undefined
-            : balance / 10 ** hrc20Info.decimals
+        const balanceWithDecimals =
+          balance == undefined ? undefined : balance / 10 ** hrc20Info.decimals
 
-        const balanceDisplay = balanceWithDecimals
-            .toLocaleString('en-US', {minimumFractionDigits: hrc20Info.decimals})
+        const balanceDisplay = balanceWithDecimals.toLocaleString('en-US', {
+          minimumFractionDigits: hrc20Info.decimals,
+        })
 
         this.$set(this.Hrc20Balance, hrc20, {
           id: hrc20,
           balance: balanceWithDecimals,
-          balanceDisplay
+          balanceDisplay,
         })
       }
     },

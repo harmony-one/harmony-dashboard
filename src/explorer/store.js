@@ -53,7 +53,9 @@ function getTotalBlockLatency(latencies) {
   )
 }
 const isDevMode = process.env.NODE_ENV === 'development'
-const HRC20LIST_URL = isDevMode ? `http://${EXPLORER_BACKEND_URL}/hrc20-token-list` : `https://${EXPLORER_BACKEND_URL}/hrc20-token-list`
+const HRC20LIST_URL = isDevMode
+  ? `http://${EXPLORER_BACKEND_URL}/hrc20-token-list`
+  : `https://${EXPLORER_BACKEND_URL}/hrc20-token-list`
 
 function fetchHrc20List(url) {
   return axios.get(url).then(rez => {

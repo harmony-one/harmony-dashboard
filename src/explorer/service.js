@@ -14,7 +14,9 @@ Promise.prototype.delay = function(time) {
 const BACKEND_URL = EXPLORER_BACKEND_URL
 
 const isDevMode = process.env.NODE_ENV === 'development'
-const HTTP_BACKEND_URL = isDevMode ? `http://${BACKEND_URL}` : `https://${BACKEND_URL}`
+const HTTP_BACKEND_URL = isDevMode
+  ? `http://${BACKEND_URL}`
+  : `https://${BACKEND_URL}`
 
 const SECRET = localStorage.getItem('secret')
 
@@ -41,8 +43,8 @@ function sendGet(url, params) {
 ;(function listenWebsocket() {
   const isDevMode = process.env.NODE_ENV === 'development'
   const ws = isDevMode
-      ? new WebSocket(`ws://${BACKEND_URL}`, [SECRET])
-      :new WebSocket(`wss://${BACKEND_URL}`, [SECRET])
+    ? new WebSocket(`ws://${BACKEND_URL}`, [SECRET])
+    : new WebSocket(`wss://${BACKEND_URL}`, [SECRET])
 
   ws.addEventListener('open', () => {
     ws.send('front-end: Hi.')
