@@ -166,6 +166,8 @@ function contract(
     let argv = method.decodeInputs('0x' + no0x.slice(8))
     let obj = contract.methods['0x' + sig](...argv)
 
+    console.log({argv})
+
     for (let i = 0; i < obj.params.length; i++) {
       if (obj.abiItem.inputs[i].type == 'address')
         obj.params[i] = hmySDK.crypto.toBech32(obj.params[i])

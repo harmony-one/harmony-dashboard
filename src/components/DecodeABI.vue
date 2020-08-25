@@ -25,11 +25,17 @@ export default {
   },
   computed: {
     contractInfo() {
-      return this.$store.data.Hrc20Address[this.bech32]
+      const res =  this.$store.data.Hrc20Address[this.bech32]
+
+      console.log(res, 'contraxct')
+      return res
     },
     methodInfo() {
       let c = this.$store.data.hmy.contract(this.abi)
-      return c.decodeInput(this.data)
+      const res = c.decodeInput(this.data)
+
+      console.log(res, 'this')
+      return res
     },
   },
 }
