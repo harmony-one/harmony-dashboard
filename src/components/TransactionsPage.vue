@@ -40,6 +40,7 @@
                 <th>Hash</th>
                 <th>From</th>
                 <th>To</th>
+                <th>Type</th>
                 <th>Age</th>
                 <th class="text-right">
                   Value
@@ -47,9 +48,9 @@
                 <th class="text-right">
                   Txn Fee
                 </th>
-                <th class="text-right">
+               <!-- <th class="text-right">
                   Size (bytes)
-                </th>
+                </th>-->
               </tr>
               <tr v-for="tx in txs" :key="tx.id" class="container">
                 <td>
@@ -78,16 +79,21 @@
                     {{ tx.to.bech32 | shorten }}
                   </router-link>
                 </td>
-                <td>{{ tx.timestamp | timestamp }}</td>
+                <td>
+                  {{ tx | txType }}
+                </td>
+                <td>
+                  {{ tx.timestamp | age}}
+                </td>
                 <td class="text-right no-break">
                   {{ tx.value | amount }}
                 </td>
                 <td class="text-right no-break">
                   {{ tx | fee }}
                 </td>
-                <td class="text-right">
+                <!--<td class="text-right">
                   {{ tx.bytes }}
-                </td>
+                </td>-->
               </tr>
             </table>
 
