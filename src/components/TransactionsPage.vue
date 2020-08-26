@@ -48,7 +48,7 @@
                 <th class="text-right">
                   Txn Fee
                 </th>
-               <!-- <th class="text-right">
+                <!-- <th class="text-right">
                   Size (bytes)
                 </th>-->
               </tr>
@@ -83,7 +83,7 @@
                   {{ tx | txType }}
                 </td>
                 <td>
-                  {{ tx.timestamp | age}}
+                  {{ tx.timestamp | age }}
                 </td>
                 <td class="text-right no-break">
                   {{ tx.value | amount }}

@@ -148,18 +148,27 @@
                   </td>
                 </tr>
 
-                <tr v-if="hrc20BalancesDropdownOptions && hrc20BalancesDropdownOptions.length > 0">
+                <tr
+                  v-if="
+                    hrc20BalancesDropdownOptions &&
+                      hrc20BalancesDropdownOptions.length > 0
+                  "
+                >
                   <td class="td-title">
                     Token
                   </td>
                   <td>
                     <div style="max-width: 400px">
-                    <v-select
-                        :disabled="!hrc20BalancesDropdownOptions || hrc20BalancesDropdownOptions.length === 0"
-                        @input="onHrc20BalancesDropdown"
+                      <v-select
+                        :disabled="
+                          !hrc20BalancesDropdownOptions ||
+                            hrc20BalancesDropdownOptions.length === 0
+                        "
                         :placeholder="hrc20BalancesDropdownPlaceholder"
-                        :components="{OpenIndicator: null}"
-                        :options="hrc20BalancesDropdownOptions"></v-select>
+                        :components="{ OpenIndicator: null }"
+                        :options="hrc20BalancesDropdownOptions"
+                        @input="onHrc20BalancesDropdown"
+                      ></v-select>
                     </div>
                   </td>
                 </tr>
@@ -206,7 +215,7 @@
           </div>
         </div>
 
-      <HrcTokenTabs v-if="false && showHrc20Section">
+        <HrcTokenTabs v-if="false && showHrc20Section">
           <TabPane :name="'HRC20 Balance'">
             <section>
               <table class="explorer-table">
@@ -287,8 +296,8 @@ import HrcTokenTabs from './HrcTokenTabs'
 import TabPane from './TabPane'
 import Address from './Address'
 import { displayAmount } from '@/utils/displayAmount'
-import vSelect from "vue-select";
-import "vue-select/dist/vue-select.css"
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css'
 
 const status = { staking: 1, regular: 0, hrc20: 2 }
 const defaultStatus = 'regular'
@@ -303,7 +312,7 @@ export default {
     HrcTokenTabs,
     TabPane,
     Address,
-    vSelect
+    vSelect,
   },
   data() {
     return {
@@ -327,8 +336,9 @@ export default {
       if (!this.Hrc20Balance) {
         return 'Loading...'
       }
-      const tokensCount =  Object.values(this.Hrc20Balance)
-          .filter(o => +o.balance !== 0).length
+      const tokensCount = Object.values(this.Hrc20Balance).filter(
+        o => +o.balance !== 0
+      ).length
 
       return `HRC20 Tokens (${tokensCount})`
     },
@@ -338,8 +348,11 @@ export default {
       }
 
       return Object.values(this.Hrc20Balance)
-          .filter(o => +o.balance !== 0)
-          .map(o => ({label: `${o.name} (${o.id}) - ${o.balance}`, code: o.address}))
+        .filter(o => +o.balance !== 0)
+        .map(o => ({
+          label: `${o.name} (${o.id}) - ${o.balance}`,
+          code: o.address,
+        }))
     },
     showWhich() {
       return this.$route.query.txType || defaultStatus // 'staking','regular','hrc20';
@@ -397,7 +410,7 @@ export default {
   },
   methods: {
     onHrc20BalancesDropdown(val) {
-      this.$router.push(`/address/${val.code}`);
+      this.$router.push(`/address/${val.code}`)
     },
     onHrc20BalanceDropdown() {
       alert(1)
@@ -529,7 +542,7 @@ export default {
           name: hrc20Info.name,
           id: hrc20Info.symbol,
           balance: balanceDisplay,
-          address: hrc20Info.address
+          address: hrc20Info.address,
         })
       }
     },
