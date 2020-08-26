@@ -60,9 +60,9 @@
           <tr>
             <th>Shard</th>
             <th>TxHash</th>
-            <th>Timestamp</th>
             <th>From</th>
             <th>To</th>
+            <th>Age</th>
             <th>Token</th>
             <th>Token Amount</th>
           </tr>
@@ -78,9 +78,6 @@
               </router-link>
             </td>
             <td>
-              {{ (Number(tx.tx.timestamp) * 1000) | timestamp }}
-            </td>
-            <td>
               <router-link :to="'/address/' + tx.tx.from">
                 {{ tx.hrc20tx.from | shorten }}
               </router-link>
@@ -89,6 +86,9 @@
               <router-link :to="'/address/' + tx.hrc20tx.to">
                 {{ tx.hrc20tx.to | shorten }}
               </router-link>
+            </td>
+            <td>
+              {{ (Number(tx.tx.timestamp) * 1000) | age }}
             </td>
             <td>
               <Address :bech32="tx.tx.to" />

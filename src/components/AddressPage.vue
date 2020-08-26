@@ -48,7 +48,7 @@
         <div class="explorer-card">
           <header>
             <h1 v-if="isHrc20(address.id)">
-              HRC20 Token1:
+              HRC20 Token:
               <span v-if="Hrc20Info.logo">
                 <img :src="Hrc20Info.logo" class="hrclogo" />
               </span>

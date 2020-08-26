@@ -507,10 +507,10 @@
                       To
                     </div>
                     <div class="th">
-                      Token
+                      Age
                     </div>
                     <div class="th">
-                      Age
+                      Token
                     </div>
                     <div class="th">
                       Token Amount
@@ -538,10 +538,10 @@
                       </router-link>
                     </div>
                     <div class="td">
-                      <Address :bech32="tx.tx.to" />
+                      {{ (Number(tx.tx.timestamp) * 1000) | age }}
                     </div>
                     <div class="td">
-                      {{ (Number(tx.tx.timestamp) * 1000) | age }}
+                      <Address :bech32="tx.tx.to" />
                     </div>
                     <div class="td" :title="tx.hrc20tx.amount">
                       {{ hrc20Balance(tx.tx.to, tx.hrc20tx.amount) }}
