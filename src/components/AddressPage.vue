@@ -1,3 +1,22 @@
+<style>
+.vs__search {
+  color: #888;
+}
+
+.vs__dropdown-option {
+  color: #888;
+}
+
+.vs__dropdown-option--highlight {
+  background: var(--color-table-link);
+  color: white;
+}
+
+.vs__search::placeholder {
+  color: #888;
+}
+</style>
+
 <style scoped lang="less">
 @import '../less/common.less';
 
@@ -131,6 +150,20 @@
 
                 <tr>
                   <td class="td-title">
+                    Token
+                  </td>
+                  <td>
+                    <div style="max-width: 400px">
+                    <v-select
+                        @input="onHrc20BalancesDropdown"
+                        :placeholder="hrc20BalancesDropdownPlaceholder"
+                        :components="{OpenIndicator: null}"
+                        :options="hrc20BalancesDropdownOptions"></v-select>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="td-title">
                     Transactions
                   </td>
                   <td>
@@ -172,18 +205,18 @@
           </div>
         </div>
 
-        <HrcTokenTabs v-if="showHrc20Section">
+      <HrcTokenTabs v-if="false && showHrc20Section">
           <TabPane :name="'HRC20 Balance'">
             <section>
               <table class="explorer-table">
                 <div v-for="balanceOf in Hrc20Balance" :key="balanceOf.id">
                   <tr v-if="+balanceOf.balance">
                     <td v-if="+balanceOf.balance" class="td-title">
-                      <!--v-if="balanceOf.balance !==0"-->
+                      &lt;!&ndash;v-if="balanceOf.balance !==0"&ndash;&gt;
                       <Address :bech32="balanceOf.id" />
                     </td>
                     <td>
-                      {{ balanceOf.balanceDisplay }}
+                      {{ balanceOf.balance }}
                     </td>
                   </tr>
                 </div>
@@ -253,6 +286,8 @@ import HrcTokenTabs from './HrcTokenTabs'
 import TabPane from './TabPane'
 import Address from './Address'
 import { displayAmount } from '@/utils/displayAmount'
+import vSelect from "vue-select";
+import "vue-select/dist/vue-select.css"
 
 const status = { staking: 1, regular: 0, hrc20: 2 }
 const defaultStatus = 'regular'
@@ -267,6 +302,7 @@ export default {
     HrcTokenTabs,
     TabPane,
     Address,
+    vSelect
   },
   data() {
     return {
@@ -286,6 +322,24 @@ export default {
     }
   },
   computed: {
+    hrc20BalancesDropdownPlaceholder() {
+      if (!this.Hrc20Balance) {
+        return 'Loading...'
+      }
+      const tokensCount =  Object.values(this.Hrc20Balance)
+          .filter(o => +o.balance !== 0).length
+
+      return `HRC20 Tokens (${tokensCount})`
+    },
+    hrc20BalancesDropdownOptions() {
+      if (!this.Hrc20Balance) {
+        return []
+      }
+
+      return Object.values(this.Hrc20Balance)
+          .filter(o => +o.balance !== 0)
+          .map(o => ({label: `${o.name} (${o.id}) - ${o.balance}`, code: o.address}))
+    },
     showWhich() {
       return this.$route.query.txType || defaultStatus // 'staking','regular','hrc20';
     },
@@ -341,6 +395,13 @@ export default {
     this.getAddress()
   },
   methods: {
+    onHrc20BalancesDropdown(val) {
+      this.$router.push(`/address/${val.code}`);
+    },
+    onHrc20BalanceDropdown() {
+      alert(1)
+      console.log('onHrc20BalanceDropdown')
+    },
     onError() {
       this.Hrc20Info.logo = null
     },
@@ -461,14 +522,13 @@ export default {
           // ...
         }
 
-        const balanceWithDecimals = displayAmount(balance, hrc20Info.decimals)
-
         const balanceDisplay = displayAmount(balance, hrc20Info.decimals)
 
         this.$set(this.Hrc20Balance, hrc20, {
-          id: hrc20,
-          balance: balanceWithDecimals,
-          balanceDisplay,
+          name: hrc20Info.name,
+          id: hrc20Info.symbol,
+          balance: balanceDisplay,
+          address: hrc20Info.address
         })
       }
     },
