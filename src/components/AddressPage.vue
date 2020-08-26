@@ -148,13 +148,14 @@
                   </td>
                 </tr>
 
-                <tr>
+                <tr v-if="hrc20BalancesDropdownOptions && hrc20BalancesDropdownOptions.length > 0">
                   <td class="td-title">
                     Token
                   </td>
                   <td>
                     <div style="max-width: 400px">
                     <v-select
+                        :disabled="!hrc20BalancesDropdownOptions || hrc20BalancesDropdownOptions.length === 0"
                         @input="onHrc20BalancesDropdown"
                         :placeholder="hrc20BalancesDropdownPlaceholder"
                         :components="{OpenIndicator: null}"
@@ -209,7 +210,7 @@
           <TabPane :name="'HRC20 Balance'">
             <section>
               <table class="explorer-table">
-                <div v-for="balanceOf in Hrc20Balance" :key="balanceOf.id">
+                <div v-for="balanceOf in Hrc20Balance" :key="balanceOf.address">
                   <tr v-if="+balanceOf.balance">
                     <td v-if="+balanceOf.balance" class="td-title">
                       &lt;!&ndash;v-if="balanceOf.balance !==0"&ndash;&gt;
