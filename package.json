@@ -5,7 +5,7 @@
   "author": "liuzhenglaichn@gmail.com",
   "private": true,
   "scripts": {
-    "dev": "export SSL_KEY_FILE=/etc/letsencrypt/live/localhost/privkey.pem && export SSL_CERT_FILE=/etc/letsencrypt/live/localhost/fullchain.pem &&  DevMode=true npx vue-cli-service serve",
+    "dev": "DevMode=true npx vue-cli-service serve",
     "build": "npx vue-cli-service build",
     "lint": "npx vue-cli-service lint",
     "elint": "eslint --ext .js,.vue src",
@@ -32,7 +32,7 @@
     "bignumber.js": "^9.0.0",
     "core-js": "^3.4.4",
     "flexboxgrid": "^6.3.1",
-    "highcharts": "^8.0.0",
+    "highcharts": "^8.1.1",
     "highcharts-vue": "^1.2.0",
     "jdenticon": "^3.0.1",
     "moment": "^2.23.0",
