@@ -172,10 +172,10 @@
                 </td>
                 <td v-if="transaction.to">
                   <DecodeABI
-                      :abi="$store.data.HRC20_ABI"
-                      :data="transaction.input"
-                      :is-hrc20="isHrc20(transaction.hash)"
-                      :bech32="transaction.to"
+                    :abi="$store.data.HRC20_ABI"
+                    :data="transaction.input"
+                    :is-hrc20="isHrc20(transaction.hash)"
+                    :bech32="transaction.to"
                   />
                 </td>
                 <td v-else>

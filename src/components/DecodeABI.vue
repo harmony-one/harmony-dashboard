@@ -5,7 +5,7 @@
       <b :title="methodInfo.params[1]">
         {{ displayAmount() }}
       </b>
-      &nbsp;{{contractInfo.symbol}}
+      &nbsp;{{ contractInfo.symbol }}
       to
       <router-link :to="'/address/' + methodInfo.params[0]">
         {{ methodInfo.params[0] }}

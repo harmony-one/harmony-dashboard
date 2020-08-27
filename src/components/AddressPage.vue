@@ -23,6 +23,7 @@
 .avatar-wrapper {
   margin-left: 1em;
 }
+
 .avatar {
   border-radius: 100%;
   display: table-cell;
@@ -46,6 +47,7 @@
   border: 1px solid var(--bc-dim);
   margin-left: 1em;
 }
+
 .selectItem {
   border: none;
   padding: 0;
@@ -55,6 +57,7 @@
   background-color: rgba(0, 0, 0, 0);
   /*appearance: none;*/
 }
+
 .selectItem:focus {
   box-shadow: none !important;
 }
@@ -152,8 +155,7 @@
                    !hrc20BalancesDropdownOptions ||
                      hrc20BalancesDropdownOptions.length > 0
                  "-->
-                <tr
-                >
+                <tr>
                   <td class="td-title">
                     Token
                   </td>
@@ -376,7 +378,11 @@ export default {
     Hrc20Info() {
       const res = this.Hrc20Address[this.address.id]
 
-      const totalSupplyDisplay = displayAmount(res.totalSupply, res.decimals, true)
+      const totalSupplyDisplay = displayAmount(
+        res.totalSupply,
+        res.decimals,
+        true
+      )
 
       res.totalSupplyDisplay = totalSupplyDisplay
       return res
@@ -523,38 +529,36 @@ export default {
 
       const res = {}
 
-      for (let hrc20 in this.Hrc20Address) {
-        //if (this.Hrc20Balance[hrc20]) continue;
-        const c = hmy.contract(this.$store.data.HRC20_ABI, toHex(hrc20))
-        const hrc20Info = this.Hrc20Address[hrc20]
-        let balance
+      Promise.all(
+        Object.keys(this.Hrc20Address).map(async hrc20 => {
+          //for (let hrc20 in this.Hrc20Address) {
+          //if (this.Hrc20Balance[hrc20]) continue;
+          const c = hmy.contract(this.$store.data.HRC20_ABI, toHex(hrc20))
+          const hrc20Info = this.Hrc20Address[hrc20]
+          let balance
 
-        try {
-          balance = await c.methods.balanceOf(toHex(this.address.id)).call()
-        } catch (e) {
-          // ...
-        }
+          try {
+            balance = await c.methods.balanceOf(toHex(this.address.id)).call()
+          } catch (e) {
+            // ...
+          }
 
-        const balanceDisplay = displayAmount(balance, hrc20Info.decimals)
+          const balanceDisplay = displayAmount(balance, hrc20Info.decimals)
 
-        res[hrc20] = {
-          name: hrc20Info.name,
-          id: hrc20Info.symbol,
-          balance: balanceDisplay,
-          address: hrc20Info.address,
-        }
-
-        /*
-        this.$set(this.Hrc20Balance, hrc20, {
-          name: hrc20Info.name,
-          id: hrc20Info.symbol,
-          balance: balanceDisplay,
-          address: hrc20Info.address,
-        })*/
-      }
-
-      this.Hrc20Balance = res
-      //this.$set(this.Hrc20Balance, res)
+          return {
+            [hrc20]: {
+              name: hrc20Info.name,
+              id: hrc20Info.symbol,
+              balance: balanceDisplay,
+              address: hrc20Info.address,
+            },
+          }
+        })
+      )
+        .then(res => res.reduce((a, o) => ({ ...a, ...o }), {}))
+        .then(res => {
+          this.Hrc20Balance = res
+        })
     },
     showBalance() {
       ;(this.allBalance = !this.allBalance),
