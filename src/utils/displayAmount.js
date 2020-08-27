@@ -1,9 +1,12 @@
 import BigNumber from 'bignumber.js'
 
-export const displayAmount = (amount, decimals) => {
+export const displayAmount = (amount, decimals = 0, showDecimalsFully = true) => {
   const a = new BigNumber(10).pow(decimals)
   const num = new BigNumber(amount).div(a)
 
-  const res = num.toFormat(decimals)
-  return res
+  if (!showDecimalsFully) {
+    return num.toString()
+  }
+
+  return num.toFormat(decimals)
 }

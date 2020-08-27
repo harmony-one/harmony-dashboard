@@ -148,20 +148,20 @@
                   </td>
                 </tr>
 
+                <!-- v-if="
+                   !hrc20BalancesDropdownOptions ||
+                     hrc20BalancesDropdownOptions.length > 0
+                 "-->
                 <tr
-                  v-if="
-                    hrc20BalancesDropdownOptions &&
-                      hrc20BalancesDropdownOptions.length > 0
-                  "
                 >
                   <td class="td-title">
                     Token
                   </td>
                   <td>
-                    <div style="max-width: 400px">
+                    <div style="max-width: 500px">
                       <v-select
                         :disabled="
-                          !hrc20BalancesDropdownOptions ||
+                          hrc20BalancesDropdownOptions &&
                             hrc20BalancesDropdownOptions.length === 0
                         "
                         :placeholder="hrc20BalancesDropdownPlaceholder"
@@ -333,7 +333,7 @@ export default {
   },
   computed: {
     hrc20BalancesDropdownPlaceholder() {
-      if (!this.Hrc20Balance) {
+      if (!Object.values(this.Hrc20Balance).length) {
         return 'Loading...'
       }
       const tokensCount = Object.values(this.Hrc20Balance).filter(
@@ -343,10 +343,6 @@ export default {
       return `HRC20 Tokens (${tokensCount})`
     },
     hrc20BalancesDropdownOptions() {
-      if (!this.Hrc20Balance) {
-        return []
-      }
-
       return Object.values(this.Hrc20Balance)
         .filter(o => +o.balance !== 0)
         .map(o => ({
@@ -380,7 +376,7 @@ export default {
     Hrc20Info() {
       const res = this.Hrc20Address[this.address.id]
 
-      const totalSupplyDisplay = displayAmount(res.totalSupply, res.decimals)
+      const totalSupplyDisplay = displayAmount(res.totalSupply, res.decimals, true)
 
       res.totalSupplyDisplay = totalSupplyDisplay
       return res
@@ -525,11 +521,14 @@ export default {
       const hmy = this.$store.data.hmy
       const toHex = hmy.hmySDK.crypto.fromBech32
 
+      const res = {}
+
       for (let hrc20 in this.Hrc20Address) {
         //if (this.Hrc20Balance[hrc20]) continue;
         const c = hmy.contract(this.$store.data.HRC20_ABI, toHex(hrc20))
         const hrc20Info = this.Hrc20Address[hrc20]
         let balance
+
         try {
           balance = await c.methods.balanceOf(toHex(this.address.id)).call()
         } catch (e) {
@@ -538,13 +537,24 @@ export default {
 
         const balanceDisplay = displayAmount(balance, hrc20Info.decimals)
 
+        res[hrc20] = {
+          name: hrc20Info.name,
+          id: hrc20Info.symbol,
+          balance: balanceDisplay,
+          address: hrc20Info.address,
+        }
+
+        /*
         this.$set(this.Hrc20Balance, hrc20, {
           name: hrc20Info.name,
           id: hrc20Info.symbol,
           balance: balanceDisplay,
           address: hrc20Info.address,
-        })
+        })*/
       }
+
+      this.Hrc20Balance = res
+      //this.$set(this.Hrc20Balance, res)
     },
     showBalance() {
       ;(this.allBalance = !this.allBalance),

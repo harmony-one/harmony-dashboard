@@ -165,6 +165,26 @@
                 </td>
                 <td>{{ sequence }}</td>
               </tr>
+
+              <tr v-if="!isStaking">
+                <td class="td-title">
+                  Data Parse
+                </td>
+                <td v-if="transaction.to">
+                  <DecodeABI
+                      :abi="$store.data.HRC20_ABI"
+                      :data="transaction.input"
+                      :is-hrc20="isHrc20(transaction.hash)"
+                      :bech32="transaction.to"
+                  />
+                </td>
+                <td v-else>
+                  Deploy Contract
+                  <router-link :to="'/address/' + ContractAddress">
+                    {{ ContractAddress }}
+                  </router-link>
+                </td>
+              </tr>
             </table>
 
             <expand-panel>
@@ -176,25 +196,6 @@
                   </td>
                   <td>
                     <vue-json-pretty :data="transaction.msg" />
-                  </td>
-                </tr>
-                <tr v-if="!isStaking">
-                  <td class="td-title">
-                    Data Parse
-                  </td>
-                  <td v-if="transaction.to">
-                    <DecodeABI
-                      :abi="$store.data.HRC20_ABI"
-                      :data="transaction.input"
-                      :is-hrc20="isHrc20(transaction.hash)"
-                      :bech32="transaction.to"
-                    />
-                  </td>
-                  <td v-else>
-                    Deploy Contract
-                    <router-link :to="'/address/' + ContractAddress">
-                      {{ ContractAddress }}
-                    </router-link>
                   </td>
                 </tr>
                 <tr v-if="!isStaking">
