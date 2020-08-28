@@ -551,7 +551,7 @@
                 <router-link
                   tag="button"
                   class="btn btn-light btn-block btn-mini"
-                  to="txs"
+                  to="/staking-txs"
                 >
                   Show all
                   <b>{{ globalData.stakingTxCount | number }}</b> staking
@@ -652,10 +652,10 @@
                 <router-link
                   tag="button"
                   class="btn btn-light btn-block btn-mini"
-                  to="txs"
+                  to="/hrc20-txs"
                 >
                   Show all
-                  <b>{{ globalData.hrc20TxsCount | number || '' }}</b> HRC20
+                  <b>{{ (globalData.hrc20TxsCount | number) || '' }}</b> HRC20
                   transfer transactions
                 </router-link>
               </footer>
