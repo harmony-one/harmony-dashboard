@@ -147,7 +147,93 @@
           </div>
         </div>
 
-        <div class="explorer-card">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="explorer-card latest-block-card">
+              <header>
+                <h1 class="flex-grow">
+                  Latest Blocks
+                </h1>
+                <div class="secondary-info">
+                  <div class="timer">
+                    Updated
+                    {{
+                      Math.round(
+                        Math.max((now - globalData.lastUpdateTime) / 1000, 0)
+                      ) | number
+                    }}s ago...
+                  </div>
+                  <span class="total-block-num" />
+                </div>
+              </header>
+              <div class="explorer-card-body">
+                <div class="explorer-table-responsive latest-block-table">
+                  <div class="tr">
+                    <div class="th">
+                      Shard
+                    </div>
+                    <div class="th">
+                      Hash
+                    </div>
+                    <div class="th">
+                      Height
+                    </div>
+                    <div class="th text-right">
+                      Timestamp
+                    </div>
+                    <div class="th text-right">
+                      Age
+                    </div>
+                    <div v-if="showTx" class="th text-right">
+                      Transactions
+                    </div>
+                  </div>
+                  <div
+                    v-for="block in globalData.blocks"
+                    :key="block.id"
+                    class="tr"
+                  >
+                    <div class="td">
+                      <router-link :to="'/shard/' + block.shardID">
+                        {{ block.shardID }}
+                      </router-link>
+                    </div>
+                    <div class="td">
+                      <router-link :to="'/block/' + block.id">
+                        {{ block.id | shorten }}
+                      </router-link>
+                    </div>
+                    <div class="td">
+                      <router-link :to="'/block/' + block.id">
+                        {{ block.height | number }}
+                      </router-link>
+                    </div>
+                    <div class="td text-right">
+                      {{ block.timestamp | timestamp }}
+                    </div>
+                    <div class="td text-right">
+                      {{ block.timestamp | age }}
+                    </div>
+                    <div v-if="showTx" class="td text-right">
+                      {{ block.txCount }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <footer class="button-only-footer">
+                <router-link
+                  tag="button"
+                  class="btn btn-light btn-block btn-mini"
+                  to="blocks"
+                >
+                  View all blocks
+                </router-link>
+              </footer>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="false" class="explorer-card">
           <div v-for="(block, shard) in lastBlocks" :key="shard" class="shard">
             <header>
               <h1>
@@ -324,20 +410,23 @@
                     </div>
                   </div>
                 </div>
-                <div class="show-more-container">
+                <!-- <div class="show-more-container">
                   <router-link to="/txs" class="show-more-button">
                     Show all
                     <b>{{ globalData.txCount | number }}</b> transactions
                   </router-link>
-                </div>
+                </div>-->
               </div>
-              <!-- <footer class="button-only-footer">
+              <footer class="button-only-footer">
                 <router-link
                   tag="button"
                   class="btn btn-light btn-block btn-mini"
                   to="txs"
-                >View all transactions</router-link>
-              </footer>-->
+                >
+                  Show all
+                  <b>{{ globalData.txCount | number }}</b> transactions
+                </router-link>
+              </footer>
             </div>
           </div>
 
@@ -450,21 +539,25 @@
                     </div>
                   </div>
                 </div>
-                <div class="show-more-container">
+                <!-- <div class="show-more-container">
                   <router-link to="/staking-txs" class="show-more-button">
                     Show all
                     <b>{{ globalData.stakingTxCount | number }}</b> staking
                     transactions
                   </router-link>
-                </div>
+                </div>-->
               </div>
-              <!-- <footer class="button-only-footer">
+              <footer class="button-only-footer">
                 <router-link
                   tag="button"
                   class="btn btn-light btn-block btn-mini"
                   to="txs"
-                >View all transactions</router-link>
-              </footer>-->
+                >
+                  Show all
+                  <b>{{ globalData.stakingTxCount | number }}</b> staking
+                  transactions
+                </router-link>
+              </footer>
             </div>
           </div>
 
@@ -548,20 +641,24 @@
                     </div>
                   </div>
                 </div>
-                <div class="show-more-container">
+                <!-- <div class="show-more-container">
                   <router-link to="/hrc20-txs" class="show-more-button">
                     Show all
                     <b>{{ globalData.hrc20TxsCount | number }}</b> transactions
                   </router-link>
-                </div>
+                </div>-->
               </div>
-              <!-- <footer class="button-only-footer">
+              <footer class="button-only-footer">
                 <router-link
                   tag="button"
                   class="btn btn-light btn-block btn-mini"
                   to="txs"
-                >View all transactions</router-link>
-              </footer>-->
+                >
+                  Show all
+                  <b>{{ globalData.hrc20TxsCount | number || '' }}</b> HRC20
+                  transfer transactions
+                </router-link>
+              </footer>
             </div>
           </div>
         </div>
