@@ -655,7 +655,7 @@
                   to="/hrc20-txs"
                 >
                   Show all
-                  <b>{{ (globalData.hrc20TxsCount | number) || '' }}</b> HRC20
+                  <b>{{ globalData.hrc20TxsCount | number || '' }}</b> HRC20
                   transfer transactions
                 </router-link>
               </footer>
