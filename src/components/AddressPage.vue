@@ -92,49 +92,46 @@
             <section>
               <table class="explorer-table">
                 <tr v-if="isHrc20(address.id)">
-                  <td colspan="2">
-                    <tr>
-                      <td class="td-title">
-                        Name(Symbol)
-                      </td>
-                      <td>
-                        {{ Hrc20Info.name + '(' + Hrc20Info.symbol + ')' }}
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td class="td-title">
-                        Decimals
-                      </td>
-                      <td>{{ Hrc20Info.decimals }}</td>
-                    </tr>
-
-                    <tr>
-                      <td class="td-title">
-                        Total Supply
-                      </td>
-                      <td>{{ Hrc20Info.totalSupplyDisplay }}</td>
-                    </tr>
-
-                    <tr>
-                      <td class="td-title">
-                        Description
-                      </td>
-                      <td>{{ Hrc20Info.description.en }}</td>
-                    </tr>
+                  <td class="td-title">
+                    Name(Symbol)
+                  </td>
+                  <td>
+                    {{ Hrc20Info.name + '(' + Hrc20Info.symbol + ')' }}
                   </td>
                 </tr>
 
+                <tr  v-if="isHrc20(address.id)">
+                  <td class="td-title">
+                    Decimals
+                  </td>
+                  <td>{{ Hrc20Info.decimals }}</td>
+                </tr>
+
+                <tr  v-if="isHrc20(address.id)">
+                  <td class="td-title">
+                    Total Supply
+                  </td>
+                  <td>{{ Hrc20Info.totalSupplyDisplay }}</td>
+                </tr>
+
+               <!-- <tr>
+                  <td class="td-title">
+                    Description
+                  </td>
+                  <td>{{ Hrc20Info.description.en }}</td>
+                </tr>-->
+
+
                 <tr>
                   <td class="td-title">
-                    id
+                    {{isHrc20(address.id) ? 'Contract' : 'ID' }}
                   </td>
                   <td>{{ address.id }}</td>
                 </tr>
 
                 <tr>
                   <td class="td-title">
-                    Balance
+                    ONE Balance
                   </td>
                   <td>
                     {{ address.balance | amount }}
@@ -380,8 +377,7 @@ export default {
 
       const totalSupplyDisplay = displayAmount(
         res.totalSupply,
-        res.decimals,
-        true
+        res.decimals
       )
 
       res.totalSupplyDisplay = totalSupplyDisplay
