@@ -100,31 +100,30 @@
                   </td>
                 </tr>
 
-                <tr  v-if="isHrc20(address.id)">
+                <tr v-if="isHrc20(address.id)">
                   <td class="td-title">
                     Decimals
                   </td>
                   <td>{{ Hrc20Info.decimals }}</td>
                 </tr>
 
-                <tr  v-if="isHrc20(address.id)">
+                <tr v-if="isHrc20(address.id)">
                   <td class="td-title">
                     Total Supply
                   </td>
                   <td>{{ Hrc20Info.totalSupplyDisplay }}</td>
                 </tr>
 
-               <!-- <tr>
+                <!-- <tr>
                   <td class="td-title">
                     Description
                   </td>
                   <td>{{ Hrc20Info.description.en }}</td>
                 </tr>-->
 
-
                 <tr>
                   <td class="td-title">
-                    {{isHrc20(address.id) ? 'Contract' : 'ID' }}
+                    {{ isHrc20(address.id) ? 'Contract' : 'ID' }}
                   </td>
                   <td>{{ address.id }}</td>
                 </tr>
@@ -375,10 +374,7 @@ export default {
     Hrc20Info() {
       const res = this.Hrc20Address[this.address.id]
 
-      const totalSupplyDisplay = displayAmount(
-        res.totalSupply,
-        res.decimals
-      )
+      const totalSupplyDisplay = displayAmount(res.totalSupply, res.decimals)
 
       res.totalSupplyDisplay = totalSupplyDisplay
       return res

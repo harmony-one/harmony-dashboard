@@ -12,7 +12,7 @@ const hmySDK = new Harmony(
     // chainType set to Harmony
     chainType: ChainType.Harmony,
     // chainType set to HmyLocal
-    chainId: ChainID.HmyMainnet,
+    chainId: SDK_NODE !== 'https://api.s0.b.hmny.io' ? ChainID.HmyMainnet : ChainID.HmyTestnet,
     shardID,
   }
 )

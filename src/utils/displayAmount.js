@@ -10,7 +10,6 @@ export const displayAmount = (
   const a = new BigNumber(10).pow(decimals)
   const num = new BigNumber(amount).div(a)
 
-  console.log({ amount, num: num.toString(), decimals }, amount.toString())
   if (!showDecimalsFully) {
     return num.toString()
   }
