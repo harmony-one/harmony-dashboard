@@ -15,12 +15,12 @@
               <div class="page-controllers-row">
                 <div>From:</div>
                 <VueCtkDateTimePicker
+                  v-model="cursor"
                   format="YYYY-MM-DD hh:mm"
                   color="#33cbda"
-                  buttonColor="#33cbda"
-                  :noClearButton="true"
+                  button-color="#33cbda"
+                  :no-clear-button="true"
                   :max-date="maxDate"
-                  v-model="cursor"
                 />
                 <button
                   class="btn btn-light btn-icon-only"
@@ -40,6 +40,7 @@
                 <th>Hash</th>
                 <th>From</th>
                 <th>To</th>
+                <th>Type</th>
                 <th>Age</th>
                 <th class="text-right">
                   Value
@@ -47,9 +48,9 @@
                 <th class="text-right">
                   Txn Fee
                 </th>
-                <th class="text-right">
+                <!-- <th class="text-right">
                   Size (bytes)
-                </th>
+                </th>-->
               </tr>
               <tr v-for="tx in txs" :key="tx.id" class="container">
                 <td>
@@ -78,16 +79,21 @@
                     {{ tx.to.bech32 | shorten }}
                   </router-link>
                 </td>
-                <td>{{ tx.timestamp | timestamp }}</td>
+                <td>
+                  {{ tx | txType }}
+                </td>
+                <td>
+                  {{ tx.timestamp | age }}
+                </td>
                 <td class="text-right no-break">
                   {{ tx.value | amount }}
                 </td>
                 <td class="text-right no-break">
                   {{ tx | fee }}
                 </td>
-                <td class="text-right">
+                <!--<td class="text-right">
                   {{ tx.bytes }}
-                </td>
+                </td>-->
               </tr>
             </table>
 
@@ -102,10 +108,10 @@
 </template>
 
 <script>
-import store from '../explorer/store';
-import service from '../explorer/service';
-import LoadingMessage from './LoadingMessage';
-import moment from 'moment';
+import store from '../explorer/store'
+import service from '../explorer/service'
+import LoadingMessage from './LoadingMessage'
+import moment from 'moment'
 
 export default {
   name: 'TransactionsPage',
@@ -119,52 +125,52 @@ export default {
       cursor: moment(),
       maxDate: moment().toString(),
       pageSize: 50,
-    };
+    }
   },
   watch: {
     $route() {
-      let queryCursor = Number(this.$route.query.from);
-      queryCursor = isNaN(queryCursor) ? undefined : queryCursor;
+      let queryCursor = Number(this.$route.query.from)
+      queryCursor = isNaN(queryCursor) ? undefined : queryCursor
 
-      const cursor = moment(queryCursor);
+      const cursor = moment(queryCursor)
 
       if (cursor.diff(this.cursor)) {
-        this.cursor = cursor;
-        this.getTransactions();
+        this.cursor = cursor
+        this.getTransactions()
       }
     },
     cursor() {
-      const unixCursor = moment(this.cursor).unix() * 1000;
+      const unixCursor = moment(this.cursor).unix() * 1000
 
       this.$router.replace({
         name: 'TransactionsPage',
         query: { from: unixCursor },
-      });
+      })
 
-      this.getTransactions();
+      this.getTransactions()
     },
   },
   mounted() {
-    let queryCursor = Number(this.$route.query.from);
-    queryCursor = isNaN(queryCursor) ? undefined : queryCursor;
+    let queryCursor = Number(this.$route.query.from)
+    queryCursor = isNaN(queryCursor) ? undefined : queryCursor
 
-    this.cursor = moment(queryCursor);
+    this.cursor = moment(queryCursor)
 
-    this.getTransactions();
+    this.getTransactions()
   },
   methods: {
     next() {
-      this.cursor = moment(this.txs[this.txs.length - 1].timestamp);
+      this.cursor = moment(this.txs[this.txs.length - 1].timestamp)
     },
     getTransactions() {
-      this.txs = [];
+      this.txs = []
 
-      const cursor = moment(this.cursor).unix() * 1000;
+      const cursor = moment(this.cursor).unix() * 1000
 
       service.getTransactions(cursor, this.pageSize).then(txs => {
-        this.txs = txs;
-      });
+        this.txs = txs
+      })
     },
   },
-};
+}
 </script>

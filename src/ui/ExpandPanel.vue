@@ -29,15 +29,15 @@ export default {
   data() {
     return {
       openBar: false,
-    };
+    }
   },
   methods: {
     clickBar() {
-      const currentOpenBar = this.openBar;
-      this.openBar = !currentOpenBar;
+      const currentOpenBar = this.openBar
+      this.openBar = !currentOpenBar
     },
   },
-};
+}
 </script>
 
 <style lang="less">

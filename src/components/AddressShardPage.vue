@@ -56,7 +56,7 @@
           :loading="loading"
           with-shards="true"
           :page="page"
-          :changePage="changePage"
+          :change-page="changePage"
         >
           <slot>
             <TransactionTableTabs :value="showStaking" :on-change="changeTab" />
@@ -69,7 +69,7 @@
           :loading="loading"
           with-shards="true"
           :page="page"
-          :changePage="changePage"
+          :change-page="changePage"
         >
           <slot>
             <TransactionTableTabs :value="showStaking" :on-change="changeTab" />
@@ -84,11 +84,11 @@
 </template>
 
 <script>
-import service from '../explorer/service';
-import LoadingMessage from './LoadingMessage';
-import TransactionsTable from './TransactionsTable';
-import StakingTransactionsTable from './StakingTransactionsTable';
-import TransactionTableTabs from './TransactionTableTabs';
+import service from '../explorer/service'
+import LoadingMessage from './LoadingMessage'
+import TransactionsTable from './TransactionsTable'
+import StakingTransactionsTable from './StakingTransactionsTable'
+import TransactionTableTabs from './TransactionTableTabs'
 
 export default {
   name: 'AddressShardPage',
@@ -105,21 +105,21 @@ export default {
       shardId: -1,
       allTxs: [],
       allStakingTxs: [],
-    };
+    }
   },
   computed: {
     showStaking() {
-      return this.$route.query.txType === 'staking' ? true : false;
+      return this.$route.query.txType === 'staking' ? true : false
     },
     page() {
-      return this.$route.query.page - 1 || 0;
+      return this.$route.query.page - 1 || 0
     },
     showPanel() {
       return (
         !this.loading ||
         (this.$route.params.address === (this.address && this.address.id) &&
           this.$route.params.shardId === this.shardId)
-      );
+      )
     },
   },
   watch: {
@@ -128,38 +128,38 @@ export default {
         this.$route.params.address !== (this.address && this.address.id) ||
         this.$route.params.shardId !== this.shardId
       ) {
-        this.getAddressShard();
+        this.getAddressShard()
       }
     },
     page() {
-      this.getAddressShard();
+      this.getAddressShard()
     },
   },
   mounted() {
-    this.getAddressShard();
+    this.getAddressShard()
   },
   methods: {
     changeTab(value) {
       this.$router.replace({
         name: 'AddressShardPage',
         query: { txType: value ? 'staking' : 'regular' },
-      });
+      })
     },
     changePage(value) {
       this.$router.replace({
         name: 'AddressShardPage',
         query: { page: value + 1, txType: this.$route.query.txType },
-      });
+      })
     },
     getAddressShard() {
-      this.loading = true;
+      this.loading = true
 
-      const pageIndex = (+this.$route.params.pageIndex || 1) - 1;
-      const address = this.$route.params.address;
-      this.shardId = this.$route.params.shardId;
+      const pageIndex = (+this.$route.params.pageIndex || 1) - 1
+      const address = this.$route.params.address
+      this.shardId = this.$route.params.shardId
 
-      const txs = {};
-      const stakingTxs = {};
+      const txs = {}
+      const stakingTxs = {}
 
       return service
         .getAddressShard({
@@ -174,8 +174,8 @@ export default {
               txs[tx.hash] = {
                 ...tx,
                 shardID: this.shardId,
-              };
-            });
+              }
+            })
           }
           if (address.stakingTxs) {
             address.stakingTxs.forEach(tx => {
@@ -185,25 +185,25 @@ export default {
                 delegator: tx.msg.delegatorAddress,
                 validator: tx.msg.validatorAddress,
                 value: tx.msg.amount,
-              };
-            });
+              }
+            })
           }
 
-          this.txCount = address.txCount;
-          this.stakingTxCount = address.stakingTxCount;
+          this.txCount = address.txCount
+          this.stakingTxCount = address.stakingTxCount
 
-          this.address = address;
+          this.address = address
         })
         .finally(() => {
           this.allTxs = Object.values(txs).sort((a, b) =>
             Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
-          );
+          )
           this.allStakingTxs = Object.values(stakingTxs).sort((a, b) =>
             Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
-          );
-          this.loading = false;
-        });
+          )
+          this.loading = false
+        })
     },
   },
-};
+}
 </script>

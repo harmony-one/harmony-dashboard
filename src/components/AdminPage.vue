@@ -77,9 +77,9 @@
 </template>
 
 <script>
-import DashboardService from '../dashboard/service';
-import ExplorerService from '../explorer/service';
-import SiteFooter from './SiteFooter';
+import DashboardService from '../dashboard/service'
+import ExplorerService from '../explorer/service'
+import SiteFooter from './SiteFooter'
 
 export default {
   name: 'AdminPage',
@@ -89,7 +89,7 @@ export default {
   data() {
     return {
       secret: '',
-    };
+    }
   },
   mounted() {},
   methods: {
@@ -99,13 +99,13 @@ export default {
         ExplorerService.reset(this.secret),
       ]).then(
         () => {
-          alert('Reset Successful!');
+          alert('Reset Successful!')
         },
         () => {
-          alert('Reset Failed!');
+          alert('Reset Failed!')
         }
-      );
+      )
     },
   },
-};
+}
 </script>

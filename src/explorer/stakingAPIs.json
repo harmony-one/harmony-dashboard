@@ -1,0 +1,98 @@
+[
+    {
+        "name": "Account Methods",
+        "methods": [
+            "hmy_getBalanceByBlockNumber",
+            "hmy_getTransactionCount",
+            "hmy_getBalance",
+            "hmy_getAccountNonce",
+            "hmy_setLogVerbosity",
+            "address"
+        ]
+    },
+    {
+        "name": "Filter Methods",
+        "methods": [
+            "hmy_getFilterLogs",
+            "hmy_newFilter",
+            "hmy_newPendingTransactionFilter",
+            "hmy_newBlockFilter",
+            "hmy_getFilterChanges",
+            "hmy_getLogs"
+        ]
+    },
+    {
+        "name": "Transaction Related Methods",
+        "methods": [
+            "hmy_getStakingTransactionByBlockHashAndIndex",
+            "hmy_getStakingTransactionByBlockNumberAndIndex",
+            "hmy_getStakingTransactionByHash",
+            "hmy_getCurrentTransactionErrorSink",
+            "hmy_getPendingCrossLinks",
+            "hmy_getPendingCXReceipts",
+            "hmy_getCXReceiptByHash",
+            "hmy_pendingTransactions",
+            "hmy_sendRawStakingTransaction",
+            "hmy_getTransactionsHistory",
+            "hmy_sendRawTransaction",
+            "hmy_getTransactionReceipt",
+            "hmy_getBlockTransactionCountByHash",
+            "hmy_getBlockTransactionCountByNumber",
+            "hmy_getTransactionByHash",
+            "hmy_getTransactionByBlockNumberAndIndex",
+            "hmy_getTransactionByBlockHashAndIndex",
+            "hmy_getBlockByNumber",
+            "hmy_getBlockByHash",
+            "hmy_getBlocks",
+            "hmy_getCurrentStakingErrorSink",
+            "tx"
+        ]
+    },
+    {
+        "name": "Contract Related Methods",
+        "methods": [
+            "hmy_estimateGas",
+            "hmy_getStorageAt",
+            "hmy_call",
+            "hmy_getCode"
+        ]
+    },
+    {
+        "name": "Protocol Related Methods",
+        "methods": [
+            "hmy_isLastBlock",
+            "hmy_epochLastBlock",
+            "hmy_latestHeader",
+            "hmy_getShardingStructure",
+            "hmy_blockNumber",
+            "hmy_syncing",
+            "hmy_gasPrice",
+            "net_peerCount",
+            "hmy_getEpoch",
+            "hmy_getLeader"
+        ]
+    },
+    {
+        "name": "Staking Related Methods",
+        "methods": [
+            "hmy_getCirculatingSupply",
+            "hmy_getTotalSupply",
+            "hmy_getStakingNetworkInfo",
+            "hmy_getAllValidatorInformation",
+            "hmy_getCurrentUtilityMetrics",
+            "hmy_getDelegationsByValidator",
+            "hmy_getDelegationsByDelegatorAndValidator",
+            "hmy_getDelegationsByDelegator",
+            "hmy_getValidatorMetrics",
+            "hmy_getMedianRawStakeSnapshot",
+            "hmy_getActiveValidatorAddresses",
+            "hmy_getAllValidatorAddresses",
+            "hmy_getCurrentStakingErrorSink",
+            "hmy_getValidatorInformation",
+            "hmy_getValidators",
+            "hmy_getSignedBlocks",
+            "hmy_isBlockSigner",
+            "hmy_getBlockSigners"
+        ]
+    }
+]

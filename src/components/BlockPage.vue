@@ -138,8 +138,8 @@
 </template>
 
 <script>
-import service from '../explorer/service';
-import LoadingMessage from './LoadingMessage';
+import service from '../explorer/service'
+import LoadingMessage from './LoadingMessage'
 
 export default {
   name: 'BlockPage',
@@ -150,24 +150,24 @@ export default {
     return {
       loading: true,
       block: null,
-    };
+    }
   },
   watch: {
     $route() {
-      this.getBlock();
+      this.getBlock()
     },
   },
   mounted() {
-    this.getBlock();
+    this.getBlock()
   },
   methods: {
     getBlock() {
-      this.loading = true;
+      this.loading = true
       service
         .getBlock(this.$route.params.blockId)
         .then(block => (this.block = block))
-        .finally(() => (this.loading = false));
+        .finally(() => (this.loading = false))
     },
   },
-};
+}
 </script>

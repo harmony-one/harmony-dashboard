@@ -32,5 +32,8 @@
   "vetur.format.defaultFormatter.ts": "prettier",
   "vetur.validation.style": true,
   // Validate vue-html in <template> using eslint-plugin-vue
-  "vetur.validation.template": true
+  "vetur.validation.template": true,
+  "[vue]": {
+    "editor.defaultFormatter": "octref.vetur"
+  }
 }

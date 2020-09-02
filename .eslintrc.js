@@ -1,3 +1,4 @@
+const devMode = process.env.DevMode === 'true'
 module.exports = {
   root: true,
   parserOptions: {
@@ -9,10 +10,12 @@ module.exports = {
   },
   extends: ['prettier', 'prettier/standard', 'plugin:vue/recommended'],
   plugins: ['vue', 'prettier'],
-  rules: {
-    'prettier/prettier': 'error',
-    'vue/max-attributes-per-line': 'off',
-    'vue/html-closing-bracket-newline': 'off',
-    'vue/html-self-closing': 'off',
-  },
-};
+  rules: devMode
+    ? {}
+    : {
+        'prettier/prettier': 'error',
+        'vue/max-attributes-per-line': 'off',
+        'vue/html-closing-bracket-newline': 'off',
+        'vue/html-self-closing': 'off',
+      },
+}

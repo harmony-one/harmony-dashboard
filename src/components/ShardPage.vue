@@ -8,6 +8,9 @@
   text-transform: uppercase;
   font-weight: 500;
 }
+.wfont {
+  font-family: monospace, 'Courier New', Courier;
+}
 </style>
 
 <template>
@@ -236,6 +239,40 @@
                 >View all transactions</router-link>
           </footer>-->
         </div>
+
+        <div class="explorer-card latest-block-card">
+          <header>
+            <h1 class="flex-grow">
+              Validators
+            </h1>
+          </header>
+          <div class="explorer-card-body">
+            <section>
+              <table class="explorer-table">
+                <tr>
+                  <th>Index</th>
+                  <th>Address</th>
+                  <th>Balance</th>
+                </tr>
+                <tr
+                  v-for="(validator, index) in validators"
+                  :key="validator.address"
+                  class="wfont"
+                >
+                  <td>
+                    {{ index }}
+                  </td>
+                  <td>
+                    <Address :bech32="validator.address" :show-raw="true" />
+                  </td>
+                  <td>
+                    {{ (validator.balance / 1e18).toFixed(2) }}
+                  </td>
+                </tr>
+              </table>
+            </section>
+          </div>
+        </div>
       </div>
       <div v-else class="container">
         <loading-message />
@@ -245,13 +282,15 @@
 </template>
 
 <script>
-import store from '../explorer/store';
-import LoadingMessage from './LoadingMessage';
+import store from '../explorer/store'
+import LoadingMessage from './LoadingMessage'
+import Address from './Address'
 
 export default {
   name: 'ShardPage',
   components: {
     LoadingMessage,
+    Address,
   },
   data() {
     return {
@@ -261,29 +300,35 @@ export default {
       timer: null,
       now: Date.now(),
       showTx: true,
-    };
+      holderTab: null,
+    }
   },
   computed: {
     shard() {
-      return this.globalData.shards[this.$route.params.id];
+      return this.globalData.shards[this.$route.params.id]
+    },
+    validators() {
+      if (this.$route.params.id < this.$store.data.shardsValidators.length)
+        return this.$store.data.shardsValidators[this.$route.params.id]
+      return []
     },
   },
   watch: {
     shard() {
-      this.resetTimer();
+      this.resetTimer()
     },
   },
   mounted() {
-    this.resetTimer();
+    this.resetTimer()
   },
   methods: {
     resetTimer() {
-      clearInterval(this.timer);
-      this.now = Date.now();
+      clearInterval(this.timer)
+      this.now = Date.now()
       this.timer = setInterval(() => {
-        this.now = Date.now();
-      }, 1000);
+        this.now = Date.now()
+      }, 1000)
     },
   },
-};
+}
 </script>

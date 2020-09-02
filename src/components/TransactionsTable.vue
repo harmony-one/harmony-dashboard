@@ -5,7 +5,7 @@
 <template>
   <div class="transactions-table explorer-card">
     <header>
-      <slot></slot>
+      <slot />
       <div class="pagination-controls">
         <span class="total-tx-num">{{ txCount }} txs</span>
         <span class="page-controllers">
@@ -46,9 +46,9 @@
       </div>
     </header>
     <div
+      ref="loadingContainer"
       class="explorer-card-body"
       style="position: relative; min-height: 200px;"
-      ref="loadingContainer"
     >
       <section>
         <table class="explorer-table">
@@ -91,9 +91,7 @@
               </router-link>
             </td>
             <td>
-              <router-link :to="'/address/' + tx.to">
-                {{ tx.to | shorten }}
-              </router-link>
+              <Address :bech32="tx.to" />
             </td>
             <td class="no-break">
               {{ tx.value | amount }}
@@ -109,8 +107,10 @@
 </template>
 
 <script>
+import Address from './Address'
 export default {
   name: 'TransactionsTable',
+  components: { Address },
   props: [
     'allTxs',
     'withShards',
@@ -124,29 +124,29 @@ export default {
     return {
       pageIndex: this.page || 0,
       pageSize: 20,
-    };
+    }
   },
   computed: {
     pageCount() {
-      return Math.ceil(this.txCount / this.pageSize);
+      return Math.ceil(this.txCount / this.pageSize)
     },
     txs() {
-      const begin = this.pageIndex * this.pageSize;
+      const begin = this.pageIndex * this.pageSize
 
       if (!this.isLocal) {
-        return this.allTxs;
+        return this.allTxs
       } else {
-        return this.allTxs.slice(begin, begin + this.pageSize);
+        return this.allTxs.slice(begin, begin + this.pageSize)
       }
     },
   },
-  mounted() {
-    this.setLoader();
-  },
   watch: {
     loading() {
-      this.setLoader();
+      this.setLoader()
     },
+  },
+  mounted() {
+    this.setLoader()
   },
   methods: {
     setLoader() {
@@ -154,35 +154,35 @@ export default {
         this.loader = this.$loading.show({
           container: this.$refs.loadingContainer,
           canCancel: false,
-        });
+        })
       } else if (this.loader) {
-        this.loader.hide();
+        this.loader.hide()
       }
     },
     goToPage(index) {
-      if (index < 0) index = 0;
-      if (index >= this.pageCount) index = this.pageCount - 1;
+      if (index < 0) index = 0
+      if (index >= this.pageCount) index = this.pageCount - 1
 
-      this.pageIndex = index;
+      this.pageIndex = index
 
       if (this.changePage) {
-        this.changePage(index);
+        this.changePage(index)
       }
     },
     first() {
-      this.goToPage(0);
+      this.goToPage(0)
     },
     last() {
-      this.goToPage(this.pageCount - 1);
+      this.goToPage(this.pageCount - 1)
     },
     prev() {
-      if (this.pageIndex === 0) return;
-      this.goToPage(this.pageIndex - 1);
+      if (this.pageIndex === 0) return
+      this.goToPage(this.pageIndex - 1)
     },
     next() {
-      if (this.pageIndex === this.pageCount - 1) return;
-      this.goToPage(this.pageIndex + 1);
+      if (this.pageIndex === this.pageCount - 1) return
+      this.goToPage(this.pageIndex + 1)
     },
   },
-};
+}
 </script>

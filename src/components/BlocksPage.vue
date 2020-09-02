@@ -112,9 +112,9 @@
 </template>
 
 <script>
-import store from '../explorer/store';
-import service from '../explorer/service';
-import LoadingMessage from './LoadingMessage';
+import store from '../explorer/store'
+import service from '../explorer/service'
+import LoadingMessage from './LoadingMessage'
 
 export default {
   name: 'BlocksPage',
@@ -127,54 +127,54 @@ export default {
       blocks: [],
       pageIndex: 0,
       pageSize: 50,
-    };
+    }
   },
   computed: {
     pageCount() {
-      return Math.ceil(this.globalData.blockCount / this.pageSize);
+      return Math.ceil(this.globalData.blockCount / this.pageSize)
     },
   },
   watch: {
     $route(to) {
-      this.pageIndex = (+to.params.pageIndex || 1) - 1;
-      this.getBlocks();
+      this.pageIndex = (+to.params.pageIndex || 1) - 1
+      this.getBlocks()
     },
   },
   mounted() {
     if (this.$route.params.pageIndex) {
-      this.pageIndex = +this.$route.params.pageIndex - 1;
+      this.pageIndex = +this.$route.params.pageIndex - 1
     }
-    this.getBlocks();
+    this.getBlocks()
   },
   methods: {
     goToPage(index) {
-      if (index < 0) index = 0;
-      if (index >= this.pageCount) index = this.pageCount - 1;
+      if (index < 0) index = 0
+      if (index >= this.pageCount) index = this.pageCount - 1
       this.$router.replace({
         name: 'BlocksPage',
         params: { pageIndex: index + 1 },
-      });
+      })
     },
     first() {
-      this.goToPage(0);
+      this.goToPage(0)
     },
     last() {
-      this.goToPage(this.pageCount - 1);
+      this.goToPage(this.pageCount - 1)
     },
     prev() {
-      if (this.pageIndex === 0) return;
-      this.goToPage(this.pageIndex - 1);
+      if (this.pageIndex === 0) return
+      this.goToPage(this.pageIndex - 1)
     },
     next() {
-      if (this.pageIndex === this.pageCount - 1) return;
-      this.goToPage(this.pageIndex + 1);
+      if (this.pageIndex === this.pageCount - 1) return
+      this.goToPage(this.pageIndex + 1)
     },
     getBlocks() {
-      this.blocks = [];
+      this.blocks = []
       service.getBlocks(this.pageIndex, this.pageSize).then(blocks => {
-        this.blocks = blocks;
-      });
+        this.blocks = blocks
+      })
     },
   },
-};
+}
 </script>

@@ -15,12 +15,12 @@
               <div class="page-controllers-row">
                 <div>From:</div>
                 <VueCtkDateTimePicker
+                  v-model="cursor"
                   format="YYYY-MM-DD hh:mm"
                   color="#33cbda"
-                  buttonColor="#33cbda"
-                  :noClearButton="true"
+                  button-color="#33cbda"
+                  :no-clear-button="true"
                   :max-date="maxDate"
-                  v-model="cursor"
                 />
                 <button
                   class="btn btn-light btn-icon-only"
@@ -123,10 +123,10 @@
 </template>
 
 <script>
-import store from '../explorer/store';
-import service from '../explorer/service';
-import LoadingMessage from './LoadingMessage';
-import moment from 'moment';
+import store from '../explorer/store'
+import service from '../explorer/service'
+import LoadingMessage from './LoadingMessage'
+import moment from 'moment'
 
 export default {
   name: 'StakingTransactionsPage',
@@ -140,54 +140,54 @@ export default {
       cursor: moment(),
       maxDate: moment().toString(),
       pageSize: 50,
-    };
+    }
   },
   watch: {
     $route() {
-      let queryCursor = Number(this.$route.query.from);
-      queryCursor = isNaN(queryCursor) ? undefined : queryCursor;
+      let queryCursor = Number(this.$route.query.from)
+      queryCursor = isNaN(queryCursor) ? undefined : queryCursor
 
-      const cursor = moment(queryCursor);
+      const cursor = moment(queryCursor)
 
       if (cursor.diff(this.cursor)) {
-        this.cursor = cursor;
-        this.getTransactions();
+        this.cursor = cursor
+        this.getTransactions()
       }
     },
     cursor() {
-      const unixCursor = moment(this.cursor).unix() * 1000;
+      const unixCursor = moment(this.cursor).unix() * 1000
 
       this.$router.replace({
         name: 'StakingTransactionsPage',
         query: { from: unixCursor },
-      });
+      })
 
-      this.getTransactions();
+      this.getTransactions()
     },
   },
   mounted() {
-    let queryCursor = Number(this.$route.query.from);
-    queryCursor = isNaN(queryCursor) ? undefined : queryCursor;
+    let queryCursor = Number(this.$route.query.from)
+    queryCursor = isNaN(queryCursor) ? undefined : queryCursor
 
-    this.cursor = moment(queryCursor);
+    this.cursor = moment(queryCursor)
 
-    this.getTransactions();
+    this.getTransactions()
   },
   methods: {
     next() {
       this.cursor = moment(
         this.stakingTxs[this.stakingTxs.length - 1].timestamp
-      );
+      )
     },
     getTransactions() {
-      this.stakingTxs = [];
+      this.stakingTxs = []
 
-      const cursor = moment(this.cursor).unix() * 1000;
+      const cursor = moment(this.cursor).unix() * 1000
 
       service.getStakingTransactions(cursor, this.pageSize).then(txs => {
-        this.stakingTxs = txs;
-      });
+        this.stakingTxs = txs
+      })
     },
   },
-};
+}
 </script>

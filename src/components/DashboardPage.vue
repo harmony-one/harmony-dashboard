@@ -50,15 +50,15 @@
 </template>
 
 <script>
-import store from '../dashboard/store';
+import store from '../dashboard/store'
 
 export default {
   name: 'DashboardPage',
   data() {
     return {
       globalData: store.data,
-    };
+    }
   },
   mounted() {},
-};
+}
 </script>

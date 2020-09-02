@@ -1,8 +1,8 @@
 <template>
   <div class="tabs">
     <span
-      :class="{ tabItem: true, active: !value }"
-      @click="() => onChange(false)"
+      :class="{ tabItem: true, active: value == 0 }"
+      @click="() => onChange(0)"
     >
       <span v-if="titlePostfixTx" class="postfix">{{
         titlePostfixTx | number
@@ -10,13 +10,22 @@
       {{ titlePrefix }} Transactions
     </span>
     <span
-      :class="{ tabItem: true, active: value }"
-      @click="() => onChange(true)"
+      :class="{ tabItem: true, active: value == 1 }"
+      @click="() => onChange(1)"
     >
       <span v-if="titlePostfixStakingTx" class="postfix">{{
         titlePostfixStakingTx | number
       }}</span>
       {{ titlePrefix }} Staking transactions
+    </span>
+    <span
+      :class="{ tabItem: true, active: value == 2 }"
+      @click="() => onChange(2)"
+    >
+      <span v-if="titlePostfixHrc20Tx" class="postfix">{{
+        titlePostfixHrc20Tx | number
+      }}</span>
+      {{ titlePrefix }} HRC20 Transactions
     </span>
   </div>
 </template>
@@ -30,8 +39,9 @@ export default {
     'titlePrefix',
     'titlePostfixTx',
     'titlePostfixStakingTx',
+    'titlePostfixHrc20Tx',
   ],
-};
+}
 </script>
 
 <style lang="less">

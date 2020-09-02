@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import Highcharts from 'highcharts';
-import stockInit from 'highcharts/modules/stock';
-stockInit(Highcharts);
+import Highcharts from 'highcharts'
+import stockInit from 'highcharts/modules/stock'
+stockInit(Highcharts)
 
 export default {
   name: 'LiveLineChart',
@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       series: null,
-    };
+    }
   },
   watch: {
     value(val) {
@@ -25,7 +25,7 @@ export default {
         [Date.now(), val], // TODO(ricl): this Date.now() should be updateTime
         true, // do redraw
         false // don't shift out points
-      );
+      )
     },
   },
   mounted() {
@@ -77,9 +77,9 @@ export default {
       tooltip: {
         valueDecimals: 2,
       },
-    };
-    let chart = Highcharts.stockChart('container', options);
-    this.series = chart.series[0];
+    }
+    let chart = Highcharts.stockChart('container', options)
+    this.series = chart.series[0]
   },
-};
+}
 </script>

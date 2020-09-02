@@ -240,6 +240,34 @@ body,
   }
 }
 
+.explorer-card.status-card.status-shard {
+  .data-num-column {
+    .data-shard {
+      font-size: 1.3em;
+      font-weight: 500;
+    }
+  }
+  .row {
+    margin-left: 5em;
+  }
+  .data-slot {
+    margin-top: 1.3em;
+    /*border-bottom: solid 1px var(--color-table-border);*/
+
+    .data {
+      font-size: 1.2em;
+      color: black;
+    }
+    .link {
+      font-size: 1.2em;
+    }
+    .sub-title {
+      font-size: 1.1em;
+      color: #888;
+    }
+  }
+}
+
 .explorer-table-responsive {
   display: table;
   width: 100%;
@@ -289,10 +317,10 @@ body,
 </template>
 
 <script>
-import 'animate.css/animate.css';
-import 'flexboxgrid/dist/flexboxgrid.min.css';
-import SiteFooter from './components/SiteFooter';
-import SiteHeader from './components/SiteHeader';
+import 'animate.css/animate.css'
+import 'flexboxgrid/dist/flexboxgrid.min.css'
+import SiteFooter from './components/SiteFooter'
+import SiteHeader from './components/SiteHeader'
 
 export default {
   name: 'App',
@@ -300,5 +328,5 @@ export default {
     SiteFooter,
     SiteHeader,
   },
-};
+}
 </script>

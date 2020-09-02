@@ -154,40 +154,40 @@
 </template>
 
 <script>
-import service from '../explorer/service';
+import service from '../explorer/service'
 export default {
   name: 'SiteHeader',
   data() {
     return {
       input: '',
       showNav: localStorage.getItem('nav'),
-    };
+    }
   },
   methods: {
     search() {
-      let input = this.input.trim();
-      this.input = '';
+      let input = this.input.trim()
+      this.input = ''
       if (!input) {
         //  || (input.length !== 32 && input.length !== 20)
-        alert('invalid input');
-        return;
+        alert('invalid input')
+        return
       }
       service
         .search(input)
         .then(result => {
           if (result.type === 'block') {
-            this.$router.push(`/block/${input}`);
+            this.$router.push(`/block/${input}`)
           } else if (result.type === 'tx') {
-            this.$router.push(`/tx/${input}`);
+            this.$router.push(`/tx/${input}`)
           } else if (result.type === 'address') {
-            this.$router.push(`/address/${input}`);
+            this.$router.push(`/address/${input}`)
           }
         })
         .catch(r => {
-          let errMessage = 'Not Found!';
+          let errMessage = 'Not Found!'
 
           if (r.response && r.response.data && r.response.data.err) {
-            errMessage = r.response.data.err;
+            errMessage = r.response.data.err
           }
 
           this.$notify({
@@ -196,9 +196,9 @@ export default {
             type: 'search-error',
             text: 'Search failed: ' + errMessage,
             duration: 3000,
-          });
-        });
+          })
+        })
     },
   },
-};
+}
 </script>
