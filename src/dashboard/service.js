@@ -1,19 +1,15 @@
+/*
 import axios from 'axios'
 import store from './store'
-import { DASHBOARD_BACKEND_URL } from '../explorer/globalConfig.js'
+import { EXPLORER_BACKEND_WS, EXPLORER_BACKEND_URL } from '../explorer/globalConfig.js'
 
-const BACKEND_URL = DASHBOARD_BACKEND_URL
-const HTTP_BACKEND_URL = `https://${BACKEND_URL}:3000`
 
 function sendPost(url, params, config) {
-  return axios.post(HTTP_BACKEND_URL + url, params, config)
+  return axios.post(EXPLORER_BACKEND_URL + url, params, config)
 }
 
 ;(function listenWebsocket() {
-  const isDevMode = process.env.NODE_ENV === 'development'
-  const ws = isDevMode
-    ? new WebSocket(`ws://${BACKEND_URL}:8888`)
-    : new WebSocket(`wss://${BACKEND_URL}:8888`)
+  const ws = new WebSocket(EXPLORER_BACKEND_WS)
   ws.addEventListener('open', () => {
     ws.send('front-end: Hi.')
   })
@@ -41,3 +37,4 @@ export default {
     return sendPost('/reset', { secret })
   },
 }
+*/

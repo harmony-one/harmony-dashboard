@@ -529,6 +529,7 @@ export default {
           const hrc20Info = this.Hrc20Address[hrc20]
           let balance
 
+
           try {
             balance = await c.methods.balanceOf(toHex(this.address.id)).call()
           } catch (e) {
