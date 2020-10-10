@@ -130,7 +130,12 @@ export default {
   getAddress(params) {
     return authGet('/address', { params }).then(res => {
       let address = res.data.address
-      return address
+      return res.data
+    })
+  },
+  getAddressFullInfo(params) {
+    return authGet('/address', { params }).then(res => {
+      return res.data
     })
   },
   getHrc20Txs(params) {
