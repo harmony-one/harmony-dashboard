@@ -22,12 +22,12 @@
                 </td>
                 <td>{{ transaction.hash || $route.params.transactionId }}</td>
               </tr>
-              <tr v-if="txReceiptStatus!==undefined">
+              <tr>
                 <td class="td-title">
                   Status
                 </td>
-                <!--<td>{{ transaction.status | txStatus }}</td>-->
-                <td>{{ txReceiptStatus === 1 ? 'Success' : 'Failure' }}</td>
+                <td v-if="!isContract">{{ transaction.status | txStatus }}</td>
+                <td v-if="isContract">{{ txReceiptStatus === 1 ? 'Success' : 'Failure' }}</td>
               </tr>
               <tr v-if="isFailedTransaction">
                 <td class="td-title">
@@ -264,6 +264,13 @@ export default {
     }
   },
   computed: {
+    isContract() {
+      if (!this.transaction) {
+        return undefined
+      }
+
+      return !!this.transaction.input
+    },
     isCrossShard() {
       return (
         this.transaction &&
@@ -290,7 +297,6 @@ export default {
   },
   mounted() {
     this.getTransaction()
-    this.getTransactionReceipt()
   },
   methods: {
     getSequence() {
@@ -303,6 +309,10 @@ export default {
       }
     },
     getTransactionReceipt(txId) {
+      if (!this.isContract) {
+        return
+      }
+
       const routeTxId = this.$route.params.transactionId
 
       if (txId && txId !== routeTxId) {
@@ -310,8 +320,10 @@ export default {
         return
       }
 
-      this.globalData.hmy.hmySDK.blockchain.Transaction.getTransactionReceipt(routeTxId).then(res=>{
-        const {result} = res
+      this.globalData.hmy.hmySDK.blockchain.Transaction.getTransactionReceipt(
+        routeTxId
+      ).then(res => {
+        const { result } = res
         this.txReceiptStatus = parseInt(result.status || '0x0', 16)
       })
     },
@@ -331,8 +343,7 @@ export default {
 
       getTx(routeTxId)
         .then(transaction => {
-
-          console.log({transaction})
+          console.log({ transaction })
 
           if (
             transaction &&
@@ -368,6 +379,7 @@ export default {
             this.transaction = transaction
           }
 
+          this.getTransactionReceipt()
           this.firstLoading = false
 
           if (transaction.status === 'PENDING') {

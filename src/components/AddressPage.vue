@@ -84,7 +84,7 @@
               </a>
             </h1>
             <h1 v-else>
-              {{title}}
+              {{ title }}
             </h1>
           </header>
 
@@ -133,7 +133,10 @@
                     Creater Address
                   </td>
                   <td>
-                    <Address :bech32="contractData.authorAddress" show-raw="true"/>
+                    <Address
+                      :bech32="contractData.authorAddress"
+                      show-raw="true"
+                    />
                   </td>
                 </tr>
 
@@ -498,8 +501,7 @@ export default {
 
       service
         .getAddressFullInfo({ id: address, pageIndex: this.page, pageSize: 20 })
-        .then(({address, contractData}) => {
-
+        .then(({ address, contractData }) => {
           address.shardData.forEach((data, idx) => {
             if (data.txs) {
               data.txs.forEach(tx => {
@@ -557,7 +559,6 @@ export default {
           const c = hmy.contract(this.$store.data.HRC20_ABI, toHex(hrc20))
           const hrc20Info = this.Hrc20Address[hrc20]
           let balance
-
 
           try {
             balance = await c.methods.balanceOf(toHex(this.address.id)).call()

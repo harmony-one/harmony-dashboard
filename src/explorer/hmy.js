@@ -6,7 +6,7 @@ const stakingAPIs = require('./stakingAPIs.json')
 
 const shardID = 0
 
-console.log({SDK_NODE })
+console.log({ SDK_NODE })
 const hmySDK = new Harmony(
   // rpc url
   SDK_NODE,
@@ -14,7 +14,10 @@ const hmySDK = new Harmony(
     // chainType set to Harmony
     chainType: ChainType.Harmony,
     // chainType set to HmyLocal
-    chainId: SDK_NODE !== 'https://api.s0.b.hmny.io' ? ChainID.HmyMainnet : ChainID.HmyTestnet,
+    chainId:
+      SDK_NODE !== 'https://api.s0.b.hmny.io'
+        ? ChainID.HmyMainnet
+        : ChainID.HmyTestnet,
     shardID,
   }
 )

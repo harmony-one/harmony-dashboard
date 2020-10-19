@@ -1,6 +1,10 @@
 import axios from 'axios'
 import store from './store'
-import { EXPLORER_BACKEND_URL, EXPLORER_BACKEND_WS, SECRET } from './globalConfig.js'
+import {
+  EXPLORER_BACKEND_URL,
+  EXPLORER_BACKEND_WS,
+  SECRET,
+} from './globalConfig.js'
 
 // For test: asios.get('...').delay(1000)
 Promise.prototype.delay = function(time) {
@@ -10,7 +14,6 @@ Promise.prototype.delay = function(time) {
     }, time)
   })
 }
-
 
 function sendPost(url, params, config) {
   return axios.post(EXPLORER_BACKEND_URL + url, params, config)
