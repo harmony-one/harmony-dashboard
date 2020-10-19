@@ -361,14 +361,14 @@ export default {
         return 'Loading...'
       }
       const tokensCount = Object.values(this.Hrc20Balance).filter(
-        o => +o.balance !== 0 || true
+        o => +o.balance !== 0 // || true
       ).length
 
       return `HRC20 Tokens (${tokensCount})`
     },
     hrc20BalancesDropdownOptions() {
       return Object.values(this.Hrc20Balance)
-        //.filter(o => +o.balance !== 0)
+        .filter(o => +o.balance !== 0)
         .map(o => ({
           label: `${o.name} (${o.id}) - ${o.balance}`,
           code: o.address,

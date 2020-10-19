@@ -22,11 +22,12 @@
                 </td>
                 <td>{{ transaction.hash || $route.params.transactionId }}</td>
               </tr>
-              <tr>
+              <tr v-if="txReceiptStatus!==undefined">
                 <td class="td-title">
                   Status
                 </td>
-                <td>{{ transaction.status | txStatus }}</td>
+                <!--<td>{{ transaction.status | txStatus }}</td>-->
+                <td>{{ txReceiptStatus === 1 ? 'Success' : 'Failure' }}</td>
               </tr>
               <tr v-if="isFailedTransaction">
                 <td class="td-title">
@@ -256,6 +257,7 @@ export default {
       loading: true,
       firstLoading: true,
       transaction: null,
+      txReceiptStatus: undefined,
       receipt: null,
       sequence: null,
       globalData: store.data,
@@ -288,6 +290,7 @@ export default {
   },
   mounted() {
     this.getTransaction()
+    this.getTransactionReceipt()
   },
   methods: {
     getSequence() {
@@ -298,6 +301,19 @@ export default {
       if (match && match[1] && match[1].length % 2 == 0) {
         this.sequence = this.hexToAscii(match[1])
       }
+    },
+    getTransactionReceipt(txId) {
+      const routeTxId = this.$route.params.transactionId
+
+      if (txId && txId !== routeTxId) {
+        console.log(`transaction ${routeTxId} not found.`)
+        return
+      }
+
+      this.globalData.hmy.hmySDK.blockchain.Transaction.getTransactionReceipt(routeTxId).then(res=>{
+        const {result} = res
+        this.txReceiptStatus = parseInt(result.status || '0x0', 16)
+      })
     },
     getTransaction(txId) {
       const routeTxId = this.$route.params.transactionId
@@ -315,6 +331,9 @@ export default {
 
       getTx(routeTxId)
         .then(transaction => {
+
+          console.log({transaction})
+
           if (
             transaction &&
             transaction.id &&
@@ -401,3 +420,21 @@ export default {
   },
 }
 </script>
+
+
+<!--
+0xa0c2567e57813155c3cdb19d57c5e8a2bfe5e3aeced1baf4b304bbcf8787f14e
+
+curl &#45;&#45;location &#45;&#45;request POST 'https://api0.s0.t.hmny.io' &#45;&#45;header 'Content-Type: application/json' &#45;&#45;data-raw '{
+"jsonrpc": "2.0",
+"id": 1,
+"method": "hmy_getTransactionReceipt",
+"params": [
+"0x6597a6a6ce842aca1213eedca7881a11e98430ede99f05e759f1d7fe9626e210"
+]
+}'
+
+/*
+
+*/
+-->
