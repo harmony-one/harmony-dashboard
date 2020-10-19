@@ -420,21 +420,3 @@ export default {
   },
 }
 </script>
-
-
-<!--
-0xa0c2567e57813155c3cdb19d57c5e8a2bfe5e3aeced1baf4b304bbcf8787f14e
-
-curl &#45;&#45;location &#45;&#45;request POST 'https://api0.s0.t.hmny.io' &#45;&#45;header 'Content-Type: application/json' &#45;&#45;data-raw '{
-"jsonrpc": "2.0",
-"id": 1,
-"method": "hmy_getTransactionReceipt",
-"params": [
-"0x6597a6a6ce842aca1213eedca7881a11e98430ede99f05e759f1d7fe9626e210"
-]
-}'
-
-/*
-
-*/
--->
