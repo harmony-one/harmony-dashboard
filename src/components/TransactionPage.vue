@@ -26,7 +26,12 @@
                 <td class="td-title">
                   Status
                 </td>
-                <td>{{ transaction.status | txStatus }}</td>
+                <td v-if="!isContract">
+                  {{ transaction.status | txStatus }}
+                </td>
+                <td v-if="isContract">
+                  {{ txReceiptStatus === 1 ? 'Success' : 'Failure' }}
+                </td>
               </tr>
               <tr v-if="isFailedTransaction">
                 <td class="td-title">
@@ -256,12 +261,20 @@ export default {
       loading: true,
       firstLoading: true,
       transaction: null,
+      txReceiptStatus: undefined,
       receipt: null,
       sequence: null,
       globalData: store.data,
     }
   },
   computed: {
+    isContract() {
+      if (!this.transaction) {
+        return undefined
+      }
+
+      return !!this.transaction.input
+    },
     isCrossShard() {
       return (
         this.transaction &&
@@ -299,6 +312,25 @@ export default {
         this.sequence = this.hexToAscii(match[1])
       }
     },
+    getTransactionReceipt(txId) {
+      if (!this.isContract) {
+        return
+      }
+
+      const routeTxId = this.$route.params.transactionId
+
+      if (txId && txId !== routeTxId) {
+        console.log(`transaction ${routeTxId} not found.`)
+        return
+      }
+
+      this.globalData.hmy.hmySDK.blockchain.Transaction.getTransactionReceipt(
+        routeTxId
+      ).then(res => {
+        const { result } = res
+        this.txReceiptStatus = parseInt(result.status || '0x0', 16)
+      })
+    },
     getTransaction(txId) {
       const routeTxId = this.$route.params.transactionId
 
@@ -315,6 +347,8 @@ export default {
 
       getTx(routeTxId)
         .then(transaction => {
+          console.log({ transaction })
+
           if (
             transaction &&
             transaction.id &&
@@ -349,6 +383,7 @@ export default {
             this.transaction = transaction
           }
 
+          this.getTransactionReceipt()
           this.firstLoading = false
 
           if (transaction.status === 'PENDING') {

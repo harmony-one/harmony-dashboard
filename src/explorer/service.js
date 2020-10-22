@@ -1,6 +1,10 @@
 import axios from 'axios'
 import store from './store'
-import { EXPLORER_BACKEND_URL } from './globalConfig.js'
+import {
+  EXPLORER_BACKEND_URL,
+  EXPLORER_BACKEND_WS,
+  SECRET,
+} from './globalConfig.js'
 
 // For test: asios.get('...').delay(1000)
 Promise.prototype.delay = function(time) {
@@ -11,17 +15,8 @@ Promise.prototype.delay = function(time) {
   })
 }
 
-const BACKEND_URL = EXPLORER_BACKEND_URL
-
-const isDevMode = process.env.NODE_ENV === 'development'
-const HTTP_BACKEND_URL = isDevMode
-  ? `http://${BACKEND_URL}`
-  : `https://${BACKEND_URL}`
-
-const SECRET = localStorage.getItem('secret')
-
 function sendPost(url, params, config) {
-  return axios.post(HTTP_BACKEND_URL + url, params, config)
+  return axios.post(EXPLORER_BACKEND_URL + url, params, config)
 }
 
 function authGet(url, _params) {
@@ -37,14 +32,11 @@ function authGet(url, _params) {
 function sendGet(url, params) {
   //if(url == '/hrc20-txs' || url == '/hrc20-latest')
   //  return axios.get('http://127.0.0.1:8080' + url, params); // .delay(500)
-  return axios.get(HTTP_BACKEND_URL + url, params) // .delay(500)
+  return axios.get(EXPLORER_BACKEND_URL + url, params) // .delay(500)
 }
 
 ;(function listenWebsocket() {
-  const isDevMode = process.env.NODE_ENV === 'development'
-  const ws = isDevMode
-    ? new WebSocket(`ws://${BACKEND_URL}`, [SECRET])
-    : new WebSocket(`wss://${BACKEND_URL}`, [SECRET])
+  const ws = new WebSocket(EXPLORER_BACKEND_WS, [SECRET])
 
   ws.addEventListener('open', () => {
     ws.send('front-end: Hi.')
@@ -141,7 +133,12 @@ export default {
   getAddress(params) {
     return authGet('/address', { params }).then(res => {
       let address = res.data.address
-      return address
+      return res.data
+    })
+  },
+  getAddressFullInfo(params) {
+    return authGet('/address', { params }).then(res => {
+      return res.data
     })
   },
   getHrc20Txs(params) {

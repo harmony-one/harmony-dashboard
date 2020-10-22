@@ -84,7 +84,7 @@
               </a>
             </h1>
             <h1 v-else>
-              Address
+              {{ title }}
             </h1>
           </header>
 
@@ -126,6 +126,29 @@
                     {{ isHrc20(address.id) ? 'Contract' : 'ID' }}
                   </td>
                   <td>{{ address.id }}</td>
+                </tr>
+
+                <tr v-if="isContract">
+                  <td class="td-title">
+                    Creater Address
+                  </td>
+                  <td>
+                    <Address
+                      :bech32="contractData.authorAddress"
+                      show-raw="true"
+                    />
+                  </td>
+                </tr>
+
+                <tr v-if="isContract">
+                  <td class="td-title">
+                    Transaction ID
+                  </td>
+                  <td>
+                    <router-link :to="'/tx/' + contractData.txId">
+                      {{ contractData.txId | shorten }}
+                    </router-link>
+                  </td>
                 </tr>
 
                 <tr>
@@ -330,12 +353,18 @@ export default {
     }
   },
   computed: {
+    title() {
+      return this.isContract ? 'Contract' : 'Address'
+    },
+    isContract() {
+      return this.contractData && this.contractData.txId
+    },
     hrc20BalancesDropdownPlaceholder() {
       if (!Object.values(this.Hrc20Balance).length) {
         return 'Loading...'
       }
       const tokensCount = Object.values(this.Hrc20Balance).filter(
-        o => +o.balance !== 0
+        o => +o.balance !== 0 // || true
       ).length
 
       return `HRC20 Tokens (${tokensCount})`
@@ -471,8 +500,8 @@ export default {
         })
 
       service
-        .getAddress({ id: address, pageIndex: this.page, pageSize: 20 })
-        .then(address => {
+        .getAddressFullInfo({ id: address, pageIndex: this.page, pageSize: 20 })
+        .then(({ address, contractData }) => {
           address.shardData.forEach((data, idx) => {
             if (data.txs) {
               data.txs.forEach(tx => {
@@ -498,6 +527,8 @@ export default {
           this.txCount = address.txCount
           this.stakingTxCount = address.stakingTxCount
 
+          // if address is deployed contract
+          this.contractData = contractData
           this.address = address
           this.hrc20BalanceUpdate()
         })
