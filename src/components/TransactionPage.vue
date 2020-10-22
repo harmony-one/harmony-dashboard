@@ -26,8 +26,12 @@
                 <td class="td-title">
                   Status
                 </td>
-                <td v-if="!isContract">{{ transaction.status | txStatus }}</td>
-                <td v-if="isContract">{{ txReceiptStatus === 1 ? 'Success' : 'Failure' }}</td>
+                <td v-if="!isContract">
+                  {{ transaction.status | txStatus }}
+                </td>
+                <td v-if="isContract">
+                  {{ txReceiptStatus === 1 ? 'Success' : 'Failure' }}
+                </td>
               </tr>
               <tr v-if="isFailedTransaction">
                 <td class="td-title">
