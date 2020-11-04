@@ -3,6 +3,7 @@ import store from './store'
 import {
   EXPLORER_BACKEND_URL,
   EXPLORER_BACKEND_WS,
+  INSIGHT_BACKEND_URL,
   SECRET,
 } from './globalConfig.js'
 
@@ -191,5 +192,10 @@ export default {
     return authGet('/cx-receipt', { params: { id } }).then(res => {
       return res.data.receipt
     })
+  },
+  getValidatorByAddress(address) {
+    return axios.get(INSIGHT_BACKEND_URL +
+      "/validator_by_address?address=" +
+      address);
   },
 }
