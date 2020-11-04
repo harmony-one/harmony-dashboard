@@ -1,5 +1,18 @@
 <style scoped lang="less">
 @import '../less/common.less';
+
+.status-text-SUCCESS {
+  color: #4caf50 !important;
+}
+.status-text-PENDING {
+  color: #ff9800 !important;
+}
+.status-text-FAILURE {
+  color: #f44336 !important;
+}
+.status-text-UNKNOWN {
+  color: #607d8b !important;
+}
 </style>
 
 <template>
@@ -13,41 +26,51 @@
           <div class="explorer-card-body">
             <table class="explorer-table">
               <td class="td-title">
-                Type
+                Type:
               </td>
               <td>{{ transaction | txType }}</td>
               <tr>
                 <td class="td-title">
-                  ID
+                  Hash:
                 </td>
-                <td>{{ transaction.hash || $route.params.transactionId }}</td>
+                <td>
+                  {{ transaction.hash || $route.params.transactionId }}
+                  <button
+                    class="btn btn-light btn-icon-only tooltip"
+                    v-on:click="eventClipBoardButton(transaction.hash, 'toolTipTX')"
+                  >
+                    <font-awesome-icon :icon="['far', 'copy']" />
+                    <span id="toolTipTX" class="tooltiptext">Copied!</span>
+                  </button>
+                </td>
               </tr>
               <tr>
                 <td class="td-title">
-                  Status
+                  Status:
                 </td>
-                <td v-if="!isContract">
-                  {{ transaction.status | txStatus }}
-                </td>
-                <td v-if="isContract">
-                  {{ txReceiptStatus === 1 ? 'Success' : 'Failure' }}
+                <td>
+                  <div v-bind:class="'status-text-' + transaction.status">
+                    {{ transaction.status | txStatus }}
+                  </div>
                 </td>
               </tr>
               <tr v-if="isFailedTransaction">
                 <td class="td-title">
-                  Reason
+                  Reason:
                 </td>
                 <td>{{ transaction.message }}</td>
               </tr>
               <tr>
                 <td class="td-title">
-                  Value
+                  Value:
                 </td>
                 <td v-if="isStaking && transaction.type === 'EditValidator'">
                   -
                 </td>
                 <td v-else>
-                  {{ transaction.value | amount }}
+                  {{ transaction.value | amount }} ONE (${{
+                    getFiatValue(transaction.value / 10 ** 18)
+                  }})
                 </td>
               </tr>
 
@@ -61,7 +84,7 @@
               </tr>-->
               <tr>
                 <td class="td-title">
-                  Timestamp
+                  Timestamp:
                 </td>
                 <td>
                   {{ (Number(transaction.timestamp) * 1000) | timestamp }}
@@ -79,7 +102,7 @@
               </tr>
               <tr>
                 <td class="td-title">
-                  Sender shard block
+                  Sender shard block:
                 </td>
                 <td>
                   <router-link :to="'/block/' + transaction.blockHash">
@@ -89,7 +112,7 @@
               </tr>
               <tr v-if="!isStaking">
                 <td class="td-title">
-                  From Address
+                  From Address:
                 </td>
                 <td class="address_link">
                   <router-link
@@ -98,17 +121,24 @@
                   >
                     {{ transaction.from }}
                   </router-link>
+                  <button
+                    class="btn btn-light btn-icon-only tooltip"
+                    v-on:click="eventClipBoardButton(transaction.from, 'toolTipFrom')"
+                  >
+                    <font-awesome-icon :icon="['far', 'copy']" />
+                    <span id="toolTipFrom" class="tooltiptext">Copied!</span>
+                  </button>
                 </td>
               </tr>
               <tr v-if="transaction.shardID !== transaction.toShardID">
                 <td class="td-title">
-                  To Shard
+                  To Shard:
                 </td>
                 <td>{{ transaction.toShardID }}</td>
               </tr>
               <tr v-if="receipt">
                 <td class="td-title">
-                  Receiving shard block
+                  Receiving shard block:
                 </td>
                 <td>
                   <router-link :to="'/block/' + receipt.blockHash">
@@ -118,62 +148,87 @@
               </tr>
               <tr v-if="!isStaking">
                 <td class="td-title">
-                  To Address
+                  To Address:
                 </td>
                 <td class="address_link">
                   <Address :bech32="transaction.to" :show-raw="true" />
+                  <button
+                    class="btn btn-light btn-icon-only tooltip"
+                    v-on:click="eventClipBoardButton(transaction.to, 'toolTipTo')"
+                  >
+                    <font-awesome-icon :icon="['far', 'copy']" />
+                    <span id="toolTipTo" class="tooltiptext">Copied!</span>
+                  </button>
                 </td>
               </tr>
 
               <tr v-if="isStaking">
                 <td class="td-title">
-                  Validator Address
+                  Validator Address:
                 </td>
                 <td class="address_link">
-                  <router-link
-                    v-if="transaction.validator"
-                    :to="
-                      '/address/' + transaction.validator + '?txType=staking'
-                    "
-                  >
-                    {{ transaction.validator }}
-                  </router-link>
-                  <span v-else>-</span>
+                  <div v-if="transaction.validator">
+                    <router-link
+                      :to="
+                        '/address/' + transaction.validator + '?txType=staking'
+                      "
+                    >
+                      {{ transaction.validator }}
+                    </router-link>
+                    <button
+                        class="btn btn-light btn-icon-only tooltip"
+                        v-on:click="eventClipBoardButton(transaction.validator, 'toolTipValidator')"
+                      >
+                      <font-awesome-icon :icon="['far', 'copy']" />
+                      <span id="toolTipValidator" class="tooltiptext">Copied!</span>
+                    </button>
+                  </div>
+                  <div v-else>-</div>
                 </td>
               </tr>
               <tr v-if="isStaking">
                 <td class="td-title">
-                  Delegator Address
+                  Delegator Address:
                 </td>
                 <td class="address_link">
-                  <router-link
-                    v-if="transaction.delegator"
-                    :to="
-                      '/address/' + transaction.delegator + '?txType=staking'
-                    "
-                  >
-                    {{ transaction.delegator }}
-                  </router-link>
-                  <span v-else>-</span>
+                  <div v-if="transaction.delegator">
+                    <router-link
+                      :to="
+                        '/address/' + transaction.delegator + '?txType=staking'
+                      "
+                    >
+                      {{ transaction.delegator }}
+                    </router-link>
+                    <button
+                      class="btn btn-light btn-icon-only tooltip"
+                      v-on:click="eventClipBoardButton(transaction.delegator, 'toolTipDelegator')"
+                    >
+                      <font-awesome-icon :icon="['far', 'copy']" />
+                      <span id="toolTipDelegator" class="tooltiptext">Copied!</span>
+                    </button>
+                  </div>
+                  <div v-else>-</div>
                 </td>
               </tr>
 
               <tr>
                 <td class="td-title">
-                  Network Fee
+                  Network Fee:
                 </td>
-                <td>{{ normalizedGas() }} ONE</td>
+                <td>
+                  {{ normalizedGas() }} ONE
+                </td>
               </tr>
               <tr v-if="sequence">
                 <td class="td-title">
-                  Sequence
+                  Sequence:
                 </td>
                 <td>{{ sequence }}</td>
               </tr>
 
               <tr v-if="!isStaking">
                 <td class="td-title">
-                  Data Parse
+                  Data Parse:
                 </td>
                 <td v-if="transaction.to">
                   <DecodeABI
@@ -184,7 +239,7 @@
                   />
                 </td>
                 <td v-else>
-                  Deploy Contract
+                  Deploy Contract:
                   <router-link :to="'/address/' + ContractAddress">
                     {{ ContractAddress }}
                   </router-link>
@@ -197,7 +252,7 @@
                 <tr />
                 <tr v-if="isStaking">
                   <td class="td-title">
-                    Data
+                    Data:
                   </td>
                   <td>
                     <vue-json-pretty :data="transaction.msg" />
@@ -205,22 +260,34 @@
                 </tr>
                 <tr v-if="!isStaking">
                   <td class="td-title">
-                    Data (Hex)
+                    Data (Hex):
                   </td>
                   <td>{{ transaction.input || '—' }}</td>
                 </tr>
                 <tr v-if="!isStaking">
                   <td class="td-title">
-                    Data (UTF-8)
+                    Data (UTF-8):
                   </td>
                   <td>{{ hexToUTF8(transaction.input) || '—' }}</td>
                 </tr>
                 <tr>
                   <td class="td-title">
-                    Nonce
+                    Nonce:
                   </td>
                   <td>{{ parseInt(transaction.nonce) }}</td>
                 </tr>
+                <tr>
+                <td class="td-title">
+                  Gas Price:
+                </td>
+                <td>{{ transaction.gasPrice }} Atto</td>
+              </tr>
+              <tr v-if="sequence">
+                <td class="td-title">
+                  Sequence:
+                </td>
+                <td>{{ sequence }}</td>
+              </tr>
               </table>
             </expand-panel>
           </div>
@@ -265,6 +332,7 @@ export default {
       receipt: null,
       sequence: null,
       globalData: store.data,
+      coinPrice: null,
     }
   },
   computed: {
@@ -301,6 +369,7 @@ export default {
   },
   mounted() {
     this.getTransaction()
+    this.getCoinPrice()
   },
   methods: {
     getSequence() {
@@ -347,8 +416,6 @@ export default {
 
       getTx(routeTxId)
         .then(transaction => {
-          console.log({ transaction })
-
           if (
             transaction &&
             transaction.id &&
@@ -432,6 +499,34 @@ export default {
     },
     isHrc20(address) {
       return this.$store.data.Hrc20Address[address] != undefined
+    },
+    getCoinPrice() {
+      service.getCoinStats()
+        .then((res) => {
+          this.coinPrice = res["coin"]["price"]
+        });
+    },
+    getFiatValue(value) {
+      value = value * parseFloat(this.coinPrice);
+      if (value < 0) {
+        return value.toPrecision(2).toString();
+      }
+      return value.toString();
+    },
+    eventClipBoardButton(newClip, tooltipID) {
+      const el = document.createElement('textarea');
+      el.value = newClip;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      // activate tool tip
+      const tooltip = document.getElementById(tooltipID);
+      tooltip.classList.add('tooltiptext-active');
+      // deactivate tool tip
+      setTimeout(() => {
+        tooltip.classList.remove('tooltiptext-active');
+      }, 1000);
     },
   },
 }
