@@ -69,7 +69,7 @@ body,
   background-color: #f7f7ff;
   .explorer-body {
     flex: 1;
-    padding-top: 8em;
+    padding-top: 4em;
     width: 100%;
     color: var(--primary-text-color);
     display: flex;

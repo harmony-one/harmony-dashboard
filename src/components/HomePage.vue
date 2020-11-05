@@ -72,12 +72,43 @@
     }
   }
 }
+
+.search-bar-body {
+  padding: 30px 40px 50px 60px;
+  text-align: center;
+  margin: 0 -601.5rem;
+  background: linear-gradient(0deg, transparent 50%, #00aee9 50%);
+}
+
+.search-bar-input {
+  width: 800px;
+  height: 40px;
+  font-size: 15px;
+  padding: 30px 30px !important;
+  border: 0px !important;
+  border-radius: 5px !important;
+  box-shadow: 0 0 0.4em rgba(0, 0, 0, 0.5);
+	outline: none;
+}
+
+input:focus {
+  outline:none !important;
+}
 </style>
 
 <template>
   <div class="home-page explorer-page page">
     <div class="home-body explorer-body">
       <div v-if="globalData.blocks.length" class="container">
+        <div class="search-bar-body">
+          <input
+            type="text"
+            placeholder="Search for Blocks / Transactions / Accounts..."
+            class="search-bar-input"
+            v-model="textSearchBar"
+            @keyup.enter="searchQuery()"
+          />
+        </div>
         <div v-if="!!coinStats" class="explorer-card status-card">
           <CoinStats :stats="coinStats" />
         </div>
@@ -809,6 +840,27 @@ export default {
       this.timer = setInterval(() => {
         this.now = Date.now()
       }, 1000)
+    },
+    searchQuery() {
+      let input = this.textSearchBar.trim();
+      this.textSearchBar = '';
+      
+      service
+        .search(input)
+        .then(result => {
+          if (result.type === 'block') {
+            this.$router.push(`/block/${input}`);
+          } else if (result.type === 'tx') {
+            this.$router.push(`/tx/${input}`);
+          } else if (result.type === 'address') {
+            this.$router.push(`/address/${input}`);
+          } else {
+            alert('invalid search query');
+          }
+        })
+        .catch(r => {
+          alert('invalid search query')
+        });
     },
   },
 }
