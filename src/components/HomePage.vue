@@ -72,6 +72,13 @@
     }
   }
 }
+
+.table-empty-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
 </style>
 
 <template>
@@ -336,6 +343,7 @@
                   :title-postfix-tx="globalData.txCount"
                   :title-postfix-staking-tx="globalData.stakingTxCount"
                   :title-postfix-hrc20-tx="globalData.hrc20TxsCount"
+                  :title-postfix-pending-tx="globalData.pendingTxsCount"
                 />
                 <div class="secondary-info">
                   <div class="timer">
@@ -442,6 +450,7 @@
                   :title-postfix-tx="globalData.txCount"
                   :title-postfix-staking-tx="globalData.stakingTxCount"
                   :title-postfix-hrc20-tx="globalData.hrc20TxsCount"
+                  :title-postfix-pending-tx="globalData.pendingTxsCount"
                 />
 
                 <div class="secondary-info">
@@ -560,8 +569,10 @@
               </footer>
             </div>
           </div>
-
-          <div v-else class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div
+            v-else-if="showWhich == 'hrc20'"
+            class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+          >
             <div class="explorer-card latest-block-card">
               <header>
                 <TransactionTableTabs
@@ -570,6 +581,7 @@
                   :title-postfix-tx="globalData.txCount"
                   :title-postfix-staking-tx="globalData.stakingTxCount"
                   :title-postfix-hrc20-tx="globalData.hrc20TxsCount"
+                  :title-postfix-pending-tx="globalData.pendingTxsCount"
                 />
 
                 <div class="secondary-info">
@@ -661,6 +673,133 @@
               </footer>
             </div>
           </div>
+          <div
+            v-else-if="showWhich == 'pending'"
+            class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+          >
+            <div class="explorer-card latest-block-card">
+              <header>
+                <TransactionTableTabs
+                  :value="tabValue"
+                  :on-change="changeTab"
+                  :title-postfix-tx="globalData.txCount"
+                  :title-postfix-staking-tx="globalData.stakingTxCount"
+                  :title-postfix-hrc20-tx="globalData.hrc20TxsCount"
+                  :title-postfix-pending-tx="globalData.pendingTxsCount"
+                />
+
+                <div class="secondary-info">
+                  <div class="timer">
+                    Updated
+                    {{
+                      Math.round(
+                        Math.max((now - globalData.lastUpdateTime) / 1000, 0)
+                      ) | number
+                    }}s ago...
+                  </div>
+                  <span class="total-block-num" />
+                </div>
+              </header>
+              <div class="explorer-card-body">
+                 <div
+                  v-if="globalData.pendingTxsCount == 0"
+                  class="table-empty-container"
+                >
+                  <h3>
+                    No Pending Transactions
+                  </h3>
+                </div>
+                <div v-else class="explorer-table-responsive latest-tx-table">
+                  <div class="tr">
+                    <div class="th">
+                      Shard
+                    </div>
+                    <div class="th">
+                      Hash
+                    </div>
+                    <div class="th">
+                      From
+                    </div>
+                    <div class="th">
+                      To
+                    </div>
+                    <div class="th">
+                      Value
+                    </div>
+                    <div class="th text-right">
+                      Txn Fee
+                    </div>
+                  </div>
+                  <div
+                    v-for="tx in getPendingTransactions"
+                    :key="tx.id"
+                    class="tr"
+                  >
+                    <div class="td">
+                      <router-link :to="'/shard/' + tx.shardID">
+                        {{ tx.shardID }}
+                      </router-link>
+                    </div>
+                    <div class="td">
+                      <router-link :to="'/tx/' + tx.hash">
+                        {{ tx.hash | shorten }}
+                      </router-link>
+                    </div>
+                    <div class="td">
+                      <router-link
+                        v-if="tx.from"
+                        :to="
+                          '/address/' + tx.from
+                        "
+                      >
+                        {{ tx.From.bech32 | shorten }}
+                      </router-link>
+                      <div v-else>
+                        -
+                      </div>
+                    </div>
+                    <div class="td">
+                      <router-link
+                        v-if="tx.to"
+                        :to="
+                          '/address/' + tx.to
+                        "
+                      >
+                        {{ tx.to | shorten }}
+                      </router-link>
+                      <div v-else>
+                        -
+                      </div>
+                    </div>
+                    <div class="td no-break">
+                      {{ tx.value | amount }}
+                    </div>
+                    <div class="td text-right no-break">
+                      {{ tx | fee }}
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="show-more-container">
+                  <router-link to="/staking-txs" class="show-more-button">
+                    Show all
+                    <b>{{ globalData.stakingTxCount | number }}</b> staking
+                    transactions
+                  </router-link>
+                </div>-->
+              </div>
+              <footer class="button-only-footer">
+                <router-link
+                  tag="button"
+                  class="btn btn-light btn-block btn-mini"
+                  to="/staking-txs"
+                >
+                  Show all
+                  <b>{{ globalData.stakingTxCount | number }}</b> staking
+                  transactions
+                </router-link>
+              </footer>
+            </div>
+          </div>
         </div>
       </div>
       <div v-else class="container">
@@ -708,6 +847,8 @@ export default {
       showTx: true,
       coinStats: null,
       tokenHolders: [],
+
+      pendingTXs: [],
     }
   },
   computed: {
@@ -715,10 +856,10 @@ export default {
       return Math.ceil(this.globalData.blocks.length / this.pageSize)
     },
     showWhich() {
-      return this.$route.query.txType || 'regular' // 'staking','regular','hrc20';
+      return this.$route.query.txType || 'regular' // 'staking','regular','hrc20', 'pending';
     },
     tabValue() {
-      const status = { staking: 1, regular: 0, hrc20: 2 }
+      const status = { staking: 1, regular: 0, hrc20: 2, pending: 3 }
       return status[this.$route.query.txType] || 0
     },
     lastBlocks() {
@@ -798,6 +939,7 @@ export default {
       let txType = 'regular'
       if (value == 1) txType = 'staking'
       if (value == 2) txType = 'hrc20'
+      if (value == 3) txType = 'pending'
       this.$router.replace({
         name: 'HomePage',
         query: { txType },
@@ -809,6 +951,20 @@ export default {
       this.timer = setInterval(() => {
         this.now = Date.now()
       }, 1000)
+    },
+    getPendingTransactions() {
+      const pendingTxs = this.globalData.pendingTxs;
+
+      let list = [];
+      for (let i = 0; i < pendingTxs.length; i ++) {
+        if (pendingTxs[i]) {
+          for (let j = 0; j < pendingTxs[i].length; j ++) {
+            list.push(pendingTxs[i][j]);
+          }
+        }
+      }
+
+      return list;
     },
   },
 }

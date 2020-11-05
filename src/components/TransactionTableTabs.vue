@@ -27,6 +27,15 @@
       }}</span>
       {{ titlePrefix }} HRC20 Transactions
     </span>
+    <span
+      :class="{ tabItem: true, active: value == 3 }"
+      @click="() => onChange(3)"
+    >
+      <span class="postfix">{{
+        titlePostfixPendingTx | number
+      }}</span>
+      {{ titlePrefix }} Pending Transactions
+    </span>
   </div>
 </template>
 
@@ -40,6 +49,7 @@ export default {
     'titlePostfixTx',
     'titlePostfixStakingTx',
     'titlePostfixHrc20Tx',
+    'titlePostfixPendingTx',
   ],
 }
 </script>

@@ -81,11 +81,13 @@ let store = {
     blocks: [],
     txs: [],
     stakingTxs: [],
+    pendingTxs: [],
     hrc20Txs: [],
     hrc20TxsCount: 0,
     blockCount: 0,
     txCount: 0,
     stakingTxCount: 0,
+    pendingTxsCount: 0,
     nodeCount: 0,
     lastUpdateTime: 0,
     Hrc20Address,
@@ -204,10 +206,22 @@ let store = {
         .filter(x => isFinite(x))
     )
   },
+  updatePendingTransactions(txs, shardID) {
+    let pendingTxs = this.data.pendingTxs;
+
+    this.data.pendingTxsCount -= pendingTxs[shardID].length;
+    this.data.pendingTxs = null;
+
+    pendingTxs[shardID] = txs;
+
+    this.data.pendingTxs = pendingTxs; 
+    this.data.pendingTxsCount += pendingTxs[shardID].length;
+  },
   reset() {
     this.data.blocks = []
     this.data.txs = []
     this.data.stakingTxs = []
+    this.data.pendingTxs = []
     this.data.blockCount = 0
     this.data.txCount = 0
     this.data.stakingTxCount = 0

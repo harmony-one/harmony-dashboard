@@ -3,6 +3,7 @@ import store from './store'
 import {
   EXPLORER_BACKEND_URL,
   EXPLORER_BACKEND_WS,
+  INSIGHT_BACKEND_URL,
   SECRET,
 } from './globalConfig.js'
 
@@ -73,7 +74,20 @@ function sendGet(url, params) {
   ws.addEventListener('close', () => {
     console.log('close')
   })
-})()
+})();
+
+(function getPendingTransactions() {
+  
+  setInterval(() => {
+    for (let i = 0; i < 4; i ++) {
+      axios.get(INSIGHT_BACKEND_URL +
+        "/pending_transactions?shard_id=" + i)
+        .then((res) => {
+          store.updatePendingTransactions(res["data"]["pending_txs"], i)
+        });
+    }
+  }, 5000)
+})();
 
 export default {
   reset(secret) {
