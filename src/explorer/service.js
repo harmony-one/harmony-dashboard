@@ -3,6 +3,7 @@ import store from './store'
 import {
   EXPLORER_BACKEND_URL,
   EXPLORER_BACKEND_WS,
+  INSIGHT_BACKEND_URL,
   SECRET,
 } from './globalConfig.js'
 
@@ -191,5 +192,14 @@ export default {
     return authGet('/cx-receipt', { params: { id } }).then(res => {
       return res.data.receipt
     })
+  },
+  getTransactionVolume(start_height) {
+    return axios.get(INSIGHT_BACKEND_URL +
+      "/block_transaction_count?min_block_height=" +
+      start_height);
+  },
+  getMaxBlockHeightTransactionVolume() {
+    return axios.get(INSIGHT_BACKEND_URL +
+      "/max_block_height_block_transaction_count")
   },
 }
