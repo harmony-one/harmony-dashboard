@@ -789,11 +789,10 @@
                 <router-link
                   tag="button"
                   class="btn btn-light btn-block btn-mini"
-                  to="/staking-txs"
+                  to="txs"
                 >
                   Show all
-                  <b>{{ globalData.stakingTxCount | number }}</b> staking
-                  transactions
+                  <b>{{ globalData.txCount | number }}</b> transactions
                 </router-link>
               </footer>
             </div>
