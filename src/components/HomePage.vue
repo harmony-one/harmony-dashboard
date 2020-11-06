@@ -78,75 +78,9 @@
   <div class="home-page explorer-page page">
     <div class="home-body explorer-body">
       <div v-if="globalData.blocks.length" class="container">
-        <div v-if="!!coinStats" class="explorer-card status-card">
+        <div class="explorer-card status-card">
           <CoinStats :stats="coinStats" />
         </div>
-
-        <div class="explorer-card status-card">
-          <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-              <div class="flex-horizontal">
-                <div class="icon-column">
-                  <div class="data-icon-circle">
-                    <div class="data-icon icon-block-count" />
-                  </div>
-                </div>
-                <div class="data-num-column">
-                  <div class="data-num">
-                    {{ globalData.blockCount | number }}
-                  </div>
-                  <h1>Block Count</h1>
-                </div>
-              </div>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-              <div class="flex-horizontal">
-                <div class="icon-column">
-                  <div class="data-icon-circle">
-                    <div class="data-icon icon-tx-count" />
-                  </div>
-                </div>
-                <div class="data-num-column">
-                  <div class="data-num">
-                    {{ globalData.blockLatency | blockLatency }}
-                  </div>
-                  <h1>Block Latency</h1>
-                </div>
-              </div>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-              <div class="flex-horizontal">
-                <div class="icon-column">
-                  <div class="data-icon-circle">
-                    <div class="data-icon icon-node-count" />
-                  </div>
-                </div>
-                <div class="data-num-column">
-                  <div class="data-num">
-                    {{ globalData.nodeCount | number }}
-                  </div>
-                  <h1>Node Count</h1>
-                </div>
-              </div>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-              <div class="flex-horizontal">
-                <div class="icon-column">
-                  <div class="data-icon-circle">
-                    <div class="data-icon icon-shard-count" />
-                  </div>
-                </div>
-                <div class="data-num-column">
-                  <div class="data-num">
-                    {{ globalData.shardCount | number }}
-                  </div>
-                  <h1>Shard Count</h1>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="explorer-card latest-block-card">
@@ -671,6 +605,7 @@
 </template>
 
 <script>
+import service from '../explorer/service'
 import store from '../explorer/store'
 import LoadingMessage from './LoadingMessage'
 import CoinStats from './CoinStats'
@@ -766,9 +701,9 @@ export default {
   mounted() {
     this.updateHolders()
     this.resetTimer()
-    // service.getCoinStats().then(stats => {
-    //   this.coinStats = stats;
-    // });
+    service.getCoinStats().then(stats => {
+      this.coinStats = stats["coin"];
+    });
   },
   methods: {
     hrc20info(id) {
