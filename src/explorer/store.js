@@ -209,7 +209,9 @@ let store = {
   updatePendingTransactions(txs, shardID) {
     let pendingTxs = this.data.pendingTxs;
 
-    this.data.pendingTxsCount -= pendingTxs[shardID].length;
+    if (pendingTxs[shardID]) {
+      this.data.pendingTxsCount -= pendingTxs[shardID].length;
+    }
     this.data.pendingTxs = null;
 
     pendingTxs[shardID] = txs;

@@ -77,16 +77,22 @@ function sendGet(url, params) {
 })();
 
 (function getPendingTransactions() {
-  
-  setInterval(() => {
+
+  let req_func = () => {
     for (let i = 0; i < 4; i ++) {
       axios.get(INSIGHT_BACKEND_URL +
         "/pending_transactions?shard_id=" + i)
         .then((res) => {
-          store.updatePendingTransactions(res["data"]["pending_txs"], i)
+          store.updatePendingTransactions(res["data"]["result"], i)
         });
     }
-  }, 5000)
+  };
+  
+  setInterval(() => {
+    req_func();
+  }, 5000);
+
+  req_func();
 })();
 
 export default {

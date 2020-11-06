@@ -731,7 +731,7 @@
                     </div>
                   </div>
                   <div
-                    v-for="tx in getPendingTransactions"
+                    v-for="tx in getPendingTransactions()"
                     :key="tx.id"
                     class="tr"
                   >
@@ -741,9 +741,7 @@
                       </router-link>
                     </div>
                     <div class="td">
-                      <router-link :to="'/tx/' + tx.hash">
-                        {{ tx.hash | shorten }}
-                      </router-link>
+                      {{ tx.hash | shorten }}
                     </div>
                     <div class="td">
                       <router-link
@@ -752,7 +750,7 @@
                           '/address/' + tx.from
                         "
                       >
-                        {{ tx.From.bech32 | shorten }}
+                        {{ tx.from | shorten }}
                       </router-link>
                       <div v-else>
                         -
