@@ -332,8 +332,8 @@ export default {
         this.txReceiptStatus = parseInt(result.status || '0x0', 16)
 
         if (!this.txReceiptStatus) {
-          const trace = await traceTx(routeTxId)
-          console.log({ trace })
+          //const trace = await traceTx(routeTxId)
+          //console.log({ trace })
         }
       })
     },
