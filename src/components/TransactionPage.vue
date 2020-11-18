@@ -241,6 +241,7 @@ import ExpandPanel from '@/ui/ExpandPanel'
 import VueJsonPretty from 'vue-json-pretty'
 import Address from './Address'
 import DecodeABI from './DecodeABI'
+import { traceTx, showCall } from '../contracts/traceContractExecutionService'
 
 export default {
   name: 'TransactionPage',
@@ -326,9 +327,14 @@ export default {
 
       this.globalData.hmy.hmySDK.blockchain.Transaction.getTransactionReceipt(
         routeTxId
-      ).then(res => {
+      ).then(async res => {
         const { result } = res
         this.txReceiptStatus = parseInt(result.status || '0x0', 16)
+
+        if (!this.txReceiptStatus) {
+          const trace = await traceTx(routeTxId)
+          console.log({ trace })
+        }
       })
     },
     getTransaction(txId) {

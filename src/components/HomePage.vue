@@ -636,7 +636,11 @@
                     <div class="td">
                       <Address :bech32="tx.tx.to" />
                     </div>
-                    <div class="td" :title="tx.hrc20tx.amount" style="max-width:200px;overflow:hidden">
+                    <div
+                      class="td"
+                      :title="tx.hrc20tx.amount"
+                      style="max-width:200px;overflow:hidden"
+                    >
                       {{ hrc20Balance(tx.tx.to, tx.hrc20tx.amount) }}
                     </div>
                   </div>
@@ -680,18 +684,9 @@ import CommonTabs from './HrcTokenTabs'
 import TabPane from './TabPane'
 import { displayAmount } from '@/utils/displayAmount'
 
-const oneArgHrc20Methods = [
-  'transfer',
-  'approve',
-  'mint',
-  'burn',
-  'burnFrom',
-]
+const oneArgHrc20Methods = ['transfer', 'approve', 'mint', 'burn', 'burnFrom']
 
-const twoArgsHrc20Methods = [
-  'transferFrom',
-  'allowance',
-]
+const twoArgsHrc20Methods = ['transferFrom', 'allowance']
 
 export default {
   name: 'HomePage',
@@ -746,7 +741,10 @@ export default {
       return this.$store.data.hrc20Txs.reduce((list, tx) => {
         const c = this.$store.data.hmy.contract(this.$store.data.HRC20_ABI)
         const decodeObj = c.decodeInput(tx.input)
-        if (decodeObj.abiItem && oneArgHrc20Methods.includes(decodeObj.abiItem.name))
+        if (
+          decodeObj.abiItem &&
+          oneArgHrc20Methods.includes(decodeObj.abiItem.name)
+        )
           list.push({
             tx,
             hrc20tx: {
@@ -755,7 +753,10 @@ export default {
               amount: decodeObj.params[1],
             },
           })
-        else if (decodeObj.abiItem && twoArgsHrc20Methods.includes(decodeObj.abiItem.name))
+        else if (
+          decodeObj.abiItem &&
+          twoArgsHrc20Methods.includes(decodeObj.abiItem.name)
+        )
           list.push({
             tx,
             hrc20tx: {
