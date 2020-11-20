@@ -332,8 +332,9 @@ export default {
         const { result } = res
         this.txReceiptStatus = parseInt(result.status || '0x0', 16)
 
+        const trace = await traceTx(routeTxId)
+
         if (!this.txReceiptStatus) {
-          const trace = await traceTx(routeTxId)
           const {result} = trace
           const isReverted = result ? result.error === 'execution reverted' : false
 
