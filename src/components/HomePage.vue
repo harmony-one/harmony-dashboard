@@ -828,6 +828,7 @@ import Address from './Address'
 import CommonTabs from './HrcTokenTabs'
 import TabPane from './TabPane'
 import { displayAmount } from '@/utils/displayAmount'
+import service from '../explorer/service'
 
 export default {
   name: 'HomePage',
@@ -862,6 +863,7 @@ export default {
       transactionChartFilter: -1,
       transactionChartLabel: 'All Shards',
       pendingTXs: [],
+      textSearchBar: ''
     }
   },
   computed: {
