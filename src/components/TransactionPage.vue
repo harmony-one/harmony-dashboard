@@ -30,7 +30,7 @@
                   {{ transaction.status | txStatus }}
                 </td>
                 <td v-if="isContract">
-                  {{ txReceiptStatus === 1 ? 'Success' : 'Failure' }}
+                  {{ txReceiptStatus === 1 ? 'Success' : 'Failure' }}&nbsp;{{failureReason}}
                 </td>
               </tr>
               <tr v-if="isFailedTransaction">
@@ -266,6 +266,7 @@ export default {
       receipt: null,
       sequence: null,
       globalData: store.data,
+      failureReason: ''
     }
   },
   computed: {
@@ -332,8 +333,11 @@ export default {
         this.txReceiptStatus = parseInt(result.status || '0x0', 16)
 
         if (!this.txReceiptStatus) {
-          //const trace = await traceTx(routeTxId)
-          //console.log({ trace })
+          const trace = await traceTx(routeTxId)
+          const {result} = trace
+          const isReverted = result ? result.error === 'execution reverted' : false
+
+          this.failureReason = isReverted ? (result.output || '') :  ''
         }
       })
     },
