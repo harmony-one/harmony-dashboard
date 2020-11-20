@@ -1,5 +1,6 @@
 export const EXPLORER_BACKEND_URL = process.env.VUE_APP_EXPLORER_BACKEND_URL
 export const DASHBOARD_BACKEND_URL = process.env.VUE_APP_DASHBOARD_BACKEND_URL
+export const INSIGHT_BACKEND_URL = `http://54.187.20.215:8081`
 
 export const EXPLORER_BACKEND_WS = process.env.VUE_APP_EXPLORER_BACKEND_WS
 export const SECRET = process.env.SECRET
