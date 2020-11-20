@@ -186,15 +186,19 @@ input:focus {
                   Latest Blocks
                 </h1>
                 <div class="secondary-info">
-                  <div class="timer">
-                    Updated
-                    {{
-                      Math.round(
-                        Math.max((now - globalData.lastUpdateTime) / 1000, 0)
-                      ) | number
-                    }}s ago...
+                  <div class="filter-dropdown">
+                    {{blockChartLabel}}
+                    <button class="dropbtn btn btn-light btn-icon-only">
+                      <font-awesome-icon icon="chevron-down" />
+                    </button>
+                    <div class="filter-dropdown-content">
+                      <a href="#" @click.prevent="setBlockChartFilter(-1)">All Shards</a>
+                      <a href="#" @click.prevent="setBlockChartFilter(0)">Shard 0</a>
+                      <a href="#" @click.prevent="setBlockChartFilter(1)">Shard 1</a>
+                      <a href="#" @click.prevent="setBlockChartFilter(2)">Shard 2</a>
+                      <a href="#" @click.prevent="setBlockChartFilter(3)">Shard 3</a>
+                    </div>
                   </div>
-                  <span class="total-block-num" />
                 </div>
               </header>
               <div class="explorer-card-body">
@@ -220,7 +224,7 @@ input:focus {
                     </div>
                   </div>
                   <div
-                    v-for="block in globalData.blocks"
+                    v-for="block in getLatestBlocks"
                     :key="block.id"
                     class="tr"
                   >
@@ -369,15 +373,19 @@ input:focus {
                   :title-postfix-hrc20-tx="globalData.hrc20TxsCount"
                 />
                 <div class="secondary-info">
-                  <div class="timer">
-                    Updated
-                    {{
-                      Math.round(
-                        Math.max((now - globalData.lastUpdateTime) / 1000, 0)
-                      ) | number
-                    }}s ago...
+                  <div class="filter-dropdown">
+                    {{ transactionChartLabel }} 
+                    <button class="dropbtn btn btn-light btn-icon-only">
+                      <font-awesome-icon icon="chevron-down" />
+                    </button>
+                    <div class="filter-dropdown-content">
+                      <a href="#" @click.prevent="setTransactionChartFilter(-1)">All Shards</a>
+                      <a href="#" @click.prevent="setTransactionChartFilter(0)">Shard 0</a>
+                      <a href="#" @click.prevent="setTransactionChartFilter(1)">Shard 1</a>
+                      <a href="#" @click.prevent="setTransactionChartFilter(2)">Shard 2</a>
+                      <a href="#" @click.prevent="setTransactionChartFilter(3)">Shard 3</a>
+                    </div>
                   </div>
-                  <span class="total-block-num" />
                 </div>
               </header>
               <div class="explorer-card-body">
@@ -408,7 +416,7 @@ input:focus {
                       Txn Fee
                     </div>
                   </div>
-                  <div v-for="tx in globalData.txs" :key="tx.id" class="tr">
+                  <div v-for="tx in getLatestTransactions" :key="tx.id" class="tr">
                     <div class="td">
                       <router-link :to="'/shard/' + tx.shardID">
                         {{ tx.shardID }}
@@ -474,18 +482,6 @@ input:focus {
                   :title-postfix-staking-tx="globalData.stakingTxCount"
                   :title-postfix-hrc20-tx="globalData.hrc20TxsCount"
                 />
-
-                <div class="secondary-info">
-                  <div class="timer">
-                    Updated
-                    {{
-                      Math.round(
-                        Math.max((now - globalData.lastUpdateTime) / 1000, 0)
-                      ) | number
-                    }}s ago...
-                  </div>
-                  <span class="total-block-num" />
-                </div>
               </header>
               <div class="explorer-card-body">
                 <div class="explorer-table-responsive latest-tx-table">
@@ -602,18 +598,6 @@ input:focus {
                   :title-postfix-staking-tx="globalData.stakingTxCount"
                   :title-postfix-hrc20-tx="globalData.hrc20TxsCount"
                 />
-
-                <div class="secondary-info">
-                  <div class="timer">
-                    Updated
-                    {{
-                      Math.round(
-                        Math.max((now - globalData.lastUpdateTime) / 1000, 0)
-                      ) | number
-                    }}s ago...
-                  </div>
-                  <span class="total-block-num" />
-                </div>
               </header>
               <div class="explorer-card-body">
                 <div class="explorer-table-responsive latest-tx-table">
@@ -739,11 +723,32 @@ export default {
       showTx: true,
       coinStats: null,
       tokenHolders: [],
+
+      blockChartFilter: -1,
+      blockChartLabel: 'All Shards',
+      transactionChartFilter: -1,
+      transactionChartLabel: 'All Shards',
     }
   },
   computed: {
     length() {
       return Math.ceil(this.globalData.blocks.length / this.pageSize)
+    },
+    getLatestBlocks() {
+      const selectedShard = this.blockChartFilter;
+
+      if (selectedShard === -1) {
+        return this.globalData.blocks.slice(0, 10);
+      }
+      return this.globalData.shards[selectedShard].blocks.slice(0,10);
+    },
+    getLatestTransactions() {
+      const selectedShard = this.transactionChartFilter;
+
+      if (selectedShard == '-1') {
+        return this.globalData.txs.slice(0, 10);
+      }
+      return this.globalData.shards[selectedShard].txs.slice(0,10);
     },
     showWhich() {
       return this.$route.query.txType || 'regular' // 'staking','regular','hrc20';
@@ -862,6 +867,17 @@ export default {
           alert('invalid search query')
         });
     },
+    setBlockChartFilter(shard) {
+      this.blockChartFilter = shard;
+
+      this.blockChartLabel = (shard == -1) ? ('All Shards') : ('Shard ' + shard)
+    },
+    setTransactionChartFilter(shard) {
+      this.transactionChartFilter = shard;
+
+      this.transactionChartLabel = (shard == -1) ? ('All Shards') : ('Shard ' + shard)
+    },
+
   },
 }
 </script>
