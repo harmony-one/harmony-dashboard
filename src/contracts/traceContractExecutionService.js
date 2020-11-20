@@ -1,5 +1,5 @@
 import { AbiCoder } from '@harmony-js/contract'
-import { SDK_NODE } from './globalConfig.js'
+import { SDK_NODE } from '../explorer/globalConfig.js'
 
 const isMainnet = () => SDK_NODE !== 'https://api.s0.b.hmny.io'
 const url = isMainnet() ? 'https://api0.s0.t.hmny.io' : 'https://api.s0.b.hmny.io'
