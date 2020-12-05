@@ -101,7 +101,7 @@ export default {
   cursor: pointer;
   color: #1b295e;
   font-size: 1.1em;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Nunito', Helvetica, Arial, sans-serif;
   font-weight: 500;
 }
 .optionItem:focus {

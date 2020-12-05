@@ -175,17 +175,17 @@
               </tr>
 
               <tr v-if="!isStaking && !transaction.to">
-<!--                <td class="td-title">
-                  Data Parse
-                </td>
-                <td v-if="transaction.to">
-                  <DecodeABI
-                      :abi="$store.data.HRC20_ABI"
-                      :data="transaction.input"
-                      :is-hrc20="isHrc20(transaction.hash)"
-                      :bech32="transaction.to"
-                  />
-                </td>-->
+                <!--                <td class="td-title">
+                                  Data Parse
+                                </td>
+                                <td v-if="transaction.to">
+                                  <DecodeABI
+                                      :abi="$store.data.HRC20_ABI"
+                                      :data="transaction.input"
+                                      :is-hrc20="isHrc20(transaction.hash)"
+                                      :bech32="transaction.to"
+                                  />
+                                </td>-->
                 <td>
                   Deploy Contract
                   <router-link :to="'/address/' + ContractAddress">
@@ -243,13 +243,15 @@
 
 
                     <span v-if="action.displayString">
-                      <br/>
+                      <br />
                     <ParseAddress :parseString="action.displayString" />
                     </span>
-                    <br/>
-                    <span v-if="!action.displayString || !action.hrc20Method" style="font-size:10px">
-                      {{ action.callWithInfo.traceCall.input || '—' }}
-                    </span>
+                    <br />
+                    <div v-if="!action.displayString || !action.hrc20Method" style="font-size:10px;">
+                      <expand-panel show-title="Data">
+                        <div style="margin-top:5px;">{{ action.callWithInfo.traceCall.input || '—' }}</div>
+                        </expand-panel>
+                    </div>
                   </td>
                 </tr>
 
@@ -284,6 +286,7 @@ export default {
     VueJsonPretty,
     Address,
     ParseAddress,
+    ExpandPanel,
     //DecodeABI,
   },
   props: {
@@ -367,7 +370,8 @@ export default {
         const {result} = res;
         this.txReceiptStatus = parseInt(result.status || '0x0', 16);
 
-        const trace = await traceTx(routeTxId);;
+        const trace = await traceTx(routeTxId);
+        ;
         this.txActions = await traverseCallInfo(trace.result);
 
         if (!this.txReceiptStatus) {
@@ -377,8 +381,8 @@ export default {
       });
     },
     getTransaction(txId) {
-      this.failureReason = ''
-      this.txActions = []
+      this.failureReason = '';
+      this.txActions = [];
 
       const routeTxId = this.$route.params.transactionId;
 
@@ -484,3 +488,5 @@ export default {
   },
 };
 </script>
+
+

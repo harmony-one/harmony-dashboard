@@ -2,7 +2,7 @@
 @import '../less/common.less';
 
 .wfont {
-  font-family: monospace, 'Courier New', Courier;
+  font-family: 'Nunito', Courier;
   font-size: 16px;
 }
 </style>

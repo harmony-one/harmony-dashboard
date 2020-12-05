@@ -1,6 +1,5 @@
 import axios from 'axios';
 import * as hmy from '../explorer/hmy'
-const {hmySDK} = hmy.default;
 
 export const fetchSuggestions = (hexData) => {
   const sig = hexData.slice(0, 8).toLowerCase();

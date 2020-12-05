@@ -74,6 +74,9 @@ export const traverseCallInfo = async (callHead) => {
       }
     } else if (type === 'CREATE') {
       displayType = type;
+      if (callWithInfo.isHrc20Deploy) {
+        displayString = 'HRC20 Deployment'
+      }
     }
 
     return {displayString, displayType, callWithInfo};
@@ -111,7 +114,6 @@ const getCallInfo = async (call) => {
       traceCall: call,
       hrc20Props,
       suggestions,
-      isHrc20Deploy: isHrc20Deploy(call),
       hrc20Method,
     };
   }
@@ -120,6 +122,7 @@ const getCallInfo = async (call) => {
     from: hmySDK.crypto.toBech32(call.from),
     to: hmySDK.crypto.toBech32(call.to),
     traceCall: call,
+    isHrc20Deploy: isHrc20Deploy(call),
   };
 };
 

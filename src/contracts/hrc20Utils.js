@@ -7,9 +7,9 @@ const contract = hmySDK.contracts.createContract(HRC20_ABI);
 const contractWithHelpers = hmy.default.contract(HRC20_ABI);
 const options = {gasPrice: 1000000000, gasLimit: 6721900};
 
-const hrc20Events = ['Transfer']; // 'Approval', 'Burn'
+const hrc20Events = ['Transfer', 'Approval']
 const eventsSignatures = hrc20Events.map(e => contract.abiModel.getEvent(e).signature);
-const hrc20Methods = ['balanceOf', 'totalSupply']; //'transfer', 'name', 'symbol, 'decimals' etc
+const hrc20Methods = ['balanceOf', 'totalSupply', 'transfer', 'name', 'symbol', 'decimals']
 const methodsSignatures = hrc20Methods.map(e => contract.abiModel.getMethod(e).signature);
 const signatures = [...eventsSignatures, ...methodsSignatures].map(e => e.startsWith('0x') ? e.slice(2) : e);
 
