@@ -1,10 +1,10 @@
 <style>
 .vs__search {
-  color: #888;
+  color: #666;
 }
 
 .vs__dropdown-option {
-  color: #888;
+  color: #666;
 }
 
 .vs__dropdown-option--highlight {
@@ -13,7 +13,7 @@
 }
 
 .vs__search::placeholder {
-  color: #888;
+  color: #666;
 }
 </style>
 

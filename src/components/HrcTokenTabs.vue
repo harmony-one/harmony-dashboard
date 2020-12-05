@@ -81,7 +81,7 @@ export default {
 
   .tabItem {
     cursor: pointer;
-    color: rgba(85, 91, 104, 0.7);
+    // color: rgba(85, 91, 104, 0.7);
     margin-right: 20px;
     font-size: 1.1em;
     font-weight: 500;

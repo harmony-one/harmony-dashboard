@@ -80,7 +80,7 @@ body,
     background-color: var(--color-card-background);
     color: var(--color-table-text);
     padding: 0;
-    box-shadow: 0 0 0.4em rgba(0, 0, 0, 0.1);
+    //box-shadow: 0 0 0.4em rgba(0, 0, 0, 0.1);
     header,
     footer {
       padding: @space-md @space-lg;
@@ -160,16 +160,21 @@ body,
     }
     .td-title,
     th {
-      font-weight: bold;
-      color: #777;
-      font-size: 0.8em;
+      font-family: Nunito;
+      font-size: 16px;
+      font-weight: 500;
+      color: #212D5E;
+      -webkit-letter-spacing: 0.5px;
+      -moz-letter-spacing: 0.5px;
+      -ms-letter-spacing: 0.5px;
+      letter-spacing: 0.5px;
     }
     th,
     td {
       padding: @space-sm @space-xs;
     }
     td {
-      color: #888;
+      color: #666;
       transition: all @anim-duration @anim-easing;
       word-break: break-word;
 
@@ -263,7 +268,7 @@ body,
     }
     .sub-title {
       font-size: 1.1em;
-      color: #888;
+      color: #666;
     }
   }
 }
