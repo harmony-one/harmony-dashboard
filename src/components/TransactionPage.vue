@@ -30,7 +30,10 @@
                   {{ transaction.status | txStatus }}
                 </td>
                 <td v-if="isContract">
-                  {{ txReceiptStatus === 1 ? 'Success' : 'Failure' }}&nbsp;{{failureReason}}
+
+                  {{ txReceiptStatus === 1 ? 'Success' : 'Failure' }}&nbsp;
+                  <span style="color: red">{{ failureReason }}</span>
+
                 </td>
               </tr>
               <tr v-if="isFailedTransaction">
@@ -71,8 +74,8 @@
                 <td class="td-title">
                   {{
                     transaction.shardID === transaction.toShardID
-                      ? 'Shard ID'
-                      : 'From Shard'
+                        ? 'Shard ID'
+                        : 'From Shard'
                   }}
                 </td>
                 <td>{{ transaction.shardID }}</td>
@@ -93,8 +96,8 @@
                 </td>
                 <td class="address_link">
                   <router-link
-                    v-if="transaction.from"
-                    :to="'/address/' + transaction.from"
+                      v-if="transaction.from"
+                      :to="'/address/' + transaction.from"
                   >
                     {{ transaction.from }}
                   </router-link>
@@ -131,8 +134,8 @@
                 </td>
                 <td class="address_link">
                   <router-link
-                    v-if="transaction.validator"
-                    :to="
+                      v-if="transaction.validator"
+                      :to="
                       '/address/' + transaction.validator + '?txType=staking'
                     "
                   >
@@ -147,8 +150,8 @@
                 </td>
                 <td class="address_link">
                   <router-link
-                    v-if="transaction.delegator"
-                    :to="
+                      v-if="transaction.delegator"
+                      :to="
                       '/address/' + transaction.delegator + '?txType=staking'
                     "
                   >
@@ -171,16 +174,16 @@
                 <td>{{ sequence }}</td>
               </tr>
 
-              <tr v-if="!isStaking">
+              <tr v-if="!isStaking && transaction.to">
                 <td class="td-title">
                   Data Parse
                 </td>
                 <td v-if="transaction.to">
                   <DecodeABI
-                    :abi="$store.data.HRC20_ABI"
-                    :data="transaction.input"
-                    :is-hrc20="isHrc20(transaction.hash)"
-                    :bech32="transaction.to"
+                      :abi="$store.data.HRC20_ABI"
+                      :data="transaction.input"
+                      :is-hrc20="isHrc20(transaction.hash)"
+                      :bech32="transaction.to"
                   />
                 </td>
                 <td v-else>
@@ -192,37 +195,67 @@
               </tr>
             </table>
 
-            <expand-panel>
+
+            <table class="explorer-table">
+              <tr />
+              <tr v-if="isStaking">
+                <td class="td-title">
+                  Data
+                </td>
+                <td>
+                  <vue-json-pretty :data="transaction.msg" />
+                </td>
+              </tr>
+              <!--                <tr v-if="!isStaking">
+                                <td class="td-title">
+                                  Data (Hex)
+                                </td>
+                                <td>{{ transaction.input || '—' }}</td>
+                              </tr>-->
+              <!--                <tr v-if="!isStaking">
+                                <td class="td-title">
+                                  Data (UTF-8)
+                                </td>
+                                <td>{{ hexToUTF8(transaction.input) || '—' }}</td>
+                              </tr>-->
+              <tr>
+                <td class="td-title">
+                  Nonce
+                </td>
+                <td>{{ parseInt(transaction.nonce) }}</td>
+              </tr>
+            </table>
+
+            <h2>Interactions</h2>
+            <div
+                v-for="(action, index) in txActions"
+                :key="`action${index}`"
+            >
               <table class="explorer-table">
-                <tr />
-                <tr v-if="isStaking">
+                <tr v-if="!isStaking">
                   <td class="td-title">
-                    Data
+                    {{ action.displayType }}
                   </td>
                   <td>
-                    <vue-json-pretty :data="transaction.msg" />
+                    <Address :bech32="action.callWithInfo.from" :show-raw="true" />
+                    ->
+                    <Address :bech32="action.callWithInfo.to" :show-raw="true" />
+                    <br/>
+
+                    <span v-if="action.displayString">
+                    <ParseAddress :parseString="action.displayString" />
+                      </span>
+                    <span v-if="!action.displayString || !action.hrc20Method" style="font-size:10px">
+                      <br/>
+                      {{ action.callWithInfo.traceCall.input || '—' }}
+                    </span>
+
                   </td>
                 </tr>
-                <tr v-if="!isStaking">
-                  <td class="td-title">
-                    Data (Hex)
-                  </td>
-                  <td>{{ transaction.input || '—' }}</td>
-                </tr>
-                <tr v-if="!isStaking">
-                  <td class="td-title">
-                    Data (UTF-8)
-                  </td>
-                  <td>{{ hexToUTF8(transaction.input) || '—' }}</td>
-                </tr>
-                <tr>
-                  <td class="td-title">
-                    Nonce
-                  </td>
-                  <td>{{ parseInt(transaction.nonce) }}</td>
-                </tr>
+
               </table>
-            </expand-panel>
+            </div>
+
           </div>
         </div>
       </div>
@@ -234,22 +267,23 @@
 </template>
 
 <script>
-import service from '../explorer/service'
-import store from '../explorer/store'
-import LoadingMessage from './LoadingMessage'
-import ExpandPanel from '@/ui/ExpandPanel'
-import VueJsonPretty from 'vue-json-pretty'
-import Address from './Address'
-import DecodeABI from './DecodeABI'
-import { traceTx, showCall } from '../contracts/traceContractExecutionService'
+import service from '../explorer/service';
+import store from '../explorer/store';
+import LoadingMessage from './LoadingMessage';
+import ExpandPanel from '@/ui/ExpandPanel';
+import VueJsonPretty from 'vue-json-pretty';
+import Address from './Address';
+import ParseAddress from './ParseAddress';
+import DecodeABI from './DecodeABI';
+import {traceTx, traverseCallInfo, getFailureMessages} from '../contracts/traceContractExecutionService';
 
 export default {
   name: 'TransactionPage',
   components: {
     LoadingMessage,
-    ExpandPanel,
     VueJsonPretty,
     Address,
+    ParseAddress,
     DecodeABI,
   },
   props: {
@@ -259,6 +293,7 @@ export default {
   },
   data() {
     return {
+      txActions: [],
       loading: true,
       firstLoading: true,
       transaction: null,
@@ -266,184 +301,188 @@ export default {
       receipt: null,
       sequence: null,
       globalData: store.data,
-      failureReason: ''
-    }
+      failureReason: '',
+    };
   },
   computed: {
     isContract() {
       if (!this.transaction) {
-        return undefined
+        return undefined;
       }
 
-      return !!this.transaction.input
+      return !!this.transaction.input;
     },
     isCrossShard() {
       return (
-        this.transaction &&
-        this.transaction.shardID === this.transaction.toShardID
-      )
+          this.transaction &&
+          this.transaction.shardID === this.transaction.toShardID
+      );
     },
     isFailedTransaction() {
-      return this.transaction.status === 'FAILURE'
+      return this.transaction.status === 'FAILURE';
     },
     ContractAddress() {
-      let tx = this.transaction
+      let tx = this.transaction;
       let address = this.globalData.hmy.hmySDK.crypto.getContractAddress(
-        tx.from,
-        tx.nonce
-      )
-      return this.globalData.hmy.hmySDK.crypto.toBech32(address)
+          tx.from,
+          tx.nonce,
+      );
+      return this.globalData.hmy.hmySDK.crypto.toBech32(address);
     },
   },
   watch: {
     $route() {
-      this.firstLoading = true
-      this.getTransaction()
+      this.firstLoading = true;
+      this.getTransaction();
     },
   },
   mounted() {
-    this.getTransaction()
+    this.getTransaction();
   },
   methods: {
     getSequence() {
-      const data = this.transaction.input
-      if (!data) return
-      const re = /.+?7c7c((30|31|32|33|34|35|36|37|38|39|4c|52|55|44)+) 7c7c0*$/
-      const match = data.match(re)
+      const data = this.transaction.input;
+      if (!data) return;
+      const re = /.+?7c7c((30|31|32|33|34|35|36|37|38|39|4c|52|55|44)+) 7c7c0*$/;
+      const match = data.match(re);
       if (match && match[1] && match[1].length % 2 == 0) {
-        this.sequence = this.hexToAscii(match[1])
+        this.sequence = this.hexToAscii(match[1]);
       }
     },
     getTransactionReceipt(txId) {
       if (!this.isContract) {
-        return
+        return;
       }
 
-      const routeTxId = this.$route.params.transactionId
+      const routeTxId = this.$route.params.transactionId;
 
       if (txId && txId !== routeTxId) {
-        console.log(`transaction ${routeTxId} not found.`)
-        return
+        console.log(`transaction ${routeTxId} not found.`);
+        return;
       }
 
       this.globalData.hmy.hmySDK.blockchain.Transaction.getTransactionReceipt(
-        routeTxId
+          routeTxId,
       ).then(async res => {
-        const { result } = res
-        this.txReceiptStatus = parseInt(result.status || '0x0', 16)
+        const {result} = res;
+        this.txReceiptStatus = parseInt(result.status || '0x0', 16);
 
-        const trace = await traceTx(routeTxId)
+        const trace = await traceTx(routeTxId);
+        console.log({trace});
+        this.txActions = await traverseCallInfo(trace.result);
+        console.log({actions: this.txActions});
 
         if (!this.txReceiptStatus) {
-          const {result} = trace
-          const isReverted = result ? result.error === 'execution reverted' : false
-
-          this.failureReason = isReverted ? (result.output || '') :  ''
+          const {result} = trace;
+          this.failureReason = getFailureMessages(result).join(' ') || '';
         }
-      })
+      });
     },
     getTransaction(txId) {
-      const routeTxId = this.$route.params.transactionId
+      this.failureReason = ''
+      this.txActions = []
+
+      const routeTxId = this.$route.params.transactionId;
 
       if (txId && txId !== routeTxId) {
-        console.log(`transaction ${routeTxId} not found.`)
-        return
+        console.log(`transaction ${routeTxId} not found.`);
+        return;
       }
 
-      this.loading = true
+      this.loading = true;
 
       const getTx = this.isStaking
-        ? service.getStakingTransaction
-        : service.getTransaction
+          ? service.getStakingTransaction
+          : service.getTransaction;
 
       getTx(routeTxId)
-        .then(transaction => {
-          console.log({ transaction })
+          .then(transaction => {
+            console.log({transaction});
 
-          if (
-            transaction &&
-            transaction.id &&
-            transaction.id !== this.$route.params.transactionId
-          ) {
-            console.log(
-              `transaction ${routeTxId} not found. data: ` +
-                `${JSON.stringify(transaction)}`
-            )
-            return
-          }
-
-          // console.log(
-          //   `transaction ${routeTxId} found. data: ` +
-          //     `${JSON.stringify(transaction)}`
-          // );
-
-          if (this.isStaking) {
-            this.transaction = {
-              ...transaction,
-              validator: transaction.msg.validatorAddress,
-              delegator: transaction.msg.delegatorAddress,
-              value: transaction.msg.amount,
+            if (
+                transaction &&
+                transaction.id &&
+                transaction.id !== this.$route.params.transactionId
+            ) {
+              console.log(
+                  `transaction ${routeTxId} not found. data: ` +
+                  `${JSON.stringify(transaction)}`,
+              );
+              return;
             }
 
-            const { logs = [] } = transaction
+            // console.log(
+            //   `transaction ${routeTxId} found. data: ` +
+            //     `${JSON.stringify(transaction)}`
+            // );
 
-            if (transaction.type === 'CollectRewards' && logs.length) {
-              this.transaction.value = logs[0].data
+            if (this.isStaking) {
+              this.transaction = {
+                ...transaction,
+                validator: transaction.msg.validatorAddress,
+                delegator: transaction.msg.delegatorAddress,
+                value: transaction.msg.amount,
+              };
+
+              const {logs = []} = transaction;
+
+              if (transaction.type === 'CollectRewards' && logs.length) {
+                this.transaction.value = logs[0].data;
+              }
+            } else {
+              this.transaction = transaction;
             }
-          } else {
-            this.transaction = transaction
-          }
 
-          this.getTransactionReceipt()
-          this.firstLoading = false
+            this.getTransactionReceipt();
+            this.firstLoading = false;
 
-          if (transaction.status === 'PENDING') {
-            setTimeout(() => this.getTransaction(routeTxId), 4000)
-          }
+            if (transaction.status === 'PENDING') {
+              setTimeout(() => this.getTransaction(routeTxId), 4000);
+            }
 
-          if (this.transaction.shardID !== this.transaction.toShardID) {
-            service
-              .getCxReceipt(this.$route.params.transactionId)
-              .then(receipt => {
-                this.receipt = receipt
-                console.log('receipt', receipt)
-              })
-          }
-          this.getSequence()
-        })
-        .finally(() => (this.loading = false))
+            if (this.transaction.shardID !== this.transaction.toShardID) {
+              service
+                  .getCxReceipt(this.$route.params.transactionId)
+                  .then(receipt => {
+                    this.receipt = receipt;
+                    console.log('receipt', receipt);
+                  });
+            }
+            this.getSequence();
+          })
+          .finally(() => (this.loading = false));
     },
     hexToUTF8(h) {
       try {
-        let s = this.hexToAscii(h)
-        return decodeURIComponent(escape(s))
+        let s = this.hexToAscii(h);
+        return decodeURIComponent(escape(s));
       } catch (e) {
-        return null
+        return null;
         // return "[Unknown Binary Content]";
       }
     },
     hexToAscii(h) {
-      var s = ''
+      var s = '';
       for (var i = 0; i < h.length; i += 2) {
-        s += String.fromCharCode(parseInt(h.substr(i, 2), 16))
+        s += String.fromCharCode(parseInt(h.substr(i, 2), 16));
       }
-      return s
+      return s;
     },
     normalizedGas() {
       const fee = isNaN(this.transaction.gas)
-        ? 0
-        : (Number(this.transaction.gas) * Number(this.transaction.gasPrice)) /
+          ? 0
+          : (Number(this.transaction.gas) * Number(this.transaction.gasPrice)) /
           10 ** 14 /
-          10000
+          10000;
 
       // return Math.round(fee * 10 ** 9) / 10 ** 9;
-      return Intl.NumberFormat('en-US', { maximumFractionDigits: 18 }).format(
-        fee
-      )
+      return Intl.NumberFormat('en-US', {maximumFractionDigits: 18}).format(
+          fee,
+      );
     },
     isHrc20(address) {
-      return this.$store.data.Hrc20Address[address] != undefined
+      return this.$store.data.Hrc20Address[address] != undefined;
     },
   },
-}
+};
 </script>

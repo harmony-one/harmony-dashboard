@@ -65,7 +65,6 @@ function fetchHrc20List(url) {
       description: { en: '' },
       website: '',
     }))
-    console.log({ tokenList })
 
     return tokenList
   })

@@ -84,7 +84,8 @@ export function TxType(transaction) {
   let to = tx.to
   if (to.hasOwnProperty('bech32')) to = to.bech32
   if (!to) return 'Deploy Contract'
-  return store.data.Hrc20Address[to] ? 'HRC20' : 'Transfer ONE'
+  return store.data.Hrc20Address[to] ? 'HRC20' :
+    tx.input && tx.input.length > 2 ? 'Data' : 'Transfer ONE'
 }
 
 Vue.filter('decimal', formatDecimal)

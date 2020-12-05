@@ -28,7 +28,7 @@ export default {
   name: 'ExpandPanel',
   data() {
     return {
-      openBar: false,
+      openBar: true,
     }
   },
   methods: {

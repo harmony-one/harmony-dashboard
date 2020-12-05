@@ -148,13 +148,13 @@ function contract(
   if (window.harmony)
     contract.wallet.signTransaction = window.harmony.signTransaction // or importPrivate
   let decodeParameters = (abi, hexdata) => {
-    if (0 == abi.length) return []
+    if (0 === abi.length) return []
     let params = contract.abiCoder.decodeParameters(abi, hexdata)
     params.length = abi.length
-    //for (let i = 0; i < abi.length; i++) {
-    //  if (abi[i].type.startsWith('address'))
-    //    params[i] = hmySDK.crypto.toBech32(params[i]);
-    //}
+   /* for (let i = 0; i < abi.length; i++) {
+      if (abi[i].type.startsWith('address'))
+        params[i] = hmySDK.crypto.toBech32(params[i]);
+    }*/
     return Array.from(params)
   }
   for (let name in contract.abiModel.getMethods()) {
@@ -164,17 +164,21 @@ function contract(
   }
 
   contract.decodeInput = hexData => {
-    let no0x = hexData.startsWith('0x') ? hexData.slice(2) : hexData
-    let sig = no0x.slice(0, 8).toLowerCase()
-    let method = contract.abiModel.getMethod('0x' + sig)
-    if (!method) return false
-    let argv = method.decodeInputs('0x' + no0x.slice(8))
-    let obj = contract.methods['0x' + sig](...argv)
+    const no0x = hexData.startsWith('0x') ? hexData.slice(2) : hexData
+    const sig = no0x.slice(0, 8).toLowerCase()
+    const method = contract.abiModel.getMethod('0x' + sig)
+    if (!method) {
+      return false
+    }
+
+    const argv = method.decodeInputs('0x' + no0x.slice(8))
+    const obj = contract.methods['0x' + sig](...argv)
 
     for (let i = 0; i < obj.params.length; i++) {
       if (obj.abiItem.inputs[i].type == 'address')
         obj.params[i] = hmySDK.crypto.toBech32(obj.params[i])
     }
+
     obj.toString = () => {
       let str = obj.abiItem.name + '('
       for (let i = 0; i < obj.params.length; i++) {
@@ -186,6 +190,7 @@ function contract(
     }
     return obj
   }
+
   return contract
 }
 

@@ -32,7 +32,7 @@ export default {
       return res
     },
     methodInfo() {
-      let c = this.$store.data.hmy.contract(this.abi)
+      const c = this.$store.data.hmy.contract(this.abi)
       const res = c.decodeInput(this.data)
       return res
     },

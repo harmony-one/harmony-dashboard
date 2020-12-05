@@ -17,11 +17,11 @@
         "constant": false,
         "inputs": [
             {
-                "name": "_spender",
+                "name": "spender",
                 "type": "address"
             },
             {
-                "name": "_value",
+                "name": "value",
                 "type": "uint256"
             }
         ],
@@ -54,15 +54,15 @@
         "constant": false,
         "inputs": [
             {
-                "name": "_from",
+                "name": "from",
                 "type": "address"
             },
             {
-                "name": "_to",
+                "name": "to",
                 "type": "address"
             },
             {
-                "name": "_value",
+                "name": "value",
                 "type": "uint256"
             }
         ],
@@ -95,7 +95,7 @@
         "constant": false,
         "inputs": [
             {
-                "name": "_value",
+                "name": "value",
                 "type": "uint256"
             }
         ],
@@ -133,11 +133,11 @@
         "constant": false,
         "inputs": [
             {
-                "name": "_from",
+                "name": "from",
                 "type": "address"
             },
             {
-                "name": "_value",
+                "name": "value",
                 "type": "uint256"
             }
         ],
@@ -170,11 +170,11 @@
         "constant": false,
         "inputs": [
             {
-                "name": "_to",
+                "name": "to",
                 "type": "address"
             },
             {
-                "name": "_value",
+                "name": "value",
                 "type": "uint256"
             }
         ],
@@ -193,11 +193,11 @@
         "constant": false,
         "inputs": [
             {
-                "name": "_to",
+                "name": "to",
                 "type": "address"
             },
             {
-                "name": "_value",
+                "name": "value",
                 "type": "uint256"
             }
         ],
@@ -281,17 +281,17 @@
         "inputs": [
             {
                 "indexed": true,
-                "name": "_owner",
+                "name": "owner",
                 "type": "address"
             },
             {
                 "indexed": true,
-                "name": "_spender",
+                "name": "spender",
                 "type": "address"
             },
             {
                 "indexed": false,
-                "name": "_value",
+                "name": "value",
                 "type": "uint256"
             }
         ],
