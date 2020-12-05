@@ -39,7 +39,6 @@ const getParams = (hexData, abi) => {
   const contractWithHelpers = hmy.default.contract(abi);
   const method = contractWithHelpers.abiModel.getMethod(abi[0].signature);
 
-  console.log({abi, method})
   if (!method) {
     return false;
   }

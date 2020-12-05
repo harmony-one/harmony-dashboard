@@ -3,6 +3,7 @@ import {SDK_NODE} from '../explorer/globalConfig.js';
 import * as hmy from '../explorer/hmy';
 import {isHrc20Deploy, getTxHrc20Method, getHrc20ContractProps} from './hrc20Utils';
 import {fetchSuggestions} from './suggestSignature';
+import { displayAmount } from '@/utils/displayAmount'
 
 const {hmySDK} = hmy.default;
 
@@ -26,31 +27,41 @@ export async function traceTx(txhash) {
   });
   const json = await msg.json();
 
-  // console.log('traverseCallInfo', await traverseCallInfo(json.result));
-
+  console.log({trace: JSON.parse(JSON.stringify(json.result))});
   return json;
 }
 
+const decimals = hrc20Props => param => {
+
+  if (param.name === 'value') {
+    param.value = displayAmount(param.value, hrc20Props.decimals)
+  }
+
+  return param
+}
 
 export const traverseCallInfo = async (callHead) => {
   const res = [];
 
   const buildView = (callWithInfo) => {
     const type = callWithInfo.traceCall.type;
+    const displayDecimals = decimals(callWithInfo.hrc20Props)
 
     let displayString = '';
-    let displayType = ''
+    let displayType = '';
     if (type === 'CALL' || type === 'STATICCALL') {
-      displayType = 'Call'
+      displayType = type;
 
       if (callWithInfo.hrc20Method) {
-        displayType = 'HRC20 Call'
+        displayType = 'HRC20 ' + type;
         const {method, inputs, outputs} = callWithInfo.hrc20Method;
 
-        const inputsString = inputs.map(a => `${a.name}: ${a.value}`).join(',');
-        const outputsString = outputs.map(a => `${a.name}: ${a.value}`).join(',');
+        const inputsString = inputs.map(displayDecimals)
+          .map(a => `${a.name}: ${a.value}`).join(',');
+        const outputsString = outputs.map(displayDecimals)
+          .map(a => `${a.name}: ${a.value}`).join(',');
 
-        displayString = `${method.name}(${inputsString}) -> ${outputsString}`;
+        displayString = `${method.name}(${inputsString}) → ${outputsString}`;
       } else if (callWithInfo.suggestions && callWithInfo.suggestions.length) {
 
         const buildSuggestion = s => {
@@ -59,12 +70,10 @@ export const traverseCallInfo = async (callHead) => {
           return `${s.method.name}(${inputsString})`;
         };
 
-        console.log('----',callWithInfo.suggestions)
-
         displayString = 'Suggested method ' + callWithInfo.suggestions.map(buildSuggestion).join(' ');
       }
     } else if (type === 'CREATE') {
-      displayType = 'Deploy'
+      displayType = type;
     }
 
     return {displayString, displayType, callWithInfo};
@@ -83,6 +92,7 @@ export const traverseCallInfo = async (callHead) => {
 
   await traverse(callHead);
 
+
   return res;
 };
 
@@ -94,8 +104,8 @@ const getCallInfo = async (call) => {
     const suggestions = hrc20Method ? null : await fetchSuggestions(call.input);
 
     return {
-      from:  hmySDK.crypto.toBech32(call.from),
-      to:  hmySDK.crypto.toBech32(call.to),
+      from: hmySDK.crypto.toBech32(call.from),
+      to: hmySDK.crypto.toBech32(call.to),
       traceCall: call,
       hrc20Props,
       suggestions,
@@ -104,7 +114,11 @@ const getCallInfo = async (call) => {
     };
   }
 
-  return {call};
+  return {
+    from: hmySDK.crypto.toBech32(call.from),
+    to: hmySDK.crypto.toBech32(call.to),
+    traceCall: call,
+  };
 };
 
 export const getFailureMessages = (call) => {

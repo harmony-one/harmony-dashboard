@@ -174,8 +174,8 @@
                 <td>{{ sequence }}</td>
               </tr>
 
-              <tr v-if="!isStaking && transaction.to">
-                <td class="td-title">
+              <tr v-if="!isStaking && !transaction.to">
+<!--                <td class="td-title">
                   Data Parse
                 </td>
                 <td v-if="transaction.to">
@@ -185,8 +185,8 @@
                       :is-hrc20="isHrc20(transaction.hash)"
                       :bech32="transaction.to"
                   />
-                </td>
-                <td v-else>
+                </td>-->
+                <td>
                   Deploy Contract
                   <router-link :to="'/address/' + ContractAddress">
                     {{ ContractAddress }}
@@ -233,20 +233,21 @@
             >
               <table class="explorer-table">
                 <tr v-if="!isStaking">
-                  <td class="td-title">
+                  <td class="td-title" style="vertical-align: top">
                     {{ action.displayType }}
                   </td>
                   <td>
                     <Address :bech32="action.callWithInfo.from" :show-raw="true" />
-                    ->
+                    &rarr;
                     <Address :bech32="action.callWithInfo.to" :show-raw="true" />
-                    <br/>
+
 
                     <span v-if="action.displayString">
-                    <ParseAddress :parseString="action.displayString" />
-                      </span>
-                    <span v-if="!action.displayString || !action.hrc20Method" style="font-size:10px">
                       <br/>
+                    <ParseAddress :parseString="action.displayString" />
+                    </span>
+                    <br/>
+                    <span v-if="!action.displayString || !action.hrc20Method" style="font-size:10px">
                       {{ action.callWithInfo.traceCall.input || '—' }}
                     </span>
 
@@ -284,7 +285,7 @@ export default {
     VueJsonPretty,
     Address,
     ParseAddress,
-    DecodeABI,
+    //DecodeABI,
   },
   props: {
     isStaking: {
@@ -367,10 +368,8 @@ export default {
         const {result} = res;
         this.txReceiptStatus = parseInt(result.status || '0x0', 16);
 
-        const trace = await traceTx(routeTxId);
-        console.log({trace});
+        const trace = await traceTx(routeTxId);;
         this.txActions = await traverseCallInfo(trace.result);
-        console.log({actions: this.txActions});
 
         if (!this.txReceiptStatus) {
           const {result} = trace;
