@@ -30,9 +30,9 @@
                   {{ transaction.status | txStatus }}
                 </td>
                 <td v-if="isContract">
-
-                  {{ txReceiptStatus === 1 ? 'Success' : 'Failure' }}&nbsp;
-                  <span style="color: red">{{ failureReason }}</span>
+                  <span v-if="txReceiptStatus === 1" style="color:#00c9a7">Success</span>
+                  <span v-if="txReceiptStatus !== 1">Failure</span>
+                  <span style="color: red">&nbsp;{{ failureReason }}</span>
 
                 </td>
               </tr>
@@ -226,7 +226,7 @@
               </tr>
             </table>
 
-            <h2>Interactions</h2>
+            <h2 v-if="txActions.length > 0">Interactions</h2>
             <div
                 v-for="(action, index) in txActions"
                 :key="`action${index}`"
@@ -250,7 +250,6 @@
                     <span v-if="!action.displayString || !action.hrc20Method" style="font-size:10px">
                       {{ action.callWithInfo.traceCall.input || '—' }}
                     </span>
-
                   </td>
                 </tr>
 

@@ -10,6 +10,11 @@ export const fetchSuggestions = (hexData) => {
     .then(res => res.sort((a, b) => a.id - b.id))
     .then(res => {
 
+      // limit to 10
+      if (res.length > 10) {
+        res.length = 10
+      }
+
       return res.map(r => createABI(hexData, r.text_signature));
     }).catch(err => {
       console.error(err)
