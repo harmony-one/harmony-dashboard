@@ -65,8 +65,8 @@ export default {
       this.$notify({
         group: '',
         title: 'Copied to clipboard',
-        position: 'top left'
-      });
+        position: 'top left',
+      })
     },
     toggleView() {
       this.showHex = !this.showHex

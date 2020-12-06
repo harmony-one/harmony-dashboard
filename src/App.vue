@@ -317,8 +317,6 @@ body,
 .ex-notification {
   font-family: Nunito;
 
-
-
   .notification-title {
     // Style for title line
     font-weight: normal;
@@ -329,11 +327,7 @@ body,
 
   .notification-content {
     // Style for content
-
-
-
   }
-
 }
 </style>
 <template>
