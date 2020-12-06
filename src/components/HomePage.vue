@@ -389,9 +389,7 @@
                       </router-link>
                     </div>
                     <div class="td">
-                      <router-link :to="'/address/' + tx.from.bech32">
-                        {{ tx.from.bech32 | shorten }}
-                      </router-link>
+                      <Address :bech32="tx.from.bech32 " :show-raw="false" />
                     </div>
                     <div class="td">
                       <Address :bech32="tx.to.bech32" />
@@ -503,7 +501,9 @@
                       {{ tx.type }}
                     </div>
                     <div class="td">
-                      <router-link
+                      <Address :bech32="tx.validator.bech32" :show-raw="false" staking="true"/>
+
+<!--                      <router-link
                         v-if="tx.validator.bech32"
                         :to="
                           '/address/' + tx.validator.bech32 + '?txType=staking'
@@ -513,10 +513,12 @@
                       </router-link>
                       <div v-else>
                         -
-                      </div>
+                      </div>-->
                     </div>
                     <div class="td">
-                      <router-link
+                      <Address :bech32="tx.delegator.bech32" :show-raw="false" staking="true"/>
+
+<!--                      <router-link
                         v-if="tx.delegator.bech32"
                         :to="
                           '/address/' + tx.delegator.bech32 + '?txType=staking'
@@ -526,7 +528,7 @@
                       </router-link>
                       <div v-else>
                         -
-                      </div>
+                      </div>-->
                     </div>
                     <div class="td">
                       {{ tx.timestamp | age }}
@@ -621,14 +623,16 @@
                       </router-link>
                     </div>
                     <div class="td">
-                      <router-link :to="'/address/' + tx.hrc20tx.from">
+                      <Address :bech32="tx.hrc20tx.from" :show-raw="false" />
+<!--                      <router-link :to="'/address/' + tx.hrc20tx.from">
                         {{ tx.hrc20tx.from | shorten }}
-                      </router-link>
+                      </router-link>-->
                     </div>
                     <div class="td">
-                      <router-link :to="'/address/' + tx.hrc20tx.to">
+                      <Address :bech32="tx.hrc20tx.to" :show-raw="false" />
+<!--                      <router-link :to="'/address/' + tx.hrc20tx.to">
                         {{ tx.hrc20tx.to | shorten }}
-                      </router-link>
+                      </router-link>-->
                     </div>
                     <div class="td">
                       {{ (Number(tx.tx.timestamp) * 1000) | age }}

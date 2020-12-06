@@ -210,14 +210,16 @@
                   </router-link>
                 </div>
                 <div class="td">
-                  <router-link :to="'/address/' + tx.from.bech32">
+                  <Address :bech32="tx.from.bech32" :show-raw="false" />
+<!--                  <router-link :to="'/address/' + tx.from.bech32">
                     {{ tx.from.bech32 | shorten }}
-                  </router-link>
+                  </router-link>-->
                 </div>
                 <div class="td">
-                  <router-link :to="'/address/' + tx.to.bech32">
+                  <Address :bech32="tx.to.bech32" :show-raw="false" />
+<!--                  <router-link :to="'/address/' + tx.to.bech32">
                     {{ tx.to.bech32 | shorten }}
-                  </router-link>
+                  </router-link>-->
                 </div>
                 <div class="td">
                   {{ tx.timestamp | age }}

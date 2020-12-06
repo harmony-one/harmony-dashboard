@@ -95,7 +95,7 @@ export const traverseCallInfo = async (callHead) => {
 
   await traverse(callHead);
 
-
+  console.log({interactions: JSON.parse(JSON.stringify(res))})
   return res.filter(r => r.callWithInfo.traceCall.input && r.callWithInfo.traceCall.input !== '0x');
 };
 
@@ -104,9 +104,8 @@ const getCallInfo = async (call) => {
   if (call.type === 'CALL' || call.type === 'STATICCALL') {
     const hrc20Props = await getHrc20ContractProps(call.to);
     const hrc20Method = getTxHrc20Method(call);
-    const suggestions = hrc20Method || call.input && call.input === '0x'
-      ? null :
-      await fetchSuggestions(call.input);
+    const suggestions =  hrc20Method || call.input && call.input === '0x'
+      ? null : await fetchSuggestions(call.input);
 
     return {
       from: hmySDK.crypto.toBech32(call.from),

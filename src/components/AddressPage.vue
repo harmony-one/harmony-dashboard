@@ -125,7 +125,13 @@
                   <td class="td-title">
                     {{ isHrc20(address.id) ? 'Contract' : 'ID' }}
                   </td>
-                  <td>{{ address.id }}</td>
+                  <td>
+                    <Address
+                        :bech32="address.id"
+                        show-raw="true"
+                        address-only="true"
+                    />
+                    </td>
                 </tr>
 
                 <tr v-if="isContract">

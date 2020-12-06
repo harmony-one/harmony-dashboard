@@ -95,12 +95,13 @@
                   From Address
                 </td>
                 <td class="address_link">
-                  <router-link
+                  <Address :bech32="transaction.from" :show-raw="true" />
+<!--                  <router-link
                       v-if="transaction.from"
                       :to="'/address/' + transaction.from"
                   >
                     {{ transaction.from }}
-                  </router-link>
+                  </router-link>-->
                 </td>
               </tr>
               <tr v-if="transaction.shardID !== transaction.toShardID">
@@ -188,9 +189,10 @@
                                 </td>-->
                 <td>
                   Deploy Contract
-                  <router-link :to="'/address/' + ContractAddress">
+                  <Address :bech32="ContractAddress" :show-raw="true" />
+<!--                  <router-link :to="'/address/' + ContractAddress">
                     {{ ContractAddress }}
-                  </router-link>
+                  </router-link>-->
                 </td>
               </tr>
             </table>
