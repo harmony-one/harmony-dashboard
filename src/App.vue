@@ -287,9 +287,10 @@ body,
     display: table-row;
   }
   .th {
-    font-weight: bold;
-    color: #777;
-    font-size: 0.8em;
+    font-family: Nunito;
+    font-size: 16px;
+    font-weight: 500;
+    color: #212D5E;
   }
 
   .td {

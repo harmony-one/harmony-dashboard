@@ -46,15 +46,15 @@
     margin-bottom: -0.2em;
   }
   .search {
-    width: 15em;
+    width: 30em;
     margin-left: @space-md;
     flex: none;
-    height: 2em;
+    height: 3em;
     overflow: hidden;
     position: relative;
     color: #fff;
     border: 1px solid #fff;
-    border-radius: 2em;
+    border-radius: 0;
     .search-icon {
       position: absolute;
       top: 50%;
@@ -82,7 +82,7 @@
 
 @media (max-width: 768px) {
   .search {
-    width: 10em !important;
+    //width: 10em !important;
   }
 
   .tagline {
