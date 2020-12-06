@@ -65,7 +65,7 @@ export const getTxHrc20Method = tx => {
       hexDataOutput
     )
   } catch (e) {
-    console.log('err', { methodOuts: method.outputs, hexDataOutput, tx })
+    // console.log('err', { methodOuts: method.outputs, hexDataOutput, tx })
   }
 
   const inputs = method.inputs

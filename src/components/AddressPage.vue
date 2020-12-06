@@ -443,8 +443,6 @@ export default {
       this.$router.push(`/address/${val.code}`)
     },
     onHrc20BalanceDropdown() {
-      alert(1)
-      console.log('onHrc20BalanceDropdown')
     },
     onError() {
       this.Hrc20Info.logo = null
