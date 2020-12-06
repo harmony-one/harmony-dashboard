@@ -83,7 +83,7 @@ export const traverseCallInfo = async callHead => {
           'Suggested method ' +
           callWithInfo.suggestions.map(buildSuggestion).join(' ')
       }
-    } else if (type === 'CREATE') {
+    } else if (type === 'CREATE' || type === 'CREATE2') {
       displayType = type
       if (callWithInfo.isHrc20Deploy) {
         displayString = 'HRC20 deployment'
@@ -99,20 +99,27 @@ export const traverseCallInfo = async callHead => {
     if (!call) {
       return
     }
-
-    const r = buildView(await getCallInfo(call))
-    res.push(r)
-
-    call.calls && (await Promise.all(call.calls.map(traverse)))
+    // ugly but keep order
+    call.info = buildView(await getCallInfo(call))
+    if (call.calls) {
+      await Promise.all(call.calls.map((c, i) => traverse(c)))
+    }
   }
-
   await traverse(callHead)
 
-  console.log({ interactions: JSON.parse(JSON.stringify(res)) })
-  return res.filter(
-    r =>
-      r.callWithInfo.traceCall.input && r.callWithInfo.traceCall.input !== '0x'
-  )
+  const flatMap = call => {
+    res.push(call)
+    call.calls && call.calls.map(flatMap)
+  }
+  flatMap(callHead)
+
+  return res
+    .map(o => ({ ...o.info }))
+    .filter(
+      r =>
+        r.callWithInfo.traceCall.input &&
+        r.callWithInfo.traceCall.input !== '0x'
+    )
 }
 
 const getCallInfo = async call => {

@@ -45,13 +45,13 @@
               </tr>
               <tr>
                 <td class="td-title">
-                  Value
+                  ONE Transferred
                 </td>
                 <td v-if="isStaking && transaction.type === 'EditValidator'">
                   -
                 </td>
                 <td v-else>
-                  {{ transaction.value | amount }}
+                  <b>{{ transaction.value | amount }}</b>
                 </td>
               </tr>
 
@@ -248,21 +248,34 @@
                       :show-raw="true"
                     />
 
+                    <span
+                      v-if="
+                        action.callWithInfo.traceCall.value &&
+                          action.callWithInfo.traceCall.value !== '0x0'
+                      "
+                    >
+                      <br />
+                      ONE transferred
+                      <b>{{ action.callWithInfo.traceCall.value | amount }}</b>
+                      <br />
+                    </span>
+
                     <span v-if="action.displayString">
                       <br />
                       <ParseAddress :parse-string="action.displayString" />
                     </span>
                     <br />
+
                     <div
                       v-if="!action.displayString || !action.hrc20Method"
                       style="font-size:10px;"
                     >
                       <expand-panel show-title="Data">
                         <div style="margin-top:5px;">
-                          <b>Input</b><br/>
+                          <b>Input</b><br />
                           {{ action.callWithInfo.traceCall.input || '—' }}
-                          <br/>
-                          <b>Output</b><br/>
+                          <br />
+                          <b>Output</b><br />
                           {{ action.callWithInfo.traceCall.output || '—' }}
                         </div>
                       </expand-panel>
