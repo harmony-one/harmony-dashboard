@@ -491,6 +491,11 @@ export default {
       const txs = {}
       const stakingTxs = {}
 
+      if (this.$route.params.address.startsWith('0x')) {
+        this.$route.params.address = this.$store.data.hmy.hmySDK.crypto.toBech32(
+          this.$route.params.address
+        )
+      }
       const address = this.$route.params.address
       const sortid = this.$route.params.hrc20QueryID
 
