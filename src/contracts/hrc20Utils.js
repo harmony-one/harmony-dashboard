@@ -43,6 +43,7 @@ export const isHrc20Deploy = tx => {
 
 export const getTxHrc20Method = tx => {
   const hexData = tx.input
+  const hexDataOutput = tx.output
 
   if (!hexData) {
     return false
@@ -57,18 +58,30 @@ export const getTxHrc20Method = tx => {
   }
 
   const inputValues = contractWithHelpers.decodeInput(hexData)
-  const outputValues = method.decodeOutputs(hexData)
+  let outputValues = []
+  try {
+    outputValues = contractWithHelpers.abiCoder.decodeParameters(
+      method.outputs,
+      hexDataOutput
+    )
+  } catch (e) {
+    console.log('err', { methodOuts: method.outputs, hexDataOutput, tx })
+  }
 
-  const inputs = method.inputs.map((o, i) => ({
-    name: o.name,
-    type: o.type,
-    value: inputValues.params[i],
-  }))
-  const outputs = method.outputs.map((o, i) => ({
-    name: o.name,
-    type: o.type,
-    value: outputValues[i],
-  }))
+  const inputs = method.inputs
+    .filter((o, i) => inputValues.params[i])
+    .map((o, i) => ({
+      name: o.name,
+      type: o.type,
+      value: inputValues.params[i],
+    }))
+  const outputs = method.outputs
+    .filter((o, i) => outputValues[i])
+    .map((o, i) => ({
+      name: o.name,
+      type: o.type,
+      value: outputValues[i],
+    }))
 
   return { method, inputs, outputs }
 }

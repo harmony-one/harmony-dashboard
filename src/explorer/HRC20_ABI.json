@@ -121,7 +121,7 @@
         "name": "balanceOf",
         "outputs": [
             {
-                "name": "balance",
+                "name": "value",
                 "type": "uint256"
             }
         ],

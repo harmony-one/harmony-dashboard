@@ -55,17 +55,21 @@ export const traverseCallInfo = async callHead => {
       if (callWithInfo.hrc20Method) {
         displayType = 'HRC20 ' + type
         const { method, inputs, outputs } = callWithInfo.hrc20Method
+        const isVoid = callWithInfo.traceCall.output === '0x'
 
         const inputsString = inputs
           .map(displayDecimals)
           .map(a => `${a.name}: ${a.value}`)
           .join(',')
+
         const outputsString = outputs
           .map(displayDecimals)
           .map(a => `${a.name}: ${a.value}`)
           .join(',')
 
-        displayString = `${method.name}(${inputsString}) → ${outputsString}`
+        displayString = `${method.name}(${inputsString}) → ${outputsString} ${
+          isVoid ? 'void' : ''
+        }`
       } else if (callWithInfo.suggestions && callWithInfo.suggestions.length) {
         const buildSuggestion = s => {
           const inputsString = s.inputs

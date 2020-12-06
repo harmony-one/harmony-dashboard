@@ -1,7 +1,9 @@
 <template>
   <span>
     <span v-for="(p, i) in processedString" :key="i">
-      <span v-if="isAddress(p)"><Address :bech32="p" :show-raw="true"/></span>
+      <span v-if="isAddress(p)">
+        <Address :bech32="p" :show-raw="true" />
+      </span>
       <span v-if="!isAddress(p)">{{ p }}</span>
     </span>
   </span>
@@ -36,7 +38,7 @@ export default {
 
       while (true) {
         pointer = s.indexOf('one1')
-        if ((pointer === -1 && i === 0) || (s === '' && i === 0)) {
+        if (pointer === -1 && i === 0) {
           this.processedString.push(s)
           return
         }
