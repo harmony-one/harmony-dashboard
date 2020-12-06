@@ -120,5 +120,6 @@ export default {
   color: #999;
   font-size: 0.8em;
   cursor: pointer;
+  user-select: none;
 }
 </style>
