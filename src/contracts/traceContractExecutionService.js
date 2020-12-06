@@ -48,18 +48,21 @@ export const traverseCallInfo = async (callHead) => {
     const displayDecimals = decimals(callWithInfo.hrc20Props);
 
     let displayString = '';
-    let displayType = '';
+    let displayType = type;
     if (type === 'CALL' || type === 'STATICCALL') {
-      displayType = type;
 
       if (callWithInfo.hrc20Method) {
         displayType = 'HRC20 ' + type;
         const {method, inputs, outputs} = callWithInfo.hrc20Method;
 
-        const inputsString = inputs.map(displayDecimals)
-          .map(a => `${a.name}: ${a.value}`).join(',');
-        const outputsString = outputs.map(displayDecimals)
-          .map(a => `${a.name}: ${a.value}`).join(',');
+        const inputsString = inputs
+          .map(displayDecimals)
+          .map(a => `${a.name}: ${a.value}`)
+          .join(',');
+        const outputsString = outputs
+          .map(displayDecimals)
+          .map(a => `${a.name}: ${a.value}`)
+          .join(',');
 
         displayString = `${method.name}(${inputsString}) → ${outputsString}`;
       } else if (callWithInfo.suggestions && callWithInfo.suggestions.length) {
