@@ -52,7 +52,7 @@ export const traverseCallInfo = async callHead => {
     let displayString = ''
     let displayType = type
     if (type === 'CALL' || type === 'STATICCALL') {
-      if (callWithInfo.hrc20Method) {
+      if (callWithInfo.hrc20Method && callWithInfo.hrc20Props) {
         displayType = 'HRC20 ' + type
         const { method, inputs, outputs } = callWithInfo.hrc20Method
         const isVoid = callWithInfo.traceCall.output === '0x'
@@ -60,12 +60,12 @@ export const traverseCallInfo = async callHead => {
         const inputsString = inputs
           .map(displayDecimals)
           .map(a => `${a.name}: ${a.value}`)
-          .join(',')
+          .join(', ')
 
         const outputsString = outputs
           .map(displayDecimals)
           .map(a => `${a.name}: ${a.value}`)
-          .join(',')
+          .join(', ')
 
         displayString = `${method.name}(${inputsString}) → ${outputsString} ${
           isVoid ? 'void' : ''
@@ -73,7 +73,7 @@ export const traverseCallInfo = async callHead => {
       } else if (callWithInfo.suggestions && callWithInfo.suggestions.length) {
         const buildSuggestion = s => {
           const inputsString = s.inputs
-            ? s.inputs.map(a => `${a.type}: ${a.value}`).join(',')
+            ? s.inputs.map(a => `${a.type}: ${a.value}`).join(', ')
             : ''
           // todo outputs not provided
           return `${s.method.name}(${inputsString})`

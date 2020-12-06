@@ -90,20 +90,20 @@ export const getHrc20ContractProps = async contractAddress => {
   try {
     const contract = hmySDK.contracts.createContract(HRC20_ABI, contractAddress)
 
-    //const name = await contract.methods.name().call(options)
+    const name = await contract.methods.name().call(options)
     const decimalsHex = await contract.methods.decimals().call(options)
     const decimals = parseInt(decimalsHex, 16)
 
-    /*const totalSupply = (
+    const totalSupply = (
       await contract.methods.totalSupply().call(options)
     ).toString()
-    const symbol = await contract.methods.symbol().call(options)*/
+    /*const symbol = await contract.methods.symbol().call(options)*/
 
-    if (!decimals) {
+    if (!decimals || !totalSupply || !name) {
       return null
     }
 
-    return { decimals }
+    return { decimals, totalSupply, name }
   } catch (err) {
     return null
   }
