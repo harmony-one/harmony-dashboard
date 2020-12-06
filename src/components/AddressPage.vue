@@ -442,8 +442,7 @@ export default {
     onHrc20BalancesDropdown(val) {
       this.$router.push(`/address/${val.code}`)
     },
-    onHrc20BalanceDropdown() {
-    },
+    onHrc20BalanceDropdown() {},
     onError() {
       this.Hrc20Info.logo = null
     },

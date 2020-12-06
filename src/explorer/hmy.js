@@ -175,11 +175,10 @@ function contract(
     const obj = contract.methods['0x' + sig](...argv)
 
     for (let i = 0; i < obj.params.length; i++) {
-      console.log('---',obj.abiItem.inputs[i].type, obj.params[i] )
       if (obj.abiItem.inputs[i].type === 'address') {
         obj.params[i] = hmySDK.crypto.toBech32(obj.params[i])
       } else if (obj.abiItem.inputs[i].type === 'address[]') {
-          obj.params[i] = obj.params[i].map(a => hmySDK.crypto.toBech32(a))
+        obj.params[i] = obj.params[i].map(a => hmySDK.crypto.toBech32(a))
       }
     }
 
