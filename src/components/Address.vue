@@ -25,10 +25,16 @@
       {{ displayAddress || '—' | shorten }}
     </span>
   </router-link>
+    <span v-if="showRaw" @click="copy()" class="address-type-control">&#x2398;</span>
     </span>
+
+
 </template>
 
 <script>
+
+import copy from 'copy-text-to-clipboard'
+
 export default {
   name: 'Address',
   props: ['bech32', 'showRaw', "staking", "addressOnly"],
@@ -52,6 +58,9 @@ export default {
     },
   },
   methods: {
+    copy() {
+      copy(this.displayAddress)
+    },
     toggleView() {
       this.showHex = !this.showHex
     },
