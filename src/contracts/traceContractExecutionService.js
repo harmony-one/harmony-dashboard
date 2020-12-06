@@ -78,7 +78,7 @@ export const traverseCallInfo = async (callHead) => {
     } else if (type === 'CREATE') {
       displayType = type;
       if (callWithInfo.isHrc20Deploy) {
-        displayString = 'HRC20 Deployment'
+        displayString = 'HRC20 deployment'
       }
     }
 
