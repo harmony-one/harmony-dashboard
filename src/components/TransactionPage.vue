@@ -259,7 +259,11 @@
                     >
                       <expand-panel show-title="Data">
                         <div style="margin-top:5px;">
+                          <b>Input</b><br/>
                           {{ action.callWithInfo.traceCall.input || '—' }}
+                          <br/>
+                          <b>Output</b><br/>
+                          {{ action.callWithInfo.traceCall.output || '—' }}
                         </div>
                       </expand-panel>
                     </div>
