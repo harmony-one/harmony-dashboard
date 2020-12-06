@@ -313,12 +313,35 @@ body,
 .secondary-info {
   font-size: 0.8em;
 }
+
+.ex-notification {
+  font-family: Nunito;
+
+
+
+  .notification-title {
+    // Style for title line
+    font-weight: normal;
+    background-color: #00aee9;
+    color: white;
+    padding: 10px;
+  }
+
+  .notification-content {
+    // Style for content
+
+
+
+  }
+
+}
 </style>
 <template>
   <div class="app">
     <site-header />
     <router-view />
     <site-footer />
+    <notifications group="" position="bottom right" classes="ex-notification" />
   </div>
 </template>
 
