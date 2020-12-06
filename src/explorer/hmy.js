@@ -151,7 +151,7 @@ function contract(
     if (0 === abi.length) return []
     let params = contract.abiCoder.decodeParameters(abi, hexdata)
     params.length = abi.length
-   /* for (let i = 0; i < abi.length; i++) {
+    /* for (let i = 0; i < abi.length; i++) {
       if (abi[i].type.startsWith('address'))
         params[i] = hmySDK.crypto.toBech32(params[i]);
     }*/

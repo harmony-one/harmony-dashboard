@@ -79,8 +79,12 @@
               {{ tx.type }}
             </td>
             <td>
-              <Address :bech32="tx.validator" :show-raw="false" staking="true"/>
-<!--              <router-link
+              <Address
+                :bech32="tx.validator"
+                :show-raw="false"
+                staking="true"
+              />
+              <!--              <router-link
                 v-if="tx.validator"
                 :to="'/address/' + tx.validator + '?txType=staking'"
               >
@@ -91,9 +95,13 @@
               </div>-->
             </td>
             <td>
-              <Address :bech32="tx.delegator" :show-raw="false" staking="true"/>
+              <Address
+                :bech32="tx.delegator"
+                :show-raw="false"
+                staking="true"
+              />
 
-<!--
+              <!--
              <router-link
                 v-if="tx.delegator"
                 :to="'/address/' + tx.from + '?txType=staking'"
@@ -123,7 +131,7 @@ import Address from './Address'
 export default {
   name: 'StakingTransactionsTable',
   components: {
-    Address
+    Address,
   },
   props: [
     'allStakingTxs',

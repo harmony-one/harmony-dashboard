@@ -87,7 +87,7 @@
             </td>
             <td>
               <Address :bech32="tx.from" :show-raw="false" />
-<!--              <router-link :to="'/address/' + tx.from">
+              <!--              <router-link :to="'/address/' + tx.from">
                 {{ tx.from | shorten }}
               </router-link>-->
             </td>

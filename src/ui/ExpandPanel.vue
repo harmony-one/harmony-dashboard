@@ -16,7 +16,7 @@
           />
         </div>
         <div class="left-index">
-          {{ !openBar ? showTitle ? showTitle : 'Show more' : 'Hide' }}
+          {{ !openBar ? (showTitle ? showTitle : 'Show more') : 'Hide' }}
         </div>
       </div>
     </div>

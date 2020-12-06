@@ -389,7 +389,7 @@
                       </router-link>
                     </div>
                     <div class="td">
-                      <Address :bech32="tx.from.bech32 " :show-raw="false" />
+                      <Address :bech32="tx.from.bech32" :show-raw="false" />
                     </div>
                     <div class="td">
                       <Address :bech32="tx.to.bech32" />
@@ -501,9 +501,13 @@
                       {{ tx.type }}
                     </div>
                     <div class="td">
-                      <Address :bech32="tx.validator.bech32" :show-raw="false" staking="true"/>
+                      <Address
+                        :bech32="tx.validator.bech32"
+                        :show-raw="false"
+                        staking="true"
+                      />
 
-<!--                      <router-link
+                      <!--                      <router-link
                         v-if="tx.validator.bech32"
                         :to="
                           '/address/' + tx.validator.bech32 + '?txType=staking'
@@ -516,9 +520,13 @@
                       </div>-->
                     </div>
                     <div class="td">
-                      <Address :bech32="tx.delegator.bech32" :show-raw="false" staking="true"/>
+                      <Address
+                        :bech32="tx.delegator.bech32"
+                        :show-raw="false"
+                        staking="true"
+                      />
 
-<!--                      <router-link
+                      <!--                      <router-link
                         v-if="tx.delegator.bech32"
                         :to="
                           '/address/' + tx.delegator.bech32 + '?txType=staking'
@@ -624,13 +632,13 @@
                     </div>
                     <div class="td">
                       <Address :bech32="tx.hrc20tx.from" :show-raw="false" />
-<!--                      <router-link :to="'/address/' + tx.hrc20tx.from">
+                      <!--                      <router-link :to="'/address/' + tx.hrc20tx.from">
                         {{ tx.hrc20tx.from | shorten }}
                       </router-link>-->
                     </div>
                     <div class="td">
                       <Address :bech32="tx.hrc20tx.to" :show-raw="false" />
-<!--                      <router-link :to="'/address/' + tx.hrc20tx.to">
+                      <!--                      <router-link :to="'/address/' + tx.hrc20tx.to">
                         {{ tx.hrc20tx.to | shorten }}
                       </router-link>-->
                     </div>

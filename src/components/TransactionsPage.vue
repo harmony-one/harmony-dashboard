@@ -65,7 +65,7 @@
                 </td>
                 <td>
                   <Address :bech32="tx.from.bech32" :show-raw="false" />
-<!--                  <router-link
+                  <!--                  <router-link
                     v-if="tx.from.bech32"
                     :to="'/address/' + tx.from.bech32"
                   >
@@ -74,7 +74,7 @@
                 </td>
                 <td>
                   <Address :bech32="tx.to.bech32" :show-raw="false" />
-<!--                  <router-link
+                  <!--                  <router-link
                     v-if="tx.to.bech32"
                     :to="'/address/' + tx.to.bech32"
                   >
@@ -120,7 +120,7 @@ export default {
   name: 'TransactionsPage',
   components: {
     LoadingMessage,
-    Address
+    Address,
   },
   data() {
     return {

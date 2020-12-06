@@ -163,7 +163,7 @@ body,
       font-family: Nunito;
       font-size: 16px;
       font-weight: 500;
-      color: #212D5E;
+      color: #212d5e;
       -webkit-letter-spacing: 0.5px;
       -moz-letter-spacing: 0.5px;
       -ms-letter-spacing: 0.5px;
@@ -290,7 +290,7 @@ body,
     font-family: Nunito;
     font-size: 16px;
     font-weight: 500;
-    color: #212D5E;
+    color: #212d5e;
   }
 
   .td {

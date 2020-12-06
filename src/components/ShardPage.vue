@@ -211,13 +211,13 @@
                 </div>
                 <div class="td">
                   <Address :bech32="tx.from.bech32" :show-raw="false" />
-<!--                  <router-link :to="'/address/' + tx.from.bech32">
+                  <!--                  <router-link :to="'/address/' + tx.from.bech32">
                     {{ tx.from.bech32 | shorten }}
                   </router-link>-->
                 </div>
                 <div class="td">
                   <Address :bech32="tx.to.bech32" :show-raw="false" />
-<!--                  <router-link :to="'/address/' + tx.to.bech32">
+                  <!--                  <router-link :to="'/address/' + tx.to.bech32">
                     {{ tx.to.bech32 | shorten }}
                   </router-link>-->
                 </div>

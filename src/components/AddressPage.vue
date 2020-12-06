@@ -127,11 +127,11 @@
                   </td>
                   <td>
                     <Address
-                        :bech32="address.id"
-                        show-raw="true"
-                        address-only="true"
+                      :bech32="address.id"
+                      show-raw="true"
+                      address-only="true"
                     />
-                    </td>
+                  </td>
                 </tr>
 
                 <tr v-if="isContract">

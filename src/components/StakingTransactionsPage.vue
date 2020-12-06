@@ -84,7 +84,7 @@
                 <div class="td">
                   <Address :bech32="tx.validator.bech32" :show-raw="false" />
 
-<!--                 <router-link
+                  <!--                 <router-link
                     v-if="tx.validator.bech32"
                     :to="'/address/' + tx.validator.bech32"
                   >
@@ -93,7 +93,7 @@
                 </div>
                 <div class="td">
                   <Address :bech32="tx.delegator.bech32" :show-raw="false" />
-<!--                  <router-link
+                  <!--                  <router-link
                     v-if="tx.delegator.bech32"
                     :to="'/address/' + tx.delegator.bech32"
                   >
@@ -129,7 +129,7 @@ export default {
   name: 'StakingTransactionsPage',
   components: {
     LoadingMessage,
-    Address
+    Address,
   },
   data() {
     return {

@@ -59,13 +59,13 @@
                 </td>
                 <td>
                   <Address :bech32="tx.hrc20tx.from" :show-raw="false" />
-<!--                  <router-link :to="'/address/' + tx.tx.from">
+                  <!--                  <router-link :to="'/address/' + tx.tx.from">
                     {{ tx.hrc20tx.from | shorten }}
                   </router-link>-->
                 </td>
                 <td>
                   <Address :bech32="tx.hrc20tx.to" :show-raw="false" />
-<!--                  <router-link :to="'/address/' + tx.hrc20tx.to">
+                  <!--                  <router-link :to="'/address/' + tx.hrc20tx.to">
                     {{ tx.hrc20tx.to | shorten }}
                   </router-link>-->
                 </td>
