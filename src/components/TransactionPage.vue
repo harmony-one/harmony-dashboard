@@ -33,7 +33,9 @@
                   <span v-if="txReceiptStatus === 1" style="color:#00c9a7">
                     Success
                   </span>
-                  <span style="color: red" v-if="txReceiptStatus === 0">Failure</span>
+                  <span v-if="txReceiptStatus === 0" style="color: red"
+                    >Failure</span
+                  >
                   <span style="color: red">&nbsp;{{ failureReason }}</span>
                 </td>
               </tr>

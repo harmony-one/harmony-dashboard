@@ -11,7 +11,7 @@
       :to="'/address/' + bech32 + (staking ? '?txType=staking' : '')"
     >
       <span v-if="isHrc20 && !addressOnly" style="line-height: 11px">
-<!--        <span v-if="hrc20Info.logo">
+        <!--        <span v-if="hrc20Info.logo">
           <img :src="hrc20Info.logo" class="hrclogo" @error="onError" />
         </span>
         <span v-if="!hrc20Info.logo">
@@ -30,7 +30,11 @@
         {{ displayAddress || '—' | shorten }}
       </span>
     </router-link>
-    <span v-if="showRaw" class="address-type-control" style="font-size:1em" @click="copy()"
+    <span
+      v-if="showRaw"
+      class="address-type-control"
+      style="font-size:1em"
+      @click="copy()"
       >&#x2398;</span
     >
   </span>

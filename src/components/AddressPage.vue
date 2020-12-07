@@ -71,15 +71,16 @@
           <header>
             <h1 v-if="isHrc20(address.id)">
               HRC20 Token:
-<!--              <span v-if="Hrc20Info.logo">
+              <!--              <span v-if="Hrc20Info.logo">
                 <img :src="Hrc20Info.logo" class="hrclogo" />
               </span>-->
               <span v-if="!Hrc20Info.logo">
                 <span :style="bgStyle()">
-                    {{ Hrc20Info.name}} (<b>{{ Hrc20Info.symbol  }}</b>)
+                  {{ Hrc20Info.name }} (<b>{{ Hrc20Info.symbol }}</b
+                  >)
                 </span>
               </span>
-<!--              <a target="_blank" :href="Hrc20Info.website">
+              <!--              <a target="_blank" :href="Hrc20Info.website">
                 {{ Hrc20Info.name + '(' + Hrc20Info.symbol + ')' }}
               </a>-->
             </h1>
