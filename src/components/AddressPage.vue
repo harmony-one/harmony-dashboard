@@ -71,17 +71,17 @@
           <header>
             <h1 v-if="isHrc20(address.id)">
               HRC20 Token:
-              <span v-if="Hrc20Info.logo">
+<!--              <span v-if="Hrc20Info.logo">
                 <img :src="Hrc20Info.logo" class="hrclogo" />
+              </span>-->
+              <span v-if="!Hrc20Info.logo">
+                <span :style="bgStyle()">
+                    {{ Hrc20Info.name}} (<b>{{ Hrc20Info.symbol  }}</b>)
+                </span>
               </span>
-              <span v-if="!Hrc20Info.logo" class="avatar-wrapper">
-                <span class="avatar" :style="bgStyle()">{{
-                  Hrc20Info.name[0]
-                }}</span>
-              </span>
-              <a target="_blank" :href="Hrc20Info.website">
+<!--              <a target="_blank" :href="Hrc20Info.website">
                 {{ Hrc20Info.name + '(' + Hrc20Info.symbol + ')' }}
-              </a>
+              </a>-->
             </h1>
             <h1 v-else>
               {{ title }}
@@ -462,7 +462,7 @@ export default {
       ]
       const c = this.Hrc20Info.name.charCodeAt(0) % palette.length
       const backgroundColor = palette[c]
-      return { backgroundColor: backgroundColor }
+      return { color: backgroundColor }
     },
     changeTab(value) {
       let txType = 'regular'
