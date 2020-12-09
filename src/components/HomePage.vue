@@ -181,7 +181,7 @@
                     <div class="th text-right">
                       Timestamp
                     </div>
-                    <div class="th text-right">
+                    <div class="th text-right" style="width:200px">
                       Age
                     </div>
                     <div v-if="showTx" class="th text-right">
