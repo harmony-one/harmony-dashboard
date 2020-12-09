@@ -8,7 +8,7 @@
   top: 0;
   color: var(--color-site-header-text);
   transition: background-color @anim-duration @anim-easing,
-    color @anim-duration @anim-easing;
+  color @anim-duration @anim-easing;
   a.navbar-brand {
     display: inline-block;
     height: 7em;

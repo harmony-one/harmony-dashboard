@@ -158,6 +158,29 @@
                   </td>
                 </tr>
 
+                <tr v-if="isContract">
+                  <td class="td-title">
+                    Creater Address
+                  </td>
+                  <td>
+                    <Address
+                      :bech32="contractData.authorAddress"
+                      show-raw="true"
+                    />
+                  </td>
+                </tr>
+
+                <tr v-if="isContract">
+                  <td class="td-title">
+                    Transaction ID
+                  </td>
+                  <td>
+                    <router-link :to="'/tx/' + contractData.txId">
+                      {{ contractData.txId | shorten }}
+                    </router-link>
+                  </td>
+                </tr>
+
                 <tr>
                   <td class="td-title">
                     ONE Balance

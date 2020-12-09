@@ -40,6 +40,7 @@ export default {
     'titlePostfixTx',
     'titlePostfixStakingTx',
     'titlePostfixHrc20Tx',
+    'titlePostfixPendingTx',
   ],
 }
 </script>

@@ -181,7 +181,7 @@
                     <div class="th text-right">
                       Timestamp
                     </div>
-                    <div class="th text-right" style="width:200px">
+                    <div class="th text-right">
                       Age
                     </div>
                     <div v-if="showTx" class="th text-right">
@@ -301,8 +301,8 @@
                   </td>
                   <td>
                     <a :href="$store.data.ONE_HOLDERURL" target="_blank">{{
-                      100000
-                    }}</a>
+                        100000
+                      }}</a>
                   </td>
                 </tr>
                 <tr v-for="token in tokenHolders" :key="token.id">

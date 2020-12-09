@@ -73,7 +73,7 @@ function sendGet(url, params) {
   ws.addEventListener('close', () => {
     console.log('close')
   })
-})()
+})();
 
 export default {
   reset(secret) {
