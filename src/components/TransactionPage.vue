@@ -30,7 +30,13 @@
                   {{ transaction.status | txStatus }}
                 </td>
                 <td v-if="isContract">
-                  {{ txReceiptStatus === 1 ? 'Success' : 'Failure' }}
+                  <span v-if="txReceiptStatus === 1" style="color:#00c9a7">
+                    Success
+                  </span>
+                  <span v-if="txReceiptStatus === 0" style="color: red"
+                    >Failure</span
+                  >
+                  <span style="color: red">&nbsp;{{ failureReason }}</span>
                 </td>
               </tr>
               <tr v-if="isFailedTransaction">
@@ -41,13 +47,13 @@
               </tr>
               <tr>
                 <td class="td-title">
-                  Value
+                  ONE Transferred
                 </td>
                 <td v-if="isStaking && transaction.type === 'EditValidator'">
                   -
                 </td>
                 <td v-else>
-                  {{ transaction.value | amount }}
+                  <b>{{ transaction.value | amount }}</b>
                 </td>
               </tr>
 
@@ -92,12 +98,13 @@
                   From Address
                 </td>
                 <td class="address_link">
-                  <router-link
-                    v-if="transaction.from"
-                    :to="'/address/' + transaction.from"
+                  <Address :bech32="transaction.from" :show-raw="true" />
+                  <!--                  <router-link
+                      v-if="transaction.from"
+                      :to="'/address/' + transaction.from"
                   >
                     {{ transaction.from }}
-                  </router-link>
+                  </router-link>-->
                 </td>
               </tr>
               <tr v-if="transaction.shardID !== transaction.toShardID">
@@ -171,58 +178,114 @@
                 <td>{{ sequence }}</td>
               </tr>
 
-              <tr v-if="!isStaking">
-                <td class="td-title">
-                  Data Parse
-                </td>
-                <td v-if="transaction.to">
-                  <DecodeABI
-                    :abi="$store.data.HRC20_ABI"
-                    :data="transaction.input"
-                    :is-hrc20="isHrc20(transaction.hash)"
-                    :bech32="transaction.to"
-                  />
-                </td>
-                <td v-else>
+              <tr v-if="!isStaking && !transaction.to">
+                <!--                <td class="td-title">
+                                  Data Parse
+                                </td>
+                                <td v-if="transaction.to">
+                                  <DecodeABI
+                                      :abi="$store.data.HRC20_ABI"
+                                      :data="transaction.input"
+                                      :is-hrc20="isHrc20(transaction.hash)"
+                                      :bech32="transaction.to"
+                                  />
+                                </td>-->
+                <td>
                   Deploy Contract
-                  <router-link :to="'/address/' + ContractAddress">
+                  <Address :bech32="ContractAddress" :show-raw="true" />
+                  <!--                  <router-link :to="'/address/' + ContractAddress">
                     {{ ContractAddress }}
-                  </router-link>
+                  </router-link>-->
                 </td>
               </tr>
             </table>
 
-            <expand-panel>
+            <table class="explorer-table">
+              <tr />
+              <tr v-if="isStaking">
+                <td class="td-title">
+                  Data
+                </td>
+                <td>
+                  <vue-json-pretty :data="transaction.msg" />
+                </td>
+              </tr>
+              <!--                <tr v-if="!isStaking">
+                                <td class="td-title">
+                                  Data (Hex)
+                                </td>
+                                <td>{{ transaction.input || '—' }}</td>
+                              </tr>-->
+              <!--                <tr v-if="!isStaking">
+                                <td class="td-title">
+                                  Data (UTF-8)
+                                </td>
+                                <td>{{ hexToUTF8(transaction.input) || '—' }}</td>
+                              </tr>-->
+              <tr>
+                <td class="td-title">
+                  Nonce
+                </td>
+                <td>{{ parseInt(transaction.nonce) }}</td>
+              </tr>
+            </table>
+
+            <h2 v-if="txActions.length > 0">
+              Interactions
+            </h2>
+            <div v-for="(action, index) in txActions" :key="`action${index}`">
               <table class="explorer-table">
-                <tr />
-                <tr v-if="isStaking">
-                  <td class="td-title">
-                    Data
+                <tr v-if="!isStaking">
+                  <td class="td-title" style="vertical-align: top">
+                    {{ action.displayType }}
                   </td>
                   <td>
-                    <vue-json-pretty :data="transaction.msg" />
+                    <Address
+                      :bech32="action.callWithInfo.from"
+                      :show-raw="true"
+                    />
+                    &rarr;
+                    <Address
+                      :bech32="action.callWithInfo.to"
+                      :show-raw="true"
+                    />
+
+                    <span
+                      v-if="
+                        action.callWithInfo.traceCall.value &&
+                          action.callWithInfo.traceCall.value !== '0x0'
+                      "
+                    >
+                      <br />
+                      ONE transferred
+                      <b>{{ action.callWithInfo.traceCall.value | amount }}</b>
+                      <br />
+                    </span>
+
+                    <span v-if="action.displayString">
+                      <br />
+                      <ParseAddress :parse-string="action.displayString" />
+                    </span>
+                    <br />
+
+                    <div
+                      v-if="!action.displayString || !action.hrc20Method"
+                      style="font-size:10px;"
+                    >
+                      <expand-panel show-title="Data">
+                        <div style="margin-top:5px;">
+                          <b>Input</b><br />
+                          {{ action.callWithInfo.traceCall.input || '—' }}
+                          <br />
+                          <b>Output</b><br />
+                          {{ action.callWithInfo.traceCall.output || '—' }}
+                        </div>
+                      </expand-panel>
+                    </div>
                   </td>
-                </tr>
-                <tr v-if="!isStaking">
-                  <td class="td-title">
-                    Data (Hex)
-                  </td>
-                  <td>{{ transaction.input || '—' }}</td>
-                </tr>
-                <tr v-if="!isStaking">
-                  <td class="td-title">
-                    Data (UTF-8)
-                  </td>
-                  <td>{{ hexToUTF8(transaction.input) || '—' }}</td>
-                </tr>
-                <tr>
-                  <td class="td-title">
-                    Nonce
-                  </td>
-                  <td>{{ parseInt(transaction.nonce) }}</td>
                 </tr>
               </table>
-            </expand-panel>
+            </div>
           </div>
         </div>
       </div>
@@ -240,16 +303,23 @@ import LoadingMessage from './LoadingMessage'
 import ExpandPanel from '@/ui/ExpandPanel'
 import VueJsonPretty from 'vue-json-pretty'
 import Address from './Address'
+import ParseAddress from './ParseAddress'
 import DecodeABI from './DecodeABI'
+import {
+  traceTx,
+  traverseCallInfo,
+  getFailureMessages,
+} from '../contracts/traceContractExecutionService'
 
 export default {
   name: 'TransactionPage',
   components: {
     LoadingMessage,
-    ExpandPanel,
     VueJsonPretty,
     Address,
-    DecodeABI,
+    ParseAddress,
+    ExpandPanel,
+    //DecodeABI,
   },
   props: {
     isStaking: {
@@ -258,6 +328,7 @@ export default {
   },
   data() {
     return {
+      txActions: [],
       loading: true,
       firstLoading: true,
       transaction: null,
@@ -265,6 +336,7 @@ export default {
       receipt: null,
       sequence: null,
       globalData: store.data,
+      failureReason: '',
     }
   },
   computed: {
@@ -326,12 +398,23 @@ export default {
 
       this.globalData.hmy.hmySDK.blockchain.Transaction.getTransactionReceipt(
         routeTxId
-      ).then(res => {
+      ).then(async res => {
         const { result } = res
         this.txReceiptStatus = parseInt(result.status || '0x0', 16)
+
+        const trace = await traceTx(routeTxId)
+        this.txActions = await traverseCallInfo(trace.result)
+
+        if (!this.txReceiptStatus) {
+          const { result } = trace
+          this.failureReason = getFailureMessages(result).join(' ') || ''
+        }
       })
     },
     getTransaction(txId) {
+      this.failureReason = ''
+      this.txActions = []
+
       const routeTxId = this.$route.params.transactionId
 
       if (txId && txId !== routeTxId) {

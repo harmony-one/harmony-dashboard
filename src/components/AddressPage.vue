@@ -1,10 +1,10 @@
 <style>
 .vs__search {
-  color: #888;
+  color: #666;
 }
 
 .vs__dropdown-option {
-  color: #888;
+  color: #666;
 }
 
 .vs__dropdown-option--highlight {
@@ -13,7 +13,7 @@
 }
 
 .vs__search::placeholder {
-  color: #888;
+  color: #666;
 }
 </style>
 
@@ -71,17 +71,18 @@
           <header>
             <h1 v-if="isHrc20(address.id)">
               HRC20 Token:
-              <span v-if="Hrc20Info.logo">
+              <!--              <span v-if="Hrc20Info.logo">
                 <img :src="Hrc20Info.logo" class="hrclogo" />
+              </span>-->
+              <span v-if="!Hrc20Info.logo">
+                <span :style="bgStyle()">
+                  {{ Hrc20Info.name }} (<b>{{ Hrc20Info.symbol }}</b
+                  >)
+                </span>
               </span>
-              <span v-if="!Hrc20Info.logo" class="avatar-wrapper">
-                <span class="avatar" :style="bgStyle()">{{
-                  Hrc20Info.name[0]
-                }}</span>
-              </span>
-              <a target="_blank" :href="Hrc20Info.website">
+              <!--              <a target="_blank" :href="Hrc20Info.website">
                 {{ Hrc20Info.name + '(' + Hrc20Info.symbol + ')' }}
-              </a>
+              </a>-->
             </h1>
             <h1 v-else>
               {{ title }}
@@ -125,7 +126,36 @@
                   <td class="td-title">
                     {{ isHrc20(address.id) ? 'Contract' : 'ID' }}
                   </td>
-                  <td>{{ address.id }}</td>
+                  <td>
+                    <Address
+                      :bech32="address.id"
+                      show-raw="true"
+                      address-only="true"
+                    />
+                  </td>
+                </tr>
+
+                <tr v-if="isContract">
+                  <td class="td-title">
+                    Creater Address
+                  </td>
+                  <td>
+                    <Address
+                      :bech32="contractData.authorAddress"
+                      show-raw="true"
+                    />
+                  </td>
+                </tr>
+
+                <tr v-if="isContract">
+                  <td class="td-title">
+                    Transaction ID
+                  </td>
+                  <td>
+                    <router-link :to="'/tx/' + contractData.txId">
+                      {{ contractData.txId | shorten }}
+                    </router-link>
+                  </td>
                 </tr>
 
                 <tr v-if="isContract">
@@ -272,6 +302,7 @@
             <TransactionTableTabs :value="tabValue" :on-change="changeTab" />
           </slot>
         </TransactionsTable>
+
         <Hrc20TransactionsTable
           v-else-if="showWhich == 'hrc20'"
           :all-txs="hrc20Txs"
@@ -435,10 +466,7 @@ export default {
     onHrc20BalancesDropdown(val) {
       this.$router.push(`/address/${val.code}`)
     },
-    onHrc20BalanceDropdown() {
-      alert(1)
-      console.log('onHrc20BalanceDropdown')
-    },
+    onHrc20BalanceDropdown() {},
     onError() {
       this.Hrc20Info.logo = null
     },
@@ -458,7 +486,7 @@ export default {
       ]
       const c = this.Hrc20Info.name.charCodeAt(0) % palette.length
       const backgroundColor = palette[c]
-      return { backgroundColor: backgroundColor }
+      return { color: backgroundColor }
     },
     changeTab(value) {
       let txType = 'regular'
@@ -484,6 +512,11 @@ export default {
       const txs = {}
       const stakingTxs = {}
 
+      if (this.$route.params.address.startsWith('0x')) {
+        this.$route.params.address = this.$store.data.hmy.hmySDK.crypto.toBech32(
+          this.$route.params.address
+        )
+      }
       const address = this.$route.params.address
       const sortid = this.$route.params.hrc20QueryID
 
@@ -536,6 +569,7 @@ export default {
           this.allTxs = Object.values(txs).sort((a, b) =>
             Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
           )
+
           this.allStakingTxs = Object.values(stakingTxs).sort((a, b) =>
             Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
           )
@@ -556,7 +590,15 @@ export default {
         Object.keys(this.Hrc20Address).map(async hrc20 => {
           //for (let hrc20 in this.Hrc20Address) {
           //if (this.Hrc20Balance[hrc20]) continue;
-          const c = hmy.contract(this.$store.data.HRC20_ABI, toHex(hrc20))
+          //console.log({hrc20});
+
+          let c
+          try {
+            c = hmy.contract(this.$store.data.HRC20_ABI, toHex(hrc20))
+          } catch (e) {
+            console.log({ e, hrc20 })
+          }
+
           const hrc20Info = this.Hrc20Address[hrc20]
           let balance
 

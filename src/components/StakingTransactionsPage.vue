@@ -82,26 +82,23 @@
                   {{ tx.type }}
                 </div>
                 <div class="td">
-                  <router-link
+                  <Address :bech32="tx.validator.bech32" :show-raw="false" />
+
+                  <!--                 <router-link
                     v-if="tx.validator.bech32"
                     :to="'/address/' + tx.validator.bech32"
                   >
                     {{ tx.validator.bech32 | shorten }}
-                  </router-link>
-                  <div v-else>
-                    -
-                  </div>
+                  </router-link>-->
                 </div>
                 <div class="td">
-                  <router-link
+                  <Address :bech32="tx.delegator.bech32" :show-raw="false" />
+                  <!--                  <router-link
                     v-if="tx.delegator.bech32"
                     :to="'/address/' + tx.delegator.bech32"
                   >
                     {{ tx.delegator.bech32 | shorten }}
-                  </router-link>
-                  <div v-else>
-                    -
-                  </div>
+                  </router-link>-->
                 </div>
                 <div class="td no-break">
                   {{ tx.value | amount }}
@@ -127,11 +124,12 @@ import store from '../explorer/store'
 import service from '../explorer/service'
 import LoadingMessage from './LoadingMessage'
 import moment from 'moment'
-
+import Address from '../components/Address'
 export default {
   name: 'StakingTransactionsPage',
   components: {
     LoadingMessage,
+    Address,
   },
   data() {
     return {

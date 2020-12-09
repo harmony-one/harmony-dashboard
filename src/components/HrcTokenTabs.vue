@@ -81,7 +81,7 @@ export default {
 
   .tabItem {
     cursor: pointer;
-    color: rgba(85, 91, 104, 0.7);
+    // color: rgba(85, 91, 104, 0.7);
     margin-right: 20px;
     font-size: 1.1em;
     font-weight: 500;
@@ -101,7 +101,7 @@ export default {
   cursor: pointer;
   color: #1b295e;
   font-size: 1.1em;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Nunito', Helvetica, Arial, sans-serif;
   font-weight: 500;
 }
 .optionItem:focus {

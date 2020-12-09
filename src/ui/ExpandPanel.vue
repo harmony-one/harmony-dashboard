@@ -16,7 +16,7 @@
           />
         </div>
         <div class="left-index">
-          {{ !openBar ? 'Show more' : 'Hide' }}
+          {{ !openBar ? (showTitle ? showTitle : 'Show more') : 'Hide' }}
         </div>
       </div>
     </div>
@@ -26,6 +26,7 @@
 <script>
 export default {
   name: 'ExpandPanel',
+  props: ['showTitle'],
   data() {
     return {
       openBar: false,
@@ -60,8 +61,8 @@ export default {
       justify-content: flex-start;
       transition: border-radius 0.3s ease-in-out;
       .left-index {
-        font-size: 14px;
-        color: var(--color-table-link);
+        font-size: 12px;
+        // color: var(--color-table-link);
       }
       .right-arrow {
         height: 100%;
@@ -70,7 +71,7 @@ export default {
           transform: rotate(-180deg);
         }
         div.arrow {
-          margin-left: -3px;
+          margin-left: 0px;
           transition: transform 0.3s ease-out;
           display: inline-block;
           position: relative;

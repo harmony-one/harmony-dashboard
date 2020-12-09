@@ -86,9 +86,10 @@
               {{ tx.toShardID }}
             </td>
             <td>
-              <router-link :to="'/address/' + tx.from">
+              <Address :bech32="tx.from" :show-raw="false" />
+              <!--              <router-link :to="'/address/' + tx.from">
                 {{ tx.from | shorten }}
-              </router-link>
+              </router-link>-->
             </td>
             <td>
               <Address :bech32="tx.to" />

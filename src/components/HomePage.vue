@@ -72,48 +72,12 @@
     }
   }
 }
-.search-bar-body {
-  padding: 30px 40px 50px 60px;
-  text-align: center;
-  margin: 0 -601.5rem;
-  background: linear-gradient(0deg, transparent 50%, #00aee9 50%);
-}
-
-.search-bar-input {
-  width: 800px;
-  height: 40px;
-  font-size: 15px;
-  padding: 30px 30px !important;
-  border: 0px !important;
-  border-radius: 5px !important;
-  box-shadow: 0 0 0.4em rgba(0, 0, 0, 0.5);
-	outline: none;
-}
-
-input:focus {
-  outline: none !important;
-}
-.table-empty-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
 </style>
 
 <template>
   <div class="home-page explorer-page page">
     <div class="home-body explorer-body">
       <div v-if="globalData.blocks.length" class="container">
-        <div class="search-bar-body">
-          <input
-            type="text"
-            placeholder="Search for Blocks / Transactions / Accounts..."
-            class="search-bar-input"
-            v-model="textSearchBar"
-            @keyup.enter="searchQuery()"
-          />
-        </div>
         <div v-if="!!coinStats" class="explorer-card status-card">
           <CoinStats :stats="coinStats" />
         </div>
@@ -191,19 +155,15 @@ input:focus {
                   Latest Blocks
                 </h1>
                 <div class="secondary-info">
-                  <div class="filter-dropdown">
-                    {{blockChartLabel}}
-                    <button class="dropbtn btn btn-light btn-icon-only">
-                      <font-awesome-icon icon="chevron-down" />
-                    </button>
-                    <div class="filter-dropdown-content">
-                      <a href="#" @click.prevent="setBlockChartFilter(-1)">All Shards</a>
-                      <a href="#" @click.prevent="setBlockChartFilter(0)">Shard 0</a>
-                      <a href="#" @click.prevent="setBlockChartFilter(1)">Shard 1</a>
-                      <a href="#" @click.prevent="setBlockChartFilter(2)">Shard 2</a>
-                      <a href="#" @click.prevent="setBlockChartFilter(3)">Shard 3</a>
-                    </div>
+                  <div class="timer">
+                    Updated
+                    {{
+                      Math.round(
+                        Math.max((now - globalData.lastUpdateTime) / 1000, 0)
+                      ) | number
+                    }}s ago...
                   </div>
+                  <span class="total-block-num" />
                 </div>
               </header>
               <div class="explorer-card-body">
@@ -229,7 +189,7 @@ input:focus {
                     </div>
                   </div>
                   <div
-                    v-for="block in getLatestBlocks"
+                    v-for="block in globalData.blocks"
                     :key="block.id"
                     class="tr"
                   >
@@ -341,8 +301,8 @@ input:focus {
                   </td>
                   <td>
                     <a :href="$store.data.ONE_HOLDERURL" target="_blank">{{
-                      100000
-                    }}</a>
+                        100000
+                      }}</a>
                   </td>
                 </tr>
                 <tr v-for="token in tokenHolders" :key="token.id">
@@ -376,22 +336,17 @@ input:focus {
                   :title-postfix-tx="globalData.txCount"
                   :title-postfix-staking-tx="globalData.stakingTxCount"
                   :title-postfix-hrc20-tx="globalData.hrc20TxsCount"
-                  :title-postfix-pending-tx="globalData.pendingTxsCount"
                 />
                 <div class="secondary-info">
-                  <div class="filter-dropdown">
-                    {{ transactionChartLabel }} 
-                    <button class="dropbtn btn btn-light btn-icon-only">
-                      <font-awesome-icon icon="chevron-down" />
-                    </button>
-                    <div class="filter-dropdown-content">
-                      <a href="#" @click.prevent="setTransactionChartFilter(-1)">All Shards</a>
-                      <a href="#" @click.prevent="setTransactionChartFilter(0)">Shard 0</a>
-                      <a href="#" @click.prevent="setTransactionChartFilter(1)">Shard 1</a>
-                      <a href="#" @click.prevent="setTransactionChartFilter(2)">Shard 2</a>
-                      <a href="#" @click.prevent="setTransactionChartFilter(3)">Shard 3</a>
-                    </div>
+                  <div class="timer">
+                    Updated
+                    {{
+                      Math.round(
+                        Math.max((now - globalData.lastUpdateTime) / 1000, 0)
+                      ) | number
+                    }}s ago...
                   </div>
+                  <span class="total-block-num" />
                 </div>
               </header>
               <div class="explorer-card-body">
@@ -422,7 +377,7 @@ input:focus {
                       Txn Fee
                     </div>
                   </div>
-                  <div v-for="tx in getLatestTransactions" :key="tx.id" class="tr">
+                  <div v-for="tx in globalData.txs" :key="tx.id" class="tr">
                     <div class="td">
                       <router-link :to="'/shard/' + tx.shardID">
                         {{ tx.shardID }}
@@ -434,9 +389,7 @@ input:focus {
                       </router-link>
                     </div>
                     <div class="td">
-                      <router-link :to="'/address/' + tx.from.bech32">
-                        {{ tx.from.bech32 | shorten }}
-                      </router-link>
+                      <Address :bech32="tx.from.bech32" :show-raw="false" />
                     </div>
                     <div class="td">
                       <Address :bech32="tx.to.bech32" />
@@ -487,8 +440,19 @@ input:focus {
                   :title-postfix-tx="globalData.txCount"
                   :title-postfix-staking-tx="globalData.stakingTxCount"
                   :title-postfix-hrc20-tx="globalData.hrc20TxsCount"
-                  :title-postfix-pending-tx="globalData.pendingTxsCount"
                 />
+
+                <div class="secondary-info">
+                  <div class="timer">
+                    Updated
+                    {{
+                      Math.round(
+                        Math.max((now - globalData.lastUpdateTime) / 1000, 0)
+                      ) | number
+                    }}s ago...
+                  </div>
+                  <span class="total-block-num" />
+                </div>
               </header>
               <div class="explorer-card-body">
                 <div class="explorer-table-responsive latest-tx-table">
@@ -537,7 +501,13 @@ input:focus {
                       {{ tx.type }}
                     </div>
                     <div class="td">
-                      <router-link
+                      <Address
+                        :bech32="tx.validator.bech32"
+                        :show-raw="false"
+                        staking="true"
+                      />
+
+                      <!--                      <router-link
                         v-if="tx.validator.bech32"
                         :to="
                           '/address/' + tx.validator.bech32 + '?txType=staking'
@@ -547,10 +517,16 @@ input:focus {
                       </router-link>
                       <div v-else>
                         -
-                      </div>
+                      </div>-->
                     </div>
                     <div class="td">
-                      <router-link
+                      <Address
+                        :bech32="tx.delegator.bech32"
+                        :show-raw="false"
+                        staking="true"
+                      />
+
+                      <!--                      <router-link
                         v-if="tx.delegator.bech32"
                         :to="
                           '/address/' + tx.delegator.bech32 + '?txType=staking'
@@ -560,7 +536,7 @@ input:focus {
                       </router-link>
                       <div v-else>
                         -
-                      </div>
+                      </div>-->
                     </div>
                     <div class="td">
                       {{ tx.timestamp | age }}
@@ -594,10 +570,8 @@ input:focus {
               </footer>
             </div>
           </div>
-          <div
-            v-else-if="showWhich == 'hrc20'"
-            class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
-          >
+
+          <div v-else class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="explorer-card latest-block-card">
               <header>
                 <TransactionTableTabs
@@ -606,8 +580,19 @@ input:focus {
                   :title-postfix-tx="globalData.txCount"
                   :title-postfix-staking-tx="globalData.stakingTxCount"
                   :title-postfix-hrc20-tx="globalData.hrc20TxsCount"
-                  :title-postfix-pending-tx="globalData.pendingTxsCount"
                 />
+
+                <div class="secondary-info">
+                  <div class="timer">
+                    Updated
+                    {{
+                      Math.round(
+                        Math.max((now - globalData.lastUpdateTime) / 1000, 0)
+                      ) | number
+                    }}s ago...
+                  </div>
+                  <span class="total-block-num" />
+                </div>
               </header>
               <div class="explorer-card-body">
                 <div class="explorer-table-responsive latest-tx-table">
@@ -646,14 +631,16 @@ input:focus {
                       </router-link>
                     </div>
                     <div class="td">
-                      <router-link :to="'/address/' + tx.hrc20tx.from">
+                      <Address :bech32="tx.hrc20tx.from" :show-raw="false" />
+                      <!--                      <router-link :to="'/address/' + tx.hrc20tx.from">
                         {{ tx.hrc20tx.from | shorten }}
-                      </router-link>
+                      </router-link>-->
                     </div>
                     <div class="td">
-                      <router-link :to="'/address/' + tx.hrc20tx.to">
+                      <Address :bech32="tx.hrc20tx.to" :show-raw="false" />
+                      <!--                      <router-link :to="'/address/' + tx.hrc20tx.to">
                         {{ tx.hrc20tx.to | shorten }}
-                      </router-link>
+                      </router-link>-->
                     </div>
                     <div class="td">
                       {{ (Number(tx.tx.timestamp) * 1000) | age }}
@@ -661,7 +648,11 @@ input:focus {
                     <div class="td">
                       <Address :bech32="tx.tx.to" />
                     </div>
-                    <div class="td" :title="tx.hrc20tx.amount">
+                    <div
+                      class="td"
+                      :title="tx.hrc20tx.amount"
+                      style="max-width:200px;overflow:hidden"
+                    >
                       {{ hrc20Balance(tx.tx.to, tx.hrc20tx.amount) }}
                     </div>
                   </div>
@@ -686,130 +677,6 @@ input:focus {
               </footer>
             </div>
           </div>
-          <div
-            v-else-if="showWhich == 'pending'"
-            class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
-          >
-            <div class="explorer-card latest-block-card">
-              <header>
-                <TransactionTableTabs
-                  :value="tabValue"
-                  :on-change="changeTab"
-                  :title-postfix-tx="globalData.txCount"
-                  :title-postfix-staking-tx="globalData.stakingTxCount"
-                  :title-postfix-hrc20-tx="globalData.hrc20TxsCount"
-                  :title-postfix-pending-tx="globalData.pendingTxsCount"
-                />
-
-                <div class="secondary-info">
-                  <div class="timer">
-                    Updated
-                    {{
-                      Math.round(
-                        Math.max((now - globalData.lastUpdateTime) / 1000, 0)
-                      ) | number
-                    }}s ago...
-                  </div>
-                  <span class="total-block-num" />
-                </div>
-              </header>
-              <div class="explorer-card-body">
-                 <div
-                  v-if="globalData.pendingTxsCount == 0"
-                  class="table-empty-container"
-                >
-                  <h3>
-                    No Pending Transactions
-                  </h3>
-                </div>
-                <div v-else class="explorer-table-responsive latest-tx-table">
-                  <div class="tr">
-                    <div class="th">
-                      Shard
-                    </div>
-                    <div class="th">
-                      Hash
-                    </div>
-                    <div class="th">
-                      From
-                    </div>
-                    <div class="th">
-                      To
-                    </div>
-                    <div class="th">
-                      Value
-                    </div>
-                    <div class="th text-right">
-                      Txn Fee
-                    </div>
-                  </div>
-                  <div
-                    v-for="tx in getPendingTransactions()"
-                    :key="tx.id"
-                    class="tr"
-                  >
-                    <div class="td">
-                      <router-link :to="'/shard/' + tx.shardID">
-                        {{ tx.shardID }}
-                      </router-link>
-                    </div>
-                    <div class="td">
-                      {{ tx.hash | shorten }}
-                    </div>
-                    <div class="td">
-                      <router-link
-                        v-if="tx.from"
-                        :to="
-                          '/address/' + tx.from
-                        "
-                      >
-                        {{ tx.from | shorten }}
-                      </router-link>
-                      <div v-else>
-                        -
-                      </div>
-                    </div>
-                    <div class="td">
-                      <router-link
-                        v-if="tx.to"
-                        :to="
-                          '/address/' + tx.to
-                        "
-                      >
-                        {{ tx.to | shorten }}
-                      </router-link>
-                      <div v-else>
-                        -
-                      </div>
-                    </div>
-                    <div class="td no-break">
-                      {{ tx.value | amount }}
-                    </div>
-                    <div class="td text-right no-break">
-                      {{ tx | fee }}
-                    </div>
-                  </div>
-                </div>
-                <!-- <div class="show-more-container">
-                  <router-link to="/staking-txs" class="show-more-button">
-                    Show all
-                    <b>{{ globalData.stakingTxCount | number }}</b> staking
-                    transactions
-                  </router-link>
-                </div>-->
-              </div>
-              <footer class="button-only-footer">
-                <router-link
-                  tag="button"
-                  class="btn btn-light btn-block btn-mini"
-                  to="txs"
-                >
-                  Show all
-                  <b>{{ globalData.txCount | number }}</b> transactions
-                </router-link>
-              </footer>
-            </div>
-          </div>
         </div>
       </div>
       <div v-else class="container">
@@ -828,7 +695,10 @@ import Address from './Address'
 import CommonTabs from './HrcTokenTabs'
 import TabPane from './TabPane'
 import { displayAmount } from '@/utils/displayAmount'
-import service from '../explorer/service'
+
+const oneArgHrc20Methods = ['transfer', 'approve', 'mint', 'burn', 'burnFrom']
+
+const twoArgsHrc20Methods = ['transferFrom', 'allowance']
 
 export default {
   name: 'HomePage',
@@ -858,39 +728,17 @@ export default {
       showTx: true,
       coinStats: null,
       tokenHolders: [],
-      blockChartFilter: -1,
-      blockChartLabel: 'All Shards',
-      transactionChartFilter: -1,
-      transactionChartLabel: 'All Shards',
-      pendingTXs: [],
-      textSearchBar: ''
     }
   },
   computed: {
     length() {
       return Math.ceil(this.globalData.blocks.length / this.pageSize)
     },
-    getLatestBlocks() {
-      const selectedShard = this.blockChartFilter;
-
-      if (selectedShard === -1) {
-        return this.globalData.blocks.slice(0, 10);
-      }
-      return this.globalData.shards[selectedShard].blocks.slice(0,10);
-    },
-    getLatestTransactions() {
-      const selectedShard = this.transactionChartFilter;
-
-      if (selectedShard == '-1') {
-        return this.globalData.txs.slice(0, 10);
-      }
-      return this.globalData.shards[selectedShard].txs.slice(0,10);
-    },
     showWhich() {
-      return this.$route.query.txType || 'regular' // 'staking','regular','hrc20', 'pending';
+      return this.$route.query.txType || 'regular' // 'staking','regular','hrc20';
     },
     tabValue() {
-      const status = { staking: 1, regular: 0, hrc20: 2, pending: 3 }
+      const status = { staking: 1, regular: 0, hrc20: 2 }
       return status[this.$route.query.txType] || 0
     },
     lastBlocks() {
@@ -905,7 +753,10 @@ export default {
       return this.$store.data.hrc20Txs.reduce((list, tx) => {
         const c = this.$store.data.hmy.contract(this.$store.data.HRC20_ABI)
         const decodeObj = c.decodeInput(tx.input)
-        if (decodeObj.abiItem && decodeObj.abiItem.name == 'transfer')
+        if (
+          decodeObj.abiItem &&
+          oneArgHrc20Methods.includes(decodeObj.abiItem.name)
+        )
           list.push({
             tx,
             hrc20tx: {
@@ -914,7 +765,10 @@ export default {
               amount: decodeObj.params[1],
             },
           })
-        else if (decodeObj.abiItem && decodeObj.abiItem.name == 'transferFrom')
+        else if (
+          decodeObj.abiItem &&
+          twoArgsHrc20Methods.includes(decodeObj.abiItem.name)
+        )
           list.push({
             tx,
             hrc20tx: {
@@ -970,7 +824,6 @@ export default {
       let txType = 'regular'
       if (value == 1) txType = 'staking'
       if (value == 2) txType = 'hrc20'
-      if (value == 3) txType = 'pending'
       this.$router.replace({
         name: 'HomePage',
         query: { txType },
@@ -982,51 +835,6 @@ export default {
       this.timer = setInterval(() => {
         this.now = Date.now()
       }, 1000)
-    },
-    searchQuery() {
-      let input = this.textSearchBar.trim();
-      this.textSearchBar = '';
-      
-      service
-        .search(input)
-        .then(result => {
-          if (result.type === 'block') {
-            this.$router.push(`/block/${input}`);
-          } else if (result.type === 'tx') {
-            this.$router.push(`/tx/${input}`);
-          } else if (result.type === 'address') {
-            this.$router.push(`/address/${input}`);
-          } else {
-            alert('invalid search query');
-          }
-        })
-        .catch(r => {
-          alert('invalid search query')
-        });
-    },
-    setBlockChartFilter(shard) {
-      this.blockChartFilter = shard;
-
-      this.blockChartLabel = (shard == -1) ? ('All Shards') : ('Shard ' + shard)
-    },
-    setTransactionChartFilter(shard) {
-      this.transactionChartFilter = shard;
-
-      this.transactionChartLabel = (shard == -1) ? ('All Shards') : ('Shard ' + shard)
-    },
-    getPendingTransactions() {
-      const pendingTxs = this.globalData.pendingTxs;
-
-      let list = [];
-      for (let i = 0; i < pendingTxs.length; i ++) {
-        if (pendingTxs[i]) {
-          for (let j = 0; j < pendingTxs[i].length; j ++) {
-            list.push(pendingTxs[i][j]);
-          }
-        }
-      }
-
-      return list;
     },
   },
 }

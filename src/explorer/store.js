@@ -65,7 +65,6 @@ function fetchHrc20List(url) {
       description: { en: '' },
       website: '',
     }))
-    console.log({ tokenList })
 
     return tokenList
   })
@@ -112,7 +111,7 @@ let store = {
       harc20list.map(hrc20 =>
         Vue.set(this.data.Hrc20Address, hrc20.address, {
           ...hrc20,
-          logo: `${BASE_HRC20URL}/HRC20/${hrc20.address}.png`,
+          logo: false, //`${BASE_HRC20URL}/HRC20/${hrc20.address}.png`,
         })
       )
     )

@@ -2,7 +2,7 @@
 @import '../less/common.less';
 
 .wfont {
-  font-family: monospace, 'Courier New', Courier;
+  font-family: 'Nunito', Courier;
   font-size: 16px;
 }
 </style>
@@ -78,14 +78,18 @@
               </router-link>
             </td>
             <td>
-              <router-link :to="'/address/' + tx.tx.from">
+              <Address :bech32="tx.hrc20tx.from" :show-raw="false" />
+
+              <!--              <router-link :to="'/address/' + tx.tx.from">
                 {{ tx.hrc20tx.from | shorten }}
-              </router-link>
+              </router-link>-->
             </td>
             <td>
-              <router-link :to="'/address/' + tx.hrc20tx.to">
+              <Address :bech32="tx.hrc20tx.to" :show-raw="false" />
+
+              <!--              <router-link :to="'/address/' + tx.hrc20tx.to">
                 {{ tx.hrc20tx.to | shorten }}
-              </router-link>
+              </router-link>-->
             </td>
             <td>
               {{ (Number(tx.tx.timestamp) * 1000) | age }}
@@ -93,7 +97,7 @@
             <td>
               <Address :bech32="tx.tx.to" />
             </td>
-            <td class="no-break wfont">
+            <td class="no-break wfont" style="max-width:200px;overflow:hidden">
               {{ hrc20Balance(tx.tx.to, tx.hrc20tx.amount) }}
             </td>
           </tr>
@@ -106,6 +110,19 @@
 <script>
 import Address from './Address'
 import { displayAmount } from '@/utils/displayAmount'
+
+const oneArgHrc20Methods = [
+  //'transfer',
+  'approve',
+  'mint',
+  'burn',
+  'burnFrom',
+]
+
+const twoArgsHrc20Methods = [
+  //'transferFrom',
+  'allowance',
+]
 
 export default {
   name: 'Hrc20TransactionsTable',
@@ -159,6 +176,30 @@ export default {
             },
           })
         else if (decodeObj.abiItem && decodeObj.abiItem.name == 'transferFrom')
+          list.push({
+            tx,
+            hrc20tx: {
+              from: decodeObj.params[0],
+              to: decodeObj.params[1],
+              amount: decodeObj.params[2],
+            },
+          })
+        else if (
+          decodeObj.abiItem &&
+          oneArgHrc20Methods.includes(decodeObj.abiItem.name)
+        )
+          list.push({
+            tx,
+            hrc20tx: {
+              from: tx.from,
+              to: decodeObj.params[0],
+              amount: decodeObj.params[1],
+            },
+          })
+        else if (
+          decodeObj.abiItem &&
+          twoArgsHrc20Methods.includes(decodeObj.abiItem.name)
+        )
           list.push({
             tx,
             hrc20tx: {
@@ -226,6 +267,11 @@ export default {
       return this.Hrc20Address[id]
     },
     hrc20Balance(id, amount) {
+      console.log(
+        'amount',
+        amount,
+        displayAmount(amount, this.hrc20info(id).decimals)
+      )
       return (
         displayAmount(amount, this.hrc20info(id).decimals) +
         ' ' +

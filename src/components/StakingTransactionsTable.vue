@@ -79,7 +79,12 @@
               {{ tx.type }}
             </td>
             <td>
-              <router-link
+              <Address
+                :bech32="tx.validator"
+                :show-raw="false"
+                staking="true"
+              />
+              <!--              <router-link
                 v-if="tx.validator"
                 :to="'/address/' + tx.validator + '?txType=staking'"
               >
@@ -87,10 +92,17 @@
               </router-link>
               <div v-else>
                 -
-              </div>
+              </div>-->
             </td>
             <td>
-              <router-link
+              <Address
+                :bech32="tx.delegator"
+                :show-raw="false"
+                staking="true"
+              />
+
+              <!--
+             <router-link
                 v-if="tx.delegator"
                 :to="'/address/' + tx.from + '?txType=staking'"
               >
@@ -98,7 +110,7 @@
               </router-link>
               <div v-else>
                 -
-              </div>
+              </div>-->
             </td>
             <td class="no-break">
               {{ tx.value | amount }}
@@ -114,8 +126,13 @@
 </template>
 
 <script>
+import Address from './Address'
+
 export default {
   name: 'StakingTransactionsTable',
+  components: {
+    Address,
+  },
   props: [
     'allStakingTxs',
     'withShards',

@@ -64,20 +64,22 @@
                   </router-link>
                 </td>
                 <td>
-                  <router-link
+                  <Address :bech32="tx.from.bech32" :show-raw="false" />
+                  <!--                  <router-link
                     v-if="tx.from.bech32"
                     :to="'/address/' + tx.from.bech32"
                   >
                     {{ tx.from.bech32 | shorten }}
-                  </router-link>
+                  </router-link>-->
                 </td>
                 <td>
-                  <router-link
+                  <Address :bech32="tx.to.bech32" :show-raw="false" />
+                  <!--                  <router-link
                     v-if="tx.to.bech32"
                     :to="'/address/' + tx.to.bech32"
                   >
                     {{ tx.to.bech32 | shorten }}
-                  </router-link>
+                  </router-link>-->
                 </td>
                 <td>
                   {{ tx | txType }}
@@ -112,11 +114,13 @@ import store from '../explorer/store'
 import service from '../explorer/service'
 import LoadingMessage from './LoadingMessage'
 import moment from 'moment'
+import Address from './Address'
 
 export default {
   name: 'TransactionsPage',
   components: {
     LoadingMessage,
+    Address,
   },
   data() {
     return {
