@@ -123,6 +123,10 @@ export default {
     search() {
       this.pageIndex = 0
     },
+    pageSize() {
+      if (this.pageIndex * this.pageSize > this.filteredTokens.length)
+        this.pageIndex = parseInt(this.filteredTokens.length / this.pageSize)
+    },
   },
   computed: {
     tokenLength() {
