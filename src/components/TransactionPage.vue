@@ -178,8 +178,8 @@
                 <td>{{ sequence }}</td>
               </tr>
 
-              <tr v-if="!isStaking && !transaction.to">
-                <!--                <td class="td-title">
+<!--              <tr v-if="!isStaking && !transaction.to">
+                &lt;!&ndash;                <td class="td-title">
                                   Data Parse
                                 </td>
                                 <td v-if="transaction.to">
@@ -189,15 +189,17 @@
                                       :is-hrc20="isHrc20(transaction.hash)"
                                       :bech32="transaction.to"
                                   />
-                                </td>-->
+                                </td>&ndash;&gt;
                 <td>
                   Deploy Contract
-                  <Address :bech32="ContractAddress" :show-raw="true" />
-                  <!--                  <router-link :to="'/address/' + ContractAddress">
+                  &lt;!&ndash;                  <router-link :to="'/address/' + ContractAddress">
                     {{ ContractAddress }}
-                  </router-link>-->
+                  </router-link>&ndash;&gt;
                 </td>
-              </tr>
+                <td>
+                  <Address :bech32="ContractAddress" :show-raw="true" />
+                </td>
+              </tr>-->
             </table>
 
             <table class="explorer-table">
