@@ -178,7 +178,7 @@
                 <td>{{ sequence }}</td>
               </tr>
 
-<!--              <tr v-if="!isStaking && !transaction.to">
+              <!--              <tr v-if="!isStaking && !transaction.to">
                 &lt;!&ndash;                <td class="td-title">
                                   Data Parse
                                 </td>

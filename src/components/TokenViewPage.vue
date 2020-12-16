@@ -135,9 +135,9 @@ export default {
     filteredTokens() {
       const filteredTokens = this.tokenList.filter(elem => {
         return (
-          elem.name.toLowerCase().includes(this.search.toLowerCase()) ||
-          elem.symbol.toLowerCase().includes(this.search.toLowerCase()) ||
-          elem.contractAddress.toLowerCase().includes(this.search.toLowerCase())
+            (elem.name || '').toLowerCase().includes(this.search.toLowerCase()) ||
+            (elem.symbol || '').toLowerCase().includes(this.search.toLowerCase()) ||
+            (elem.contractAddress || '').toLowerCase().includes(this.search.toLowerCase())
         )
       })
       return filteredTokens
