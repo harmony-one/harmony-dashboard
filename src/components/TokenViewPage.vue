@@ -9,8 +9,14 @@
             </div>
             <div class="row-select-container">
               Show
-              <select class="row-select" v-model="pageSize">
-                <option v-for="(row, index) in rowList" :key="index" :value="row">{{row}}</option>
+              <select v-model="pageSize" class="row-select">
+                <option
+                  v-for="(row, index) in rowList"
+                  :key="index"
+                  :value="row"
+                >
+                  {{ row }}
+                </option>
               </select>
               rows
             </div>
@@ -19,7 +25,7 @@
               <input
                 v-model="search"
                 type="text"
-                placeholder="Search tokens by name/symbol/address"                
+                placeholder="Search tokens by name/symbol/address"
               />
             </div>
             <div class="pagination-controls">
@@ -59,10 +65,10 @@
                   </button>
                 </span>
               </span>
-            </div>            
+            </div>
           </header>
           <div class="explorer-card-body">
-            <table class="explorer-table" v-if="filteredTokens.length">
+            <table v-if="filteredTokens.length" class="explorer-table">
               <tr>
                 <th>#</th>
                 <th>Token</th>
@@ -72,22 +78,25 @@
               </tr>
               <tr v-for="(token, index) in tokens" :key="index">
                 <td>
-                  {{index + 1 + (pageIndex * pageSize)}}
+                  {{ index + 1 + pageIndex * pageSize }}
                 </td>
                 <td>
-                  <router-link :to="'/address/' + token.contractAddress">{{token.name}}</router-link>
+                  <router-link :to="'/address/' + token.contractAddress">
+                    {{ token.name }}
+                  </router-link>
                 </td>
                 <td>
-                  <span class="ticker">{{token.symbol}}</span>
+                  <span class="ticker">{{ token.symbol }}</span>
                 </td>
                 <td>
-                  {{token.contractAddress}}
+                  {{ token.contractAddress }}
                 </td>
                 <td>
-                  {{totalSupply(token)}}
+                  {{ totalSupply(token) }}
                 </td>
               </tr>
             </table>
+
             <div v-else class="no-token-container">
               No tokens found
             </div>
@@ -108,6 +117,9 @@ import { displayAmount } from '@/utils/displayAmount'
 import _ from 'lodash'
 
 export default {
+  components: {
+    LoadingMessage,
+  },
   data: () => ({
     pageIndex: 0,
     pageSize: 50,
@@ -116,24 +128,12 @@ export default {
     loading: false,
     search: '',
   }),
-  components: {
-    LoadingMessage,
-  },
-  watch: {
-    search() {
-      this.pageIndex = 0
-    },
-    pageSize() {
-      if (this.pageIndex * this.pageSize > this.filteredTokens.length)
-        this.pageIndex = parseInt(this.filteredTokens.length / this.pageSize)
-    },
-  },
   computed: {
     tokenLength() {
       return this.filteredTokens.length
     },
     filteredTokens() {
-      const filteredTokens = this.tokenList.filter((elem) => {
+      const filteredTokens = this.tokenList.filter(elem => {
         return (
           elem.name.toLowerCase().includes(this.search.toLowerCase()) ||
           elem.symbol.toLowerCase().includes(this.search.toLowerCase()) ||
@@ -149,6 +149,21 @@ export default {
     pageCount() {
       return Math.ceil(this.filteredTokens.length / this.pageSize)
     },
+  },
+  watch: {
+    search() {
+      this.pageIndex = 0
+    },
+    pageSize() {
+      if (this.pageIndex * this.pageSize > this.filteredTokens.length)
+        this.pageIndex = parseInt(this.filteredTokens.length / this.pageSize)
+    },
+  },
+  async created() {
+    this.loading = true
+    const { data: tokens } = await axios.get(HRC20LIST_URL)
+    this.tokenList = _.uniqBy(tokens, 'contractAddress')
+    this.loading = false
   },
   methods: {
     totalSupply(token) {
@@ -166,12 +181,6 @@ export default {
     last() {
       this.pageIndex = this.pageCount
     },
-  },
-  async created() {
-    this.loading = true
-    const { data: tokens } = await axios.get(HRC20LIST_URL)
-    this.tokenList = _.uniqBy(tokens, 'contractAddress')
-    this.loading = false
   },
 }
 </script>
