@@ -53,9 +53,9 @@ function getTotalBlockLatency(latencies) {
   )
 }
 
-const HRC20LIST_URL = `${EXPLORER_BACKEND_URL}/hrc20-token-list`
+export const HRC20LIST_URL = `${EXPLORER_BACKEND_URL}/hrc20-token-list`
 
-function fetchHrc20List(url) {
+export function fetchHrc20List(url) {
   return axios.get(url).then(rez => {
     const tokenList = rez.data.map(o => ({
       ...o,

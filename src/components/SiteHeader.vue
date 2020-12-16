@@ -8,7 +8,7 @@
   top: 0;
   color: var(--color-site-header-text);
   transition: background-color @anim-duration @anim-easing,
-  color @anim-duration @anim-easing;
+    color @anim-duration @anim-easing;
   a.navbar-brand {
     display: inline-block;
     height: 7em;
@@ -117,6 +117,13 @@
           <router-link class="navbar-brand" to="/" />
           <span class="tagline">Open Consensus for 10B</span>
         </div>
+        <div class="header-menu">
+          <MenuItem text="Tokens">
+            <div @click="showTokens">
+              View all HRC20 Tokens
+            </div>
+          </MenuItem>
+        </div>
         <div class="navbar-actions">
           <router-link v-if="showNav" class="navbar-nav" to="/dashboard">
             Dashboard
@@ -155,6 +162,7 @@
 
 <script>
 import service from '../explorer/service'
+import MenuItem from './MenuItem'
 export default {
   name: 'SiteHeader',
   data() {
@@ -163,7 +171,13 @@ export default {
       showNav: localStorage.getItem('nav'),
     }
   },
+  components: {
+    MenuItem,
+  },
   methods: {
+    showTokens() {
+      this.$router.push('/tokens')
+    },
     search() {
       let input = this.input.trim()
       this.input = ''
@@ -174,7 +188,7 @@ export default {
       }
       service
         .search(input)
-        .then(result => {
+        .then((result) => {
           if (result.type === 'block') {
             this.$router.push(`/block/${input}`)
           } else if (result.type === 'tx') {
@@ -183,7 +197,7 @@ export default {
             this.$router.push(`/address/${input}`)
           }
         })
-        .catch(r => {
+        .catch((r) => {
           let errMessage = 'Not Found!'
 
           if (r.response && r.response.data && r.response.data.err) {

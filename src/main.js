@@ -7,6 +7,7 @@ import VueScrollTo from 'vue-scrollto'
 import Highcharts from 'highcharts'
 import HighchartsVue from 'highcharts-vue'
 import Notifications from 'vue-notification'
+import vClickOutside from "v-click-outside";
 import './explorer/store'
 import VueCtkDateTimePicker from 'vue-ctk-date-time-picker'
 import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css'
@@ -20,6 +21,7 @@ import './filter'
 import './icon'
 
 Vue.use(Loading)
+Vue.use(vClickOutside);
 
 Vue.use(VueScrollTo, {
   offset: -68,

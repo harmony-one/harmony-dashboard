@@ -74,6 +74,17 @@ body,
     color: var(--primary-text-color);
     display: flex;
   }
+  .tokenview-body {
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    padding-top: 130px;
+    width: 100%;
+    color: var(--primary-text-color);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
 
   .explorer-card {
     .card();
