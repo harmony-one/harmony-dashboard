@@ -165,6 +165,9 @@ import service from '../explorer/service'
 import MenuItem from './MenuItem'
 export default {
   name: 'SiteHeader',
+  components: {
+    MenuItem,
+  },
   data() {
     return {
       input: '',

@@ -301,8 +301,8 @@
                   </td>
                   <td>
                     <a :href="$store.data.ONE_HOLDERURL" target="_blank">{{
-                        100000
-                      }}</a>
+                      100000
+                    }}</a>
                   </td>
                 </tr>
                 <tr v-for="token in tokenHolders" :key="token.id">

@@ -158,7 +158,7 @@
                   </td>
                 </tr>
 
-                <tr v-if="isContract">
+                <!--                <tr v-if="isContract">
                   <td class="td-title">
                     Creater Address
                   </td>
@@ -179,7 +179,7 @@
                       {{ contractData.txId | shorten }}
                     </router-link>
                   </td>
-                </tr>
+                </tr>-->
 
                 <tr>
                   <td class="td-title">

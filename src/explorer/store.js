@@ -206,17 +206,17 @@ let store = {
     )
   },
   updatePendingTransactions(txs, shardID) {
-    let pendingTxs = this.data.pendingTxs;
+    let pendingTxs = this.data.pendingTxs
 
     if (pendingTxs[shardID]) {
-      this.data.pendingTxsCount -= pendingTxs[shardID].length;
+      this.data.pendingTxsCount -= pendingTxs[shardID].length
     }
-    this.data.pendingTxs = null;
+    this.data.pendingTxs = null
 
-    pendingTxs[shardID] = txs;
+    pendingTxs[shardID] = txs
 
-    this.data.pendingTxs = pendingTxs; 
-    this.data.pendingTxsCount += pendingTxs[shardID].length;
+    this.data.pendingTxs = pendingTxs
+    this.data.pendingTxsCount += pendingTxs[shardID].length
   },
   reset() {
     this.data.blocks = []
