@@ -1,9 +1,9 @@
 <template>
-  <div v-click-outside="hideMenu" class="menu-item" @click="clickMenu">
-    {{ text }}
+  <div class="menu-item" @click="clickMenu" v-click-outside="hideMenu">
+    {{text}}
     <font-awesome-icon icon="chevron-down" />
-    <section v-if="showMenu" class="sub-menu">
-      <slot />
+    <section class="sub-menu" v-if="showMenu">
+      <slot/>
     </section>
   </div>
 </template>
