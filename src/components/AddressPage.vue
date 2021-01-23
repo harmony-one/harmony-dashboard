@@ -69,20 +69,31 @@
       <div v-if="showPanel" class="container">
         <div class="explorer-card">
           <header>
-            <h1 v-if="isHrc20(address.id)">
+
+            <h1 v-if="isHrc721(address.id)">
+              <span>
+              HRC721 Token:
+               <span :style="bgStyle(isHrc721(address.id).name)">
+                  {{ isHrc721(address.id).name }} (<b>{{ isHrc721(address.id).symbol }}</b
+               >)
+                </span>
+
+
+                </span>
+            </h1>
+
+            <h1 v-else-if="isHrc20(address.id)">
               HRC20 Token:
               <!--              <span v-if="Hrc20Info.logo">
                 <img :src="Hrc20Info.logo" class="hrclogo" />
               </span>-->
               <span v-if="!Hrc20Info.logo">
-                <span :style="bgStyle()">
+                <span :style="bgStyle(Hrc20Info.name)">
                   {{ Hrc20Info.name }} (<b>{{ Hrc20Info.symbol }}</b
-                  >)
+                >)
                 </span>
               </span>
-              <!--              <a target="_blank" :href="Hrc20Info.website">
-                {{ Hrc20Info.name + '(' + Hrc20Info.symbol + ')' }}
-              </a>-->
+
             </h1>
             <h1 v-else>
               {{ title }}
@@ -92,12 +103,53 @@
           <div class="explorer-card-body">
             <section>
               <table class="explorer-table">
+
+                <tr v-if="isHrc721(address.id)">
+                  <td class="td-title">
+                    Name(Symbol)
+                  </td>
+                  <td>
+                    {{ isHrc721(address.id).name + "(" + isHrc721(address.id).symbol + ")" }}
+                  </td>
+                </tr>
+
+                <tr v-if="isHrc721(address.id)">
+                  <td class="td-title">
+                    Total Supply
+                  </td>
+                  <td>
+                    {{ hrc721TotalSupply || "-" }}
+                  </td>
+                </tr>
+
+                <tr v-if="isHrc721(address.id)">
+                  <td class="td-title">
+                    Holders
+                  </td>
+                  <td>
+                    {{ hrc721Assets ?
+                      Object.keys(Object.values(hrc721Assets).reduce((a, b) => ({ ...a, [b.owner]: 1 }), {})).length
+                      || '-'
+                      : "-" }}
+                  </td>
+                </tr>
+
+                <tr v-if="isHrc721(address.id)">
+                  <td class="td-title">
+                    Transfers
+                  </td>
+                  <td>
+                    {{ Object.keys(hrc721Transactions).length || "-" }}
+                  </td>
+                </tr>
+
+
                 <tr v-if="isHrc20(address.id)">
                   <td class="td-title">
                     Name(Symbol)
                   </td>
                   <td>
-                    {{ Hrc20Info.name + '(' + Hrc20Info.symbol + ')' }}
+                    {{ Hrc20Info.name + "(" + Hrc20Info.symbol + ")" }}
                   </td>
                 </tr>
 
@@ -124,13 +176,13 @@
 
                 <tr>
                   <td class="td-title">
-                    {{ isHrc20(address.id) ? 'Contract' : 'ID' }}
+                    {{ isHrc721(address.id) || isHrc20(address.id) ? "Contract" : "ID" }}
                   </td>
                   <td>
                     <Address
-                      :bech32="address.id"
-                      show-raw="true"
-                      address-only="true"
+                        :bech32="address.id"
+                        show-raw="true"
+                        address-only="true"
                     />
                   </td>
                 </tr>
@@ -141,8 +193,8 @@
                   </td>
                   <td>
                     <Address
-                      :bech32="contractData.authorAddress"
-                      show-raw="true"
+                        :bech32="contractData.authorAddress"
+                        show-raw="true"
                     />
                   </td>
                 </tr>
@@ -191,9 +243,9 @@
                   </td>
                 </tr>
                 <tr
-                  v-for="(shard, index) in address.shardData"
-                  :key="`balance${index}`"
-                  class="shard"
+                    v-for="(shard, index) in address.shardData"
+                    :key="`balance${index}`"
+                    class="shard"
                 >
                   <td v-if="allBalance" class="td-title">
                     Shard {{ index }} : {{ shard.balance | amount }}
@@ -211,14 +263,14 @@
                   <td>
                     <div style="max-width: 500px">
                       <v-select
-                        :disabled="
+                          :disabled="
                           hrc20BalancesDropdownOptions &&
                             hrc20BalancesDropdownOptions.length === 0
                         "
-                        :placeholder="hrc20BalancesDropdownPlaceholder"
-                        :components="{ OpenIndicator: null }"
-                        :options="hrc20BalancesDropdownOptions"
-                        @input="onHrc20BalancesDropdown"
+                          :placeholder="hrc20BalancesDropdownPlaceholder"
+                          :components="{ OpenIndicator: null }"
+                          :options="hrc20BalancesDropdownOptions"
+                          @input="onHrc20BalancesDropdown"
                       ></v-select>
                     </div>
                   </td>
@@ -233,9 +285,9 @@
                   </td>
                 </tr>
                 <tr
-                  v-for="(shard, index) in address.shardData"
-                  :key="`txCount${index}`"
-                  class="shard"
+                    v-for="(shard, index) in address.shardData"
+                    :key="`txCount${index}`"
+                    class="shard"
                 >
                   <td v-if="allTxsCount" class="td-title">
                     Shard {{ index }} : {{ shard.txCount | number }}
@@ -253,9 +305,9 @@
                 </tr>
 
                 <tr
-                  v-for="(shard, index) in address.shardData"
-                  :key="`stakingTxCount${index}`"
-                  class="shard"
+                    v-for="(shard, index) in address.shardData"
+                    :key="`stakingTxCount${index}`"
+                    class="shard"
                 >
                   <td v-if="allStakingCount" class="td-title">
                     Shard {{ index }} : {{ shard.stakingTxCount | number }}
@@ -290,40 +342,56 @@
         </HrcTokenTabs>
 
         <TransactionsTable
-          v-if="showWhich == 'regular'"
-          :all-txs="allTxs"
-          with-shards="true"
-          :tx-count="txCount"
-          :page="page"
-          :loading="loading"
-          :change-page="changePage"
+            v-if="showWhich == 'regular'"
+            :all-txs="allTxs"
+            with-shards="true"
+            :tx-count="txCount"
+            :page="page"
+            :loading="loading"
+            :change-page="changePage"
         >
           <slot>
             <TransactionTableTabs :value="tabValue" :on-change="changeTab" />
           </slot>
         </TransactionsTable>
 
+
+        <!-- hrc721 table -->
+        <HRC721TransfersTable
+            v-if="showWhich == 'regular'"
+            :all-txs="Object.values(hrc721Transactions).map(a=>({...a}))"
+            :tx-count="Object.values(hrc721Transactions).length"
+            :page="page"
+            :loading="loading"
+            :change-page="changePage"
+        >
+          <slot>
+            <TransactionTableTabs :value="tabValue" :on-change="changeTab" />
+          </slot>
+        </HRC721TransfersTable>
+
+
         <Hrc20TransactionsTable
-          v-else-if="showWhich == 'hrc20'"
-          :all-txs="hrc20Txs"
-          with-shards="true"
-          :loading="loading"
-          :tx-count="hrc20TxsCount"
-          :page="page"
-          :change-page="changePage"
+            v-else-if="showWhich == 'hrc20'"
+            :all-txs="hrc20Txs"
+            with-shards="true"
+            :loading="loading"
+            :tx-count="hrc20TxsCount"
+            :page="page"
+            :change-page="changePage"
         >
           <slot>
             <TransactionTableTabs :value="tabValue" :on-change="changeTab" />
           </slot>
         </Hrc20TransactionsTable>
         <StakingTransactionsTable
-          v-else
-          :all-staking-txs="allStakingTxs"
-          with-shards="true"
-          :page="page"
-          :change-page="changePage"
-          :loading="loading"
-          :tx-count="stakingTxCount"
+            v-else
+            :all-staking-txs="allStakingTxs"
+            with-shards="true"
+            :page="page"
+            :change-page="changePage"
+            :loading="loading"
+            :tx-count="stakingTxCount"
         >
           <slot>
             <TransactionTableTabs :value="tabValue" :on-change="changeTab" />
@@ -338,33 +406,37 @@
 </template>
 
 <script>
-import service from '../explorer/service'
-import LoadingMessage from './LoadingMessage'
-import TransactionsTable from './TransactionsTable'
-import StakingTransactionsTable from './StakingTransactionsTable'
-import Hrc20TransactionsTable from './Hrc20TransactionsTable'
-import TransactionTableTabs from './TransactionTableTabs'
-import HrcTokenTabs from './HrcTokenTabs'
-import TabPane from './TabPane'
-import Address from './Address'
-import { displayAmount } from '@/utils/displayAmount'
-import vSelect from 'vue-select'
-import 'vue-select/dist/vue-select.css'
+import service from "../explorer/service";
+import LoadingMessage from "./LoadingMessage";
+import TransactionsTable from "./TransactionsTable";
+import StakingTransactionsTable from "./StakingTransactionsTable";
+import Hrc20TransactionsTable from "./Hrc20TransactionsTable";
+import TransactionTableTabs from "./TransactionTableTabs";
+import HRC721TransfersTable from './HRC721TransfersTable'
+import HrcTokenTabs from "./HrcTokenTabs";
+import TabPane from "./TabPane";
+import Address from "./Address";
+import { displayAmount } from "@/utils/displayAmount";
+import vSelect from "vue-select";
+import "vue-select/dist/vue-select.css";
+import axios from 'axios'
+import {HRC721LIST_URL} from '../explorer/store'
 
-const status = { staking: 1, regular: 0, hrc20: 2 }
-const defaultStatus = 'regular'
+const status = { staking: 1, regular: 0, hrc20: 2 };
+const defaultStatus = "regular";
 export default {
-  name: 'AddressPage',
+  name: "AddressPage",
   components: {
     LoadingMessage,
     TransactionsTable,
     StakingTransactionsTable,
     TransactionTableTabs,
+    HRC721TransfersTable,
     Hrc20TransactionsTable,
     HrcTokenTabs,
     TabPane,
     Address,
-    vSelect,
+    vSelect
   },
   data() {
     return {
@@ -381,265 +453,300 @@ export default {
       stakingTxCount: 0,
       Hrc20Balance: {},
       $store: this.$store.data,
-    }
+      hrc721TotalSupply: null,
+      hrc721Assets: {},
+      hrc721Transactions: {}
+    };
   },
   computed: {
     title() {
-      return this.isContract ? 'Contract' : 'Address'
+      return this.isContract ? "Contract" : "Address";
     },
     isContract() {
-      return this.contractData && this.contractData.txId
+      return this.contractData && this.contractData.txId;
     },
     hrc20BalancesDropdownPlaceholder() {
       if (!Object.values(this.Hrc20Balance).length) {
-        return 'Loading...'
+        return "Loading...";
       }
       const tokensCount = Object.values(this.Hrc20Balance).filter(
-        o => +o.balance !== 0 // || true
-      ).length
+          o => +o.balance !== 0 // || true
+      ).length;
 
-      return `HRC20 Tokens (${tokensCount})`
+      return `HRC20 Tokens (${tokensCount})`;
     },
     hrc20BalancesDropdownOptions() {
       return Object.values(this.Hrc20Balance)
-        .filter(o => +o.balance !== 0)
-        .map(o => ({
-          label: `${o.name} (${o.id}) - ${o.balance}`,
-          code: o.address,
-        }))
+          .filter(o => +o.balance !== 0)
+          .map(o => ({
+            label: `${o.name} (${o.id}) - ${o.balance}`,
+            code: o.address
+          }));
     },
     showWhich() {
-      return this.$route.query.txType || defaultStatus // 'staking','regular','hrc20';
+      return this.$route.query.txType || defaultStatus; // 'staking','regular','hrc20';
     },
     showHrc20Section() {
       if (!this.Hrc20Balance) {
-        return false
+        return false;
       }
       return Object.values(this.Hrc20Balance).reduce(
-        (a, o) => a || +o.balance,
-        false
-      )
+          (a, o) => a || +o.balance,
+          false
+      );
     },
     page() {
-      return this.$route.query.page - 1 || 0
+      return this.$route.query.page - 1 || 0;
     },
     tabValue() {
       return status[this.$route.query.txType] != undefined
-        ? status[this.$route.query.txType]
-        : status[defaultStatus]
+          ? status[this.$route.query.txType]
+          : status[defaultStatus];
     },
     Hrc20Address() {
-      return this.$store.data.Hrc20Address
+      return this.$store.data.Hrc20Address;
+    },
+    Hrc721Data() {
+      return this.$store.data.hrc721;
     },
     Hrc20Info() {
-      const res = this.Hrc20Address[this.address.id]
+      const res = this.Hrc20Address[this.address.id];
+      if (!res) {
+        console.log("Hrc20Info called without reason");
+        return {};
+      }
 
-      const totalSupplyDisplay = displayAmount(res.totalSupply, res.decimals)
+      const totalSupplyDisplay = displayAmount(res.totalSupply, res.decimals);
 
-      res.totalSupplyDisplay = totalSupplyDisplay
-      return res
+      res.totalSupplyDisplay = totalSupplyDisplay;
+      return res;
     },
     showPanel() {
       return (
-        !this.loading ||
-        this.$route.params.address === (this.address && this.address.id)
-      )
-    },
+          !this.loading ||
+          this.$route.params.address === (this.address && this.address.id)
+      );
+    }
   },
   watch: {
     Hrc20Address() {
-      if (this.address) this.hrc20BalanceUpdate()
+      if (this.address) this.hrc20BalanceUpdate();
     },
     $route() {
       if (this.$route.params.address !== (this.address && this.address.id)) {
-        this.getAddress()
+        this.getAddress();
       }
     },
     page() {
-      this.getAddress()
-    },
+      this.getAddress();
+    }
   },
   mounted() {
-    this.getAddress()
+    this.getAddress();
   },
   methods: {
     onHrc20BalancesDropdown(val) {
-      this.$router.push(`/address/${val.code}`)
+      this.$router.push(`/address/${val.code}`);
     },
-    onHrc20BalanceDropdown() {},
+    onHrc20BalanceDropdown() {
+    },
     onError() {
-      this.Hrc20Info.logo = null
+      this.Hrc20Info.logo = null;
     },
-    bgStyle() {
-      if (!this.Hrc20Info.name) {
-        return {}
+    bgStyle(name) {
+      if (!name) {
+        return {};
       }
       const palette = [
-        '#00ffff',
-        '#24dbff',
-        '#49b6ff',
-        '#6d92ff',
-        '#926dff',
-        '#b649ff',
-        '#db24ff',
-        '#ff00ff',
-      ]
-      const c = this.Hrc20Info.name.charCodeAt(0) % palette.length
-      const backgroundColor = palette[c]
-      return { color: backgroundColor }
+        "#00ffff",
+        "#24dbff",
+        "#49b6ff",
+        "#6d92ff",
+        "#926dff",
+        "#b649ff",
+        "#db24ff",
+        "#ff00ff"
+      ];
+      const c = name.charCodeAt(0) % palette.length;
+      const backgroundColor = palette[c];
+      return { color: backgroundColor };
     },
     changeTab(value) {
-      let txType = 'regular'
-      if (value == 1) txType = 'staking'
-      if (value == 2) txType = 'hrc20'
+      let txType = "regular";
+      if (value == 1) txType = "staking";
+      if (value == 2) txType = "hrc20";
       this.$router.replace({
-        name: 'AddressPage',
-        query: { txType },
-      })
+        name: "AddressPage",
+        query: { txType }
+      });
     },
     changePage(value, hrc20QueryID) {
       this.$router.replace({
-        name: 'AddressPage',
+        name: "AddressPage",
         query: {
           page: value + 1,
           txType: this.$route.query.txType,
-          hrc20QueryID,
-        },
-      })
+          hrc20QueryID
+        }
+      });
     },
     getAddress() {
-      this.loading = true
-      const txs = {}
-      const stakingTxs = {}
+      this.loading = true;
+      const txs = {};
+      const stakingTxs = {};
 
-      if (this.$route.params.address.startsWith('0x')) {
+      if (this.$route.params.address.startsWith("0x")) {
         this.$route.params.address = this.$store.data.hmy.hmySDK.crypto.toBech32(
-          this.$route.params.address
-        )
+            this.$route.params.address
+        );
       }
-      const address = this.$route.params.address
-      const sortid = this.$route.params.hrc20QueryID
+      const address = this.$route.params.address;
+      const sortid = this.$route.params.hrc20QueryID;
 
       service
-        .getHrc20Txs({
-          id: address,
-          pageSize: 20,
-          pageIndex: this.page,
-          sortid,
-        })
-        .then(result => {
-          this.hrc20Txs = result.txs
-          this.hrc20TxsCount = result.total
-        })
-
-      service
-        .getAddressFullInfo({ id: address, pageIndex: this.page, pageSize: 20 })
-        .then(({ address, contractData }) => {
-          address.shardData.forEach((data, idx) => {
-            if (data.txs) {
-              data.txs.forEach(tx => {
-                txs[tx.hash] = {
-                  ...tx,
-                  shardID: idx,
-                }
-              })
-            }
-            if (data.stakingTxs) {
-              data.stakingTxs.forEach(tx => {
-                stakingTxs[tx.hash] = {
-                  ...tx,
-                  shardID: idx,
-                  delegator: tx.msg.delegatorAddress,
-                  validator: tx.msg.validatorAddress,
-                  value: tx.msg.amount,
-                }
-              })
-            }
+          .getHrc20Txs({
+            id: address,
+            pageSize: 20,
+            pageIndex: this.page,
+            sortid
           })
+          .then(result => {
+            this.hrc20Txs = result.txs;
+            this.hrc20TxsCount = result.total;
+          });
 
-          this.txCount = address.txCount
-          this.stakingTxCount = address.stakingTxCount
+      service
+          .getAddressFullInfo({ id: address, pageIndex: this.page, pageSize: 20 })
+          .then(({ address, contractData }) => {
+            address.shardData.forEach((data, idx) => {
+              if (data.txs) {
+                data.txs.forEach(tx => {
+                  txs[tx.hash] = {
+                    ...tx,
+                    shardID: idx
+                  };
+                });
+              }
+              if (data.stakingTxs) {
+                data.stakingTxs.forEach(tx => {
+                  stakingTxs[tx.hash] = {
+                    ...tx,
+                    shardID: idx,
+                    delegator: tx.msg.delegatorAddress,
+                    validator: tx.msg.validatorAddress,
+                    value: tx.msg.amount
+                  };
+                });
+              }
+            });
 
-          // if address is deployed contract
-          this.contractData = contractData
-          this.address = address
-          this.hrc20BalanceUpdate()
-        })
-        .finally(() => {
-          this.allTxs = Object.values(txs).sort((a, b) =>
-            Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
-          )
+            this.txCount = address.txCount;
+            this.stakingTxCount = address.stakingTxCount;
 
-          this.allStakingTxs = Object.values(stakingTxs).sort((a, b) =>
-            Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
-          )
+            // if address is deployed contract
+            this.contractData = contractData;
+            this.address = address;
+            this.hrc20BalanceUpdate();
+            this.getHRC721Data(address);
+          })
+          .finally(() => {
+            this.allTxs = Object.values(txs).sort((a, b) =>
+                Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
+            );
 
-          this.loading = false
-        })
+            this.allStakingTxs = Object.values(stakingTxs).sort((a, b) =>
+                Number(a.timestamp) > Number(b.timestamp) ? -1 : 1
+            );
+
+            this.loading = false;
+          });
     },
     isHrc20(address) {
-      return this.Hrc20Address[address] != undefined
+      return this.Hrc20Address[address] !== undefined;
+    },
+    isHrc721(address) {
+      return this.Hrc721Data.find(e => e.contractAddress === address);
+    },
+    async getHRC721Data() {
+      // todo infos
+
+      const info = this.isHrc721(this.address.id);
+      if (!info) {
+        return;
+      }
+      const address = info.contractAddress;
+      console.log("getHRC721Data", address);
+      const hmy = this.$store.data.hmy;
+      const c = hmy.contract(this.$store.data.HRC721_ABI, address);
+      try {
+        this.hrc721TotalSupply = (await c.methods.totalSupply().call()).toString();
+      } catch (e) {
+      }
+
+      const url = HRC721LIST_URL
+      this.hrc721Transactions = await axios.get(`${url}/${address}/history`).then(r=>r.data);
+      this.hrc721Assets = await axios.get(`${url}/${address}/assets`).then(r=>r.data);
     },
     async hrc20BalanceUpdate() {
-      const hmy = this.$store.data.hmy
-      const toHex = hmy.hmySDK.crypto.fromBech32
+      const hmy = this.$store.data.hmy;
+      const toHex = hmy.hmySDK.crypto.fromBech32;
 
-      const res = {}
+      const res = {};
 
       Promise.all(
-        Object.keys(this.Hrc20Address).map(async hrc20 => {
-          //for (let hrc20 in this.Hrc20Address) {
-          //if (this.Hrc20Balance[hrc20]) continue;
-          //console.log({hrc20});
+          Object.keys(this.Hrc20Address).map(async hrc20 => {
+            //for (let hrc20 in this.Hrc20Address) {
+            //if (this.Hrc20Balance[hrc20]) continue;
+            //console.log({hrc20});
 
-          let c
-          try {
-            c = hmy.contract(this.$store.data.HRC20_ABI, toHex(hrc20))
-          } catch (e) {
-            console.log({ e, hrc20 })
-          }
+            let c;
+            try {
+              c = hmy.contract(this.$store.data.HRC20_ABI, toHex(hrc20));
+            } catch (e) {
+              console.log({ e, hrc20 });
+            }
 
-          const hrc20Info = this.Hrc20Address[hrc20]
-          let balance
+            const hrc20Info = this.Hrc20Address[hrc20];
+            let balance;
 
-          try {
-            balance = await c.methods.balanceOf(toHex(this.address.id)).call()
-          } catch (e) {
-            // ...
-          }
+            try {
+              balance = await c.methods.balanceOf(toHex(this.address.id)).call();
+            } catch (e) {
+              // ...
+            }
 
-          const balanceDisplay = displayAmount(balance, hrc20Info.decimals)
+            const balanceDisplay = displayAmount(balance, hrc20Info.decimals);
 
-          return {
-            [hrc20]: {
-              name: hrc20Info.name,
-              id: hrc20Info.symbol,
-              balance: balanceDisplay,
-              address: hrc20Info.address,
-            },
-          }
-        })
+            return {
+              [hrc20]: {
+                name: hrc20Info.name,
+                id: hrc20Info.symbol,
+                balance: balanceDisplay,
+                address: hrc20Info.address
+              }
+            };
+          })
       )
-        .then(res => res.reduce((a, o) => ({ ...a, ...o }), {}))
-        .then(res => {
-          this.Hrc20Balance = res
-        })
+          .then(res => res.reduce((a, o) => ({ ...a, ...o }), {}))
+          .then(res => {
+            this.Hrc20Balance = res;
+          });
     },
     showBalance() {
       ;(this.allBalance = !this.allBalance),
-        (this.allTxsCount = false),
-        (this.allStakingCount = false)
+          (this.allTxsCount = false),
+          (this.allStakingCount = false);
     },
     showTxs() {
       ;(this.allBalance = false),
-        (this.allTxsCount = !this.allTxsCount),
-        (this.allStakingCount = false)
+          (this.allTxsCount = !this.allTxsCount),
+          (this.allStakingCount = false);
     },
     showStakingTxs() {
       ;(this.allBalance = false),
-        (this.allTxsCount = false),
-        (this.allStakingCount = !this.allStakingCount)
-    },
-  },
-}
+          (this.allTxsCount = false),
+          (this.allStakingCount = !this.allStakingCount);
+    }
+  }
+};
 </script>

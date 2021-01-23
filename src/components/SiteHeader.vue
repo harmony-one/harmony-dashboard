@@ -122,6 +122,9 @@
             <div @click="showTokens">
               View all HRC20 Tokens
             </div>
+            <div @click="showTokens721">
+              View all HRC721 Tokens
+            </div>
           </MenuItem>
         </div>
         <div class="navbar-actions">
@@ -177,6 +180,9 @@ export default {
   methods: {
     showTokens() {
       this.$router.push('/tokens')
+    },
+    showTokens721() {
+      this.$router.push('/tokens721')
     },
     search() {
       let input = this.input.trim()
