@@ -53,31 +53,33 @@
       <section>
         <table class="explorer-table">
           <tr>
-            <th>TxHash</th>
-            <th>From</th>
-            <th>To</th>
-            <th>Value</th>
+            <th></th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Owner</th>
+            <th style="max-width:300px">Description</th>
           </tr>
           <tr v-for="tx in txs" :key="tx.hash">
             <td>
+              <img :src="tx.image" style="width:50px;"/>
+            </td>
+
+            <td>
               <router-link :to="'/tx/' + tx.hash">
-                {{ tx.transactionHash | shorten }}
+                {{ tx.tokenId |  shorten  }}
               </router-link>
             </td>
 
             <td>
-              <div v-if="+tx.from">
-                <Address :bech32="tx.from" :show-raw="false" />
-              </div>
-              <div v-else>
-                —
+              <div>
+                {{tx.name}}
               </div>
             </td>
             <td>
-              <Address :bech32="tx.to" />
+              <Address :bech32="tx.owner" />
             </td>
-            <td class="no-break">
-              {{ tx.tokenId | shorten }}
+            <td style="max-width:300px" >
+              {{ tx.description }}
             </td>
           </tr>
         </table>
@@ -89,7 +91,7 @@
 <script>
 import Address from './Address'
 export default {
-  name: 'HRC721TransfersTable',
+  name: 'HRC721AssetsTable',
   components: { Address },
   props: [
     'allTxs',

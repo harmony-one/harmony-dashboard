@@ -129,8 +129,8 @@
                   <td>
                     {{ hrc721Assets ?
                       Object.keys(Object.values(hrc721Assets).reduce((a, b) => ({ ...a, [b.owner]: 1 }), {})).length
-                      || '-'
-                      : "-" }}
+                      || '—'
+                      : "—" }}
                   </td>
                 </tr>
 
@@ -139,7 +139,7 @@
                     Transfers
                   </td>
                   <td>
-                    {{ Object.keys(hrc721Transactions).length || "-" }}
+                    {{ Object.keys(hrc721Transactions).length || "—" }}
                   </td>
                 </tr>
 
@@ -351,25 +351,45 @@
             :change-page="changePage"
         >
           <slot>
-            <TransactionTableTabs :value="tabValue" :on-change="changeTab" />
+            <TransactionTableTabs
+                :show-hrc721="Object.values(hrc721Transactions).length"
+                :value="tabValue" :on-change="changeTab" />
           </slot>
         </TransactionsTable>
 
 
         <!-- hrc721 table -->
         <HRC721TransfersTable
-            v-if="showWhich == 'regular'"
+            v-else-if="showWhich == 'hrc721'"
             :all-txs="Object.values(hrc721Transactions).map(a=>({...a}))"
             :tx-count="Object.values(hrc721Transactions).length"
             :page="page"
+            :isLocal="true"
             :loading="loading"
-            :change-page="changePage"
+            :change-page="()=>{}"
         >
           <slot>
-            <TransactionTableTabs :value="tabValue" :on-change="changeTab" />
+            <TransactionTableTabs
+                :show-hrc721="Object.values(hrc721Transactions).length"
+                :value="tabValue" :on-change="changeTab" />
           </slot>
         </HRC721TransfersTable>
 
+        <HRC721AssetsTable
+            v-else-if="showWhich == 'hrc721Assets'"
+            :all-txs="Object.values(hrc721Assets).map(a=>({...a}))"
+            :tx-count="Object.values(hrc721Assets).length"
+            :page="page"
+            :isLocal="true"
+            :loading="loading"
+            :change-page="()=>{}"
+        >
+          <slot>
+            <TransactionTableTabs
+                :show-hrc721="Object.values(hrc721Transactions).length"
+                :value="tabValue" :on-change="changeTab" />
+          </slot>
+        </HRC721AssetsTable>
 
         <Hrc20TransactionsTable
             v-else-if="showWhich == 'hrc20'"
@@ -381,9 +401,12 @@
             :change-page="changePage"
         >
           <slot>
-            <TransactionTableTabs :value="tabValue" :on-change="changeTab" />
+            <TransactionTableTabs
+                :show-hrc721="Object.values(hrc721Transactions).length"
+                :value="tabValue" :on-change="changeTab" />
           </slot>
         </Hrc20TransactionsTable>
+
         <StakingTransactionsTable
             v-else
             :all-staking-txs="allStakingTxs"
@@ -394,9 +417,13 @@
             :tx-count="stakingTxCount"
         >
           <slot>
-            <TransactionTableTabs :value="tabValue" :on-change="changeTab" />
+            <TransactionTableTabs
+                :show-hrc721="Object.values(hrc721Transactions).length"
+                :value="tabValue" :on-change="changeTab" />
           </slot>
         </StakingTransactionsTable>
+
+
       </div>
       <div v-else class="container">
         <loading-message v-if="false" />
@@ -413,6 +440,7 @@ import StakingTransactionsTable from "./StakingTransactionsTable";
 import Hrc20TransactionsTable from "./Hrc20TransactionsTable";
 import TransactionTableTabs from "./TransactionTableTabs";
 import HRC721TransfersTable from './HRC721TransfersTable'
+import HRC721AssetsTable from './HRC721AssetsTable'
 import HrcTokenTabs from "./HrcTokenTabs";
 import TabPane from "./TabPane";
 import Address from "./Address";
@@ -422,7 +450,7 @@ import "vue-select/dist/vue-select.css";
 import axios from 'axios'
 import {HRC721LIST_URL} from '../explorer/store'
 
-const status = { staking: 1, regular: 0, hrc20: 2 };
+const status = { staking: 1, regular: 0, hrc20: 2, hrc721: 3, hrc721Assets: 4 };
 const defaultStatus = "regular";
 export default {
   name: "AddressPage",
@@ -432,6 +460,7 @@ export default {
     StakingTransactionsTable,
     TransactionTableTabs,
     HRC721TransfersTable,
+    HRC721AssetsTable,
     Hrc20TransactionsTable,
     HrcTokenTabs,
     TabPane,
@@ -575,6 +604,8 @@ export default {
       let txType = "regular";
       if (value == 1) txType = "staking";
       if (value == 2) txType = "hrc20";
+      if (value == 3) txType = "hrc721";
+      if (value == 4) txType = "hrc721Assets";
       this.$router.replace({
         name: "AddressPage",
         query: { txType }
@@ -617,7 +648,7 @@ export default {
 
       service
           .getAddressFullInfo({ id: address, pageIndex: this.page, pageSize: 20 })
-          .then(({ address, contractData }) => {
+          .then(async ({ address, contractData }) => {
             address.shardData.forEach((data, idx) => {
               if (data.txs) {
                 data.txs.forEach(tx => {
@@ -646,8 +677,8 @@ export default {
             // if address is deployed contract
             this.contractData = contractData;
             this.address = address;
+            await this.getHRC721Data(address);
             this.hrc20BalanceUpdate();
-            this.getHRC721Data(address);
           })
           .finally(() => {
             this.allTxs = Object.values(txs).sort((a, b) =>
@@ -675,7 +706,7 @@ export default {
         return;
       }
       const address = info.contractAddress;
-      console.log("getHRC721Data", address);
+
       const hmy = this.$store.data.hmy;
       const c = hmy.contract(this.$store.data.HRC721_ABI, address);
       try {
