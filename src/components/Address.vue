@@ -1,7 +1,7 @@
 <template>
   <span>
     <span
-      v-if="(!isHrc20 || showRaw) && bech32"
+      v-if="(!hrc721Info || !isHrc20 || showRaw) && bech32"
       class="address-type-control"
       @click="toggleView()"
     >
@@ -11,14 +11,15 @@
       :to="'/address/' + bech32 + (staking ? '?txType=staking' : '')"
     >
       <span v-if="isHrc20 && !addressOnly" style="line-height: 11px">
-        <!--        <span v-if="hrc20Info.logo">
-          <img :src="hrc20Info.logo" class="hrclogo" @error="onError" />
-        </span>
-        <span v-if="!hrc20Info.logo">
-          <span class="avatar" :style="bgStyle()">{{ hrc20Info.name[0] }}</span>
-        </span>-->
-        <span :style="bgStyle()">
+        <span :style="bgStyle(hrc20Info.name)">
           <b>{{ hrc20Info.symbol }}</b>
+        </span>
+        <span v-if="showRaw"> ({{ displayAddress || '—' }})</span>
+      </span>
+
+       <span v-if="isHrc721 && !addressOnly" style="line-height: 11px">
+        <span :style="bgStyle(hrc721Info.name)">
+          <b>{{ hrc721Info.symbol }}</b>
         </span>
         <span v-if="showRaw"> ({{ displayAddress || '—' }})</span>
       </span>
@@ -56,10 +57,16 @@ export default {
       return this.showHex ? this.hex : this.bech32
     },
     isHrc20() {
-      return this.hrc20Info != undefined
+      return this.hrc20Info !== undefined
+    },
+    isHrc721() {
+      return !!this.hrc721Info
     },
     hrc20Info() {
       return this.$store.data.Hrc20Address[this.bech32]
+    },
+    hrc721Info() {
+      return this.$store.data.hrc721.find(e => e.contractAddress === this.bech32)
     },
   },
   mounted() {
@@ -83,8 +90,8 @@ export default {
     onError() {
       this.hrc20Info.logo = null
     },
-    bgStyle() {
-      if (!this.hrc20Info.name) {
+    bgStyle(name) {
+      if (!name) {
         return {}
       }
       const palette = [
@@ -97,7 +104,7 @@ export default {
         '#db24ff',
         '#ff00ff',
       ]
-      const c = this.hrc20Info.name.charCodeAt(0) % palette.length
+      const c = name.charCodeAt(0) % palette.length
       const backgroundColor = palette[c]
       return { color: backgroundColor }
     },

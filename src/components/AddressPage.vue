@@ -118,7 +118,7 @@
                     Total Supply
                   </td>
                   <td>
-                    {{ hrc721TotalSupply || "-" }}
+                    {{ hrc721TotalSupply || '—' }}
                   </td>
                 </tr>
 
