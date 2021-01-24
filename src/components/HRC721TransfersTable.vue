@@ -56,7 +56,7 @@
             <th>TxHash</th>
             <th>From</th>
             <th>To</th>
-            <th>Value</th>
+            <th>Token ID</th>
           </tr>
           <tr v-for="tx in txs" :key="tx.hash">
             <td>

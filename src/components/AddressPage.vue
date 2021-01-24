@@ -118,7 +118,7 @@
                     Total Supply
                   </td>
                   <td>
-                    {{ hrc721TotalSupply || '—' }}
+                    {{ hrc721TotalSupply || "—" }}
                   </td>
                 </tr>
 
@@ -129,7 +129,7 @@
                   <td>
                     {{ hrc721Assets ?
                       Object.keys(Object.values(hrc721Assets).reduce((a, b) => ({ ...a, [b.owner]: 1 }), {})).length
-                      || '—'
+                      || "—"
                       : "—" }}
                   </td>
                 </tr>
@@ -439,16 +439,16 @@ import TransactionsTable from "./TransactionsTable";
 import StakingTransactionsTable from "./StakingTransactionsTable";
 import Hrc20TransactionsTable from "./Hrc20TransactionsTable";
 import TransactionTableTabs from "./TransactionTableTabs";
-import HRC721TransfersTable from './HRC721TransfersTable'
-import HRC721AssetsTable from './HRC721AssetsTable'
+import HRC721TransfersTable from "./HRC721TransfersTable";
+import HRC721AssetsTable from "./HRC721AssetsTable";
 import HrcTokenTabs from "./HrcTokenTabs";
 import TabPane from "./TabPane";
 import Address from "./Address";
 import { displayAmount } from "@/utils/displayAmount";
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
-import axios from 'axios'
-import {HRC721LIST_URL} from '../explorer/store'
+import axios from "axios";
+import { HRC721LIST_URL } from "../explorer/store";
 
 const status = { staking: 1, regular: 0, hrc20: 2, hrc721: 3, hrc721Assets: 4 };
 const defaultStatus = "regular";
@@ -481,6 +481,7 @@ export default {
       txCount: 0,
       stakingTxCount: 0,
       Hrc20Balance: {},
+      Hrc721Balance: [],
       $store: this.$store.data,
       hrc721TotalSupply: null,
       hrc721Assets: {},
@@ -498,19 +499,33 @@ export default {
       if (!Object.values(this.Hrc20Balance).length) {
         return "Loading...";
       }
-      const tokensCount = Object.values(this.Hrc20Balance).filter(
+      const hrc20 = Object.values(this.Hrc20Balance).filter(
           o => +o.balance !== 0 // || true
-      ).length;
+      ).filter(o => !isNaN(o.balance)).length
 
-      return `HRC20 Tokens (${tokensCount})`;
+      const hrc721 = this.Hrc721Balance.filter(
+          o => +o.balance !== 0 // || true
+      ).length
+
+return ([(hrc20 > 0  ?`HRC20 - ${hrc20}` : ''), (hrc721 > 0 ? `HRC721 - ${hrc721}` : '')]
+    .filter(a=>a)
+    .join(', ')) || '-'
     },
     hrc20BalancesDropdownOptions() {
-      return Object.values(this.Hrc20Balance)
+      const hrc20 = Object.values(this.Hrc20Balance)
           .filter(o => +o.balance !== 0)
+          .filter(o => !isNaN(+o.balance))
           .map(o => ({
             label: `${o.name} (${o.id}) - ${o.balance}`,
             code: o.address
           }));
+
+      const hrc721 = this.Hrc721Balance.map(({address, name, balance})=>({
+        code:address,
+        label: `${name} - ${balance}`
+      }))
+
+      return [...hrc20, ...hrc721]
     },
     showWhich() {
       return this.$route.query.txType || defaultStatus; // 'staking','regular','hrc20';
@@ -559,7 +574,10 @@ export default {
   },
   watch: {
     Hrc20Address() {
-      if (this.address) this.hrc20BalanceUpdate();
+      if (this.address) {
+        this.hrc20BalanceUpdate();
+        this.hrc721BalanceUpdate()
+      }
     },
     $route() {
       if (this.$route.params.address !== (this.address && this.address.id)) {
@@ -679,6 +697,7 @@ export default {
             this.address = address;
             await this.getHRC721Data(address);
             this.hrc20BalanceUpdate();
+            this.hrc721BalanceUpdate();
           })
           .finally(() => {
             this.allTxs = Object.values(txs).sort((a, b) =>
@@ -696,7 +715,7 @@ export default {
       return this.Hrc20Address[address] !== undefined;
     },
     isHrc721(address) {
-      return this.Hrc721Data.find(e => e.contractAddress === address);
+      return this.Hrc721Data && this.Hrc721Data.find(e => e.contractAddress === address);
     },
     async getHRC721Data() {
       // todo infos
@@ -714,9 +733,28 @@ export default {
       } catch (e) {
       }
 
-      const url = HRC721LIST_URL
-      this.hrc721Transactions = await axios.get(`${url}/${address}/history`).then(r=>r.data);
-      this.hrc721Assets = await axios.get(`${url}/${address}/assets`).then(r=>r.data);
+      const url = HRC721LIST_URL;
+      this.hrc721Transactions = await axios.get(`${url}/${address}/history`).then(r => r.data);
+      this.hrc721Assets = await axios.get(`${url}/${address}/assets`).then(r => r.data);
+    },
+    async hrc721BalanceUpdate() {
+      const address = this.address.id;
+      const hmy = this.$store.data.hmy;
+      const toHex = hmy.hmySDK.crypto.fromBech32;
+      const tokens = this.$store.data.hrc721;
+      this.Hrc721Balance = (await Promise.all(Object.values(tokens).map(async ({ name, symbol, contractAddress }) => {
+        const c = hmy.contract(this.$store.data.HRC721_ABI, contractAddress);
+        const balance = (await c.methods.balanceOf(toHex(address)).call()).toString();
+
+        return {
+          name,
+          symbol,
+          address: contractAddress,
+          balance
+        };
+      }))).filter(({ balance }) => +balance > 0);
+
+      console.log("---", this.Hrc721Balance);
     },
     async hrc20BalanceUpdate() {
       const hmy = this.$store.data.hmy;
