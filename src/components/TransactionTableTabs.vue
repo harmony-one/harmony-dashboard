@@ -29,7 +29,7 @@
     </span>
 
     <span
-        v-if="showHrc721"
+        v-if="showHrc721txs"
         :class="{ tabItem: true, active: value == 3 }"
         @click="() => onChange(3)"
     >
@@ -51,6 +51,7 @@ export default {
   name: "TransactionTableTabs",
   props: [
     "showHrc721",
+      "showHrc721txs",
     "value",
     "onChange",
     "titlePrefix",

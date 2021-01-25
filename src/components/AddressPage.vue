@@ -352,7 +352,8 @@
         >
           <slot>
             <TransactionTableTabs
-                :show-hrc721="Object.values(hrc721Transactions).length"
+                :show-hrc721txs="Object.values(hrc721Transactions).length"
+                :show-hrc721="Object.values(hrc721Transactions).length || hrc721Inventory.length"
                 :value="tabValue" :on-change="changeTab" />
           </slot>
         </TransactionsTable>
@@ -370,15 +371,17 @@
         >
           <slot>
             <TransactionTableTabs
-                :show-hrc721="Object.values(hrc721Transactions).length"
+                :show-hrc721txs="Object.values(hrc721Transactions).length"
+                :show-hrc721="Object.values(hrc721Transactions).length || hrc721Inventory.length"
                 :value="tabValue" :on-change="changeTab" />
           </slot>
         </HRC721TransfersTable>
 
+
         <HRC721AssetsTable
             v-else-if="showWhich == 'hrc721Assets'"
-            :all-txs="Object.values(hrc721Assets).map(a=>({...a}))"
-            :tx-count="Object.values(hrc721Assets).length"
+            :all-txs="Object.values(hrc721Assets).length > 0 ? Object.values(hrc721Assets).map(a=>({...a})) : hrc721Inventory"
+            :tx-count="Object.values(hrc721Assets).length > 0 ? Object.values(hrc721Assets).length : hrc721Inventory.length"
             :page="page"
             :isLocal="true"
             :loading="loading"
@@ -386,7 +389,8 @@
         >
           <slot>
             <TransactionTableTabs
-                :show-hrc721="Object.values(hrc721Transactions).length"
+                :show-hrc721txs="Object.values(hrc721Transactions).length"
+                :show-hrc721="Object.values(hrc721Transactions).length || hrc721Inventory.length"
                 :value="tabValue" :on-change="changeTab" />
           </slot>
         </HRC721AssetsTable>
@@ -402,7 +406,8 @@
         >
           <slot>
             <TransactionTableTabs
-                :show-hrc721="Object.values(hrc721Transactions).length"
+                :show-hrc721txs="Object.values(hrc721Transactions).length"
+                :show-hrc721="Object.values(hrc721Transactions).length || hrc721Inventory.length"
                 :value="tabValue" :on-change="changeTab" />
           </slot>
         </Hrc20TransactionsTable>
@@ -418,7 +423,8 @@
         >
           <slot>
             <TransactionTableTabs
-                :show-hrc721="Object.values(hrc721Transactions).length"
+                :show-hrc721txs="Object.values(hrc721Transactions).length"
+                :show-hrc721="Object.values(hrc721Transactions).length || hrc721Inventory.length"
                 :value="tabValue" :on-change="changeTab" />
           </slot>
         </StakingTransactionsTable>
@@ -450,6 +456,8 @@ import "vue-select/dist/vue-select.css";
 import axios from "axios";
 import { HRC721LIST_URL } from "../explorer/store";
 
+
+// todo break to parts. make clean
 const status = { staking: 1, regular: 0, hrc20: 2, hrc721: 3, hrc721Assets: 4 };
 const defaultStatus = "regular";
 export default {
@@ -485,7 +493,8 @@ export default {
       $store: this.$store.data,
       hrc721TotalSupply: null,
       hrc721Assets: {},
-      hrc721Transactions: {}
+      hrc721Transactions: {},
+      hrc721Inventory: []
     };
   },
   computed: {
@@ -501,15 +510,15 @@ export default {
       }
       const hrc20 = Object.values(this.Hrc20Balance).filter(
           o => +o.balance !== 0 // || true
-      ).filter(o => !isNaN(o.balance)).length
+      ).filter(o => !isNaN(o.balance)).length;
 
       const hrc721 = this.Hrc721Balance.filter(
           o => +o.balance !== 0 // || true
-      ).length
+      ).length;
 
-return ([(hrc20 > 0  ?`HRC20 - ${hrc20}` : ''), (hrc721 > 0 ? `HRC721 - ${hrc721}` : '')]
-    .filter(a=>a)
-    .join(', ')) || '-'
+      return ([(hrc20 > 0 ? `HRC20 - ${hrc20}` : ""), (hrc721 > 0 ? `HRC721 - ${hrc721}` : "")]
+          .filter(a => a)
+          .join(", ")) || "—";
     },
     hrc20BalancesDropdownOptions() {
       const hrc20 = Object.values(this.Hrc20Balance)
@@ -520,12 +529,12 @@ return ([(hrc20 > 0  ?`HRC20 - ${hrc20}` : ''), (hrc721 > 0 ? `HRC721 - ${hrc721
             code: o.address
           }));
 
-      const hrc721 = this.Hrc721Balance.map(({address, name, balance})=>({
-        code:address,
+      const hrc721 = this.Hrc721Balance.map(({ address, name, balance }) => ({
+        code: address,
         label: `${name} - ${balance}`
-      }))
+      }));
 
-      return [...hrc20, ...hrc721]
+      return [...hrc20, ...hrc721];
     },
     showWhich() {
       return this.$route.query.txType || defaultStatus; // 'staking','regular','hrc20';
@@ -576,7 +585,6 @@ return ([(hrc20 > 0  ?`HRC20 - ${hrc20}` : ''), (hrc721 > 0 ? `HRC721 - ${hrc721
     Hrc20Address() {
       if (this.address) {
         this.hrc20BalanceUpdate();
-        this.hrc721BalanceUpdate()
       }
     },
     $route() {
@@ -715,13 +723,15 @@ return ([(hrc20 > 0  ?`HRC20 - ${hrc20}` : ''), (hrc721 > 0 ? `HRC721 - ${hrc721
       return this.Hrc20Address[address] !== undefined;
     },
     isHrc721(address) {
-      return this.Hrc721Data && this.Hrc721Data.find(e => e.contractAddress === address);
+      return this.Hrc721Data && this.Hrc721Data.length && this.Hrc721Data.find(e => e.contractAddress === address);
     },
     async getHRC721Data() {
       // todo infos
 
       const info = this.isHrc721(this.address.id);
       if (!info) {
+        this.hrc721Transactions = [];
+        this.hrc721Assets = {};
         return;
       }
       const address = info.contractAddress;
@@ -754,7 +764,13 @@ return ([(hrc20 > 0  ?`HRC20 - ${hrc20}` : ''), (hrc721 > 0 ? `HRC721 - ${hrc721
         };
       }))).filter(({ balance }) => +balance > 0);
 
-      console.log("---", this.Hrc721Balance);
+      this.hrc721Inventory = (await Promise.all(this.Hrc721Balance.map(o => {
+        return axios.get(`${HRC721LIST_URL}/${o.address}/assets`).then(r => r.data);
+      })))
+          .reduce((a,b)=>(a.concat(Object.values(b))), [])
+          .filter(({ owner }) => owner === address)
+
+      console.log("inventory", address, this.hrc721Inventory);
     },
     async hrc20BalanceUpdate() {
       const hmy = this.$store.data.hmy;

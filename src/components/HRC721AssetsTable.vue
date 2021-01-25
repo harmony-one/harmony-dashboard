@@ -65,9 +65,7 @@
             </td>
 
             <td>
-              <router-link :to="'/tx/' + tx.hash">
                 {{ tx.tokenId |  shorten  }}
-              </router-link>
             </td>
 
             <td>
