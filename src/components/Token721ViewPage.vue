@@ -5,7 +5,7 @@
         <div class="explorer-card">
           <header>
             <div class="token-view-header">
-              HRC20 Tokens
+              HRC721 Tokens
             </div>
             <div class="row-select-container">
               Show
@@ -110,7 +110,7 @@
   </div>
 </template>
 <script>
-import { HRC20LIST_URL } from '../explorer/store'
+import { HRC721LIST_URL } from '../explorer/store'
 import axios from 'axios'
 import LoadingMessage from './LoadingMessage'
 import { displayAmount } from '@/utils/displayAmount'
@@ -165,7 +165,7 @@ export default {
   },
   async created() {
     this.loading = true
-    const { data: tokens } = await axios.get(HRC20LIST_URL)
+    const { data: tokens } = await axios.get(HRC721LIST_URL)
     this.tokenList = _.uniqBy(tokens, 'contractAddress')
     this.loading = false
   },

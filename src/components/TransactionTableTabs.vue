@@ -27,6 +27,22 @@
       }}</span>
       {{ titlePrefix }} HRC20 Transactions
     </span>
+
+    <span
+      v-if="showHrc721txs"
+      :class="{ tabItem: true, active: value == 3 }"
+      @click="() => onChange(3)"
+    >
+      HRC721 Transfers
+    </span>
+
+    <span
+      v-if="showHrc721"
+      :class="{ tabItem: true, active: value == 4 }"
+      @click="() => onChange(4)"
+    >
+      Inventory
+    </span>
   </div>
 </template>
 
@@ -34,6 +50,8 @@
 export default {
   name: 'TransactionTableTabs',
   props: [
+    'showHrc721',
+    'showHrc721txs',
     'value',
     'onChange',
     'titlePrefix',

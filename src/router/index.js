@@ -14,6 +14,7 @@ import ShardPage from '@/components/ShardPage'
 import AddressShardPage from '@/components/AddressShardPage'
 import TransactionsByBlockPage from '@/components/TransactionsByBlockPage'
 import TokenViewPage from '@/components/TokenViewPage'
+import Token721ViewPage from '@/components/Token721ViewPage'
 Vue.use(Router)
 
 export default new Router({
@@ -93,6 +94,11 @@ export default new Router({
       path: '/tokens',
       name: 'TokenView',
       component: TokenViewPage,
+    },
+    {
+      path: '/tokens721',
+      name: 'TokenView721',
+      component: Token721ViewPage,
     },
   ],
 })

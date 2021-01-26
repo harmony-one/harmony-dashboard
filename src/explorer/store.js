@@ -11,9 +11,12 @@ import service from './service'
 
 window.hmy = hmy
 const HRC20_ABI = require('./HRC20_ABI.json')
+const HRC721_ABI = require('./hrc721ABI.json')
+
 const HRC20_LIST = []
 
 const Limit = 10
+
 function postprocessBlocks(items) {
   return items
     .sort((a, b) => (Number(a.timestamp) > Number(b.timestamp) ? -1 : 1))
@@ -54,6 +57,7 @@ function getTotalBlockLatency(latencies) {
 }
 
 export const HRC20LIST_URL = `${EXPLORER_BACKEND_URL}/hrc20-token-list`
+export const HRC721LIST_URL = `${EXPLORER_BACKEND_URL}/hrc721-token-list`
 
 export function fetchHrc20List(url) {
   return axios.get(url).then(rez => {
@@ -82,6 +86,7 @@ let store = {
     stakingTxs: [],
     pendingTxs: [],
     hrc20Txs: [],
+    hrc721: [],
     hrc20TxsCount: 0,
     blockCount: 0,
     txCount: 0,
@@ -91,6 +96,7 @@ let store = {
     lastUpdateTime: 0,
     Hrc20Address,
     HRC20_ABI,
+    HRC721_ABI,
     hmy,
     HRC20_HOLDERURL,
     ONE_HOLDERURL,
@@ -115,6 +121,12 @@ let store = {
         })
       )
     )
+  },
+  updateHrc721List() {
+    axios.get(HRC721LIST_URL).then(({ data }) => {
+      this.data.hrc721.length = 0
+      this.data.hrc721.push(...data)
+    })
   },
   updateShards(shards) {
     if (shards) {
@@ -169,6 +181,7 @@ let store = {
       )
     )
     this.updateHrc20List()
+    this.updateHrc721List()
     service.getHrc20TxsLatest({ pageSize: 10, pageIndex: 0 }).then(result => {
       this.data.hrc20Txs = result.txs
       this.data.hrc20TxsCount = result.total
