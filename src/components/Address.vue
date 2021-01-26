@@ -17,7 +17,7 @@
         <span v-if="showRaw"> ({{ displayAddress || '—' }})</span>
       </span>
 
-       <span v-if="isHrc721 && !addressOnly" style="line-height: 11px">
+      <span v-if="isHrc721 && !addressOnly" style="line-height: 11px">
         <span :style="bgStyle(hrc721Info.name)">
           <b>{{ hrc721Info.symbol }}</b>
         </span>
@@ -66,7 +66,9 @@ export default {
       return this.$store.data.Hrc20Address[this.bech32]
     },
     hrc721Info() {
-      return this.$store.data.hrc721.find(e => e.contractAddress === this.bech32)
+      return this.$store.data.hrc721.find(
+        e => e.contractAddress === this.bech32
+      )
     },
   },
   mounted() {

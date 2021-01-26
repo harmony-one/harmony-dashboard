@@ -11,16 +11,16 @@
         <span class="page-controllers">
           <span class="page-navigator">
             <button
-                class="btn btn-light btn-icon-only"
-                :disabled="pageIndex === 0"
-                @click="first()"
+              class="btn btn-light btn-icon-only"
+              :disabled="pageIndex === 0"
+              @click="first()"
             >
               <font-awesome-icon icon="angle-double-left" />
             </button>
             <button
-                class="btn btn-light btn-icon-only"
-                :disabled="pageIndex === 0"
-                @click="prev()"
+              class="btn btn-light btn-icon-only"
+              :disabled="pageIndex === 0"
+              @click="prev()"
             >
               <font-awesome-icon icon="chevron-left" />
             </button>
@@ -28,16 +28,16 @@
               {{ pageIndex + 1 }} / {{ pageCount }}
             </span>
             <button
-                class="btn btn-light btn-icon-only"
-                :disabled="pageIndex === pageCount - 1"
-                @click="next()"
+              class="btn btn-light btn-icon-only"
+              :disabled="pageIndex === pageCount - 1"
+              @click="next()"
             >
               <font-awesome-icon icon="chevron-right" />
             </button>
             <button
-                class="btn btn-light btn-icon-only"
-                :disabled="pageIndex === pageCount - 1"
-                @click="last()"
+              class="btn btn-light btn-icon-only"
+              :disabled="pageIndex === pageCount - 1"
+              @click="last()"
             >
               <font-awesome-icon icon="angle-double-right" />
             </button>
@@ -46,9 +46,9 @@
       </div>
     </header>
     <div
-        ref="loadingContainer"
-        class="explorer-card-body"
-        style="position: relative; min-height: 200px;"
+      ref="loadingContainer"
+      class="explorer-card-body"
+      style="position: relative; min-height: 200px;"
     >
       <section>
         <table class="explorer-table">
@@ -57,26 +57,28 @@
             <th>ID</th>
             <th>Name</th>
             <th>Owner</th>
-            <th style="max-width:300px">Description</th>
+            <th style="max-width:300px">
+              Description
+            </th>
           </tr>
           <tr v-for="tx in txs" :key="tx.hash">
             <td>
-              <img :src="tx.image" style="width:50px;"/>
+              <img :src="tx.image" style="width:50px;" />
             </td>
 
             <td>
-                {{ tx.tokenId |  shorten  }}
+              {{ tx.tokenId | shorten }}
             </td>
 
             <td>
               <div>
-                {{tx.name}}
+                {{ tx.name }}
               </div>
             </td>
             <td>
               <Address :bech32="tx.owner" />
             </td>
-            <td style="max-width:300px" >
+            <td style="max-width:300px">
               {{ tx.description }}
             </td>
           </tr>

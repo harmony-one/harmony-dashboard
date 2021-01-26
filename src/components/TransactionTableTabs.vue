@@ -1,45 +1,45 @@
 <template>
   <div class="tabs">
     <span
-        :class="{ tabItem: true, active: value == 0 }"
-        @click="() => onChange(0)"
+      :class="{ tabItem: true, active: value == 0 }"
+      @click="() => onChange(0)"
     >
       <span v-if="titlePostfixTx" class="postfix">{{
-          titlePostfixTx | number
-        }}</span>
+        titlePostfixTx | number
+      }}</span>
       {{ titlePrefix }} Transactions
     </span>
     <span
-        :class="{ tabItem: true, active: value == 1 }"
-        @click="() => onChange(1)"
+      :class="{ tabItem: true, active: value == 1 }"
+      @click="() => onChange(1)"
     >
       <span v-if="titlePostfixStakingTx" class="postfix">{{
-          titlePostfixStakingTx | number
-        }}</span>
+        titlePostfixStakingTx | number
+      }}</span>
       {{ titlePrefix }} Staking transactions
     </span>
     <span
-        :class="{ tabItem: true, active: value == 2 }"
-        @click="() => onChange(2)"
+      :class="{ tabItem: true, active: value == 2 }"
+      @click="() => onChange(2)"
     >
       <span v-if="titlePostfixHrc20Tx" class="postfix">{{
-          titlePostfixHrc20Tx | number
-        }}</span>
+        titlePostfixHrc20Tx | number
+      }}</span>
       {{ titlePrefix }} HRC20 Transactions
     </span>
 
     <span
-        v-if="showHrc721txs"
-        :class="{ tabItem: true, active: value == 3 }"
-        @click="() => onChange(3)"
+      v-if="showHrc721txs"
+      :class="{ tabItem: true, active: value == 3 }"
+      @click="() => onChange(3)"
     >
       HRC721 Transfers
     </span>
 
     <span
-        v-if="showHrc721"
-        :class="{ tabItem: true, active: value == 4 }"
-        @click="() => onChange(4)"
+      v-if="showHrc721"
+      :class="{ tabItem: true, active: value == 4 }"
+      @click="() => onChange(4)"
     >
       Inventory
     </span>
@@ -48,19 +48,19 @@
 
 <script>
 export default {
-  name: "TransactionTableTabs",
+  name: 'TransactionTableTabs',
   props: [
-    "showHrc721",
-      "showHrc721txs",
-    "value",
-    "onChange",
-    "titlePrefix",
-    "titlePostfixTx",
-    "titlePostfixStakingTx",
-    "titlePostfixHrc20Tx",
-    "titlePostfixPendingTx"
-  ]
-};
+    'showHrc721',
+    'showHrc721txs',
+    'value',
+    'onChange',
+    'titlePrefix',
+    'titlePostfixTx',
+    'titlePostfixStakingTx',
+    'titlePostfixHrc20Tx',
+    'titlePostfixPendingTx',
+  ],
+}
 </script>
 
 <style lang="less">

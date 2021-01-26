@@ -11,16 +11,16 @@
         <span class="page-controllers">
           <span class="page-navigator">
             <button
-                class="btn btn-light btn-icon-only"
-                :disabled="pageIndex === 0"
-                @click="first()"
+              class="btn btn-light btn-icon-only"
+              :disabled="pageIndex === 0"
+              @click="first()"
             >
               <font-awesome-icon icon="angle-double-left" />
             </button>
             <button
-                class="btn btn-light btn-icon-only"
-                :disabled="pageIndex === 0"
-                @click="prev()"
+              class="btn btn-light btn-icon-only"
+              :disabled="pageIndex === 0"
+              @click="prev()"
             >
               <font-awesome-icon icon="chevron-left" />
             </button>
@@ -28,16 +28,16 @@
               {{ pageIndex + 1 }} / {{ pageCount }}
             </span>
             <button
-                class="btn btn-light btn-icon-only"
-                :disabled="pageIndex === pageCount - 1"
-                @click="next()"
+              class="btn btn-light btn-icon-only"
+              :disabled="pageIndex === pageCount - 1"
+              @click="next()"
             >
               <font-awesome-icon icon="chevron-right" />
             </button>
             <button
-                class="btn btn-light btn-icon-only"
-                :disabled="pageIndex === pageCount - 1"
-                @click="last()"
+              class="btn btn-light btn-icon-only"
+              :disabled="pageIndex === pageCount - 1"
+              @click="last()"
             >
               <font-awesome-icon icon="angle-double-right" />
             </button>
@@ -46,9 +46,9 @@
       </div>
     </header>
     <div
-        ref="loadingContainer"
-        class="explorer-card-body"
-        style="position: relative; min-height: 200px;"
+      ref="loadingContainer"
+      class="explorer-card-body"
+      style="position: relative; min-height: 200px;"
     >
       <section>
         <table class="explorer-table">

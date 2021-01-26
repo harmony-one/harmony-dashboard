@@ -13,7 +13,7 @@ module.exports = {
   rules: devMode
     ? {}
     : {
-        'prettier/prettier': 'error',
+        'prettier/prettier': 'off',
         'vue/max-attributes-per-line': 'off',
         'vue/html-closing-bracket-newline': 'off',
         'vue/html-self-closing': 'off',
