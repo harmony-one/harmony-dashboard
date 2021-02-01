@@ -13,7 +13,7 @@
     "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",
     "format": "prettier --write './*.js'",
     "start": "export SSL_KEY_FILE=/etc/letsencrypt/live/localhost/privkey.pem && export SSL_CERT_FILE=/etc/letsencrypt/live/localhost/fullchain.pem && http-server -g -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE",
-    "serve": "http-server -g -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE > http.log 2>&1 &"
+    "serve": "http-server -g -p 2000 dist --ssl --cert $SSL_CERT_FILE --key $SSL_KEY_FILE"
   },
   "gitHooks": {},
   "dependencies": {

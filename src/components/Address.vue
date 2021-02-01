@@ -1,6 +1,7 @@
 <template>
   <span>
 <!--    <span
+    <span
       v-if="(!hrc721Info || !isHrc20 || showRaw) && bech32"
       class="address-type-control"
       @click="toggleView()"
@@ -81,6 +82,12 @@ export default {
         e => e.contractAddress === this.bech32
       )
     },
+<<<<<<< HEAD
+=======
+  },
+  mounted() {
+    this.setHex()
+>>>>>>> master
   },
   methods: {
     copy() {
