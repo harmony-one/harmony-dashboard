@@ -11,7 +11,7 @@ import vClickOutside from 'v-click-outside'
 import './explorer/store'
 import VueCtkDateTimePicker from 'vue-ctk-date-time-picker'
 import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css'
-
+import ToggleSwitch from 'vuejs-toggle-switch'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 
@@ -20,6 +20,7 @@ Vue.config.devtools = true
 import './filter'
 import './icon'
 
+Vue.use(ToggleSwitch)
 Vue.use(Loading)
 Vue.use(vClickOutside)
 

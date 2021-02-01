@@ -79,6 +79,7 @@ HRC20_LIST.map(hrc20 => (Hrc20Address[hrc20.address] = hrc20))
 
 let store = {
   data: {
+    displayAddressETH: false,
     shards: {},
     shardsValidators: [],
     blocks: [],
@@ -101,7 +102,10 @@ let store = {
     HRC20_HOLDERURL,
     ONE_HOLDERURL,
   },
-
+  changeDisplayAddressETH(val) {
+    this.data.displayAddressETH = val!==undefined ? val: !this.displayAddressETH
+    return this.data.displayAddressETH
+  },
   update(data) {
     this.updateShards(data.shards)
     this.updateGlobalData()

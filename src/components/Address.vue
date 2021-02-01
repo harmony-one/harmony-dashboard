@@ -52,9 +52,20 @@ export default {
       showHex: false,
     }
   },
+  watch: {
+    displayFormat() {
+      //this.displayAddress()
+    }
+  },
   computed: {
+    hex() {
+      return this.$store.data.hmy.hmySDK.crypto.fromBech32(this.bech32)
+    },
+    displayFormat() {
+      return this.$store.data.displayAddressETH
+    },
     displayAddress() {
-      return this.showHex ? this.hex : this.bech32
+      return this.displayFormat ? this.hex : this.bech32
     },
     isHrc20() {
       return this.hrc20Info !== undefined
@@ -71,9 +82,6 @@ export default {
       )
     },
   },
-  mounted() {
-    this.setHex()
-  },
   methods: {
     copy() {
       copy(this.displayAddress)
@@ -85,9 +93,6 @@ export default {
     },
     toggleView() {
       this.showHex = !this.showHex
-    },
-    setHex() {
-      this.hex = this.$store.data.hmy.hmySDK.crypto.fromBech32(this.bech32)
     },
     onError() {
       this.hrc20Info.logo = null

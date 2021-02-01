@@ -80,6 +80,25 @@
   }
 }
 
+.switch-cell {
+  display: inline-block;
+  border: 1px solid white;
+  padding: 8px;
+  font-weight: bold;
+  margin-right: -1px;
+  cursor: pointer;
+}
+
+.switch-cell-inactive {
+  display: inline-block;
+  border: 1px solid white;
+  background-color: white;
+  color: #0987d7;
+  padding: 8px;
+  margin-right: -1px;
+  cursor: pointer;
+}
+
 @media (max-width: 768px) {
   .search {
     //width: 10em !important;
@@ -117,6 +136,22 @@
           <router-link class="navbar-brand" to="/" />
           <span class="tagline">Open Consensus for 10B</span>
         </div>
+
+        <div class="header-menu">
+          Address Format
+          <div
+              class="switch-cell"
+               :class="!displayAddressETH ? 'switch-cell-inactive' : ''"
+          @click="changeDisplayAddressETH(false)">
+            ONE
+          </div>
+          <div class="switch-cell"
+               :class="displayAddressETH ? 'switch-cell-inactive' : ''"
+               @click="changeDisplayAddressETH(true)">
+            ETH
+          </div>
+        </div>
+
         <div class="header-menu">
           <MenuItem text="Tokens">
             <div @click="showTokens">
@@ -172,12 +207,18 @@ export default {
     MenuItem,
   },
   data() {
+    console.log('--',this.$store)
     return {
       input: '',
       showNav: localStorage.getItem('nav'),
+      $store: this.$store,
+      displayAddressETH: this.$store.data.displayAddressETH
     }
   },
   methods: {
+    changeDisplayAddressETH(val) {
+      this.displayAddressETH = this.$store.changeDisplayAddressETH(val)
+    },
     showTokens() {
       this.$router.push('/tokens')
     },
