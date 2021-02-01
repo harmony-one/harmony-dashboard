@@ -1,12 +1,13 @@
 <template>
   <span>
+<!--    <span
     <span
       v-if="(!hrc721Info || !isHrc20 || showRaw) && bech32"
       class="address-type-control"
       @click="toggleView()"
     >
       &#8597;&nbsp;
-    </span>
+    </span>-->
     <router-link
       :to="'/address/' + bech32 + (staking ? '?txType=staking' : '')"
     >
@@ -52,9 +53,20 @@ export default {
       showHex: false,
     }
   },
+  watch: {
+    displayFormat() {
+      //this.displayAddress()
+    }
+  },
   computed: {
+    hex() {
+      return this.$store.data.hmy.hmySDK.crypto.fromBech32(this.bech32)
+    },
+    displayFormat() {
+      return this.$store.data.displayAddressETH
+    },
     displayAddress() {
-      return this.showHex ? this.hex : this.bech32
+      return this.displayFormat ? this.hex : this.bech32
     },
     isHrc20() {
       return this.hrc20Info !== undefined
@@ -70,9 +82,12 @@ export default {
         e => e.contractAddress === this.bech32
       )
     },
+<<<<<<< HEAD
+=======
   },
   mounted() {
     this.setHex()
+>>>>>>> master
   },
   methods: {
     copy() {
@@ -85,9 +100,6 @@ export default {
     },
     toggleView() {
       this.showHex = !this.showHex
-    },
-    setHex() {
-      this.hex = this.$store.data.hmy.hmySDK.crypto.fromBech32(this.bech32)
     },
     onError() {
       this.hrc20Info.logo = null
