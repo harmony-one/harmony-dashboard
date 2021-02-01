@@ -82,12 +82,9 @@ export default {
         e => e.contractAddress === this.bech32
       )
     },
-<<<<<<< HEAD
-=======
   },
   mounted() {
     this.setHex()
->>>>>>> master
   },
   methods: {
     copy() {
