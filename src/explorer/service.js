@@ -181,11 +181,25 @@ export default {
       return txs
     })
   },
-  search(input) {
-    return authGet('/search', { params: { input } }).then(res => {
+  async search(input, tryEth = true) {
+    try {
+    return await authGet('/search', { params: { input } }).then(res => {
       let result = res.data.result
       return result
     })
+    } catch(e) {
+      if (input.length === 66 && tryEth) {
+        console.log('Checking if ETH tx hash')
+        const res = await this.getTransaction(input)
+        console.log({res})
+        if (!res || !res.hash) {
+          return
+        }
+        console.log('Converted ETH tx hash to Harmony, searching...')
+
+        return this.search(res.hash, false)
+      }
+    }
   },
   getCxReceipt(id) {
     return authGet('/cx-receipt', { params: { id } }).then(res => {

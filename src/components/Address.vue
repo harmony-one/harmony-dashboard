@@ -84,7 +84,6 @@ export default {
     },
   },
   mounted() {
-    this.setHex()
   },
   methods: {
     copy() {
