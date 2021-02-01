@@ -1,12 +1,12 @@
 <template>
   <span>
-    <span
+<!--    <span
       v-if="(!hrc721Info || !isHrc20 || showRaw) && bech32"
       class="address-type-control"
       @click="toggleView()"
     >
       &#8597;&nbsp;
-    </span>
+    </span>-->
     <router-link
       :to="'/address/' + bech32 + (staking ? '?txType=staking' : '')"
     >
