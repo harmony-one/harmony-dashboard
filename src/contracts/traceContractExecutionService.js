@@ -13,7 +13,7 @@ const { hmySDK } = hmy.default
 
 const isMainnet = () => SDK_NODE !== 'https://api.s0.b.hmny.io'
 const url = isMainnet()
-  ? 'https://api0.s0.t.hmny.io'
+  ? 'https://api.s0.t.hmny.io'
   : 'https://api.s0.b.hmny.io'
 
 export async function traceTx(txhash) {
