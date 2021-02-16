@@ -80,21 +80,33 @@
   }
 }
 
-.switch-cell {
+.switch-container {
   display: inline-block;
   border: 1px solid white;
-  padding: 8px;
+  padding: 3px;
   font-weight: bold;
   margin-right: -1px;
   cursor: pointer;
+  border-radius: 10px;
+}
+
+.switch-cell {
+  display: inline-block;
+
+  padding: 4px;
+  border: none;
+  font-weight: bold;
+  margin-right: -1px;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
 .switch-cell-inactive {
   display: inline-block;
-  border: 1px solid white;
+
   background-color: white;
-  color: #0987d7;
-  padding: 8px;
+  color: #47b8eb;
+  padding: 4px;
   margin-right: -1px;
   cursor: pointer;
 }
@@ -139,6 +151,7 @@
 
         <div class="header-menu">
           Address Format
+          <div class="switch-container">
           <div
               class="switch-cell"
                :class="!displayAddressETH ? 'switch-cell-inactive' : ''"
@@ -149,6 +162,7 @@
                :class="displayAddressETH ? 'switch-cell-inactive' : ''"
                @click="changeDisplayAddressETH(true)">
             ETH
+          </div>
           </div>
         </div>
 
