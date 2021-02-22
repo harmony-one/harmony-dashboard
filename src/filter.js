@@ -50,7 +50,7 @@ export function formatBlockLatency(time) {
     return '—'
   }
 
-  return formatDecimal(time / 10 ** 3) + 's'
+  return Number(time / 10 ** 3).toFixed(2) + 's'
 }
 
 export function calculateFee(transaction) {
