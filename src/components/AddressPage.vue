@@ -273,7 +273,12 @@
                   </td>
                   <td>
                     <div style="max-width: 500px">
+                      <Button
+                          v-if="!tokensFetching"
+                          @click="onUserActionFetchHRCTokens"
+                          style="outline:0;border-radius:4px;cursor: pointer; border: none;background: #00aee9;padding:10px;color:white;">Fetch Tokens</Button>
                       <v-select
+                          v-if="tokensFetching"
                           :disabled="
                           hrc20BalancesDropdownOptions &&
                             hrc20BalancesDropdownOptions.length === 0
@@ -630,13 +635,13 @@ export default {
   watch: {
     Hrc20Address() {
       if (this.address) {
-        this.hrc20BalanceUpdate();
+        //this.hrc20BalanceUpdate();
       }
     },
     Hrc721Data() {
       if (this.address) {
         this.getHRC721Data(this.address);
-        this.hrc721BalanceUpdate();
+        //this.hrc721BalanceUpdate();
       }
     },
     $route() {
@@ -652,6 +657,16 @@ export default {
     this.getAddress();
   },
   methods: {
+    onUserActionFetchHRCTokens() {
+      if (this.tokensFetching) {
+        return
+      }
+      console.log('onUserActionFetchHRCTokens')
+
+      this.tokensFetching = true;
+      this.hrc20BalanceUpdate();
+      this.hrc721BalanceUpdate();
+    },
     onHrc20BalancesDropdown(val) {
       this.$router.push(`/address/${val.code}`);
     },
@@ -756,8 +771,8 @@ export default {
             this.contractData = contractData;
             this.address = address;
             await this.getHRC721Data(address);
-            this.hrc20BalanceUpdate();
-            this.hrc721BalanceUpdate();
+            //this.hrc20BalanceUpdate();
+            //this.hrc721BalanceUpdate();
           })
           .finally(() => {
             this.allTxs = Object.values(txs).sort((a, b) =>
