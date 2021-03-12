@@ -661,7 +661,6 @@ export default {
       if (this.tokensFetching) {
         return
       }
-      console.log('onUserActionFetchHRCTokens')
 
       this.tokensFetching = true;
       this.hrc20BalanceUpdate();
