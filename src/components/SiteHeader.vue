@@ -254,6 +254,8 @@ export default {
             this.$router.push(`/block/${input}`)
           } else if (result.type === 'tx') {
             this.$router.push(`/tx/${input}`)
+          } else if (result.type === 'stakingTx') {
+            this.$router.push(`/staking-tx/${input}`)
           } else if (result.type === 'address') {
             this.$router.push(`/address/${input}`)
           }
