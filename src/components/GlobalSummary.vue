@@ -158,7 +158,7 @@ export default {
       this.now = Date.now()
       this.timer = setInterval(() => {
         this.now = Date.now()
-      }, 1000)
+      }, 2000)
     },
   },
 }
