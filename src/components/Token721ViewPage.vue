@@ -133,7 +133,7 @@ export default {
       return this.filteredTokens.length
     },
     filteredTokens() {
-      const filteredTokens = this.tokenList.filter(elem => {
+      const filteredTokens = this.tokenList.filter((elem) => {
         return (
           (elem.name || '').toLowerCase().includes(this.search.toLowerCase()) ||
           (elem.symbol || '')
@@ -171,7 +171,9 @@ export default {
   },
   methods: {
     totalSupply(token) {
-      return displayAmount(token.totalSupply, token.decimals)
+      return parseInt(
+        displayAmount(token.totalSupply, token.decimals)
+      ).toLocaleString()
     },
     prev() {
       this.pageIndex = Math.max(0, this.pageIndex - 1)
