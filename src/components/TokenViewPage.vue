@@ -75,6 +75,7 @@
                 <th>Symbol</th>
                 <th>Address</th>
                 <th>Total Supply</th>
+                <th>Price</th>
               </tr>
               <tr v-for="(token, index) in tokens" :key="index">
                 <td>
@@ -94,6 +95,9 @@
                 <td>
                   {{ totalSupply(token) }}
                 </td>
+                <!-- <td>
+                  {{ usd || N/A }}
+                </td> -->
               </tr>
             </table>
 
@@ -133,7 +137,7 @@ export default {
       return this.filteredTokens.length
     },
     filteredTokens() {
-      const filteredTokens = this.tokenList.filter(elem => {
+      const filteredTokens = this.tokenList.filter((elem) => {
         return (
           (elem.name || '').toLowerCase().includes(this.search.toLowerCase()) ||
           (elem.symbol || '')
@@ -166,12 +170,30 @@ export default {
   async created() {
     this.loading = true
     const { data: tokens } = await axios.get(HRC20LIST_URL)
+
     this.tokenList = _.uniqBy(tokens, 'contractAddress')
+
+    // let arr = this.tokenList.map((value) => {
+    //   return new Promise((resolve, reject) => {
+    //     try {
+    //       const data = axios.get(
+    //         `https://api.coingecko.com/api/v3/simple/price?ids=${value.symbol.toLowerCase()}&vs_currencies=usd`
+    //       )
+    //       resolve(data[value.name])
+    //     } catch (e) {
+    //       resolve('N/A')
+    //     }
+    //   })
+    // })
+    // const data = await Promise.all(arr)
+    // console.log(data)
     this.loading = false
   },
   methods: {
     totalSupply(token) {
-      return displayAmount(token.totalSupply, token.decimals)
+      return parseInt(
+        displayAmount(token.totalSupply, token.decimals)
+      ).toLocaleString()
     },
     prev() {
       this.pageIndex = Math.max(0, this.pageIndex - 1)

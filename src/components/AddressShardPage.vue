@@ -154,6 +154,15 @@ export default {
     getAddressShard() {
       this.loading = true
 
+      if (
+        !(
+          this.$route.params.address.startsWith('0x') ||
+          this.$route.params.address.startsWith('one1')
+        )
+      ) {
+        this.$router.push('/')
+      }
+
       const pageIndex = (+this.$route.params.pageIndex || 1) - 1
       const address = this.$route.params.address
       this.shardId = this.$route.params.shardId
@@ -168,9 +177,9 @@ export default {
           pageSize: 20,
           pageIndex,
         })
-        .then(address => {
+        .then((address) => {
           if (address.txs) {
-            address.txs.forEach(tx => {
+            address.txs.forEach((tx) => {
               txs[tx.hash] = {
                 ...tx,
                 shardID: this.shardId,
@@ -178,7 +187,7 @@ export default {
             })
           }
           if (address.stakingTxs) {
-            address.stakingTxs.forEach(tx => {
+            address.stakingTxs.forEach((tx) => {
               stakingTxs[tx.hash] = {
                 ...tx,
                 shardID: this.shardId,
