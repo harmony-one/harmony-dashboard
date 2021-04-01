@@ -60,7 +60,7 @@
           </tr>
           <tr v-for="tx in txs" :key="tx.hash">
             <td>
-              <router-link :to="'/tx/' + tx.hash">
+              <router-link :to="'/tx/' + tx.transactionHash">
                 {{ tx.transactionHash | shorten }}
               </router-link>
             </td>

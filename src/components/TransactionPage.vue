@@ -34,7 +34,7 @@
                     Success
                   </span>
                   <span v-if="txReceiptStatus === 0" style="color: red"
-                    >Failure</span
+                  >Failure</span
                   >
                   <span style="color: red">&nbsp;{{ failureReason }}</span>
                 </td>
@@ -242,11 +242,12 @@
                     {{ action.displayType }}
                   </td>
                   <td>
+                    <span><strong>From:</strong></span>
                     <Address
                       :bech32="action.callWithInfo.from"
                       :show-raw="true"
                     />
-                    &rarr;
+                    <span><strong>To:</strong></span>
                     <Address
                       :bech32="action.callWithInfo.to"
                       :show-raw="true"
@@ -400,7 +401,7 @@ export default {
 
       this.globalData.hmy.hmySDK.blockchain.Transaction.getTransactionReceipt(
         routeTxId
-      ).then(async res => {
+      ).then(async (res) => {
         const { result } = res
         this.txReceiptStatus = parseInt(result.status || '0x0', 16)
 
@@ -431,7 +432,7 @@ export default {
         : service.getTransaction
 
       getTx(routeTxId)
-        .then(transaction => {
+        .then((transaction) => {
           console.log({ transaction })
 
           if (
@@ -478,7 +479,7 @@ export default {
           if (this.transaction.shardID !== this.transaction.toShardID) {
             service
               .getCxReceipt(this.$route.params.transactionId)
-              .then(receipt => {
+              .then((receipt) => {
                 this.receipt = receipt
                 console.log('receipt', receipt)
               })

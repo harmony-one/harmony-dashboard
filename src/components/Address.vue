@@ -1,6 +1,6 @@
 <template>
   <span>
-<!--    <span
+    <!--    <span
     <span
       v-if="(!hrc721Info || !isHrc20 || showRaw) && bech32"
       class="address-type-control"
@@ -15,14 +15,14 @@
         <span :style="bgStyle(hrc20Info.name)">
           <b>{{ hrc20Info.symbol }}</b>
         </span>
-        <span v-if="showRaw"> ({{ displayAddress || '—' }})</span>
+        <!-- <span v-if="showRaw"> ({{ displayAddress || '—' }})</span> -->
       </span>
 
       <span v-if="isHrc721 && !addressOnly" style="line-height: 11px">
         <span :style="bgStyle(hrc721Info.name)">
           <b>{{ hrc721Info.symbol }}</b>
         </span>
-        <span v-if="showRaw"> ({{ displayAddress || '—' }})</span>
+        <!-- <span v-if="showRaw"> ({{ displayAddress || '—' }})</span> -->
       </span>
 
       <span v-else-if="showRaw">
@@ -37,7 +37,7 @@
       class="address-type-control"
       style="font-size:1em"
       @click="copy()"
-      >&#x2398;</span
+    >&#x2398;</span
     >
   </span>
 </template>
@@ -51,11 +51,6 @@ export default {
   data() {
     return {
       showHex: false,
-    }
-  },
-  watch: {
-    displayFormat() {
-      //this.displayAddress()
     }
   },
   computed: {
@@ -79,12 +74,16 @@ export default {
     },
     hrc721Info() {
       return this.$store.data.hrc721.find(
-        e => e.contractAddress === this.bech32
+        (e) => e.contractAddress === this.bech32
       )
     },
   },
-  mounted() {
+  watch: {
+    displayFormat() {
+      //this.displayAddress()
+    },
   },
+  mounted() {},
   methods: {
     copy() {
       copy(this.displayAddress)
