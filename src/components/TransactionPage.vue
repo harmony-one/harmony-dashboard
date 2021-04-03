@@ -246,11 +246,13 @@
                     <Address
                       :bech32="action.callWithInfo.from"
                       :show-raw="true"
+                      :shorten="true"
                     />
                     <span><strong>To:</strong></span>
                     <Address
                       :bech32="action.callWithInfo.to"
                       :show-raw="true"
+                      :shorten="true"
                     />
 
                     <span
@@ -407,7 +409,7 @@ export default {
 
         const trace = await traceTx(routeTxId)
         this.txActions = await traverseCallInfo(trace.result)
-
+        console.log(this.txActions)
         if (!this.txReceiptStatus) {
           const { result } = trace
           this.failureReason = getFailureMessages(result).join(' ') || ''

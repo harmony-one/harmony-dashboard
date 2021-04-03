@@ -47,7 +47,7 @@ import copy from 'copy-text-to-clipboard'
 
 export default {
   name: 'Address',
-  props: ['bech32', 'showRaw', 'staking', 'addressOnly'],
+  props: ['bech32', 'showRaw', 'staking', 'addressOnly', 'shorten'],
   data() {
     return {
       showHex: false,
@@ -61,6 +61,11 @@ export default {
       return this.$store.data.displayAddressETH
     },
     displayAddress() {
+      if (this.shorten) {
+        return (
+          (this.displayFormat ? this.hex : this.bech32).substring(0, 15) + '...'
+        )
+      }
       return this.displayFormat ? this.hex : this.bech32
     },
     isHrc20() {
