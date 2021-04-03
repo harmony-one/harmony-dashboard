@@ -1,12 +1,22 @@
 <template>
   <span>
-    <span v-for="(p, i) in processedString" :key="i">
-      <span v-if="isAddress(p)">
-        <Address :bech32="p" :show-raw="true" />
-      </span>
-      <span v-if="!isAddress(p)">{{ p }}</span>
+
+    <span v-if="isAddress(list[1].split(',')[0])">
+      <strong>{{ list[0].split("(")[1] }}</strong>
+      	
+      {{ list[1] }}
+
+      <strong> value   </strong>: {{ list[3].split(')')[0] }}
     </span>
-  </span>
+   
+    <span v-else>
+      <span v-for="(p, i) in processedString" :key="i">
+        <span v-if="isAddress(p)">
+          <Address :bech32="p" :show-raw="true" />
+        </span>
+        <span v-if="!isAddress(p)">{{ p }}</span>
+      </span>
+    </span></span>
 </template>
 
 <script>
@@ -21,6 +31,7 @@ export default {
   data() {
     return {
       processedString: [],
+      list: [],
     }
   },
   mounted() {
@@ -28,6 +39,7 @@ export default {
   },
   methods: {
     isAddress(s) {
+      console.log(s)
       return s.indexOf('one1') !== -1 && s.length === 42
     },
     parse() {
@@ -35,6 +47,7 @@ export default {
       let i = 0
       let s = this.parseString
       const addresses = []
+      this.list = s.split(' ')
 
       while (true) {
         pointer = s.indexOf('one1')
@@ -55,6 +68,7 @@ export default {
         i++
         if (i > 10) {
           this.processedString.push(this.parseString)
+
           return
         }
       }
