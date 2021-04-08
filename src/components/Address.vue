@@ -61,11 +61,11 @@ export default {
       return this.$store.data.displayAddressETH
     },
     displayAddress() {
-      if (this.shorten) {
+     /* if (this.shorten) {
         return (
           (this.displayFormat ? this.hex : this.bech32).substring(0, 15) + '...'
         )
-      }
+      }*/
       return this.displayFormat ? this.hex : this.bech32
     },
     isHrc20() {
