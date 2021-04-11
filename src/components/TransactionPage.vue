@@ -409,7 +409,6 @@ export default {
 
         const trace = await traceTx(routeTxId)
         this.txActions = await traverseCallInfo(trace.result)
-        console.log(this.txActions)
         if (!this.txReceiptStatus) {
           const { result } = trace
           this.failureReason = getFailureMessages(result).join(' ') || ''
