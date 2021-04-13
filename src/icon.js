@@ -10,6 +10,7 @@ import {
   faAngleDoubleRight,
   faSearch,
   faUserFriends,
+  faDownload,
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -20,6 +21,7 @@ library.add(
   faAngleDoubleLeft,
   faAngleDoubleRight,
   faSearch,
+  faDownload,
   faUserFriends
 )
 
