@@ -489,9 +489,9 @@
 
         <div class="export-transactions">
           <p v-if="connectStatus === 'select'">
-            Download Csv Export? Please connect wallet first, choose:
+            Download CSV Export? Sign in
             <span style="color: #0a93eb;cursor: pointer" @click="connectWallet('OneWallet')">OneWallet</span>
-            or
+            /
             <span style="color: #0a93eb;cursor: pointer" @click="connectWallet('MetaMask')">MetaMask</span>
             <span style="padding-left: 8px"><font-awesome-icon icon="download" /></span>
           </p>
