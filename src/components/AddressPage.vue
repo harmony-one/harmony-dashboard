@@ -61,6 +61,15 @@
 .selectItem:focus {
   box-shadow: none !important;
 }
+
+.export-transactions{
+  background: white;
+  text-align: right;
+  font-size: 12px;
+  padding: 1em 1.5em;
+  margin-bottom: 1.5em;
+  border-radius: 4px;
+}
 </style>
 
 <template>
@@ -477,6 +486,27 @@
             />
           </slot>
         </StakingTransactionsTable>
+
+        <div class="export-transactions">
+          <p v-if="connectStatus === 'select'">
+            Download CSV Export? Sign in
+            <span style="color: #0a93eb;cursor: pointer" @click="connectWallet('OneWallet')">OneWallet</span>
+            /
+            <span style="color: #0a93eb;cursor: pointer" @click="connectWallet('MetaMask')">MetaMask</span>
+            <span style="padding-left: 8px"><font-awesome-icon icon="download" /></span>
+          </p>
+          <p v-if="connectStatus === 'not-self'">
+            You can only export your own,
+            <span style="color: #0a93eb;cursor: pointer" @click="connectWallet('Disconnect')">disconnect</span>
+          </p>
+          <p
+            v-else-if="connectStatus === 'connected'"
+            style="color: #00aee9;cursor: pointer"
+            @click="exportAndDownloadTransactions">
+            {{ exportStatus }}
+            <span style="padding-left: 8px"><font-awesome-icon icon="download" /></span>
+          </p>
+        </div>
       </div>
       <div v-else class="container">
         <loading-message v-if="false" />
@@ -502,6 +532,9 @@ import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
 import axios from 'axios'
 import { HRC721LIST_URL } from '../explorer/store'
+import JSZip from 'jszip'
+import FileSaver from 'file-saver'
+import { calculateFee, formatAmount, formatTimestamp } from '@/filter'
 
 // todo break to parts. make clean
 const status = { staking: 1, regular: 0, hrc20: 2, hrc721: 3, hrc721Assets: 4 }
@@ -542,6 +575,10 @@ export default {
       hrc721Transactions: {},
       hrc721Inventory: [],
       hrc20ActualTotalSupply: 0,
+      tokensFetching: false,
+      canExport: true,
+      exportStatus: 'Export And Download',
+      connectStatus: 'select',
     }
   },
   computed: {
@@ -649,14 +686,17 @@ export default {
     $route() {
       if (this.$route.params.address !== (this.address && this.address.id)) {
         this.getAddress()
+        this.refreshWalletStatus()
       }
     },
     page() {
       this.getAddress()
+      this.refreshWalletStatus()
     },
   },
   mounted() {
     this.getAddress()
+    this.refreshWalletStatus()
   },
   methods: {
     onUserActionFetchHRCTokens() {
@@ -713,6 +753,223 @@ export default {
           hrc20QueryID,
         },
       })
+    },
+    async connectWallet(walletType) {
+      switch (walletType) {
+        case 'OneWallet':
+          if (onewallet) {
+            const accounts = await onewallet.getAccount()
+            if (accounts.address) {
+              sessionStorage.setItem('connected-wallet', accounts.address)
+            }
+          }
+          break
+        case 'MetaMask':
+          if (ethereum) {
+            await ethereum.request({ method: 'wallet_requestPermissions', params: [{ eth_accounts: {} }] })
+            const accounts = await ethereum.request({ method: 'eth_requestAccounts' })
+            if (accounts) {
+              sessionStorage.setItem('connected-wallet', accounts[0])
+            }
+          }
+          break
+        case 'Disconnect':
+          onewallet.forgetIdentity()
+          sessionStorage.removeItem('connected-wallet')
+          break
+      }
+      this.refreshWalletStatus()
+    },
+    refreshWalletStatus() {
+      const sessionData = sessionStorage.getItem('connected-wallet')
+      if (sessionData) {
+        const address = this.$route.params.address
+        const hex = this.$store.data.hmy.hmySDK.crypto.fromBech32(address)
+        if (sessionData.toLowerCase() === address.toLowerCase() || sessionData.toLowerCase() === hex.toLowerCase()) {
+          this.connectStatus = 'connected'
+        } else {
+          this.connectStatus = 'not-self'
+        }
+      } else {
+        this.connectStatus = 'select'
+      }
+    },
+    async exportService(func, params, hasNextFunc, processFunc) {
+      let context = { page: 0 }
+      while (true) {
+        const result = await func(Object.assign(params, { pageSize: 100, pageIndex: context.page }))
+        processFunc(result)
+        if (hasNextFunc(context, result)) {
+          context.page++
+        } else {
+          return
+        }
+      }
+    },
+    async exportAndDownloadTransactions() {
+      if (!this.canExport) return
+      try {
+        const address = this.$route.params.address
+        const sortid = this.$route.params.hrc20QueryID
+        const zip = new JSZip()
+        let totalRow = 0
+        this.canExport = false
+        this.exportStatus = 'Exporting...'
+
+        let csvContent = 'Shard,TxHash,From,To,Time,Token,Token Amount\n'
+        let txsCsvContent = 'TxHash,Timestamp,From ShardID,To ShardID,From,To,Value,Txn Fee\n'
+        let stakingTxsCsvContent = 'Shard,TxHash,Timestamp,Type,Validator,Delegator,Value,Txn Fee\n'
+        let needExport = true
+
+        if (localStorage.getItem(`cache_export_${address}`)) {
+          let cacheData = JSON.parse(localStorage.getItem(`cache_export_${address}`))
+
+          if (cacheData.expired <= Date.now()) {
+            localStorage.removeItem(`cache_export_${address}`)
+            needExport = true
+          } else {
+            csvContent = cacheData.csvContent
+            txsCsvContent = cacheData.txsCsvContent
+            stakingTxsCsvContent = cacheData.stakingTxsCsvContent
+            needExport = false
+          }
+        }
+
+        if (needExport) {
+          const contract = this.$store.data.hmy.contract(this.$store.data.HRC20_ABI)
+          const oneArgHrc20Methods = [
+            //'transfer',
+            'approve',
+            'mint',
+            'burn',
+            'burnFrom',
+          ]
+          const twoArgsHrc20Methods = [
+            //'transferFrom',
+            'allowance',
+          ]
+
+          await this.exportService(
+            service.getHrc20Txs,
+            { id: address, sortid: sortid },
+            (context, result) => {
+              context.total = result.total
+              context.now = (context.now || 0) + result.txs.length
+              totalRow += result.txs.length
+              this.exportStatus = `Exported ${totalRow} rows...`
+              return context.now < context.total && result.txs.length !== 0
+            },
+            (result) => {
+              if (result.txs) {
+                result.txs.forEach(tx => {
+                  const decodeObj = contract.decodeInput(tx.input)
+                  const symbol = this.Hrc20Address[tx.to]
+                  if (!symbol) return
+
+                  let hrc20tx = {
+                    from: '-',
+                    to: '-',
+                    amount: '-',
+                  }
+                  if (decodeObj.abiItem && decodeObj.abiItem.name === 'transfer') {
+                    hrc20tx = {
+                      from: tx.from,
+                      to: decodeObj.params[0],
+                      amount: decodeObj.params[1],
+                    }
+                  } else if (decodeObj.abiItem && decodeObj.abiItem.name === 'transferFrom') {
+                    hrc20tx = {
+                      from: decodeObj.params[0],
+                      to: decodeObj.params[1],
+                      amount: decodeObj.params[2],
+                    }
+                  } else if (decodeObj.abiItem && oneArgHrc20Methods.includes(decodeObj.abiItem.name)) {
+                    hrc20tx = {
+                      from: tx.from,
+                      to: decodeObj.params[0],
+                      amount: decodeObj.params[1],
+                    }
+                  } else if (decodeObj.abiItem && twoArgsHrc20Methods.includes(decodeObj.abiItem.name)) {
+                    hrc20tx = {
+                      from: decodeObj.params[0],
+                      to: decodeObj.params[1],
+                      amount: decodeObj.params[2],
+                    }
+                  }
+                  const amount = displayAmount(hrc20tx.amount, symbol?.decimals)
+                  csvContent += `${tx.shardID},${tx.hash},${hrc20tx.from},${hrc20tx.to},${formatTimestamp(tx.timestamp * 1000)},${symbol?.symbol} ${tx.to},${amount} ${symbol?.symbol}\n`
+                })
+              }
+            },
+          )
+
+          await this.exportService(
+            service.getAddressFullInfo,
+            { id: address },
+            (context, result) => {
+              context.txCount = result.address.txCount
+              context.stakingTxCount = result.address.stakingTxCount
+
+              let currentRow = 0
+              result.address.shardData.forEach(shardDataItem => {
+                if (shardDataItem.txs) {
+                  context.txNow = (context.txNow || 0) + shardDataItem.txs.length
+                  currentRow += shardDataItem.txs.length
+                }
+                if (shardDataItem.stakingTxNow) {
+                  context.stakingTxNow = (context.stakingTxNow || 0) + shardDataItem.stakingTxNow.length
+                  currentRow += shardDataItem.stakingTxNow.length
+                }
+              })
+
+              totalRow += currentRow
+              this.exportStatus = `Exported ${totalRow} rows...`
+
+              return (context.txNow < context.txCount || context.stakingTxNow < context.stakingTxCount) && currentRow !== 0
+            },
+            (result) => {
+              const addressInfo = result.address
+              if (addressInfo.shardData) {
+                addressInfo.shardData.forEach(shardDataItem => {
+                  if (shardDataItem.txs) {
+                    shardDataItem.txs.forEach(item => {
+                      txsCsvContent += `${item.hash},${formatTimestamp(item.timestamp * 1000)},${item.shardID},${item.toShardID},${item.from},${item.to},${formatAmount(item.value)},${calculateFee(item)}\n`
+                    })
+                  }
+                  if (shardDataItem.stakingTxs) {
+                    shardDataItem.stakingTxs.forEach(item => {
+                      stakingTxsCsvContent += `${item.transactionIndex},${item.hash},${formatTimestamp(item.timestamp * 1000)},${item.type},${item.msg.validatorAddress || '-'},${item.msg.delegatorAddress || '-'},${formatAmount(item.msg.amount || 0)},${calculateFee(item)}\n`
+                    })
+                  }
+                })
+              }
+            },
+          )
+
+          localStorage.setItem(`cache_export_${address}`, JSON.stringify({
+            expired: Date.now() + 3600 * 1000, // 1hour
+            csvContent,
+            txsCsvContent,
+            stakingTxsCsvContent,
+          }))
+        }
+
+        zip.file('HRC20 Transactions.csv', csvContent)
+        zip.file('Transactions.csv', txsCsvContent)
+        zip.file('Staking transactions.csv', stakingTxsCsvContent)
+
+        zip.generateAsync({ type: 'blob' })
+          .then(content => {
+            FileSaver.saveAs(content, `export_transactions_${address.substring(0, 32)}.zip`)
+          })
+
+        this.exportStatus = 'Export And Download'
+      } catch (e) {
+        this.exportStatus = 'Export failed, try again!'
+        console.log(e)
+      } finally {
+        this.canExport = true
+      }
     },
     getAddress() {
       this.loading = true
