@@ -205,7 +205,7 @@ export default {
       this.pageIndex = 0
     },
     last() {
-      this.pageIndex = this.pageCount
+      this.pageIndex = this.pageCount - 1
     },
   },
 }
