@@ -481,6 +481,9 @@
       <div v-else class="container">
         <loading-message v-if="false" />
       </div>
+    </div><div v-if="sourceCode" class="address-body" style="left:20%;position:relative">
+      <div>Source Code</div>
+      <textarea rows="35" cols="100" v-html="sourceCode"></textarea>
     </div>
   </div>
 </template>
@@ -542,6 +545,7 @@ export default {
       hrc721Transactions: {},
       hrc721Inventory: [],
       hrc20ActualTotalSupply: 0,
+      sourceCode: '',
     }
   },
   computed: {
