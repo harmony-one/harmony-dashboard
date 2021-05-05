@@ -36,7 +36,6 @@
       HRC721 Transfers
     </span>
 
-
     <span
       v-if="showHrc721"
       :class="{ tabItem: true, active: value == 4 }"
@@ -44,15 +43,6 @@
     >
       Inventory
     </span>
-
-    <span
-      v-if="showHrc721txs"
-      :class="{ tabItem: true, active: value == 5 }"
-      @click="() => onChange(5)"
-    >
-      HRC721 Transfers
-    </span>
-    s
   </div>
 </template>
 
