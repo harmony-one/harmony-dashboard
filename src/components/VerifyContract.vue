@@ -29,16 +29,35 @@
           </div>
         </div>
         <br>
+        <div class="justify-between">
+          <div>
+            <p>Contract Name</p>
+            <input v-model="contractName" placeholder="ONE Name" type="text">
+          </div>
+          <div>
+            <p>Chain Type</p>
+            <select v-model="chainType">
+              <option value="mainnet">
+                Mainnet
+              </option>
+              <option value="testnet">
+                Testnet
+              </option>
+            </select>
+          </div>
+        </div>
+        <br>
         <div>
           <p>Enter the Solidity Contract Code below</p>
           <textarea v-model="code" rows="35" cols="100"></textarea>
         </div>
 
-        <div class="btn">
+        <!-- <div class="btn">
           <p>Contructor Arguments</p>
           <textarea v-model="contructorValue" rows="1" cols="50"></textarea>
-        </div>
-        <div class="btn" @click="libraryClick($event)">
+        </div> -->
+        <br />
+        <div class="" style="border-style: solid;border-width:thin" @click="libraryClick($event)">
           Contract Library Address ( for contracts that use libraries, supports up to 5 libraries)
         </div>
         <div v-if="clicked" class="btn">
@@ -53,6 +72,7 @@
           <p>Library_5 Name: </p>
           <input v-model="lib5" placeholder="ONE Contract Address" type="text">
         </div>
+        <br />
       </form>
     </div>
   </div>
@@ -77,6 +97,8 @@ export default {
       lib5: '',
       clicked: false,
       contructorValue: '',
+      contractName: '',
+      chainType: 'testnet',
     }
   },
   methods: {
@@ -87,11 +109,13 @@ export default {
       await axios.post('/contractVerify', {
         contractAddress: this.contractAddress,
         compiler: this.compiler,
-        optimzer: this.optimzerBool,
-        optimzerTimes: this.optimzerNumber,
+        optimizer: this.optimzerBool,
+        optimizerTimes: this.optimzerNumber,
         sourceCode: this.code,
         libraries: [this.lib1, this.lib2, this.lib3, this.lib4, this.lib5],
         constructorArguments: this.contructorValue,
+        chainType: this.chainType,
+        contractName: this.contractName,
       })
     },
   },
