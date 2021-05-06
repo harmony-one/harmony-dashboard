@@ -30,7 +30,7 @@ export async function traceTx(txhash) {
   })
   const json = await msg.json()
 
-  console.log({ trace: JSON.parse(JSON.stringify(json.result)) })
+  // console.log({ trace: JSON.parse(JSON.stringify(json.result)) })
   return json
 }
 
@@ -51,7 +51,7 @@ export const traverseCallInfo = async callHead => {
 
     let displayString = ''
     let displayType = type
-    if (type === 'CALL' || type === 'STATICCALL') {
+    if (type === 'CALL' || type === 'STATICCALL' || type === 'DELEGATECALL') {
       if (callWithInfo.hrc20Method && callWithInfo.hrc20Props) {
         displayType = 'HRC20 ' + type
         const { method, inputs, outputs } = callWithInfo.hrc20Method
@@ -118,12 +118,12 @@ export const traverseCallInfo = async callHead => {
     .filter(
       r =>
         r.callWithInfo.traceCall.input &&
-        r.callWithInfo.traceCall.input !== '0x'
+        r.callWithInfo.traceCall.input !== '0x' || r.callWithInfo.traceCall.value !== '0x'
     )
 }
 
 const getCallInfo = async call => {
-  if (call.type === 'CALL' || call.type === 'STATICCALL') {
+  if (call.type === 'CALL' || call.type === 'STATICCALL' || call.type === 'DELEGATECALL') {
     const hrc20Props = await getHrc20ContractProps(call.to)
     const hrc20Method = getTxHrc20Method(call)
     const suggestions =
@@ -181,6 +181,6 @@ export function showCall(call, depth = 0) {
   const fmtmsg = `${' '.repeat(depth * 4)} ${call.type} from:${call.from} to:${
     call.to
   } value:${call.value}, input:${call.input} ${revert}`
-  console.log(fmtmsg)
+  // console.log(fmtmsg)
   if (call.calls) call.calls.forEach(call => showCall(call, depth + 1))
 }
