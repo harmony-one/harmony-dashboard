@@ -4,16 +4,16 @@
 
 <template>
   <div class=" explorer-page page">
-    <div class="container explorer-body" style="width:800px; margin:0 auto;">
+    <div class="container explorer-body centerDiv">
       <form style="align-items:center;">
         <div class="justify-between">
           <div>
             <p>Contract Address </p>
-            <input v-model="contractAddress" placeholder="ONE Contract Address" type="text">
+            <input v-model="contractAddress" class="verify" placeholder="ONE Contract Address" type="text">
           </div>
           <div>
             <p>Compiler </p>
-            <input v-model="compiler" placeholder="Solidity Compiler Version" type="text">
+            <input v-model="compiler" class="verify" placeholder="Solidity Compiler Version" type="text">
           </div>
           <div>
             <p>Optimizer </p>
@@ -25,14 +25,14 @@
                 Yes
               </option>
             </select>
-            <input v-model="optimzerNumber" placeholder="Number Of Times" type="text">
+            <input v-model="optimzerNumber" class="verify" placeholder="Number Of Times" type="text">
           </div>
         </div>
         <br>
         <div class="justify-between">
           <div>
             <p>Contract Name</p>
-            <input v-model="contractName" placeholder="ONE Name" type="text">
+            <input v-model="contractName" class="verify" placeholder="ONE Name" type="text">
           </div>
           <div>
             <p>Chain Type</p>
@@ -49,7 +49,7 @@
         <br>
         <div>
           <p>Enter the Solidity Contract Code below</p>
-          <textarea v-model="code" rows="35" cols="100"></textarea>
+          <textarea v-model="code" class="verify" rows="35" cols="100"></textarea>
         </div>
 
         <!-- <div class="btn">
@@ -60,29 +60,59 @@
         <div class="" style="border-style: solid;border-width:thin" @click="libraryClick($event)">
           Contract Library Address ( for contracts that use libraries, supports up to 5 libraries)
         </div>
-        <div v-if="clicked" class="btn">
-          <p>Library_1 Name: </p>
-          <input v-model="lib1" placeholder="ONE Contract Address" type="text">
-          <p>Library_2 Name: </p>
-          <input v-model="lib2" placeholder="ONE Contract Address" type="text">
-          <p>Library_3 Name: </p>
-          <input v-model="lib3" placeholder="ONE Contract Address" type="text">
-          <p>Library_4 Name: </p>
-          <input v-model="lib4" placeholder="ONE Contract Address" type="text">
-          <p>Library_5 Name: </p>
-          <input v-model="lib5" placeholder="ONE Contract Address" type="text">
+        <br />
+        <div v-if="clicked">
+          <div style="display:flex" class="justify-around"> 
+            <div> 
+              <p>Library_1 Name: </p>
+              <input v-model="lib1" placeholder="ONE Contract Address" type="text">
+            </div> <div>
+              <p>Library_2 Name: </p>
+              <input v-model="lib2" placeholder="ONE Contract Address" type="text">
+            </div> <div>
+              <p>Library_3 Name: </p>
+              <input v-model="lib3" placeholder="ONE Contract Address" type="text">
+            </div>
+          </div>
+          <div style="display:flex" class="justify-around">
+            <div>
+              <p>Library_4 Name: </p>
+              <input v-model="lib4" placeholder="ONE Contract Address" type="text">
+            </div> <div>
+              <p>Library_5 Name: </p>
+              <input v-model="lib5" placeholder="ONE Contract Address" type="text">
+            </div>
+          </div>
         </div>
         <br />
+
+        <button class="btn btn-primary centerDiv" type="submit" @click="submit">
+          Submit
+        </button>
       </form>
+    </div>
+    <div class="container centerDiv" style="position:relative;left:10%;"> 
+      <p v-if="status" style="color:red">
+        Something went wrong. Check your inputs and try again.
+      </p>
+      <br />
+      <p v-if="displayMessage" style="color:blue">
+        Completed !
+      </p>
+      <div v-if="loading">
+        <LoadingMessage />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import LoadingMessage from './LoadingMessage'
 
 export default {
   name: 'VerifyContract',
+  components: LoadingMessage,
   data() {
     return {
       contractAddress: '',
@@ -99,6 +129,9 @@ export default {
       contructorValue: '',
       contractName: '',
       chainType: 'testnet',
+      status: false,
+      displayMessage: false,
+      loading: false,
     }
   },
   methods: {
@@ -106,17 +139,36 @@ export default {
       this.clicked = !this.clicked
     },
     submit: async function () {
-      await axios.post('/contractVerify', {
-        contractAddress: this.contractAddress,
-        compiler: this.compiler,
-        optimizer: this.optimzerBool,
-        optimizerTimes: this.optimzerNumber,
-        sourceCode: this.code,
-        libraries: [this.lib1, this.lib2, this.lib3, this.lib4, this.lib5],
-        constructorArguments: this.contructorValue,
-        chainType: this.chainType,
-        contractName: this.contractName,
-      })
+      this.loading = true
+      if (
+        this.contractAddress == '' ||
+        this.compiler == '' ||
+        this.sourceCode == '' ||
+        this.contractName == ''
+      ) {
+        this.status = true
+      } else {
+        const res = await axios.post(
+          `${process.env.VUE_APP_EXPLORER_BACKEND_URL}/codeVerification`,
+          {
+            contractAddress: this.contractAddress,
+            compiler: this.compiler,
+            optimizer: this.optimzerBool,
+            optimizerTimes: this.optimzerNumber,
+            sourceCode: this.code,
+            libraries: [this.lib1, this.lib2, this.lib3, this.lib4, this.lib5],
+            constructorArguments: this.contructorValue,
+            chainType: this.chainType,
+            contractName: this.contractName,
+          }
+        )
+        this.loading = false
+        if (res.data === false) {
+          this.sourceCode = true
+        } else {
+          this.displayMessage = false
+        }
+      }
     },
   },
 }
