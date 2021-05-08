@@ -583,6 +583,7 @@ export default {
       canExport: true,
       exportStatus: 'Export And Download',
       connectStatus: 'select',
+      soruceCode: '',
     }
   },
   computed: {
@@ -592,6 +593,7 @@ export default {
     isContract() {
       return this.contractData && this.contractData.txId
     },
+
     hrc20BalancesDropdownPlaceholder() {
       if (!Object.values(this.Hrc20Balance).length) {
         return 'Loading...'
@@ -698,6 +700,11 @@ export default {
       this.refreshWalletStatus()
     },
   },
+  created() {
+    if (this.isContract()) {
+      this.loadSourceCode()
+    }
+  },
   mounted() {
     this.getAddress()
     this.refreshWalletStatus()
@@ -757,6 +764,18 @@ export default {
           hrc20QueryID,
         },
       })
+    },
+    async loadSourceCode() {
+      console.log(this.address)
+      const data = await axios.get(
+        `${process.env.VUE_APP_EXPLORER_BACKEND_URL}/fetchContractCode`,
+        {
+          params: {
+            contractCode: this.address,
+          },
+        }
+      )
+      this.sourceCode = data
     },
     async connectWallet(walletType) {
       switch (walletType) {
