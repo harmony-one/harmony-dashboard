@@ -40,7 +40,7 @@
   --color-table-text: #555b68;
   --color-table-text-hover: --color-table-text;
   --color-table-link: #47b8eb;
-  --color-table-link-hover: #47b8eb;//--color-table-link;
+  --color-table-link-hover: #47b8eb; //--color-table-link;
   --color-button-light-text: --color-table-text;
   --color-site-header-text: #fff;
   --color-text-error: @color-error;
@@ -49,6 +49,9 @@
 input {
   color: red;
   font-family: Nunito;
+}
+.verify {
+  color: gray;
 }
 
 .night-mode {
@@ -107,9 +110,20 @@ input {
   flex-direction: row;
   display: flex;
 }
+.justify-around {
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+  display: flex;
+}
 
 .flex-grow {
   flex: 1;
+}
+
+.centerDiv {
+  width: 800px;
+  margin: 0 auto;
 }
 
 .btn {
@@ -345,7 +359,7 @@ a {
 }
 
 .hmy-bg {
-  background: #00aee9;// linear-gradient(to right top, #00aee9, #4fe7c8);
+  background: #00aee9; // linear-gradient(to right top, #00aee9, #4fe7c8);
 }
 
 :global {
@@ -398,7 +412,7 @@ td.address_link {
   position: absolute;
   background-color: #f9f9f9;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
 

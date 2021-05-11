@@ -15,6 +15,7 @@ import AddressShardPage from '@/components/AddressShardPage'
 import TransactionsByBlockPage from '@/components/TransactionsByBlockPage'
 import TokenViewPage from '@/components/TokenViewPage'
 import Token721ViewPage from '@/components/Token721ViewPage'
+import VerifyContract from '@/components/VerifyContract'
 Vue.use(Router)
 
 export default new Router({
@@ -99,6 +100,11 @@ export default new Router({
       path: '/tokens721',
       name: 'TokenView721',
       component: Token721ViewPage,
+    },
+    {
+      path: '/verifycontract',
+      name: 'VerifyContract',
+      component: VerifyContract,
     },
   ],
 })
